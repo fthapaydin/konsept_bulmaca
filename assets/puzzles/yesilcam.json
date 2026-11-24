@@ -2,7 +2,7 @@
   "id": "yesilcam",
   "name": "Yeşilçam Klasikleri",
   "subtitle": "Efsane filmler, replikler ve yıldızlar",
-  "description": "Hababam'dan Al Yazmalım'a, Tosun Paşa'dan Neşeli Günler'e nostaljik sinema yolculuğu.",
+  "description": "Hababam'dan Al Yazmalım'a, Tosun Paşa'dan Neşeli Günler'e 20 bölümlük nostaljik sinema yolculuğu.",
   "language": "tr",
   "icon": "movie",
   "primaryColor": "#B45309",
@@ -22,50 +22,50 @@
           2
         ],
         [
-          0,
-          2
+          4,
+          4
         ]
       ],
       "entries": [
-        {
-          "number": 1,
-          "direction": "across",
-          "row": 0,
-          "col": 0,
-          "answer": "NAŞİT",
-          "clue": "Hafize Ana rolüyle sevilen efsane oyuncu Adile ..."
-        },
         {
           "number": 4,
           "direction": "across",
           "row": 2,
           "col": 0,
-          "answer": "MÜNİR",
-          "clue": "Mahmut Hoca ve Yaşar Usta'ya hayat veren ... Özkul"
+          "answer": "ŞENER",
+          "clue": "Badi Ekrem ve Ziya karakterlerinin ustası ... Şen"
         },
         {
           "number": 5,
           "direction": "across",
           "row": 4,
           "col": 0,
-          "answer": "GİRİK",
-          "clue": "Mavi gözleriyle tanınan usta sanatçı Fatma ..."
+          "answer": "TARIK",
+          "clue": "Damat Ferit rolüyle gönülleri fetheden ... Akan"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 0,
+          "answer": "NAŞİT",
+          "clue": "Hafize Ana rolüyle sevilen efsane oyuncu Adile ..."
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 2,
-          "answer": "ŞENER",
-          "clue": "Badi Ekrem ve Ziya karakterlerinin ustası ... Şen"
+          "answer": "MÜNİR",
+          "clue": "Mahmut Hoca ve Yaşar Usta'ya hayat veren ... Özkul"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
           "col": 4,
-          "answer": "TARIK",
-          "clue": "Damat Ferit rolüyle gönülleri fetheden ... Akan"
+          "answer": "GİRİK",
+          "clue": "Mavi gözleriyle tanınan usta sanatçı Fatma ..."
         }
       ]
     },
@@ -82,8 +82,68 @@
           2
         ],
         [
+          2,
+          4
+        ]
+      ],
+      "entries": [
+        {
+          "number": 3,
+          "direction": "across",
+          "row": 2,
+          "col": 0,
+          "answer": "SOKAK",
+          "clue": "Beyoğlu'nda sinemacıların toplandığı Yeşilçam ...'ı"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 4,
+          "col": 0,
+          "answer": "SUNAL",
+          "clue": "Gülen yüzüyle Türk sinemasına damga vuran Kemal ..."
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 4,
+          "answer": "ÖZKUL",
+          "clue": "Bizim Aile'nin Yaşar Usta'sı, Münir ..."
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 1,
+          "col": 2,
+          "answer": "AKAN",
+          "clue": "Hababam Sınıfı'nın yakışıklı jönü Tarık ..."
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 2,
+          "col": 0,
+          "answer": "SES",
+          "clue": "Yeşilçam'da stüdyoda sonradan kaydedilen konuşma"
+        }
+      ]
+    },
+    {
+      "id": "yesilcam_03",
+      "level": 3,
+      "title": "Yazlık Sinema",
+      "difficulty": "Başlangıç",
+      "rows": 5,
+      "cols": 5,
+      "revealed": [
+        [
+          0,
+          4
+        ],
+        [
           4,
-          0
+          4
         ]
       ],
       "entries": [
@@ -92,11 +152,11 @@
           "direction": "across",
           "row": 0,
           "col": 0,
-          "answer": "KRAL",
-          "clue": "Ayhan Işık'ın lakabı: Taçsız ..."
+          "answer": "FATMA",
+          "clue": "Dört Yapraklı Yonca'nın güçlü oyuncusu ... Girik"
         },
         {
-          "number": 4,
+          "number": 3,
           "direction": "across",
           "row": 2,
           "col": 2,
@@ -104,17 +164,65 @@
           "clue": "Yeşilçam melodramlarının vazgeçilmez ana duygusu"
         },
         {
-          "number": 5,
+          "number": 4,
           "direction": "across",
           "row": 4,
           "col": 0,
-          "answer": "LİMON",
-          "clue": "Neşeli Günler'de Saadet Hanım'ın turşu tercihi"
+          "answer": "TOSUN",
+          "clue": "Tellioğulları ve Seferoğulları'nın meşhur '... Paşa'sı"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
+          "col": 0,
+          "answer": "FERİT",
+          "clue": "Hababam Sınıfı'nın çapkın öğrencisi Damat ..."
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 4,
+          "answer": "ARKIN",
+          "clue": "Dünyayı Kurtaran Adam'ın kahramanı Cüneyt ..."
+        }
+      ]
+    },
+    {
+      "id": "yesilcam_04",
+      "level": 4,
+      "title": "Turşu Kavgası",
+      "difficulty": "Başlangıç",
+      "rows": 5,
+      "cols": 5,
+      "revealed": [
+        [
+          4,
+          1
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 0,
+          "answer": "GAZOZ",
+          "clue": "Yazlık sinemalarda çekirdek yanında içilen serin içecek"
+        },
+        {
+          "number": 3,
+          "direction": "across",
+          "row": 2,
+          "col": 0,
+          "answer": "FİLİZ",
+          "clue": "Sarışın zarafetiyle tanınan Yeşilçam yıldızı ... Akın"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 4,
           "col": 0,
           "answer": "KEMAL",
           "clue": "Hababam'ın İnek Şaban'ı, büyük komedi ustası ... Sunal"
@@ -123,87 +231,23 @@
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 2,
-          "answer": "ANA",
-          "clue": "Hababam'ın zili çalan şefkatli emekçisi Hafize ..."
-        },
-        {
-          "number": 3,
-          "direction": "down",
-          "row": 1,
-          "col": 4,
-          "answer": "AKAN",
-          "clue": "Hababam Sınıfı'nın yakışıklı jönü Tarık ..."
-        }
-      ]
-    },
-    {
-      "id": "yesilcam_03",
-      "level": 3,
-      "title": "Turşu Kavgası",
-      "difficulty": "Kolay",
-      "rows": 6,
-      "cols": 6,
-      "revealed": [
-        [
-          1,
-          0
-        ]
-      ],
-      "entries": [
-        {
-          "number": 2,
-          "direction": "across",
-          "row": 1,
-          "col": 0,
-          "answer": "TÜRKAN",
-          "clue": "Yeşilçam'ın Sultan lakaplı efsane yıldızı ... Şoray"
+          "col": 1,
+          "answer": "ADİLE",
+          "clue": "Kuzucuklarım repliğiyle hafızalara kazınan ... Naşit"
         },
         {
           "number": 4,
-          "direction": "across",
-          "row": 3,
-          "col": 0,
-          "answer": "SULTAN",
-          "clue": "Türkan Şoray'ın halk arasındaki efsane lakabı"
-        },
-        {
-          "number": 5,
-          "direction": "across",
-          "row": 5,
-          "col": 0,
-          "answer": "NECMİ",
-          "clue": "Halit Akçatepe'nin canlandırdığı Güdük ..."
-        },
-        {
-          "number": 1,
           "direction": "down",
-          "row": 0,
+          "row": 2,
           "col": 4,
-          "answer": "BABA",
-          "clue": "Münir Özkul'un birçok filmde canlandırdığı aile reisi"
-        },
-        {
-          "number": 2,
-          "direction": "down",
-          "row": 1,
-          "col": 0,
-          "answer": "TOSUN",
-          "clue": "Tellioğulları ve Seferoğulları'nın meşhur '... Paşa'sı"
-        },
-        {
-          "number": 3,
-          "direction": "down",
-          "row": 1,
-          "col": 2,
-          "answer": "ROL",
-          "clue": "Oyuncunun kamera karşısında canlandırdığı karakter"
+          "answer": "ZİL",
+          "clue": "Hafize Ana'nın koridorda çalıp öğrencileri topladığı alet"
         }
       ]
     },
     {
-      "id": "yesilcam_04",
-      "level": 4,
+      "id": "yesilcam_05",
+      "level": 5,
       "title": "Beyaz Perde",
       "difficulty": "Kolay",
       "rows": 6,
@@ -211,6 +255,10 @@
       "revealed": [
         [
           5,
+          1
+        ],
+        [
+          1,
           3
         ]
       ],
@@ -220,61 +268,61 @@
           "direction": "across",
           "row": 1,
           "col": 0,
-          "answer": "ZİYA",
-          "clue": "Neşeli Günler'de aslan avı uyduran palaveracı amca"
+          "answer": "CÜNEYT",
+          "clue": "Malkoçoğlu ve Battal Gazi'nin yıldızı ... Arkın"
         },
         {
           "number": 5,
           "direction": "across",
           "row": 3,
-          "col": 0,
-          "answer": "VECİHİ",
-          "clue": "Gülen Gözler'de uçağıyla eve dalan aşık pilot"
+          "col": 1,
+          "answer": "KADİR",
+          "clue": "Al Yazmalım'ın İlyas'ı, karizmatik jön ... İnanır"
         },
         {
           "number": 6,
           "direction": "across",
           "row": 5,
           "col": 0,
-          "answer": "CÜNEYT",
-          "clue": "Malkoçoğlu ve Battal Gazi'nin yıldızı ... Arkın"
+          "answer": "ANA",
+          "clue": "Hababam'ın zili çalan şefkatli emekçisi Hafize ..."
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
           "col": 1,
-          "answer": "AİLE",
-          "clue": "Neşeli Günler ve Bizim ... filmlerinin kalbindeki bağ"
+          "answer": "TÜRKAN",
+          "clue": "Yeşilçam'ın Sultan lakaplı efsane yıldızı ... Şoray"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 5,
-          "answer": "BADİ",
-          "clue": "Şener Şen'in canlandırdığı beden öğretmeni ... Ekrem"
+          "col": 3,
+          "answer": "PERDE",
+          "clue": "Sinema salonunda görüntünün yansıtıldığı beyaz yüzey"
         },
         {
           "number": 4,
           "direction": "down",
           "row": 1,
-          "col": 3,
-          "answer": "ADİLE",
-          "clue": "Kuzucuklarım repliğiyle hafızalara kazınan ... Naşit"
+          "col": 5,
+          "answer": "TURŞU",
+          "clue": "Neşeli Günler'de sirke mi limon mu kavgasının sebebi"
         }
       ]
     },
     {
-      "id": "yesilcam_05",
-      "level": 5,
-      "title": "Süt Kardeşler",
-      "difficulty": "Orta",
-      "rows": 7,
-      "cols": 7,
+      "id": "yesilcam_06",
+      "level": 6,
+      "title": "Çamlıca Lisesi",
+      "difficulty": "Kolay",
+      "rows": 6,
+      "cols": 6,
       "revealed": [
         [
-          4,
+          2,
           2
         ]
       ],
@@ -283,23 +331,287 @@
           "number": 1,
           "direction": "across",
           "row": 0,
-          "col": 1,
-          "answer": "BATTAL",
-          "clue": "Cüneyt Arkın'ın tarihi kahramanı ... Gazi"
+          "col": 2,
+          "answer": "KRAL",
+          "clue": "Ayhan Işık'ın lakabı: Taçsız ..."
         },
         {
-          "number": 5,
+          "number": 3,
           "direction": "across",
           "row": 2,
-          "col": 0,
-          "answer": "HABABAM",
-          "clue": "Rıfat Ilgaz'ın eserinden uyarlanan efsane lise serisi"
+          "col": 1,
+          "answer": "İLYAS",
+          "clue": "Al Yazmalım'da kırmızı kamyonlu şoför karakter"
         },
         {
           "number": 6,
           "direction": "across",
           "row": 4,
           "col": 0,
+          "answer": "OKUL",
+          "clue": "Hababam Sınıfı'nın haylazlıklarının geçtiği mekan"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "KOLTUK",
+          "clue": "Sinema salonunda film izlenen kadife oturak"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 4,
+          "answer": "ANA",
+          "clue": "Hababam'ın zili çalan şefkatli emekçisi Hafize ..."
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 2,
+          "col": 5,
+          "answer": "STAR",
+          "clue": "Dönemin en parlak sinema yıldızı"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 3,
+          "col": 0,
+          "answer": "ROL",
+          "clue": "Oyuncunun kamera karşısında canlandırdığı karakter"
+        }
+      ]
+    },
+    {
+      "id": "yesilcam_07",
+      "level": 7,
+      "title": "Mavi Boncuk",
+      "difficulty": "Kolay",
+      "rows": 6,
+      "cols": 6,
+      "revealed": [
+        [
+          0,
+          0
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 0,
+          "answer": "SEVGİ",
+          "clue": "Selvi Boylum'un ünlü sorusu: '... neydi? Emekti.'"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 2,
+          "col": 0,
+          "answer": "HOCA",
+          "clue": "Hababam Sınıfı'nın disiplinli ama şefkatli Mahmut ...'sı"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 5,
+          "col": 1,
+          "answer": "LİMON",
+          "clue": "Neşeli Günler'de Saadet Hanım'ın turşu tercihi"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 0,
+          "answer": "SAHNE",
+          "clue": "Filmde tek bir mekan ve zamanda geçen bölüm"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "VECİHİ",
+          "clue": "Gülen Gözler'de uçağıyla eve dalan aşık pilot"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 1,
+          "col": 5,
+          "answer": "ŞABAN",
+          "clue": "Kemal Sunal'ın efsaneleştirdiği saf ve sevimli karakter"
+        }
+      ]
+    },
+    {
+      "id": "yesilcam_08",
+      "level": 8,
+      "title": "Süt Kardeşler",
+      "difficulty": "Kolay",
+      "rows": 6,
+      "cols": 6,
+      "revealed": [
+        [
+          5,
+          5
+        ]
+      ],
+      "entries": [
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 1,
+          "col": 0,
+          "answer": "SİNEMA",
+          "clue": "Yeşilçam sokağının kalbinin attığı yedinci sanat"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 3,
+          "col": 0,
+          "answer": "KAMERA",
+          "clue": "Sette 'Motor!' komutuyla kayda giren cihaz"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 5,
+          "col": 0,
+          "answer": "GAZİNO",
+          "clue": "Mavi Boncuk'ta Emel Sayın'ın sahne aldığı mekan"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 1,
+          "answer": "ZİYA",
+          "clue": "Neşeli Günler'de aslan avı uyduran palaveracı amca"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 3,
+          "answer": "NEŞELİ",
+          "clue": "Ayrılan turşucu çiftin çocuklarının hikayesi: ... Günler"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 0,
+          "col": 5,
+          "answer": "DAVARO",
+          "clue": "Kan davası hicvi yapan 1981 yapımı Kemal Sunal filmi"
+        }
+      ]
+    },
+    {
+      "id": "yesilcam_09",
+      "level": 9,
+      "title": "Çiçek Abbas",
+      "difficulty": "Kolay",
+      "rows": 6,
+      "cols": 6,
+      "revealed": [
+        [
+          5,
+          5
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 0,
+          "answer": "SAADET",
+          "clue": "Neşeli Günler'de Adile Naşit'in oynadığı anne"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 3,
+          "col": 0,
+          "answer": "REPLİK",
+          "clue": "Filmlerde hafızalara kazınan unutulmaz söz"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 5,
+          "col": 3,
+          "answer": "JÖN",
+          "clue": "Eski sinemada başroldeki yakışıklı erkek oyuncu"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 1,
+          "answer": "AYŞEN",
+          "clue": "Domates Güzeli lakaplı komedi ustası ... Gruda"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 0,
+          "col": 3,
+          "answer": "DUBLAJ",
+          "clue": "Eski Türk filmlerinde karakterlere sonradan ses verme"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 0,
+          "col": 5,
+          "answer": "TARKAN",
+          "clue": "Kartal Tibet'in kurtlu çizgi roman kahramanı"
+        }
+      ]
+    },
+    {
+      "id": "yesilcam_10",
+      "level": 10,
+      "title": "Yeşil Vadi",
+      "difficulty": "Orta",
+      "rows": 7,
+      "cols": 7,
+      "revealed": [
+        [
+          0,
+          4
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 0,
+          "answer": "SALMAN",
+          "clue": "Çiçek Abbas'ın minibüs şoförü İlyas ..."
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 2,
+          "col": 0,
+          "answer": "MİNİBÜS",
+          "clue": "Çiçek Abbas ile Şakir'in yarıştığı ulaşım aracı"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 4,
+          "col": 2,
           "answer": "KASET",
           "clue": "80'lerde evlerde Yeşilçam izlenen video şeridi"
         },
@@ -308,47 +620,199 @@
           "direction": "across",
           "row": 6,
           "col": 0,
-          "answer": "RAMAZAN",
-          "clue": "Süt Kardeşler'de kumandanın evine gelen şaşkın asker"
+          "answer": "SENARYO",
+          "clue": "Filmin diyalog ve sahnelerini içeren yazılı metin"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 2,
-          "answer": "ABBAS",
-          "clue": "Şakir ile atışan efsane minibüs şoförü Çiçek ..."
+          "col": 1,
+          "answer": "AFİŞ",
+          "clue": "Sinema girişlerini süsleyen elle boyanmış film posteri"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
           "col": 4,
-          "answer": "TİBET",
-          "clue": "Tosun Paşa'nın yönetmeni, Tarkan'ın yıldızı Kartal ..."
+          "answer": "ABBAS",
+          "clue": "Şakir ile atışan efsane minibüs şoförü Çiçek ..."
         },
         {
-          "number": 4,
+          "number": 5,
           "direction": "down",
-          "row": 0,
+          "row": 2,
           "col": 6,
-          "answer": "LİMON",
-          "clue": "Neşeli Günler'de Saadet Hanım'ın turşu tercihi"
+          "answer": "SÜT",
+          "clue": "Gulyabani korkusunun yaşandığı '... Kardeşler' filmi"
         },
         {
           "number": 7,
           "direction": "down",
           "row": 4,
-          "col": 1,
+          "col": 3,
           "answer": "AĞA",
           "clue": "Kibar Feyzo ve Züğürt ... filmlerindeki toprak sahibi"
         }
       ]
     },
     {
-      "id": "yesilcam_06",
-      "level": 6,
-      "title": "Yeşil Vadi",
+      "id": "yesilcam_11",
+      "level": 11,
+      "title": "Gülen Gözler",
+      "difficulty": "Orta",
+      "rows": 7,
+      "cols": 7,
+      "revealed": [
+        [
+          0,
+          6
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 1,
+          "answer": "MAHMUT",
+          "clue": "Özel Çamlıca Lisesi'nin efsane müdür yardımcısı Kel ..."
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 2,
+          "col": 2,
+          "answer": "TÜNEL",
+          "clue": "Hababam Sınıfı'nda bahçeye kaçmak için kazılan geçit"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 4,
+          "col": 0,
+          "answer": "HABABAM",
+          "clue": "Rıfat Ilgaz'ın eserinden uyarlanan efsane lise serisi"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 6,
+          "col": 4,
+          "answer": "SET",
+          "clue": "Film çekimlerinin yapıldığı çalışma alanı"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 4,
+          "answer": "MİNİBÜS",
+          "clue": "Çiçek Abbas ile Şakir'in yarıştığı ulaşım aracı"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 0,
+          "col": 6,
+          "answer": "TULUM",
+          "clue": "Hababam Sınıfı'nın iriyarı öğrencisi ... Hayri"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 2,
+          "col": 0,
+          "answer": "AYHAN",
+          "clue": "Taçsız Kral unvanlı efsane aktör ... Işık"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 2,
+          "col": 2,
+          "answer": "TİBET",
+          "clue": "Tosun Paşa'nın yönetmeni, Tarkan'ın yıldızı Kartal ..."
+        }
+      ]
+    },
+    {
+      "id": "yesilcam_12",
+      "level": 12,
+      "title": "Banker Bilo",
+      "difficulty": "Orta",
+      "rows": 7,
+      "cols": 7,
+      "revealed": [
+        [
+          5,
+          0
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 0,
+          "answer": "KARTAL",
+          "clue": "Hem oyuncu hem yönetmen usta isim ... Tibet"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 2,
+          "col": 0,
+          "answer": "DOMATES",
+          "clue": "Ayşen Gruda'nın efsane lakabı: ... Güzeli"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 5,
+          "col": 0,
+          "answer": "UÇAK",
+          "clue": "Vecihi'nin sevgilisi Fikret için uçurduğu araç"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "RAMAZAN",
+          "clue": "Süt Kardeşler'de kumandanın evine gelen şaşkın asker"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 0,
+          "col": 4,
+          "answer": "ALTIN",
+          "clue": "Köyden İndim Şehire'de kardeşlerin bulduğu define"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 2,
+          "col": 0,
+          "answer": "DORUK",
+          "clue": "Yeşilçam'ın zarif divası Belgin ..."
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 2,
+          "col": 6,
+          "answer": "SELVİ",
+          "clue": "'... Boylum Al Yazmalım' başyapıtının ilk kelimesi"
+        }
+      ]
+    },
+    {
+      "id": "yesilcam_13",
+      "level": 13,
+      "title": "Kibar Feyzo",
       "difficulty": "Orta",
       "rows": 7,
       "cols": 7,
@@ -360,248 +824,473 @@
       ],
       "entries": [
         {
-          "number": 2,
+          "number": 1,
           "direction": "across",
           "row": 0,
           "col": 3,
-          "answer": "USTA",
-          "clue": "Münir Özkul'un efsane repliğindeki karakter: Yaşar ..."
+          "answer": "EDİZ",
+          "clue": "Yeşilçam'ın beyefendi jönü ... Hun"
         },
         {
-          "number": 5,
+          "number": 4,
           "direction": "across",
-          "row": 1,
+          "row": 2,
           "col": 0,
-          "answer": "ROL",
-          "clue": "Oyuncunun kamera karşısında canlandırdığı karakter"
+          "answer": "KAZIM",
+          "clue": "Neşeli Günler'de turşucu baba ... Efendi"
         },
         {
           "number": 6,
           "direction": "across",
           "row": 3,
-          "col": 0,
-          "answer": "KARTAL",
-          "clue": "Hem oyuncu hem yönetmen usta isim ... Tibet"
+          "col": 4,
+          "answer": "AĞA",
+          "clue": "Kibar Feyzo ve Züğürt ... filmlerindeki toprak sahibi"
         },
         {
-          "number": 8,
+          "number": 7,
           "direction": "across",
-          "row": 5,
+          "row": 6,
           "col": 2,
-          "answer": "SAYIN",
-          "clue": "Gülriz ve Mavi Boncuk'un sesi Emel ..."
+          "answer": "KÖYLÜ",
+          "clue": "Şehre gelen saf ve temiz kalpli Yeşilçam karakteri"
         },
         {
-          "number": 1,
+          "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 1,
-          "answer": "HOCA",
-          "clue": "Hababam Sınıfı'nın disiplinli ama şefkatli Mahmut ...'sı"
+          "col": 4,
+          "answer": "DAMAT",
+          "clue": "Tarık Akan'ın Hababam'daki unutulmaz lakabı ... Ferit"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
-          "col": 4,
-          "answer": "SENARYO",
-          "clue": "Filmin diyalog ve sahnelerini içeren yazılı metin"
+          "col": 6,
+          "answer": "ZİYA",
+          "clue": "Neşeli Günler'de aslan avı uyduran palaveracı amca"
         },
         {
           "number": 4,
           "direction": "down",
-          "row": 0,
-          "col": 6,
-          "answer": "AĞA",
-          "clue": "Kibar Feyzo ve Züğürt ... filmlerindeki toprak sahibi"
-        },
-        {
-          "number": 6,
-          "direction": "down",
-          "row": 3,
+          "row": 2,
           "col": 0,
-          "answer": "KRAL",
-          "clue": "Ayhan Işık'ın lakabı: Taçsız ..."
+          "answer": "KADİR",
+          "clue": "Al Yazmalım'ın İlyas'ı, karizmatik jön ... İnanır"
         },
         {
-          "number": 7,
+          "number": 5,
           "direction": "down",
-          "row": 4,
-          "col": 6,
-          "answer": "ANA",
-          "clue": "Hababam'ın zili çalan şefkatli emekçisi Hafize ..."
+          "row": 2,
+          "col": 2,
+          "answer": "ZÜBÜK",
+          "clue": "Aziz Nesin uyarlaması politik taşlama filmi"
         }
       ]
     },
     {
-      "id": "yesilcam_07",
-      "level": 7,
+      "id": "yesilcam_14",
+      "level": 14,
       "title": "Dört Yapraklı Yonca",
-      "difficulty": "Zorlu",
+      "difficulty": "Orta",
       "rows": 7,
       "cols": 7,
       "revealed": [],
       "entries": [
         {
-          "number": 2,
-          "direction": "across",
-          "row": 0,
-          "col": 2,
-          "answer": "FEYZO",
-          "clue": "Ağaya baş kaldıran ünlü film karakteri Kibar ..."
-        },
-        {
           "number": 3,
           "direction": "across",
-          "row": 2,
-          "col": 2,
-          "answer": "TULUM",
-          "clue": "Hababam Sınıfı'nın iriyarı öğrencisi ... Hayri"
+          "row": 1,
+          "col": 0,
+          "answer": "ASYA",
+          "clue": "Al Yazmalım'da Türkan Şoray'ın canlandırdığı karakter"
         },
         {
           "number": 5,
           "direction": "across",
+          "row": 2,
+          "col": 3,
+          "answer": "YAZ",
+          "clue": "Açık hava sinemalarının kurulduğu mevsim"
+        },
+        {
+          "number": 6,
+          "direction": "across",
           "row": 4,
           "col": 0,
-          "answer": "SAADET",
-          "clue": "Neşeli Günler'de Adile Naşit'in oynadığı anne"
+          "answer": "HAFİZE",
+          "clue": "Hababam Sınıfı'nın sevecen hademesi ... Ana"
         },
         {
           "number": 7,
           "direction": "across",
           "row": 6,
           "col": 0,
-          "answer": "OKUL",
-          "clue": "Hababam Sınıfı'nın haylazlıklarının geçtiği mekan"
+          "answer": "ŞOFÖR",
+          "clue": "Kamyon veya minibüs direksiyonundaki Yeşilçam kahramanı"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 3,
+          "answer": "HAYRİ",
+          "clue": "Hababam'ın güçlü kuvvetli öğrencisi Tulum ..."
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 5,
+          "answer": "GÖZLER",
+          "clue": "Şener Şen'in de rol aldığı aile komedisi: Gülen ..."
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 1,
+          "col": 1,
+          "answer": "SALAKO",
+          "clue": "Ağanın kızını kaçıran saf karakterin filmi"
+        }
+      ]
+    },
+    {
+      "id": "yesilcam_15",
+      "level": 15,
+      "title": "Taçsız Kral",
+      "difficulty": "Zorlu",
+      "rows": 7,
+      "cols": 7,
+      "revealed": [],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 0,
+          "answer": "AİLE",
+          "clue": "Neşeli Günler ve Bizim ... filmlerinin kalbindeki bağ"
+        },
+        {
+          "number": 3,
+          "direction": "across",
+          "row": 2,
+          "col": 0,
+          "answer": "KİBAR",
+          "clue": "Başrolünde Kemal Sunal'ın olduğu '... Feyzo' filmi"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 5,
+          "col": 4,
+          "answer": "AŞK",
+          "clue": "Yeşilçam melodramlarının vazgeçilmez ana duygusu"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 6,
+          "col": 0,
+          "answer": "USTA",
+          "clue": "Münir Özkul'un efsane repliğindeki karakter: Yaşar ..."
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
           "col": 0,
-          "answer": "İLYAS",
-          "clue": "Al Yazmalım'da kırmızı kamyonlu şoför karakter"
+          "answer": "ARKIN",
+          "clue": "Dünyayı Kurtaran Adam'ın kahramanı Cüneyt ..."
         },
         {
           "number": 2,
           "direction": "down",
-          "row": 0,
-          "col": 2,
-          "answer": "FATMA",
-          "clue": "Dört Yapraklı Yonca'nın güçlü oyuncusu ... Girik"
+          "row": 1,
+          "col": 4,
+          "answer": "GRUDA",
+          "clue": "Tosun Paşa ve Çöpçüler Kralı'nın yıldızı Ayşen ..."
         },
         {
           "number": 4,
           "direction": "down",
           "row": 2,
-          "col": 5,
-          "answer": "USTA",
-          "clue": "Münir Özkul'un efsane repliğindeki karakter: Yaşar ..."
+          "col": 2,
+          "answer": "BİLET",
+          "clue": "Sinema gişesinden salona girmek için alınan kağıt"
         },
         {
-          "number": 6,
+          "number": 5,
           "direction": "down",
-          "row": 4,
-          "col": 1,
-          "answer": "AŞK",
-          "clue": "Yeşilçam melodramlarının vazgeçilmez ana duygusu"
+          "row": 2,
+          "col": 6,
+          "answer": "SİRKE",
+          "clue": "Neşeli Günler'de Kazım Efendi'nin turşu sırrı"
         }
       ]
     },
     {
-      "id": "yesilcam_08",
-      "level": 8,
-      "title": "Usta Yönetmenler",
+      "id": "yesilcam_16",
+      "level": 16,
+      "title": "Turist Ömer",
       "difficulty": "Zorlu",
       "rows": 8,
       "cols": 8,
       "revealed": [],
       "entries": [
         {
-          "number": 2,
+          "number": 1,
           "direction": "across",
-          "row": 1,
-          "col": 1,
-          "answer": "SALAKO",
-          "clue": "Ağanın kızını kaçıran saf karakterin filmi"
+          "row": 0,
+          "col": 0,
+          "answer": "VESİKA",
+          "clue": "Türkan Şoray ve İzzet Günay'ın klasiği: ...lı Yarim"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 2,
+          "col": 2,
+          "answer": "SAYIN",
+          "clue": "Mavi Boncuk'un unutulmaz sesi Emel ..."
         },
         {
           "number": 6,
           "direction": "across",
-          "row": 3,
-          "col": 0,
-          "answer": "ALASYA",
-          "clue": "Köyden İndim Şehire'nin yıldızlarından Zeki ..."
+          "row": 4,
+          "col": 2,
+          "answer": "ZABITA",
+          "clue": "Çöpçüler Kralı'nda Şener Şen'in oynadığı amir"
         },
         {
           "number": 8,
           "direction": "across",
-          "row": 5,
+          "row": 6,
           "col": 0,
-          "answer": "EMEL",
-          "clue": "Mavi Boncuk'un kaçırılan şarkıcısı ... Sayın"
-        },
-        {
-          "number": 10,
-          "direction": "across",
-          "row": 7,
-          "col": 2,
-          "answer": "KLAKET",
-          "clue": "Sahne çekimi başında şaklatılan tahta levha"
+          "answer": "IŞIK",
+          "clue": "Küçük Hanımefendi'nin başrolü Ayhan ..."
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
-          "col": 6,
-          "answer": "ROL",
-          "clue": "Oyuncunun kamera karşısında canlandırdığı karakter"
+          "col": 0,
+          "answer": "VİLLA",
+          "clue": "Yeşilçam'da zengin fabrikatörlerin yaşadığı köşk"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "SUSUZ",
+          "clue": "Berlin'de Altın Ayı kazanan ilk Türk filmi: ... Yaz"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 1,
-          "col": 2,
-          "answer": "ARABESK",
-          "clue": "Şener Şen ve Müjde Ar'lı unutulmaz parodi filmi"
-        },
-        {
-          "number": 4,
-          "direction": "down",
-          "row": 1,
-          "col": 4,
-          "answer": "ASYA",
-          "clue": "Al Yazmalım'da Türkan Şoray'ın canlandırdığı karakter"
+          "row": 0,
+          "col": 5,
+          "answer": "ALIŞIK",
+          "clue": "Ofsayt Osman ve Turist Ömer'in ustası Sadri ..."
         },
         {
           "number": 5,
           "direction": "down",
-          "row": 2,
-          "col": 0,
-          "answer": "KAMERA",
-          "clue": "Sette 'Motor!' komutuyla kayda giren cihaz"
+          "row": 3,
+          "col": 7,
+          "answer": "MAVİ",
+          "clue": "Emel Sayın'ın başrol oynadığı '... Boncuk' filmi"
         },
         {
           "number": 7,
           "direction": "down",
-          "row": 3,
-          "col": 7,
-          "answer": "FERİT",
-          "clue": "Hababam Sınıfı'nın çapkın öğrencisi Damat ..."
-        },
-        {
-          "number": 9,
-          "direction": "down",
-          "row": 5,
-          "col": 5,
+          "row": 4,
+          "col": 3,
           "answer": "AŞK",
           "clue": "Yeşilçam melodramlarının vazgeçilmez ana duygusu"
         }
       ]
     },
     {
-      "id": "yesilcam_09",
-      "level": 9,
+      "id": "yesilcam_17",
+      "level": 17,
+      "title": "Vesikalı Yarim",
+      "difficulty": "Zorlu",
+      "rows": 8,
+      "cols": 8,
+      "revealed": [],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 0,
+          "answer": "YAZ",
+          "clue": "Açık hava sinemalarının kurulduğu mevsim"
+        },
+        {
+          "number": 3,
+          "direction": "across",
+          "row": 0,
+          "col": 4,
+          "answer": "AĞA",
+          "clue": "Kibar Feyzo ve Züğürt ... filmlerindeki toprak sahibi"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 2,
+          "col": 1,
+          "answer": "ALASYA",
+          "clue": "Köyden İndim Şehire'nin yıldızlarından Zeki ..."
+        },
+        {
+          "number": 8,
+          "direction": "across",
+          "row": 4,
+          "col": 1,
+          "answer": "EĞİLMEZ",
+          "clue": "Arzu Film'in kurucusu ve yönetmeni Ertem ..."
+        },
+        {
+          "number": 10,
+          "direction": "across",
+          "row": 7,
+          "col": 2,
+          "answer": "BİLO",
+          "clue": "Münih diye İstanbul'a bırakılan Banker ..."
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 1,
+          "answer": "ARABESK",
+          "clue": "Şener Şen ve Müjde Ar'lı unutulmaz parodi filmi"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 0,
+          "col": 6,
+          "answer": "ANA",
+          "clue": "Hababam'ın zili çalan şefkatli emekçisi Hafize ..."
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 1,
+          "col": 3,
+          "answer": "CAHİT",
+          "clue": "Al Yazmalım'ın efsane müziğini besteleyen ... Berkay"
+        },
+        {
+          "number": 7,
+          "direction": "down",
+          "row": 3,
+          "col": 7,
+          "answer": "İZZET",
+          "clue": "Vesikalı Yarim'in manav Halil'i ... Günay"
+        },
+        {
+          "number": 9,
+          "direction": "down",
+          "row": 4,
+          "col": 5,
+          "answer": "MAHO",
+          "clue": "Köylüleri kandıran meşhur sahtekar ... Ağa"
+        }
+      ]
+    },
+    {
+      "id": "yesilcam_18",
+      "level": 18,
+      "title": "Usta Yönetmenler",
+      "difficulty": "Usta",
+      "rows": 8,
+      "cols": 8,
+      "revealed": [],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 0,
+          "answer": "GÜDÜK",
+          "clue": "Sınıfın en ufak tefek ve kurnaz öğrencisi ... Necmi"
+        },
+        {
+          "number": 3,
+          "direction": "across",
+          "row": 2,
+          "col": 3,
+          "answer": "SOKAK",
+          "clue": "Beyoğlu'nda sinemacıların toplandığı Yeşilçam ...'ı"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 4,
+          "col": 0,
+          "answer": "YAZ",
+          "clue": "Açık hava sinemalarının kurulduğu mevsim"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 5,
+          "col": 3,
+          "answer": "GÜNEY",
+          "clue": "Yol ve Umut filmleriyle bilinen sinemacı Yılmaz ..."
+        },
+        {
+          "number": 8,
+          "direction": "across",
+          "row": 7,
+          "col": 1,
+          "answer": "FİGÜRAN",
+          "clue": "Sahnelerde arka planda yer alan yardımcı oyuncu"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 0,
+          "answer": "GÜNAY",
+          "clue": "Yeşilçam'ın zarif jönü İzzet ..."
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 1,
+          "col": 5,
+          "answer": "AKPINAR",
+          "clue": "Zeki Alasya ile efsane ikili kuran Metin ..."
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 2,
+          "col": 7,
+          "answer": "KAMYON",
+          "clue": "İlyas'ın kırmızı 'Aldırma Gönül' yazılı aracı"
+        },
+        {
+          "number": 6,
+          "direction": "down",
+          "row": 4,
+          "col": 1,
+          "answer": "ATIF",
+          "clue": "Selvi Boylum Al Yazmalım'ın usta yönetmeni ... Yılmaz"
+        }
+      ]
+    },
+    {
+      "id": "yesilcam_19",
+      "level": 19,
       "title": "Beyoğlu Nostaljisi",
       "difficulty": "Usta",
       "rows": 8,
@@ -609,90 +1298,98 @@
       "revealed": [],
       "entries": [
         {
-          "number": 2,
+          "number": 1,
           "direction": "across",
           "row": 0,
-          "col": 4,
-          "answer": "GAZİ",
-          "clue": "Bizans kalelerini tek başına fetheden Battal ..."
-        },
-        {
-          "number": 4,
-          "direction": "across",
-          "row": 1,
           "col": 0,
-          "answer": "KADİR",
-          "clue": "Al Yazmalım'ın İlyas'ı, karizmatik jön ... İnanır"
+          "answer": "KÖŞK",
+          "clue": "Tosun Paşa'da Tellioğulları'nın uğruna yarıştığı malikane"
         },
         {
           "number": 5,
           "direction": "across",
-          "row": 4,
-          "col": 3,
-          "answer": "HAMAM",
-          "clue": "Tosun Paşa'da iki ailenin karşılaştığı meşhur mekan"
+          "row": 2,
+          "col": 4,
+          "answer": "EMEK",
+          "clue": "Al Yazmalım'ın unutulmaz cevabı: 'Sevgi ... idi'"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 3,
+          "col": 0,
+          "answer": "ŞAKİR",
+          "clue": "Çiçek Abbas'ta Şener Şen'in oynadığı kurnaz şoför"
         },
         {
           "number": 7,
           "direction": "across",
-          "row": 6,
-          "col": 0,
-          "answer": "EĞİLMEZ",
-          "clue": "Arzu Film'in kurucusu ve yönetmeni Ertem ..."
+          "row": 4,
+          "col": 4,
+          "answer": "KEJE",
+          "clue": "Eşkıya'da Baran'ın 35 yıl beklediği sevdası"
         },
         {
-          "number": 1,
-          "direction": "down",
-          "row": 0,
-          "col": 2,
-          "answer": "EDİZ",
-          "clue": "Yeşilçam'ın beyefendi jönü ... Hun"
+          "number": 8,
+          "direction": "across",
+          "row": 5,
+          "col": 0,
+          "answer": "FATMA",
+          "clue": "Dört Yapraklı Yonca'nın güçlü oyuncusu ... Girik"
+        },
+        {
+          "number": 10,
+          "direction": "across",
+          "row": 6,
+          "col": 4,
+          "answer": "YAZ",
+          "clue": "Açık hava sinemalarının kurulduğu mevsim"
+        },
+        {
+          "number": 11,
+          "direction": "across",
+          "row": 7,
+          "col": 0,
+          "answer": "KAMP",
+          "clue": "Hababam Sınıfı'nın izcilik maceralarının geçtiği yer"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 4,
-          "answer": "GRUDA",
-          "clue": "Tosun Paşa ve Çöpçüler Kralı'nın yıldızı Ayşen ..."
+          "col": 2,
+          "answer": "ŞEVKET",
+          "clue": "Süt Kardeşler'in kahramanlarından ... Altuğ"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
-          "col": 6,
-          "answer": "ZİL",
-          "clue": "Hafize Ana'nın koridorda çalıp öğrencileri topladığı alet"
+          "col": 7,
+          "answer": "FİKRET",
+          "clue": "Gülen Gözler'de Vecihi'nin aşık olduğu genç kız"
         },
         {
           "number": 4,
           "direction": "down",
           "row": 1,
-          "col": 0,
-          "answer": "KENTMEN",
-          "clue": "Bıyıklı ve babacan komiser rollerinin ustası Hulusi ..."
+          "col": 4,
+          "answer": "BERKAY",
+          "clue": "Moğollar üyesi ve film müziği bestecisi Cahit ..."
         },
         {
-          "number": 5,
+          "number": 9,
           "direction": "down",
-          "row": 4,
-          "col": 3,
-          "answer": "HALI",
-          "clue": "Mavi Boncuk filminde şarkıcıyı sakladıkları eşya"
-        },
-        {
-          "number": 6,
-          "direction": "down",
-          "row": 4,
-          "col": 6,
-          "answer": "ARZU",
-          "clue": "Hababam ve Tosun Paşa'yı çeken efsane şirket ... Film"
+          "row": 5,
+          "col": 1,
+          "answer": "ANA",
+          "clue": "Hababam'ın zili çalan şefkatli emekçisi Hafize ..."
         }
       ]
     },
     {
-      "id": "yesilcam_10",
-      "level": 10,
+      "id": "yesilcam_20",
+      "level": 20,
       "title": "Yeşilçam Galası",
       "difficulty": "Usta",
       "rows": 8,
@@ -704,72 +1401,80 @@
           "direction": "across",
           "row": 0,
           "col": 1,
-          "answer": "BONCUK",
-          "clue": "Altı arkadaşın halı içinde kaçırdığı şarkıcı: Mavi ..."
+          "answer": "HAMAM",
+          "clue": "Tosun Paşa'da iki ailenin karşılaştığı meşhur mekan"
         },
         {
-          "number": 5,
+          "number": 3,
           "direction": "across",
           "row": 2,
-          "col": 2,
-          "answer": "SİNEMA",
-          "clue": "Yeşilçam sokağının kalbinin attığı yedinci sanat"
+          "col": 4,
+          "answer": "PAŞA",
+          "clue": "Şaban'ın kılığına girdiği meşhur Tosun ..."
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 3,
+          "col": 0,
+          "answer": "SAHNE",
+          "clue": "Filmde tek bir mekan ve zamanda geçen bölüm"
         },
         {
           "number": 6,
           "direction": "across",
-          "row": 4,
-          "col": 0,
-          "answer": "ZİL",
-          "clue": "Hafize Ana'nın koridorda çalıp öğrencileri topladığı alet"
+          "row": 5,
+          "col": 3,
+          "answer": "ERTEM",
+          "clue": "Hababam Sınıfı'nın efsane yönetmeni ... Eğilmez"
         },
         {
           "number": 7,
           "direction": "across",
-          "row": 5,
-          "col": 2,
-          "answer": "METİN",
-          "clue": "Susuz Yaz ile Altın Ayı kazanan yönetmen ... Erksan"
-        },
-        {
-          "number": 8,
-          "direction": "across",
           "row": 7,
           "col": 2,
-          "answer": "NEŞELİ",
-          "clue": "Ayrılan turşucu çiftin çocuklarının hikayesi: ... Günler"
+          "answer": "BANKER",
+          "clue": "Şener Şen'in Maho rolüyle parladığı '... Bilo' filmi"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 1,
+          "answer": "HOCA",
+          "clue": "Hababam Sınıfı'nın disiplinli ama şefkatli Mahmut ...'sı"
         },
         {
           "number": 2,
           "direction": "down",
-          "row": 0,
-          "col": 4,
-          "answer": "CÜNEYT",
-          "clue": "Malkoçoğlu ve Battal Gazi'nin yıldızı ... Arkın"
+          "row": 1,
+          "col": 6,
+          "answer": "AŞK",
+          "clue": "Yeşilçam melodramlarının vazgeçilmez ana duygusu"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 0,
-          "col": 6,
-          "answer": "KAMYON",
-          "clue": "İlyas'ın kırmızı 'Aldırma Gönül' yazılı aracı"
+          "row": 2,
+          "col": 4,
+          "answer": "PERRAN",
+          "clue": "Gırgıriye ve Köyden İndim Şehire'nin yıldızı ... Kutman"
         },
         {
           "number": 4,
           "direction": "down",
-          "row": 2,
+          "row": 3,
           "col": 0,
-          "answer": "GÖZLER",
-          "clue": "Şener Şen'in de rol aldığı aile komedisi: Gülen ..."
+          "answer": "SAVAŞ",
+          "clue": "Usta aktris Perihan ..."
         },
         {
           "number": 5,
           "direction": "down",
-          "row": 2,
-          "col": 2,
-          "answer": "SALMAN",
-          "clue": "Çiçek Abbas'ın minibüs şoförü İlyas ..."
+          "row": 4,
+          "col": 7,
+          "answer": "ÖMER",
+          "clue": "Uzay Yolu'na bile giden gezgin karakter Turist ..."
         }
       ]
     }

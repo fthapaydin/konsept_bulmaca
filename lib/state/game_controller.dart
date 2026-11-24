@@ -46,6 +46,8 @@ class GameController extends ChangeNotifier {
   int _mistakesCount = 0;
   bool _isCompleted = false;
   String? _recentSolvedEntryId;
+  String? _recentSolvedBanner;
+  int _wordComboCount = 0;
   Timer? _timer;
   Timer? _flashTimer;
   bool _disposed = false;
@@ -57,6 +59,8 @@ class GameController extends ChangeNotifier {
   int get mistakesCount => _mistakesCount;
   bool get isCompleted => _isCompleted;
   String? get recentSolvedEntryId => _recentSolvedEntryId;
+  String? get recentSolvedBanner => _recentSolvedBanner;
+  int get wordComboCount => _wordComboCount;
 
   String? letterAt(int r, int c) => _letters['$r,$c'];
   bool isLocked(int r, int c) => _lockedCells.contains('$r,$c');
@@ -162,9 +166,9 @@ class GameController extends ChangeNotifier {
     });
   }
 
-  void pauseTimer() {
+  void pauseTimer({bool silent = false}) {
     _timer?.cancel();
-    _persistProgress();
+    _persistProgress(notify: !silent);
   }
 
   void resumeTimer() {
@@ -619,10 +623,15 @@ class GameController extends ChangeNotifier {
 
   void _triggerWordSolvedFlash(String entryId) {
     _flashTimer?.cancel();
+    _wordComboCount++;
     _recentSolvedEntryId = entryId;
-    _flashTimer = Timer(const Duration(milliseconds: 900), () {
+    _recentSolvedBanner = _wordComboCount >= 2
+        ? 'Harika! $_wordComboCount× Kelime Serisi!'
+        : 'Süper! Kelime Doğru!';
+    _flashTimer = Timer(const Duration(milliseconds: 1200), () {
       if (_disposed) return;
       _recentSolvedEntryId = null;
+      _recentSolvedBanner = null;
       notifyListeners();
     });
   }
@@ -668,11 +677,12 @@ class GameController extends ChangeNotifier {
     );
   }
 
-  Future<void> _persistProgress() async {
+  Future<void> _persistProgress({bool notify = true}) async {
     if (_disposed || _isCompleted) return;
     await appState.savePuzzleProgress(
       storageKey,
       _buildSaveState(completed: false),
+      notify: notify,
     );
   }
 

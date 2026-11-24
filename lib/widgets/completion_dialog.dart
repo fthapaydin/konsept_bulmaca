@@ -70,14 +70,23 @@ class CompletionDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(3, (i) {
                 final earned = i < reward.stars;
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Icon(
-                    earned ? Icons.star_rounded : Icons.star_outline_rounded,
-                    size: i == 1 ? 52 : 42,
-                    color: earned
-                        ? const Color(0xFFF59E0B)
-                        : const Color(0xFFD6D3D1),
+                return TweenAnimationBuilder<double>(
+                  tween: Tween<double>(begin: 0.25, end: 1.0),
+                  duration: Duration(milliseconds: 420 + i * 180),
+                  curve: Curves.elasticOut,
+                  builder: (_, scale, child) => Transform.scale(
+                    scale: earned ? scale : 1.0,
+                    child: child,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Icon(
+                      earned ? Icons.star_rounded : Icons.star_outline_rounded,
+                      size: i == 1 ? 54 : 44,
+                      color: earned
+                          ? const Color(0xFFF59E0B)
+                          : const Color(0xFFD6D3D1),
+                    ),
                   ),
                 );
               }),

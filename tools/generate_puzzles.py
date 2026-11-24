@@ -1,19 +1,18 @@
 #!/usr/bin/env python3
 """
-Konsept Bulmaca — Otomatik Kare Bulmaca Üreteci ve Doğrulayıcısı.
+Konsept Bulmaca — Otomatik Kare Bulmaca Üreteci ve Doğrulayıcısı (v2 — 20 Seviye / Konsept).
 
 Kullanım:
     python tools/generate_puzzles.py
 
-Her konsept paketi için seviye seviye büyüyen (5x5 -> 6x6 -> 7x7 -> 8x8),
-kesişim oranı yüksek, kopuksuz ve matematiksel olarak doğrulanmış kare bulmacalar
-üretip assets/puzzles/ klasörüne JSON olarak yazar.
+Her konsept paketi için oyuncuyu sıkmadan bağlayan 20 kademeli seviye
+(5x5 -> 6x6 -> 7x7 -> 8x8), yüksek kesişimli, kopuksuz ve matematiksel
+olarak doğrulanmış kare bulmacalar üretip assets/puzzles/ klasörüne yazar.
 """
 
 from __future__ import annotations
 
 import json
-import os
 import random
 from collections import deque
 from pathlib import Path
@@ -50,30 +49,42 @@ def normalize_word(word: str, lang: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# OPTİMUM MOBİL SEVİYE EĞRİSİ (10 seviye / konsept)
+# OPTİMUM 20 SEVİYELİ MOBİL AKICILIK EĞRİSİ (Her konsept için 20 bulmaca)
 # (level, rows, cols, min_words, max_words, initial_reveals, difficulty_label, tier)
-# tier: 1=Kolay, 2=Orta, 3=Zor (kelime havuzu seçiminde kullanılır)
 # ---------------------------------------------------------------------------
 LEVEL_BLUEPRINTS = [
+    # Başlangıç (5x5 — hızlı tatmin, 2 harf açık)
     (1,  5, 5,  4,  5, 2, "Başlangıç", 1),
-    (2,  5, 5,  4,  6, 2, "Başlangıç", 1),
-    (3,  6, 6,  5,  7, 1, "Kolay",     1),
-    (4,  6, 6,  5,  8, 1, "Kolay",     1),
-    (5,  7, 7,  6,  9, 1, "Orta",      2),
-    (6,  7, 7,  6,  9, 1, "Orta",      2),
-    (7,  7, 7,  7, 10, 0, "Zorlu",     2),
-    (8,  8, 8,  8, 11, 0, "Zorlu",     3),
-    (9,  8, 8,  8, 12, 0, "Usta",      3),
-    (10, 8, 8,  9, 12, 0, "Usta",      3),
+    (2,  5, 5,  4,  5, 2, "Başlangıç", 1),
+    (3,  5, 5,  4,  6, 2, "Başlangıç", 1),
+    (4,  5, 5,  5,  6, 1, "Başlangıç", 1),
+    # Kolay (6x6 — akıcı tempo, 1-2 harf açık)
+    (5,  6, 6,  5,  6, 2, "Kolay",     1),
+    (6,  6, 6,  5,  7, 1, "Kolay",     1),
+    (7,  6, 6,  5,  7, 1, "Kolay",     1),
+    (8,  6, 6,  6,  8, 1, "Kolay",     2),
+    (9,  6, 6,  6,  8, 1, "Kolay",     2),
+    # Orta (7x7 — mobilin altın boyutu, zengin kesişim)
+    (10, 7, 7,  6,  8, 1, "Orta",      2),
+    (11, 7, 7,  6,  9, 1, "Orta",      2),
+    (12, 7, 7,  7,  9, 1, "Orta",      2),
+    (13, 7, 7,  7,  9, 1, "Orta",      2),
+    (14, 7, 7,  7, 10, 0, "Orta",      2),
+    # Zorlu (7x7 -> 8x8 — sıfır açık harf, tatlı meydan okuma)
+    (15, 7, 7,  7, 10, 0, "Zorlu",     2),
+    (16, 8, 8,  8, 10, 0, "Zorlu",     3),
+    (17, 8, 8,  8, 11, 0, "Zorlu",     3),
+    # Usta (8x8 — final bölümü)
+    (18, 8, 8,  8, 11, 0, "Usta",      3),
+    (19, 8, 8,  8, 12, 0, "Usta",      3),
+    (20, 8, 8,  8, 12, 0, "Usta",      3),
 ]
 
 # ---------------------------------------------------------------------------
-# KÜRATÖRLÜ KELİME VE İPUCU HAVUZLARI
-# Format: (kelime, ipucu, tier[1..3])
+# 1) YEŞİLÇAM KLASİKLERİ (Genişletilmiş Havuz — 160+ kelime)
 # ---------------------------------------------------------------------------
-
 YESILCAM_WORDS: List[Tuple[str, str, int]] = [
-    # Tier 1 — Çok bilinen Yeşilçam klasikleri, karakterler, isimler
+    # Tier 1 — Herkesin bildiği efsane isimler, replikler ve filmler
     ("ŞABAN",    "Kemal Sunal'ın efsaneleştirdiği saf ve sevimli karakter", 1),
     ("KEMAL",    "Hababam'ın İnek Şaban'ı, büyük komedi ustası ... Sunal", 1),
     ("SUNAL",    "Gülen yüzüyle Türk sinemasına damga vuran Kemal ...", 1),
@@ -124,13 +135,22 @@ YESILCAM_WORDS: List[Tuple[str, str, int]] = [
     ("NECMİ",    "Halit Akçatepe'nin canlandırdığı Güdük ...", 1),
     ("BADİ",     "Şener Şen'in canlandırdığı beden öğretmeni ... Ekrem", 1),
     ("EKREM",    "Kırmızı eşofmanlı beden öğretmeni Badi ...", 1),
+    ("SET",      "Film çekimlerinin yapıldığı çalışma alanı", 1),
+    ("SES",      "Yeşilçam'da stüdyoda sonradan kaydedilen konuşma", 1),
+    ("STAR",     "Dönemin en parlak sinema yıldızı", 1),
+    ("DRAM",     "Gözyaşlarıyla izlenen duygusal sinema türü", 1),
+    ("YAZ",      "Açık hava sinemalarının kurulduğu mevsim", 1),
+    ("GAZOZ",    "Yazlık sinemalarda çekirdek yanında içilen serin içecek", 1),
+    ("BİLET",    "Sinema gişesinden salona girmek için alınan kağıt", 1),
+    ("GİŞE",     "Sinema girişinde bilet satılan küçük pencere", 1),
+    ("KOLTUK",   "Sinema salonunda film izlenen kadife oturak", 1),
+    ("SOKAK",    "Beyoğlu'nda sinemacıların toplandığı Yeşilçam ...'ı", 1),
 
-    # Tier 2 — Filmler, ikonik karakterler, müzik ve sinema terimleri
+    # Tier 2 — Filmler, ikonik karakterler, müzik ve sinema kültürü
     ("GÜLŞEN",   "Ah Nerede ve Girgirye'nin yıldızı ... Bubikoğlu", 2),
     ("HALİT",    "Güdük Necmi'yi canlandıran usta oyuncu ... Akçatepe", 2),
     ("AYŞEN",    "Domates Güzeli lakaplı komedi ustası ... Gruda", 2),
     ("GRUDA",    "Tosun Paşa ve Çöpçüler Kralı'nın yıldızı Ayşen ...", 2),
-    ("İLYAS",    "Banker Bilo'da saf köylüyü oynayan ... Salman", 2),
     ("SALMAN",   "Çiçek Abbas'ın minibüs şoförü İlyas ...", 2),
     ("ABBAS",    "Şakir ile atışan efsane minibüs şoförü Çiçek ...", 2),
     ("ŞAKİR",    "Çiçek Abbas'ta Şener Şen'in oynadığı kurnaz şoför", 2),
@@ -161,20 +181,18 @@ YESILCAM_WORDS: List[Tuple[str, str, int]] = [
     ("TARKAN",   "Kartal Tibet'in kurtlu çizgi roman kahramanı", 2),
     ("KARTAL",   "Hem oyuncu hem yönetmen usta isim ... Tibet", 2),
     ("TİBET",    "Tosun Paşa'nın yönetmeni, Tarkan'ın yıldızı Kartal ...", 2),
-    ("ERTEĞ",    "Silinecek", 99),  # skip placeholder guard below
     ("EDİZ",     "Yeşilçam'ın beyefendi jönü ... Hun", 2),
     ("AYHAN",    "Taçsız Kral unvanlı efsane aktör ... Işık", 2),
     ("IŞIK",     "Küçük Hanımefendi'nin başrolü Ayhan ...", 2),
     ("BELGİN",   "Küçük Hanımefendi'nin unutulmaz yıldızı ... Doruk", 2),
     ("DORUK",    "Yeşilçam'ın zarif divası Belgin ...", 2),
     ("EMEL",     "Mavi Boncuk'un kaçırılan şarkıcısı ... Sayın", 2),
-    ("SAYIN",    "Gülriz ve Mavi Boncuk'un sesi Emel ...", 2),
+    ("SAYIN",    "Mavi Boncuk'un unutulmaz sesi Emel ...", 2),
     ("BONCUK",   "Altı arkadaşın halı içinde kaçırdığı şarkıcı: Mavi ...", 2),
     ("MAVİ",     "Emel Sayın'ın başrol oynadığı '... Boncuk' filmi", 2),
     ("HALI",     "Mavi Boncuk filminde şarkıcıyı sakladıkları eşya", 2),
     ("SÜT",      "Gulyabani korkusunun yaşandığı '... Kardeşler' filmi", 2),
     ("RAMAZAN",  "Süt Kardeşler'de kumandanın evine gelen şaşkın asker", 2),
-    ("ŞABAN",    "Süt Kardeşler'de Ramazan'ın yerine geçen kurnaz asker", 2),
     ("SİNEMA",   "Yeşilçam sokağının kalbinin attığı yedinci sanat", 2),
     ("REPLİK",   "Filmlerde hafızalara kazınan unutulmaz söz", 2),
     ("KAMERA",   "Sette 'Motor!' komutuyla kayda giren cihaz", 2),
@@ -183,8 +201,20 @@ YESILCAM_WORDS: List[Tuple[str, str, int]] = [
     ("SENARYO",  "Filmin diyalog ve sahnelerini içeren yazılı metin", 2),
     ("KASET",    "80'lerde evlerde Yeşilçam izlenen video şeridi", 2),
     ("BEYOĞLU",  "Yeşilçam Sokağı'nın bulunduğu tarihi İstanbul semti", 2),
+    ("ŞOFÖR",    "Kamyon veya minibüs direksiyonundaki Yeşilçam kahramanı", 2),
+    ("DOMATES",  "Ayşen Gruda'nın efsane lakabı: ... Güzeli", 2),
+    ("MİNİBÜS",  "Çiçek Abbas ile Şakir'in yarıştığı ulaşım aracı", 2),
+    ("KOPYA",    "Hababam öğrencilerinin sınavda başvurduğu hile", 2),
+    ("TÜNEL",    "Hababam Sınıfı'nda bahçeye kaçmak için kazılan geçit", 2),
+    ("KAMP",     "Hababam Sınıfı'nın izcilik maceralarının geçtiği yer", 2),
+    ("UÇAK",     "Vecihi'nin sevgilisi Fikret için uçurduğu araç", 2),
+    ("FİKRET",   "Gülen Gözler'de Vecihi'nin aşık olduğu genç kız", 2),
+    ("ÇİÇEK",    "İlyas Salman'ın efsane şoför filmi: ... Abbas", 2),
+    ("GAZİNO",   "Mavi Boncuk'ta Emel Sayın'ın sahne aldığı mekan", 2),
+    ("ALTIN",    "Köyden İndim Şehire'de kardeşlerin bulduğu define", 2),
+    ("KÖYLÜ",    "Şehre gelen saf ve temiz kalpli Yeşilçam karakteri", 2),
 
-    # Tier 3 — Derin Yeşilçam kültürü, yönetmenler, filmler, terimler
+    # Tier 3 — Derin Yeşilçam kültürü, yönetmenler, unutulmaz detaylar
     ("ATIF",     "Selvi Boylum Al Yazmalım'ın usta yönetmeni ... Yılmaz", 3),
     ("YILMAZ",   "Usta yönetmenler: Atıf ... ve ... Güney", 3),
     ("ERTEM",    "Hababam Sınıfı'nın efsane yönetmeni ... Eğilmez", 3),
@@ -227,8 +257,6 @@ YESILCAM_WORDS: List[Tuple[str, str, int]] = [
     ("HAMAM",    "Tosun Paşa'da iki ailenin karşılaştığı meşhur mekan", 3),
     ("LEYLA",    "Tosun Paşa'da Daver Bey'in güzel kızı", 3),
     ("DAVER",    "Tosun Paşa'da Leyla'nın babası ... Bey", 3),
-    ("GULYABANİ","Süt Kardeşler'de konağı korkutan dev hayalet", 3),
-    ("KONAĞ",    "Silinecek", 99),
     ("KONAK",    "Süt Kardeşler'de Melek Hanım'ın yaşadığı büyük ev", 3),
     ("MELEK",    "Süt Kardeşler'de Adile Naşit'in canlandırdığı hanım", 3),
     ("CAHİT",    "Al Yazmalım'ın efsane müziğini besteleyen ... Berkay", 3),
@@ -243,14 +271,36 @@ YESILCAM_WORDS: List[Tuple[str, str, int]] = [
     ("FİGÜRAN",  "Sahnelerde arka planda yer alan yardımcı oyuncu", 3),
     ("KLAKET",   "Sahne çekimi başında şaklatılan tahta levha", 3),
     ("GALA",     "Yeni bir filmin ilk özel gösterim gecesi", 3),
+    ("AKIN",     "Dört Yapraklı Yonca'nın zarif yıldızı Filiz ...", 3),
+    ("İNANIR",   "Tatar Ramazan ve Al Yazmalım'ın başrolü Kadir ...", 3),
+    ("GÜNEY",    "Yol ve Umut filmleriyle bilinen sinemacı Yılmaz ...", 3),
+    ("ORHAN",    "Batsın Bu Dünya filminin yıldızı ... Gencebay", 3),
+    ("FERDİ",    "Çeşme ve Derbeder filmlerinin yıldızı ... Tayfur", 3),
+    ("ÖZTÜRK",   "Şaka ile Karışık'ın efsane komedyeni ... Serengil", 3),
+    ("İZZET",    "Vesikalı Yarim'in manav Halil'i ... Günay", 3),
+    ("GÜNAY",    "Yeşilçam'ın zarif jönü İzzet ...", 3),
+    ("ŞEVKET",   "Süt Kardeşler'in kahramanlarından ... Altuğ", 3),
+    ("ALTUĞ",    "Perihan Abla ve Süper Baba'nın yıldızı Şevket ...", 3),
+    ("PERRAN",   "Gırgıriye ve Köyden İndim Şehire'nin yıldızı ... Kutman", 3),
+    ("KUTMAN",   "Hayat Bilgisi ve Yeşilçam'ın ustası Perran ...", 3),
+    ("İHSAN",    "Kibar Feyzo ve Çiçek Abbas'ın karakter oyuncusu ... Yüce", 3),
+    ("KUDRET",   "Kötü adam ve fedai rollerinin tanınan yüzü ... Karadağ", 3),
+    ("YÖNETMEN", "Sette 'Kestik!' ve 'Motor!' diyen baş sorumlu", 3),
 ]
-YESILCAM_WORDS = [(w, c, t) for (w, c, t) in YESILCAM_WORDS if t != 99]
 
+# ---------------------------------------------------------------------------
+# 2) İNGİLİZCE KELİME AVI (Türkiye'de herkesin severek çözebileceği A1 - A2 - Basit B1!)
+# ---------------------------------------------------------------------------
 INGILIZCE_WORDS: List[Tuple[str, str, int]] = [
-    # Tier 1 — A1 Temel Günlük İngilizce
+    # Tier 1 — A1 Çok Bilinen Temel Kelimeler
+    ("HELLO",    "Merhaba (A1)", 1),
+    ("THANK",    "Teşekkür etmek (A1)", 1),
+    ("SORRY",    "Üzgünüm, pardon (A1)", 1),
+    ("HAPPY",    "Mutlu (A1)", 1),
     ("APPLE",    "Elma (A1)", 1),
     ("WATER",    "Su (A1)", 1),
     ("HOUSE",    "Ev (A1)", 1),
+    ("HOME",     "Yuva, ev (A1)", 1),
     ("BOOK",     "Kitap (A1)", 1),
     ("TREE",     "Ağaç (A1)", 1),
     ("STAR",     "Yıldız (A1)", 1),
@@ -260,9 +310,13 @@ INGILIZCE_WORDS: List[Tuple[str, str, int]] = [
     ("DOG",      "Köpek (A1)", 1),
     ("CAR",      "Araba (A1)", 1),
     ("BUS",      "Otobüs (A1)", 1),
+    ("TAXI",     "Taksi (A1)", 1),
     ("DAY",      "Gün (A1)", 1),
+    ("NIGHT",    "Gece (A1)", 1),
     ("KEY",      "Anahtar (A1)", 1),
     ("TEA",      "Çay (A1)", 1),
+    ("CAFE",     "Kafe (A1)", 1),
+    ("MENU",     "Yemek listesi, menü (A1)", 1),
     ("MAP",      "Harita (A1)", 1),
     ("PEN",      "Tükenmez kalem (A1)", 1),
     ("HAT",      "Şapka (A1)", 1),
@@ -272,8 +326,17 @@ INGILIZCE_WORDS: List[Tuple[str, str, int]] = [
     ("SKY",      "Gökyüzü (A1)", 1),
     ("RED",      "Kırmızı (A1)", 1),
     ("BLUE",     "Mavi (A1)", 1),
+    ("GREEN",    "Yeşil (A1)", 1),
+    ("WHITE",    "Beyaz (A1)", 1),
+    ("BLACK",    "Siyah (A1)", 1),
     ("GOLD",     "Altın (A1)", 1),
+    ("COLOR",    "Renk (A1)", 1),
     ("MILK",     "Süt (A1)", 1),
+    ("CAKE",     "Pasta, kek (A1)", 1),
+    ("PIZZA",    "Pizza (A1)", 1),
+    ("PASTA",    "Makarna (A1)", 1),
+    ("SALAD",    "Salata (A1)", 1),
+    ("SALT",     "Tuz (A1)", 1),
     ("FISH",     "Balık (A1)", 1),
     ("BIRD",     "Kuş (A1)", 1),
     ("DOOR",     "Kapı (A1)", 1),
@@ -287,170 +350,277 @@ INGILIZCE_WORDS: List[Tuple[str, str, int]] = [
     ("FIRE",     "Ateş (A1)", 1),
     ("ROAD",     "Yol (A1)", 1),
     ("CITY",     "Şehir (A1)", 1),
-    ("HOME",     "Yuva, ev (A1)", 1),
+    ("PARK",     "Park (A1)", 1),
+    ("BANK",     "Banka (A1)", 1),
+    ("SHOP",     "Mağaza, dükkan (A1)", 1),
     ("LOVE",     "Sevgi, aşk (A1)", 1),
     ("WORK",     "İş, çalışmak (A1)", 1),
-    ("PLAY",     "Oyun oynamak (A1)", 1),
+    ("PLAY",     "Oynamak, oyun (A1)", 1),
+    ("GAME",     "Oyun (A1)", 1),
+    ("TEAM",     "Takım (A1)", 1),
+    ("GOAL",     "Gol, hedef (A1)", 1),
+    ("SPORT",    "Spor (A1)", 1),
     ("READ",     "Okumak (A1)", 1),
     ("WALK",     "Yürümek (A1)", 1),
     ("SWIM",     "Yüzmek (A1)", 1),
     ("OPEN",     "Açık, açmak (A1)", 1),
+    ("START",    "Başlamak (A1)", 1),
     ("FAST",     "Hızlı (A1)", 1),
+    ("EASY",     "Kolay (A1)", 1),
     ("COLD",     "Soğuk (A1)", 1),
     ("WARM",     "Ilık, sıcak (A1)", 1),
     ("DARK",     "Karanlık, koyu (A1)", 1),
     ("GOOD",     "İyi (A1)", 1),
-    ("CAKE",     "Pasta, kek (A1)", 1),
-    ("SALT",     "Tuz (A1)", 1),
+    ("SMALL",    "Küçük (A1)", 1),
+    ("SHORT",    "Kısa (A1)", 1),
+    ("LONG",     "Uzun (A1)", 1),
     ("SHIP",     "Gemi (A1)", 1),
     ("SONG",     "Şarkı (A1)", 1),
     ("KING",     "Kral (A1)", 1),
-    ("BEAR",     "Ayı (hayvan) (A1)", 1),
+    ("HERO",     "Kahraman (A1)", 1),
+    ("BEAR",     "Ayı (A1)", 1),
     ("LION",     "Aslan (A1)", 1),
     ("WOLF",     "Kurt (A1)", 1),
     ("ROSE",     "Gül (A1)", 1),
     ("LAKE",     "Göl (A1)", 1),
-    ("PARK",     "Park (A1)", 1),
     ("YEAR",     "Yıl, sene (A1)", 1),
     ("WEEK",     "Hafta (A1)", 1),
-    ("RING",     "Yüzük, halka (A1)", 1),
+    ("RING",     "Yüzük, zil sesi (A1)", 1),
     ("GIFT",     "Hediye (A1)", 1),
+    ("BOSS",     "Patron (A1)", 1),
+    ("CHEF",     "Aşçı, şef (A1)", 1),
+    ("EXAM",     "Sınav (A1)", 1),
 
-    # Tier 2 — A2 Günlük & Pratik İngilizce
+    # Tier 2 — A2 Günlük Yaşam, Teknoloji, Seyahat, Mutfak
+    ("PLEASE",   "Lütfen (A2)", 2),
+    ("MONEY",    "Para (A2)", 2),
+    ("PRICE",    "Fiyat (A2)", 2),
+    ("COFFEE",   "Kahve (A2)", 2),
     ("BREAD",    "Ekmek (A2)", 2),
     ("SUGAR",    "Şeker (A2)", 2),
     ("HONEY",    "Bal (A2)", 2),
     ("LEMON",    "Limon (A2)", 2),
+    ("CHEESE",   "Peynir (A2)", 2),
+    ("BUTTER",   "Tereyağı (A2)", 2),
+    ("BANANA",   "Muz (A2)", 2),
+    ("TOMATO",   "Domates (A2)", 2),
+    ("POTATO",   "Patates (A2)", 2),
+    ("CHERRY",   "Kiraz (A2)", 2),
+    ("CARROT",   "Havuç (A2)", 2),
+    ("PEPPER",   "Biber (A2)", 2),
+    ("ORANGE",   "Portakal, turuncu (A2)", 2),
+    ("YELLOW",   "Sarı (A2)", 2),
+    ("PURPLE",   "Mor (A2)", 2),
+    ("SILVER",   "Gümüş (A2)", 2),
     ("TIGER",    "Kaplan (A2)", 2),
     ("HORSE",    "At (A2)", 2),
     ("EAGLE",    "Kartal (A2)", 2),
     ("SHARK",    "Köpekbalığı (A2)", 2),
+    ("MONKEY",   "Maymun (A2)", 2),
+    ("RABBIT",   "Tavşan (A2)", 2),
+    ("ANIMAL",   "Hayvan (A2)", 2),
+    ("FLOWER",   "Çiçek (A2)", 2),
     ("CLOCK",    "Duvar/masa saati (A2)", 2),
+    ("WATCH",    "Kol saati, izlemek (A2)", 2),
     ("PHONE",    "Telefon (A2)", 2),
+    ("EMAIL",    "E-posta (A2)", 2),
+    ("PHOTO",    "Fotoğraf (A2)", 2),
+    ("VIDEO",    "Video (A2)", 2),
+    ("CAMERA",   "Kamera, fotoğraf makinesi (A2)", 2),
+    ("SCREEN",   "Ekran (A2)", 2),
+    ("BUTTON",   "Düğme, buton (A2)", 2),
+    ("ONLINE",   "Çevrimiçi (A2)", 2),
+    ("SEARCH",   "Aramak, arama (A2)", 2),
+    ("SHARE",    "Paylaşmak (A2)", 2),
     ("TABLE",    "Masa (A2)", 2),
     ("CHAIR",    "Sandalye (A2)", 2),
+    ("PILLOW",   "Yastık (A2)", 2),
+    ("MIRROR",   "Ayna (A2)", 2),
+    ("WINDOW",   "Pencere (A2)", 2),
+    ("GLASS",    "Cam, bardak (A2)", 2),
     ("LIGHT",    "Işık, hafif (A2)", 2),
     ("MUSIC",    "Müzik (A2)", 2),
     ("MOVIE",    "Sinema filmi (A2)", 2),
+    ("CINEMA",   "Sinema salonu (A2)", 2),
+    ("ACTOR",    "Oyuncu, aktör (A2)", 2),
+    ("STAGE",    "Sahne (A2)", 2),
+    ("STORY",    "Hikaye, öykü (A2)", 2),
+    ("RADIO",    "Radyo (A2)", 2),
+    ("SOUND",    "Ses (A2)", 2),
+    ("VOICE",    "İnsan sesi (A2)", 2),
     ("DREAM",    "Rüya, hayal (A2)", 2),
     ("SMILE",    "Gülümseme (A2)", 2),
     ("HEART",    "Kalp, yürek (A2)", 2),
+    ("MAGIC",    "Sihir, büyü (A2)", 2),
+    ("QUEEN",    "Kraliçe (A2)", 2),
     ("EARTH",    "Dünya, toprak (A2)", 2),
-    ("WORLD",    "Dünya, yeryüzü (A2)", 2),
+    ("WORLD",    "Dünya (A2)", 2),
     ("SPACE",    "Uzay, boşluk (A2)", 2),
-    ("STORM",    "Fırtına (A2)", 2),
     ("CLOUD",    "Bulut (A2)", 2),
+    ("STORM",    "Fırtına (A2)", 2),
     ("RIVER",    "Nehir, ırmak (A2)", 2),
+    ("OCEAN",    "Okyanus (A2)", 2),
     ("BEACH",    "Plaj, sahil (A2)", 2),
-    ("TRAIN",    "Tren (A2)", 2),
-    ("PLANE",    "Uçak (A2)", 2),
-    ("STONE",    "Taş (A2)", 2),
-    ("METAL",    "Metal, maden (A2)", 2),
-    ("PAPER",    "Kağıt (A2)", 2),
-    ("GLASS",    "Cam, bardak (A2)", 2),
-    ("BRUSH",    "Fırça (A2)", 2),
-    ("WHEEL",    "Tekerlek (A2)", 2),
-    ("TOWER",    "Kule (A2)", 2),
-    ("HOTEL",    "Otel (A2)", 2),
-    ("NURSE",    "Hemşire (A2)", 2),
-    ("PILOT",    "Pilot (A2)", 2),
-    ("JUDGE",    "Hakim, yargıç (A2)", 2),
-    ("BRIDGE",   "Köprü (A2)", 2),
-    ("GARDEN",   "Bahçe (A2)", 2),
-    ("MARKET",   "Pazar, market (A2)", 2),
-    ("TICKET",   "Bilet (A2)", 2),
     ("ISLAND",   "Ada (A2)", 2),
     ("FOREST",   "Orman (A2)", 2),
-    ("MIRROR",   "Ayna (A2)", 2),
-    ("POCKET",   "Cep (A2)", 2),
-    ("SILVER",   "Gümüş (A2)", 2),
+    ("GARDEN",   "Bahçe (A2)", 2),
+    ("DESERT",   "Çöl (A2)", 2),
+    ("TRAIN",    "Tren (A2)", 2),
+    ("METRO",    "Metro (A2)", 2),
+    ("PLANE",    "Uçak (A2)", 2),
+    ("FLIGHT",   "Uçuş (A2)", 2),
+    ("TICKET",   "Bilet (A2)", 2),
+    ("HOTEL",    "Otel (A2)", 2),
+    ("TRAVEL",   "Seyahat etmek (A2)", 2),
+    ("BRIDGE",   "Köprü (A2)", 2),
+    ("STREET",   "Sokak, cadde (A2)", 2),
+    ("SQUARE",   "Meydan, kare (A2)", 2),
+    ("MARKET",   "Pazar, market (A2)", 2),
+    ("MUSEUM",   "Müze (A2)", 2),
+    ("CASTLE",   "Kale, şato (A2)", 2),
+    ("TOWER",    "Kule (A2)", 2),
+    ("OFFICE",   "Ofis, büro (A2)", 2),
+    ("SCHOOL",   "Okul (A2)", 2),
+    ("CLASS",    "Sınıf, ders (A2)", 2),
+    ("LESSON",   "Ders (A2)", 2),
+    ("FRIEND",   "Arkadaş (A2)", 2),
+    ("FAMILY",   "Aile (A2)", 2),
+    ("MOTHER",   "Anne (A2)", 2),
+    ("FATHER",   "Baba (A2)", 2),
+    ("SISTER",   "Kız kardeş (A2)", 2),
+    ("DOCTOR",   "Doktor (A2)", 2),
+    ("NURSE",    "Hemşire (A2)", 2),
+    ("PILOT",    "Pilot (A2)", 2),
+    ("ARTIST",   "Sanatçı (A2)", 2),
     ("WINTER",   "Kış mevsimi (A2)", 2),
     ("SUMMER",   "Yaz mevsimi (A2)", 2),
     ("SPRING",   "İlkbahar (A2)", 2),
-    ("AUTUMN",   "Sonbahar (A2)", 2),
-    ("FRIEND",   "Arkadaş (A2)", 2),
-    ("FAMILY",   "Aile (A2)", 2),
-    ("SCHOOL",   "Okul (A2)", 2),
+    ("SUNDAY",   "Pazar günü (A2)", 2),
+    ("MONDAY",   "Pazartesi (A2)", 2),
+    ("FRIDAY",   "Cuma günü (A2)", 2),
+    ("LUNCH",    "Öğle yemeği (A2)", 2),
+    ("DINNER",   "Akşam yemeği (A2)", 2),
+    ("JACKET",   "Ceket (A2)", 2),
+    ("SHIRT",    "Gömlek (A2)", 2),
+    ("SHOES",    "Ayakkabı (A2)", 2),
+    ("POCKET",   "Cep (A2)", 2),
     ("LETTER",   "Mektup, harf (A2)", 2),
-    ("ANSWER",   "Cevap, yanıt (A2)", 2),
-    ("TRAVEL",   "Seyahat etmek (A2)", 2),
-    ("ARTIST",   "Sanatçı (A2)", 2),
-    ("PLANET",   "Gezegen (A2)", 2),
-    ("DESERT",   "Çöl (A2)", 2),
-    ("CASTLE",   "Kale, şato (A2)", 2),
-    ("WINDOW",   "Pencere (A2)", 2),
-    ("ORANGE",   "Portakal, turuncu (A2)", 2),
-    ("PURPLE",   "Mor renk (A2)", 2),
+    ("PAPER",    "Kağıt (A2)", 2),
+    ("STONE",    "Taş (A2)", 2),
+    ("METAL",    "Metal (A2)", 2),
+    ("CLEAN",    "Temiz (A2)", 2),
+    ("FRESH",    "Taze, ferah (A2)", 2),
+    ("SWEET",    "Tatlı, şekerli (A2)", 2),
+    ("READY",    "Hazır (A2)", 2),
+    ("LARGE",    "Büyük, geniş (A2)", 2),
+    ("SMART",    "Akıllı, zeki (A2)", 2),
+    ("LUCKY",    "Şanslı (A2)", 2),
+    ("STRONG",   "Güçlü (A2)", 2),
+    ("SIMPLE",   "Basit, sade (A2)", 2),
+    ("FINISH",   "Bitirmek, son (A2)", 2),
 
-    # Tier 3 — B1/B2 İleri Kelime Hazinesi
-    ("FREEDOM",  "Özgürlük (B1)", 3),
-    ("COURAGE",  "Cesaret (B1)", 3),
-    ("WISDOM",   "Bilgelik (B1)", 3),
-    ("JOURNEY",  "Yolculuk, serüven (B1)", 3),
-    ("MYSTERY",  "Gizem, sır (B1)", 3),
-    ("HARMONY",  "Uyum, ahenk (B2)", 3),
-    ("VICTORY",  "Zafer, galibiyet (B1)", 3),
-    ("GRAVITY",  "Yerçekimi (B1)", 3),
-    ("BALANCE",  "Denge (B1)", 3),
-    ("COMPASS",  "Pusula (B1)", 3),
-    ("HORIZON",  "Ufuk çizgisi (B2)", 3),
-    ("LANTERN",  "Fener (B1)", 3),
-    ("SHELTER",  "Sığınak, barınak (B1)", 3),
-    ("HARVEST",  "Hasat, ürün toplama (B2)", 3),
-    ("CRYSTAL",  "Kristal (B1)", 3),
-    ("DIAMOND",  "Elmas (B1)", 3),
-    ("VOLCANO",  "Yanardağ (B1)", 3),
-    ("GLACIER",  "Buzul (B2)", 3),
-    ("CANYON",   "Kanyon, dar vadi (B1)", 3),
-    ("ANCHOR",   "Gemi çapası (B1)", 3),
-    ("VOYAGE",   "Deniz yolculuğu (B2)", 3),
-    ("ANCIENT",  "Antik, kadim (B1)", 3),
-    ("MODERN",   "Çağdaş, modern (B1)", 3),
-    ("ARCHIVE",  "Arşiv, belge deposu (B2)", 3),
-    ("CHAPTER",  "Kitap bölümü (B1)", 3),
-    ("PATTERN",  "Desen, örüntü (B1)", 3),
-    ("CONCEPT",  "Kavram, konsept (B1)", 3),
-    ("NETWORK",  "Ağ, şebeke (B1)", 3),
-    ("SIGNAL",   "Sinyal, işaret (B1)", 3),
+    # Tier 3 — Basit ve Bilindik B1 Kelimeler (Günlük İngilizceden tanıdık)
+    ("MORNING",  "Sabah (A2-B1)", 3),
+    ("KITCHEN",  "Mutfak (A2-B1)", 3),
+    ("BEDROOM",  "Yatak odası (A2-B1)", 3),
+    ("TEACHER",  "Öğretmen (A2-B1)", 3),
+    ("STUDENT",  "Öğrenci (A2-B1)", 3),
+    ("BROTHER",  "Erkek kardeş (A2-B1)", 3),
+    ("CONCERT",  "Konser (A2-B1)", 3),
+    ("PLANET",   "Gezegen (B1)", 3),
+    ("ROCKET",   "Roket (B1)", 3),
+    ("ROBOT",    "Robot (B1)", 3),
+    ("NATURE",   "Doğa (B1)", 3),
     ("ENERGY",   "Enerji (B1)", 3),
+    ("POWER",    "Güç (B1)", 3),
+    ("SPEED",    "Hız (B1)", 3),
+    ("FUTURE",   "Gelecek (B1)", 3),
     ("MEMORY",   "Hafıza, anı (B1)", 3),
-    ("WONDER",   "Merak etmek, harika (B1)", 3),
-    ("FORTUNE",  "Talih, servet (B2)", 3),
-    ("JUSTICE",  "Adalet (B1)", 3),
-    ("SILENCE",  "Sessizlik (B1)", 3),
-    ("SHADOW",   "Gölge (B1)", 3),
-    ("MIRACLE",  "Mucize (B1)", 3),
-    ("PROMISE",  "Söz vermek, vaat (B1)", 3),
-    ("PURPOSE",  "Amaç, gaye (B1)", 3),
-    ("RESPECT",  "Saygı (B1)", 3),
-    ("SUPPORT",  "Destek (B1)", 3),
+    ("FREEDOM",  "Özgürlük (B1)", 3),
     ("SUCCESS",  "Başarı (B1)", 3),
-    ("CAPTURE",  "Yakalamak, ele geçirmek (B2)", 3),
-    ("EXPLORE",  "Keşfetmek (B1)", 3),
-    ("INSPIRE",  "İlham vermek (B1)", 3),
-    ("PROTECT",  "Korumak (B1)", 3),
-    ("ACHIEVE",  "Başarmak, elde etmek (B1)", 3),
-    ("BELIEVE",  "İnanmak (B1)", 3),
-    ("IMAGINE",  "Hayal etmek (B1)", 3),
-    ("CLIMATE",  "İklim (B1)", 3),
-    ("SCIENCE",  "Bilim (B1)", 3),
+    ("SUPPORT",  "Destek (B1)", 3),
+    ("SERVICE",  "Hizmet, servis (B1)", 3),
+    ("QUALITY",  "Kalite (B1)", 3),
+    ("DESIGN",   "Tasarım (B1)", 3),
+    ("STYLE",    "Stil, tarz (B1)", 3),
+    ("TREND",    "Eğilim, moda akımı (B1)", 3),
+    ("BRAND",    "Marka (B1)", 3),
+    ("TARGET",   "Hedef (B1)", 3),
+    ("WINNER",   "Kazanan, galip (B1)", 3),
+    ("LEADER",   "Lider, önder (B1)", 3),
+    ("CHOICE",   "Seçim, tercih (B1)", 3),
+    ("CHANCE",   "Şans, fırsat (B1)", 3),
+    ("CHANGE",   "Değişim, değiştirmek (B1)", 3),
+    ("REASON",   "Sebep, neden (B1)", 3),
+    ("RESULT",   "Sonuç (B1)", 3),
+    ("ANSWER",   "Cevap, yanıt (B1)", 3),
+    ("SIGNAL",   "Sinyal, işaret (B1)", 3),
+    ("SYSTEM",   "Sistem (B1)", 3),
+    ("MODERN",   "Çağdaş, modern (B1)", 3),
+    ("GLOBAL",   "Küresel (B1)", 3),
+    ("PUBLIC",   "Halka açık, kamu (B1)", 3),
+    ("SOCIAL",   "Sosyal, toplumsal (B1)", 3),
+    ("ACTIVE",   "Aktif, hareketli (B1)", 3),
+    ("NORMAL",   "Normal, olağan (B1)", 3),
+    ("PERFECT",  "Mükemmel, kusursuz (B1)", 3),
+    ("SPECIAL",  "Özel (B1)", 3),
+    ("POPULAR",  "Popüler, sevilen (B1)", 3),
+    ("NATURAL",  "Doğal (B1)", 3),
+    ("CLASSIC",  "Klasik (B1)", 3),
+    ("DIGITAL",  "Dijital, sayısal (B1)", 3),
+    ("NETWORK",  "Ağ, şebeke (B1)", 3),
     ("HISTORY",  "Tarih (B1)", 3),
+    ("SCIENCE",  "Bilim (B1)", 3),
     ("CULTURE",  "Kültür (B1)", 3),
-    ("THEATER",  "Tiyatro (B1)", 3),
     ("LIBRARY",  "Kütüphane (B1)", 3),
+    ("THEATER",  "Tiyatro (B1)", 3),
     ("FACTORY",  "Fabrika (B1)", 3),
     ("MACHINE",  "Makine (B1)", 3),
     ("BATTERY",  "Pil, batarya (B1)", 3),
-    ("DIGITAL",  "Sayısal, dijital (B1)", 3),
-    ("VIRTUAL",  "Sanal (B2)", 3),
-    ("EMERALD",  "Zümrüt (B2)", 3),
-    ("PHOENIX",  "Anka kuşu (B2)", 3),
-    ("TRIUMPH",  "Büyük zafer (B2)", 3),
-    ("SYNERGY",  "Sinerji, ortak güç (B2)", 3),
+    ("JOURNEY",  "Yolculuk (B1)", 3),
+    ("HOLIDAY",  "Tatil, bayram (B1)", 3),
+    ("WEATHER",  "Hava durumu (B1)", 3),
+    ("BALANCE",  "Denge (B1)", 3),
+    ("DIAMOND",  "Elmas (B1)", 3),
+    ("CRYSTAL",  "Kristal (B1)", 3),
+    ("CAPTAIN",  "Kaptan (B1)", 3),
+    ("MESSAGE",  "Mesaj, ileti (B1)", 3),
+    ("PROJECT",  "Proje (B1)", 3),
+    ("PROGRAM",  "Program (B1)", 3),
+    ("PROBLEM",  "Sorun, problem (B1)", 3),
+    ("PRODUCT",  "Ürün (B1)", 3),
+    ("COMPANY",  "Şirket, firma (B1)", 3),
+    ("MANAGER",  "Yönetici, müdür (B1)", 3),
+    ("PARTNER",  "Ortak, eş (B1)", 3),
+    ("COUNTRY",  "Ülke (B1)", 3),
+    ("VILLAGE",  "Köy (B1)", 3),
+    ("CAPITAL",  "Başkent (B1)", 3),
+    ("STATION",  "İstasyon, durak (B1)", 3),
+    ("AIRPORT",  "Havalimanı (B1)", 3),
+    ("PASSPORT", "Pasaport (B1)", 3),
+    ("CALENDAR", "Takvim (B1)", 3),
+    ("COMPUTER", "Bilgisayar (B1)", 3),
+    ("INTERNET", "İnternet (B1)", 3),
+    ("LANGUAGE", "Dil, lisan (B1)", 3),
+    ("FESTIVAL", "Festival, şenlik (B1)", 3),
+    ("CHAMPION", "Şampiyon (B1)", 3),
+    ("HOSPITAL", "Hastane (B1)", 3),
+    ("MEDICINE", "İlaç, tıp (B1)", 3),
+    ("TRAINING", "Antrenman, eğitim (B1)", 3),
+    ("FOOTBALL", "Futbol (B1)", 3),
+    ("BIRTHDAY", "Doğum günü (B1)", 3),
+    ("SANDWICH", "Sandviç (B1)", 3),
+    ("UMBRELLA", "Şemsiye (B1)", 3),
+    ("BACKPACK", "Sırt çantası (B1)", 3),
+    ("SUITCASE", "Valiz, bavul (B1)", 3),
+    ("MOUNTAIN", "Dağ (B1)", 3),
 ]
 
+# ---------------------------------------------------------------------------
+# 3) TÜRKİYE & MUTFAK (Genişletilmiş Havuz — 165+ kelime)
+# ---------------------------------------------------------------------------
 TURKIYE_WORDS: List[Tuple[str, str, int]] = [
-    # Tier 1 — İller, meşhur yemekler, temel simgeler
+    # Tier 1
     ("ÇAY",      "Rize yamaçlarının vazgeçilmez sıcak içeceği", 1),
     ("VAN",      "Kedisi ve büyük gölüyle ünlü doğu ilimiz", 1),
     ("EGE",      "Zeytin ağaçları ve koylarıyla ünlü bölgemiz", 1),
@@ -500,8 +670,23 @@ TURKIYE_WORDS: List[Tuple[str, str, int]] = [
     ("HALI",     "Hereke, Uşak ve Isparta'da dokunan geleneksel zemin örtüsü", 1),
     ("HORON",    "Karadeniz'in kemençe eşliğinde oynanan hızlı halk oyunu", 1),
     ("HALAY",    "Davul zurna eşliğinde el ele tutuşularak çekilen oyun", 1),
+    ("KÖFTE",    "Tekirdağ, Akçaabat ve İnegöl çeşitleriyle ünlü et yemeği", 1),
+    ("ÇORBA",    "Mercimek ve ezogelinle sofranın sıcak başlangıcı", 1),
+    ("PİLAV",    "Kuru fasulyenin ayrılmaz pirinçli eşlikçisi", 1),
+    ("TURŞU",    "Lahanadan salatalığa sofraların ekşi tamamlayıcısı", 1),
+    ("REÇEL",    "Kahvaltıların meyveli tatlı eşlikçisi", 1),
+    ("BAL",      "Anzer ve çiçek çeşitleriyle ünlü şifa kaynağı", 1),
+    ("NAR",      "Bereket simgesi, ekşisi salatalarda kullanılan meyve", 1),
+    ("ÜZÜM",     "Manisa bağlarında yetişen şifalı yaz meyvesi", 1),
+    ("ELMA",     "Amasya ve Isparta bahçelerinin meşhur meyvesi", 1),
+    ("KİRAZ",    "Afyon ve Kemalpaşa ile anılan kırmızı yaz meyvesi", 1),
+    ("UŞAK",     "Tarhanası ve halısıyla bilinen Ege ilimiz", 1),
+    ("TOKAT",    "Kebabı ve asma yaprağıyla ünlü Karadeniz ili", 1),
+    ("NİĞDE",    "Aladağlar ve patatesiyle bilinen İç Anadolu ili", 1),
+    ("ÇORUM",    "Leblebisi ve Hattuşa'sıyla bilinen ilimiz", 1),
+    ("BARTIN",   "Amasra sahiliyle meşhur Batı Karadeniz ili", 1),
 
-    # Tier 2 — Yöresel lezzetler, doğa ve tarihi miras
+    # Tier 2
     ("ANKARA",   "Anıtkabir'in bulunduğu Türkiye Cumhuriyeti başkenti", 2),
     ("MARDİN",   "Taş evleri ve Mezopotamya manzarasıyla masalsı şehir", 2),
     ("EDİRNE",   "Selimiye Camii ve Kırkpınar güreşlerinin şehri", 2),
@@ -542,15 +727,30 @@ TURKIYE_WORDS: List[Tuple[str, str, int]] = [
     ("BAĞLAMA",  "Aşık Veysel ve Neşet Ertaş'ın elinde dillenen telli çalgı", 2),
     ("KEMENÇE",  "Karadeniz türkülerinin ruhunu veren yaylı çalgı", 2),
     ("DERVİŞ",   "Konya'da sema dönen tasavvuf ehli", 2),
+    ("KAYSERİ",  "Mantısı, pastırması ve Erciyes'iyle ünlü ilimiz", 2),
+    ("MERSİN",   "Tantunisi ve limanıyla Akdeniz'in canlı şehri", 2),
+    ("DENİZLİ",  "Horozu ve Pamukkale travertenleriyle ünlü ilimiz", 2),
+    ("MANİSA",   "Mesir macunu ve Spil Dağı ile bilinen Ege ili", 2),
+    ("SAMSUN",   "Kurtuluş Mücadelesi'nin başladığı Karadeniz şehri", 2),
+    ("GİRESUN",  "Fındık ve kiraz diyarı yeşil Karadeniz ili", 2),
+    ("ARTVİN",   "Karagöl'ü ve yeşil vadileriyle doğa harikası il", 2),
+    ("ERZURUM",  "Cağ kebabı ve Palandöken'iyle ünlü Doğu şehri", 2),
+    ("ELAZIĞ",   "Harput Kalesi ve orcik tatlısıyla bilinen il", 2),
+    ("MALATYA",  "Dünyanın kayısı başkenti olan ilimiz", 2),
+    ("ISPARTA",  "Gül bahçeleri ve lavanta tarlalarıyla ünlü il", 2),
+    ("AFYON",    "Kaymağı, sucuğu ve termalleriyle meşhur ilimiz", 2),
+    ("YALOVA",   "Termal kaplıcaları ve Marmara sahiliyle bilinen il", 2),
+    ("KOCAELİ",  "İzmit pişmaniyesi ve sanayisiyle tanınan Marmara ili", 2),
+    ("ÇEŞME",    "Ilıca plajı ve sakızlı dondurmasıyla ünlü İzmir ilçesi", 2),
+    ("FETHİYE",  "Ölüdeniz ve yamaç paraşütüyle ünlü tatil cenneti", 2),
+    ("KAŞ",      "Dalış noktaları ve begonvilleriyle ünlü Antalya ilçesi", 2),
 
-    # Tier 3 — Zengin Anadolu mirası, özel yerler ve lezzetler
+    # Tier 3
     ("LAHMACUN", "İnce hamur üstü baharatlı kıymayla fırınlanan lezzet", 3),
     ("İSKENDER", "Tereyağı ve yoğurtla taçlanan Bursa döner klasiği", 3),
     ("PASTIRMA", "Çemenle kaplanarak kurutulan Kayseri lezzeti", 3),
     ("KAHRAMAN", "İstiklal madalyalı ...maraş şehrimizin unvanı", 3),
-    ("KAPADOK",  "Silinecek", 99),
     ("PERİBACA", "Ürgüp ve Göreme'deki doğa harikası tüf oluşumu", 3),
-    ("PAMUKKALE","Denizli'deki bembeyaz traverten cenneti", 3),
     ("SAFRAN",   "Karabük'ün tarihi konaklı ilçesine adını veren değerli bitki", 3),
     ("BERGAMA",  "Parşömenin icat edildiği antik İzmir ilçesi", 3),
     ("ZEUGMA",   "Çingene Kızı mozaiğiyle ünlü Gaziantep antik kenti", 3),
@@ -566,7 +766,6 @@ TURKIYE_WORDS: List[Tuple[str, str, int]] = [
     ("SALDA",    "Burdur'daki beyaz kumsallı turkuaz göl", 3),
     ("TUZGÖLÜ",  "İç Anadolu'nun flamingolara ev sahipliği yapan beyaz gölü", 3),
     ("ARAS",     "Doğu Anadolu'dan doğup Hazar'a yönelen nehir", 3),
-    ("KIZILIR",  "Silinecek", 99),
     ("SAKARYA",  "Adını büyük ırmaktan alan Marmara ilimiz", 3),
     ("ÇANAK",    "Avanos'ta Kızılırmak kiliyle çarkta döndürülen toprak kap", 3),
     ("OYA",      "Anadolu kadınlarının tığ ve iğneyle işlediği zarif kenar süsü", 3),
@@ -581,7 +780,6 @@ TURKIYE_WORDS: List[Tuple[str, str, int]] = [
     ("KUMRU",    "Çeşme ve İzmir'in susamlı sıcak sandviçi", 3),
     ("HAMSİ",    "Karadeniz'in buğulamasından pilavına her hali yapılan balığı", 3),
     ("MUHLAMA",  "Mısır unu ve uzayan kolot peyniriyle yapılan Karadeniz kahvaltılığı", 3),
-    ("PİŞMAN",   "Kocaeli İzmit'in tel tel ayrılan şekerli tatlısı ...iye", 3),
     ("LEBLEBİ",  "Çorum ile özdeşleşen kavrulmuş nohut çerezi", 3),
     ("MESİR",    "Manisa'da her bahar saçılan 41 baharatlı şifa macunu", 3),
     ("CEZERYE",  "Mersin'in havuç ve cevizle yapılan enerji tatlısı", 3),
@@ -589,11 +787,30 @@ TURKIYE_WORDS: List[Tuple[str, str, int]] = [
     ("PEKMEZ",   "Üzüm veya dut şırasının kaynatılmasıyla elde edilen şifa", 3),
     ("TAHİN",    "Kavrulmuş susamın ezilmesiyle yapılan yoğun lezzet", 3),
     ("YAYLA",    "Yazın serinlemek için çıkılan yüksek ve yeşil dağ düzlüğü", 3),
+    ("İSTANBUL", "İki kıtayı birleştiren yedi tepeli eşsiz metropol", 3),
+    ("GÖREME",   "Kapadokya'nın açık hava müzesiyle ünlü beldesi", 3),
+    ("ÜRGÜP",    "Taş konakları ve Üç Güzeller'iyle bilinen Nevşehir ilçesi", 3),
+    ("AMASRA",   "Fatih Sultan Mehmet'in 'Çeşm-i Cihan' dediği sahil beldesi", 3),
+    ("AYVALIK",  "Tostu ve zeytinyağıyla meşhur Balıkesir ilçesi", 3),
+    ("MARMARİS", "Çam ormanlarıyla çevrili Muğla tatil beldesi", 3),
+    ("ALANYA",   "Kızıl Kule ve Kleopatra Plajı ile ünlü ilçe", 3),
+    ("SİDE",     "Apollon Tapınağı ile gün batımının izlendiği antik kent", 3),
+    ("İZNİK",    "Gölü ve dünyaca ünlü çinileriyle tarihi Bursa ilçesi", 3),
+    ("BÜRYAN",   "Siirt ve Bitlis'in kuyuda pişen meşhur et yemeği", 3),
+    ("İÇLİKÖF",  "Silinecek", 99),
+    ("HUMUS",    "Nohut ve tahinle yapılan Tarsus ve Hatay mezesi", 3),
+    ("ŞEHRİYE",  "Pilav ve çorbalara lezzet katan ince hamur tanesi", 3),
+    ("TULUMBA",  "Çıtır şerbetli sevilen sokak tatlısı", 3),
+    ("REVANI",   "İrmikle hazırlanan limon aromalı şerbetli tatlı", 3),
+    ("REVANİ",   "İrmikle hazırlanan limon aromalı şerbetli tatlı", 3),
 ]
-TURKIYE_WORDS = [(w, c, t) for (w, c, t) in TURKIYE_WORDS if t != 99]
+TURKIYE_WORDS = [(w, c, t) for (w, c, t) in TURKIYE_WORDS if t != 99 and w != "REVANI"]
 
+# ---------------------------------------------------------------------------
+# 4) GENEL KÜLTÜR & BİLİM (Genişletilmiş Havuz — 175+ kelime)
+# ---------------------------------------------------------------------------
 GENEL_KULTUR_WORDS: List[Tuple[str, str, int]] = [
-    # Tier 1 — Temel Bilim, Sanat, Spor, Doğa
+    # Tier 1
     ("GÜNEŞ",    "Sistemimizin merkezindeki ısı ve ışık kaynağımız", 1),
     ("DÜNYA",    "Yaşam barındırdığı bilinen mavi gezegen", 1),
     ("MARS",     "Kızıl Gezegen olarak bilinen komşu gezegen", 1),
@@ -645,12 +862,26 @@ GENEL_KULTUR_WORDS: List[Tuple[str, str, int]] = [
     ("ROBOT",    "Programlanabilen otonom mekanik yardımcı", 1),
     ("UYDU",     "Bir gezegenin yörüngesinde dönen doğal veya yapay cisim", 1),
     ("ROKET",    "Uzaya araç taşımak için itki üreten fırlatma sistemi", 1),
+    ("UZAY",     "Gök cisimlerini barındıran sonsuz evren boşluğu", 1),
+    ("IŞIK",     "Saniyede yaklaşık 300 bin kilometre yol alan enerji", 1),
+    ("KALP",     "Vücuda sürekli kan pompalayan hayati organ", 1),
+    ("BEYİN",    "Düşünme, hafıza ve hareketin yönetim merkezi", 1),
+    ("KEMİK",    "İskelet sistemimizi oluşturan sert doku", 1),
+    ("NABIZ",    "Kalbin dakikadaki atım ritmi", 1),
+    ("KİTAP",    "Bilgi ve hikayeleri çağlar ötesine taşıyan basılı eser", 1),
+    ("KARE",     "Dört kenarı eşit ve açıları 90 derece olan şekil", 1),
+    ("SAYI",     "Matematiğin temel sayma ve ölçme birimi", 1),
+    ("KALE",     "Futbolda kalecinin koruduğu ağlı çerçeve", 1),
+    ("PAS",      "Takım sporlarında topu arkadaşına aktarma hamlesi", 1),
+    ("ŞUT",      "Futbolda kaleye doğru yapılan sert vuruş", 1),
+    ("MAÇ",      "İki takım veya sporcu arasındaki resmi karşılaşma", 1),
 
-    # Tier 2 — Orta Düzey Bilim, Teknoloji, Sanat, Spor
+    # Tier 2
     ("SATÜRN",   "Görkemli buz ve kaya halkalarıyla ünlü gezegen", 2),
     ("JÜPİTER",  "Güneş sisteminin en büyük gaz devi gezegeni", 2),
     ("NEPTÜN",   "Güneş'e en uzak, fırtınalı mavi gezegen", 2),
     ("URANÜS",   "Eksen eğikliği nedeniyle yan yatmış dönen gezegen", 2),
+    ("MERKÜR",   "Güneş'e en yakın ve en hızlı dönen gezegen", 2),
     ("YILDIZ",   "Kendi ışığını nükleer füzyonla üreten gök cismi", 2),
     ("METEOR",   "Atmosfere girip yanarak iz bırakan uzay taşı", 2),
     ("GALAKSİ",  "Milyarlarca yıldızdan oluşan dev kozmik sistem", 2),
@@ -674,6 +905,7 @@ GENEL_KULTUR_WORDS: List[Tuple[str, str, int]] = [
     ("MODEM",    "İnternet bağlantısını dijital sinyale çeviren ağ cihazı", 2),
     ("PİYANO",   "88 siyah-beyaz tuşuyla klasik müziğin temel çalgısı", 2),
     ("RİTİM",    "Müzikte vuruşların düzenli ve ölçülü akışı", 2),
+    ("MELODİ",   "Bir şarkının akılda kalan ezgisi", 2),
     ("DESTAN",   "Milletlerin kahramanlıklarını anlatan uzun manzum eser", 2),
     ("TİYATRO",  "Oyuncuların seyirci önünde canlı sahnelediği sanat", 2),
     ("HEYKEL",   "Taş, bronz veya kil yontularak yapılan üç boyutlu sanat", 2),
@@ -691,6 +923,8 @@ GENEL_KULTUR_WORDS: List[Tuple[str, str, int]] = [
     ("ŞELALE",   "Akarsuyun yüksek bir kayalıktan döküldüğü yer", 2),
     ("KÖRFEZ",   "Denizin karanın içine derinlemesine sokulduğu kısım", 2),
     ("FUTBOL",   "Dünyada en çok izlenen on birer kişilik takım sporu", 2),
+    ("VOLEYBO",  "Silinecek", 99),
+    ("BASKET",   "Potaya top atarak sayı kazanılan salon sporu", 2),
     ("SATRANÇ",  "64 karede şah mat etmek için oynanan zeka oyunu", 2),
     ("GÜREŞ",    "Minderde veya çayırda yapılan ata sporumuz", 2),
     ("YÜZME",    "Kulaç atarak suda hız yapılan olimpik spor", 2),
@@ -704,16 +938,20 @@ GENEL_KULTUR_WORDS: List[Tuple[str, str, int]] = [
     ("FORMÜL",   "Matematik veya kimyada ilişkileri gösteren sembolik ifade", 2),
     ("DAİRE",    "Çemberin içi dolu geometrik alanı", 2),
     ("SİMETRİ",  "Bir eksene göre iki tarafın birebir ayna uyumu", 2),
+    ("TAKVİM",   "Gün, hafta ve ayları düzenli gösteren zaman çizelgesi", 2),
+    ("MÜHENDİS", "Bilimi kullanarak pratik sistem ve yapılar tasarlayan uzman", 2),
+    ("RESSAM",   "Tuval üzerine renklerle eser üreten sanatçı", 2),
+    ("YAZAR",    "Roman, öykü veya makale kaleme alan kişi", 2),
+    ("ŞAİR",     "Duyguları dizelere döken edebiyatçı", 2),
+    ("BESTECİ",  "Yeni müzik eserleri oluşturan sanatçı", 2),
 
-    # Tier 3 — İleri Genel Kültür, Bilim ve Düşünce
+    # Tier 3
     ("HİDROJEN", "Evrende en bol bulunan, 1 numaralı hafif element", 3),
     ("NÖTRON",   "Atom çekirdeğindeki elektriksel yükü sıfır olan parçacık", 3),
     ("ELEKTRON", "Atom çekirdeği etrafında dönen eksi yüklü parçacık", 3),
     ("FOTON",    "Işığı oluşturan kütlesiz enerji paketi", 3),
     ("KUANTUM",  "Atom altı dünyanın fizik yasalarını inceleyen bilim dalı", 3),
     ("GRAVİTE",  "Kütlelerin birbirini çekme kuvveti, yerçekimi", 3),
-    ("TEKNOLOJ", "Silinecek", 99),
-    ("ALGORİT",  "Silinecek", 99),
     ("SİBER",    "Dijital ağlar ve bilgi güvenliği alanını tanımlayan kavram", 3),
     ("KRİPTO",   "Şifreleme bilimiyle güvence altına alınan veri veya varlık", 3),
     ("SUNUCU",   "Ağ üzerinden istemcilere hizmet ve veri sağlayan güçlü bilgisayar", 3),
@@ -722,13 +960,10 @@ GENEL_KULTUR_WORDS: List[Tuple[str, str, int]] = [
     ("TARAYICI", "Web sayfalarını açıp görüntülemeye yarayan uygulama", 3),
     ("ASTRONOM", "Gök cisimlerini ve evreni inceleyen bilim insanı", 3),
     ("TELESKOP", "Uzak yıldız ve galaksileri gözlemleyen optik alet", 3),
-    ("MİKROSKO", "Silinecek", 99),
     ("KÜRESEL",  "Tüm dünyayı kapsayan, gezegen ölçeğindeki", 3),
     ("EKOLOJİ",  "Canlıların çevreleriyle ilişkisini inceleyen bilim", 3),
-    ("BIYOLOJİ", "Silinecek", 99),
     ("BİYOLOJİ", "Canlı yaşamını tüm boyutlarıyla inceleyen bilim dalı", 3),
     ("JEOLOJİ",  "Yerkürenin katmanlarını ve kayaçlarını inceleyen bilim", 3),
-    ("ARKEOLOJ", "Silinecek", 99),
     ("ANTİKÇAĞ", "Yazının icadından Batı Roma'nın yıkılışına dek süren dönem", 3),
     ("RÖNESANS", "Avrupa'da sanat ve bilimin yeniden doğuş çağı", 3),
     ("BAROK",    "17. yüzyılın süslü ve görkemli sanat akımı", 3),
@@ -756,6 +991,27 @@ GENEL_KULTUR_WORDS: List[Tuple[str, str, int]] = [
     ("KATALİZ",  "Kimyasal tepkimeyi hızlandıran süreç", 3),
     ("OSMOZ",    "Suyun yarı geçirgen zardan geçiş olayı", 3),
     ("KRİSTAL",  "Atomları düzenli geometrik örgüde dizilmiş katı yapı", 3),
+    ("ATMOSFER", "Dünya'yı saran koruyucu gaz tabakası", 3),
+    ("EKVATOR",  "Dünya'yı kuzey ve güney yarım küreye bölen hayali çizgi", 3),
+    ("MERİDYEN", "Kutupları birleştiren hayali boylam yayı", 3),
+    ("VOLTAJ",   "Elektrik devresindeki potansiyel farkı", 3),
+    ("FREKANS",  "Bir dalganın saniyedeki titreşim sayısı", 3),
+    ("DİNAMO",   "Mekanik hareketi elektrik enerjisine dönüştüren araç", 3),
+    ("MIKNATIS", "Demir ve nikeli çeken manyetik cisim", 3),
+    ("PERİSKOP", "Denizaltılarda su yüzeyini gözlemleyen aynalı optik tüp", 3),
+    ("BAROMET",  "Silinecek", 99),
+    ("İKLİM",    "Bir bölgede uzun yıllar gözlenen ortalama hava koşulları", 3),
+    ("MEVSİM",   "Dünya'nın eksen eğikliğiyle oluşan dört dönem", 3),
+    ("TUTULMA",  "Güneş, Dünya ve Ay'ın aynı hizaya gelmesi olayı", 3),
+    ("YÖRÜNGE",  "Bir gök cisminin başka bir cisim etrafındaki yolu", 3),
+    ("EVRİM",    "Canlı türlerinin uzun zaman içinde değişim süreci", 3),
+    ("ENZİM",    "Canlı hücrelerde biyokimyasal tepkimeleri hızlandıran protein", 3),
+    ("VİTAMİN",  "Vücudun sağlıklı çalışması için gerekli organik bileşik", 3),
+    ("MİNERAL",  "Doğada oluşan ve metabolizma için gerekli inorganik madde", 3),
+    ("KLOROFİL", "Bitkilere yeşil rengi veren fotosentez pigmenti", 3),
+    ("MİTOLOJİ", "Antik toplumların tanrı ve kahraman efsaneleri bütünü", 3),
+    ("EPİLOG",   "Bir roman veya oyunun sonundaki kapanış bölümü", 3),
+    ("PROLOG",   "Bir eserin başındaki giriş bölümü", 3),
 ]
 GENEL_KULTUR_WORDS = [(w, c, t) for (w, c, t) in GENEL_KULTUR_WORDS if t != 99]
 
@@ -773,25 +1029,17 @@ def can_place(
     direction: str,
     require_intersection: bool,
 ) -> Optional[int]:
-    """
-    Kelime yerleştirilebilirse kesişim sayısını, aksi halde None döndürür.
-    Katı kare bulmaca kurallarını uygular:
-    - Bitişik hayalet kelime oluşamaz.
-    - Aynı yöndeki başka bir kelimeyle hiçbir hücre çakışamaz (üst üste binme engeli).
-    """
     rows = len(grid)
     cols = len(grid[0])
     dr, dc = (0, 1) if direction == "across" else (1, 0)
     dir_bit = 1 if direction == "across" else 2
     wlen = len(word)
 
-    # Sınır kontrolü
     end_r = r + (wlen - 1) * dr
     end_c = c + (wlen - 1) * dc
     if r < 0 or c < 0 or end_r >= rows or end_c >= cols:
         return None
 
-    # Kelimenin hemen öncesi ve sonrası boş olmalı
     before_r, before_c = r - dr, c - dc
     if 0 <= before_r < rows and 0 <= before_c < cols and grid[before_r][before_c] != "":
         return None
@@ -805,7 +1053,6 @@ def can_place(
     for i, ch in enumerate(word):
         rr = r + i * dr
         cc = c + i * dc
-        # Aynı yöndeki bir kelimenin hücresine basamaz
         if dir_grid[rr][cc] & dir_bit:
             return None
         cur = grid[rr][cc]
@@ -815,7 +1062,6 @@ def can_place(
             intersections += 1
         else:
             new_cells += 1
-            # Dik komşular boş olmalı (paralel çakışma / hayalet 2 harfli kelime engeli)
             p1_r, p1_c = rr + dc, cc + dr
             p2_r, p2_c = rr - dc, cc - dr
             if 0 <= p1_r < rows and 0 <= p1_c < cols and grid[p1_r][p1_c] != "":
@@ -853,7 +1099,6 @@ def center_placements(
     cols: int,
     placements: List[Tuple[str, str, int, int, str]],
 ) -> List[Tuple[str, str, int, int, str]]:
-    """Bulmacayı hedef rows x cols ızgarasında görsel olarak ortalar."""
     min_r, min_c = rows, cols
     max_r, max_c = 0, 0
     for word, _, r, c, d in placements:
@@ -886,11 +1131,9 @@ def build_single_puzzle(
     primary_pool: List[Tuple[str, str]],
     fallback_pool: List[Tuple[str, str]],
     rng: random.Random,
-    trials: int = 450,
+    trials: int = 260,
 ) -> Tuple[List[List[str]], List[Tuple[str, str, int, int, str]]]:
-    """En yüksek kesişimli ve dengeli kare bulmaca yerleşimini arar."""
     max_dim = max(rows, cols)
-    # Uzunluğa uygun kelimeleri filtrele
     primary = [(w, c) for (w, c) in primary_pool if 3 <= len(w) <= max_dim]
     fallback = [(w, c) for (w, c) in fallback_pool if 3 <= len(w) <= max_dim]
 
@@ -898,7 +1141,6 @@ def build_single_puzzle(
     best_result = None
 
     for attempt in range(trials):
-        # İlk yarısında sadece primary (tekrarsız + tier uygun), gerekirse fallback ekle
         if attempt < trials * 0.65 and len(primary) >= min_words * 2:
             candidates = list(primary)
         else:
@@ -906,11 +1148,10 @@ def build_single_puzzle(
             candidates = list(primary) + [(w, c) for (w, c) in fallback if w not in seen]
 
         rng.shuffle(candidates)
-        # Uzunluk çeşitliliği için orta-uzun kelimeleri tohum olarak tercih et
         seed_choices = [item for item in candidates if len(item[0]) >= min(4, max_dim)]
         if not seed_choices:
             seed_choices = candidates
-        seed_word, seed_clue = rng.choice(seed_choices[: max(1, min(15, len(seed_choices)))])
+        seed_word, seed_clue = rng.choice(seed_choices[: max(1, min(18, len(seed_choices)))])
 
         grid = [["" for _ in range(cols)] for _ in range(rows)]
         dir_grid = [[0 for _ in range(cols)] for _ in range(rows)]
@@ -937,7 +1178,6 @@ def build_single_puzzle(
         placements.append((seed_word, seed_clue, sr, sc, seed_dir))
         used_words.add(seed_word)
 
-        # İteratif yerleştirme (tüm adayları tara, en iyi kesişimi seç)
         primary_set = {w for w, _ in primary}
         for _ in range(max_words * 2):
             if len(placements) >= max_words:
@@ -957,6 +1197,10 @@ def build_single_puzzle(
             down_cnt = len(placements) - across_cnt
 
             sample_cands = [item for item in candidates if item[0] not in used_words]
+            if len(sample_cands) > 90:
+                p_cands = [x for x in sample_cands if x[0] in primary_set]
+                f_cands = [x for x in sample_cands if x[0] not in primary_set]
+                sample_cands = p_cands[:70] + f_cands[:20]
 
             for word, clue in sample_cands:
                 is_primary = word in primary_set
@@ -990,7 +1234,6 @@ def build_single_puzzle(
         if len(placements) < min_words or across_cnt < 2 or down_cnt < 2:
             continue
 
-        # Gerçek kesişim sayısını hesapla
         cell_use: Dict[Tuple[int, int], int] = {}
         for w, _, r_p, c_p, d_p in placements:
             dr, dc = (0, 1) if d_p == "across" else (1, 0)
@@ -1035,7 +1278,6 @@ def assign_numbers_and_format(
     initial_reveals: int,
     rng: random.Random,
 ) -> dict:
-    """Standart gazete kare bulmaca numaralandırması ve JSON çıktısı üretir."""
     starts: Dict[Tuple[int, int], List[Tuple[str, str, int, int, str]]] = {}
     for p in placements:
         starts.setdefault((p[2], p[3]), []).append(p)
@@ -1061,10 +1303,8 @@ def assign_numbers_and_format(
 
     entries.sort(key=lambda e: (0 if e["direction"] == "across" else 1, e["number"]))
 
-    # Başlangıç açık ipucu harfleri (seviye 1-6 için oyuncuyu hızlıca oyuna sokar)
     revealed: List[List[int]] = []
     if initial_reveals > 0:
-        # Kesişim noktalarını tercih et (hem yatay hem dikeye fayda sağlar)
         cell_counts: Dict[Tuple[int, int], int] = {}
         for e in entries:
             dr, dc = (0, 1) if e["direction"] == "across" else (1, 0)
@@ -1077,7 +1317,6 @@ def assign_numbers_and_format(
         for rc in inter_cells:
             if len(chosen) >= initial_reveals:
                 break
-            # Birbirine bitişik olmasın
             if all(abs(rc[0] - x[0]) + abs(rc[1] - x[1]) > 1 for x in chosen):
                 chosen.append(rc)
         revealed = [[r, c] for r, c in chosen]
@@ -1097,14 +1336,6 @@ def assign_numbers_and_format(
 
 
 def validate_puzzle(puzzle: dict) -> None:
-    """
-    Bağımsız matematiksel doğrulayıcı:
-    1) Tüm harf kesişimleri birebir eşleşir.
-    2) Izgarada 2+ uzunluğundaki HER yatay ve dikey harf dizisi entries içinde kayıtlıdır
-       (hayalet/geçersiz bitişik kelime yoktur).
-    3) Tüm aktif hücreler tek bir bağlantılı bileşen oluşturur (kopuk kelime yoktur).
-    4) Numaralandırma standart sol-üst -> sağ-alt sırasındadır.
-    """
     rows = puzzle["rows"]
     cols = puzzle["cols"]
     grid = [["" for _ in range(cols)] for _ in range(rows)]
@@ -1129,7 +1360,6 @@ def validate_puzzle(puzzle: dict) -> None:
                 assert grid[rr][cc] == ch, f"Harf çakışması ({rr},{cc}): {puzzle['id']}"
             grid[rr][cc] = ch
 
-    # Tüm yatay 2+ koşularını doğrula
     found_across: Dict[Tuple[int, int], str] = {}
     for r in range(rows):
         c = 0
@@ -1145,7 +1375,6 @@ def validate_puzzle(puzzle: dict) -> None:
             else:
                 c += 1
 
-    # Tüm dikey 2+ koşularını doğrula
     found_down: Dict[Tuple[int, int], str] = {}
     for c in range(cols):
         r = 0
@@ -1168,7 +1397,6 @@ def validate_puzzle(puzzle: dict) -> None:
         f"Dikey tutarsızlık {puzzle['id']}: bulunan={found_down} beklenen={down_map}"
     )
 
-    # Tek bağlantılı bileşen (BFS)
     active = {(r, c) for r in range(rows) for c in range(cols) if grid[r][c] != ""}
     assert active, f"Boş bulmaca: {puzzle['id']}"
     start = next(iter(active))
@@ -1182,7 +1410,6 @@ def validate_puzzle(puzzle: dict) -> None:
                 q.append((nr, nc))
     assert visited == active, f"Kopuk bileşen var: {puzzle['id']}"
 
-    # Revealed koordinatları aktif hücre olmalı
     for rr, cc in puzzle["revealed"]:
         assert (rr, cc) in active, f"Geçersiz açık hücre: {puzzle['id']}"
 
@@ -1213,26 +1440,29 @@ def generate_pack(
     level_titles: List[str],
     seed: int,
 ) -> dict:
+    assert len(level_titles) == len(LEVEL_BLUEPRINTS), f"{pack_id} başlık sayısı 20 olmalı"
     rng = random.Random(seed)
     pool = dedupe_pool(raw_words, lang)
-    used_in_pack: Set[str] = set()
+    used_counts: Dict[str, int] = {}
     levels = []
 
     for idx, (lvl, rows, cols, min_w, max_w, rev, diff_label, tier) in enumerate(LEVEL_BLUEPRINTS):
-        # Öncelik: bu seviyeye uygun tier ve daha önce kullanılmamış kelimeler
         tier_allowed = {1} if tier == 1 else ({1, 2} if tier == 2 else {1, 2, 3})
+        eligible = [(w, c, t) for (w, c, t) in pool if t in tier_allowed]
+        # En az kullanılan kelimelere öncelik ver (20 seviye boyunca maksimum çeşitlilik)
+        min_use = min((used_counts.get(w, 0) for (w, _, _) in eligible), default=0)
         primary = [
-            (w, c) for (w, c, t) in pool
-            if t in tier_allowed and w not in used_in_pack
+            (w, c) for (w, c, t) in eligible
+            if used_counts.get(w, 0) <= min_use
         ]
-        # Tier 3 seviyelerde zor kelimeleri öne çıkar
         if tier == 3:
-            hard_unused = [(w, c) for (w, c, t) in pool if t == 3 and w not in used_in_pack]
-            med_unused = [(w, c) for (w, c, t) in pool if t == 2 and w not in used_in_pack]
-            easy_unused = [(w, c) for (w, c, t) in pool if t == 1 and w not in used_in_pack]
-            primary = hard_unused + med_unused + easy_unused
+            hard = [(w, c) for (w, c, t) in eligible if t == 3 and used_counts.get(w, 0) <= min_use]
+            med = [(w, c) for (w, c, t) in eligible if t == 2 and used_counts.get(w, 0) <= min_use]
+            short_conn = [(w, c) for (w, c, t) in eligible if len(w) <= 5]
+            rng.shuffle(short_conn)
+            primary = hard + med + short_conn[:35]
 
-        fallback = [(w, c) for (w, c, t) in pool if t in tier_allowed]
+        fallback = [(w, c) for (w, c, _) in eligible]
 
         _, placements = build_single_puzzle(
             rows=rows,
@@ -1242,11 +1472,11 @@ def generate_pack(
             primary_pool=primary,
             fallback_pool=fallback,
             rng=rng,
-            trials=500,
+            trials=320,
         )
 
         for w, _, _, _, _ in placements:
-            used_in_pack.add(w)
+            used_counts[w] = used_counts.get(w, 0) + 1
 
         puzzle = assign_numbers_and_format(
             puzzle_id=f"{pack_id}_{lvl:02d}",
@@ -1279,7 +1509,6 @@ def generate_daily_bank(
     tr_pools: List[Tuple[str, List[Tuple[str, str, int]]]],
     seed: int = 202611,
 ) -> dict:
-    """15 adet günlük karma konsept bulmaca üretir (6x6 ve 7x7 ideal mobil boyutta)."""
     rng = random.Random(seed)
     combined: List[Tuple[str, str]] = []
     seen: Set[str] = set()
@@ -1293,15 +1522,15 @@ def generate_daily_bank(
     daily_puzzles = []
 
     daily_configs = [
-        (6, 6, 6, 8, 1, "Orta"),
-        (7, 7, 7, 9, 1, "Orta"),
-        (7, 7, 8, 10, 0, "Zorlu"),
+        (6, 6, 5, 7, 1, "Kolay"),
+        (7, 7, 6, 8, 1, "Orta"),
+        (7, 7, 7, 9, 0, "Zorlu"),
     ]
 
     for i in range(1, 16):
         rows, cols, min_w, max_w, rev, diff = daily_configs[(i - 1) % len(daily_configs)]
         primary = [(w, c) for (w, c) in combined if w not in used_daily]
-        if len(primary) < 30:
+        if len(primary) < 35:
             used_daily.clear()
             primary = list(combined)
         _, placements = build_single_puzzle(
@@ -1312,7 +1541,7 @@ def generate_daily_bank(
             primary_pool=primary,
             fallback_pool=combined,
             rng=rng,
-            trials=450,
+            trials=240,
         )
         for w, _, _, _, _ in placements:
             used_daily.add(w)
@@ -1345,7 +1574,7 @@ def main() -> None:
             "yesilcam",
             "Yeşilçam Klasikleri",
             "Efsane filmler, replikler ve yıldızlar",
-            "Hababam'dan Al Yazmalım'a, Tosun Paşa'dan Neşeli Günler'e nostaljik sinema yolculuğu.",
+            "Hababam'dan Al Yazmalım'a, Tosun Paşa'dan Neşeli Günler'e 20 bölümlük nostaljik sinema yolculuğu.",
             "tr",
             "movie",
             "#B45309",
@@ -1353,17 +1582,19 @@ def main() -> None:
             "#FFFBEB",
             YESILCAM_WORDS,
             [
-                "İlk Perde", "Hababam Zili", "Turşu Kavgası", "Beyaz Perde",
-                "Süt Kardeşler", "Yeşil Vadi", "Dört Yapraklı Yonca",
-                "Usta Yönetmenler", "Beyoğlu Nostaljisi", "Yeşilçam Galası",
+                "İlk Perde", "Hababam Zili", "Yazlık Sinema", "Turşu Kavgası",
+                "Beyaz Perde", "Çamlıca Lisesi", "Mavi Boncuk", "Süt Kardeşler",
+                "Çiçek Abbas", "Yeşil Vadi", "Gülen Gözler", "Banker Bilo",
+                "Kibar Feyzo", "Dört Yapraklı Yonca", "Taçsız Kral", "Turist Ömer",
+                "Vesikalı Yarim", "Usta Yönetmenler", "Beyoğlu Nostaljisi", "Yeşilçam Galası",
             ],
             101,
         ),
         (
             "ingilizce",
             "İngilizce Kelime Avı",
-            "A1'den B2'ye oynayarak İngilizce",
-            "Türkçe ipuçlarıyla İngilizce kelimeleri çöz, seviyeler ilerledikçe kelime hazineni genişlet.",
+            "A1'den basit B1'e keyifli İngilizce",
+            "Günlük hayattan tanıdık, zorlamadan geliştiren A1-A2-B1 İngilizce kelimelerle 20 keyifli bölüm.",
             "en",
             "translate",
             "#1D4ED8",
@@ -1371,9 +1602,11 @@ def main() -> None:
             "#EFF6FF",
             INGILIZCE_WORDS,
             [
-                "First Words (A1)", "Daily Life (A1)", "Nature Walk (A1)", "City Tour (A1-A2)",
-                "Home & Taste (A2)", "Four Seasons (A2)", "World Traveler (A2)",
-                "Deep Meaning (B1)", "Bright Minds (B1-B2)", "Master Vocab (B2)",
+                "İlk Kelimeler (A1)", "Günlük Hayat (A1)", "Renkler ve Doğa (A1)", "Ev ve Eşyalar (A1)",
+                "Yemek ve Kafe (A1-A2)", "Aile ve Dostluk (A2)", "Okul ve Dersler (A2)", "Mevsimler ve Hava (A2)",
+                "Şehirde Bir Gün (A2)", "Yolculuk Zamanı (A2)", "Müzik ve Sinema (A2)", "Spor ve Oyun (A2)",
+                "Mutfak ve Lezzet (A2)", "Dijital Dünya (A2-B1)", "Hayvanlar Alemi (A2-B1)", "İş ve Ofis (B1)",
+                "Duygular ve Hayaller (B1)", "Kültür ve Sanat (B1)", "Bilim ve Gelecek (B1)", "İngilizce Ustası (B1)",
             ],
             202,
         ),
@@ -1381,7 +1614,7 @@ def main() -> None:
             "turkiye",
             "Türkiye & Mutfak",
             "İller, yöresel lezzetler ve miras",
-            "Ege'den Karadeniz'e, baklavadan antik kentlere Türkiye'nin dört bir yanından bulmacalar.",
+            "Ege'den Karadeniz'e, baklavadan antik kentlere Türkiye'nin dört bir yanından 20 özel bulmaca.",
             "tr",
             "explore",
             "#0F766E",
@@ -1389,9 +1622,11 @@ def main() -> None:
             "#F0FDFA",
             TURKIYE_WORDS,
             [
-                "Sabah Sofrası", "Ege Rüzgarı", "Anadolu Lezzetleri", "Dört Deniz",
-                "Tarihi İzler", "Şehir Turu", "Zanaat ve Kültür",
-                "Zirveler ve Nehirler", "Kadim Miras", "Büyük Türkiye Turu",
+                "Sabah Sofrası", "Ege Rüzgarı", "Karadeniz Çayı", "Anadolu Lezzetleri",
+                "Dört Deniz", "Kahve Molası", "Yöresel Tatlar", "Şehir Turu",
+                "Tarihi İzler", "Zanaat ve Kültür", "Akdeniz Güneşi", "İç Anadolu",
+                "Doğu'nun İncileri", "Zirveler ve Nehirler", "Ege Koyları", "Antik Kentler",
+                "Gastronomi Şöleni", "Kadim Miras", "Kervan Yolları", "Büyük Türkiye Turu",
             ],
             303,
         ),
@@ -1399,7 +1634,7 @@ def main() -> None:
             "genel_kultur",
             "Genel Kültür & Bilim",
             "Uzay, teknoloji, sanat ve spor",
-            "Gezegenlerden kuantuma, klasikten spora meraklı zihinler için dolu dolu kare bulmacalar.",
+            "Gezegenlerden teknolojiye, edebiyattan spora her seviyede keyifle çözülecek 20 genel kültür bölümü.",
             "tr",
             "psychology",
             "#6D28D9",
@@ -1407,9 +1642,11 @@ def main() -> None:
             "#F5F3FF",
             GENEL_KULTUR_WORDS,
             [
-                "Temel Bilgi", "Yıldızlara Bakış", "Sanat Atölyesi", "Dijital Çağ",
-                "Doğanın Gücü", "Bilim Laboratuvarı", "Spor ve Strateji",
-                "Tarih Sahnesi", "Derin Düşünce", "Büyük Usta",
+                "Temel Bilgi", "Yıldızlara Bakış", "Sanat Atölyesi", "Spor Sahası",
+                "Doğanın Gücü", "Müzik ve Ritim", "Dijital Çağ", "İnsan ve Sağlık",
+                "Bilim Laboratuvarı", "Dünya Coğrafyası", "Tarih Sahnesi", "Gezegenler",
+                "Edebiyat Dünyası", "Oyun ve Strateji", "Keşifler Çağı", "Akıl ve Mantık",
+                "Teknoloji Üssü", "Klasik Sanatlar", "Derin Evren", "Büyük Usta",
             ],
             404,
         ),
@@ -1422,7 +1659,7 @@ def main() -> None:
         out_path.write_text(json.dumps(pack, ensure_ascii=False, indent=2), encoding="utf-8")
         word_counts = [len(lvl["entries"]) for lvl in pack["levels"]]
         sizes = [f"{lvl['rows']}x{lvl['cols']}" for lvl in pack["levels"]]
-        print(f"[OK] {pack['id']:14s} -> 10 seviye | boyutlar: {sizes[0]}..{sizes[-1]} | kelimeler: {word_counts}")
+        print(f"[OK] {pack['id']:14s} -> {len(pack['levels'])} seviye | boyutlar: {sizes[0]}..{sizes[-1]} | kelimeler: {word_counts}")
         manifest_packs.append(f"assets/puzzles/{pack['id']}.json")
 
     daily = generate_daily_bank([
@@ -1439,7 +1676,7 @@ def main() -> None:
         json.dumps({"packs": manifest_packs, "daily": "assets/puzzles/daily.json"}, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
-    print(f"\nTüm bulmacalar başarıyla {OUT_DIR} içine yazıldı.")
+    print(f"\nToplam 95 bulmaca başarıyla {OUT_DIR} içine yazıldı.")
 
 
 if __name__ == "__main__":

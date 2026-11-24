@@ -2,7 +2,7 @@
   "id": "genel_kultur",
   "name": "Genel Kültür & Bilim",
   "subtitle": "Uzay, teknoloji, sanat ve spor",
-  "description": "Gezegenlerden kuantuma, klasikten spora meraklı zihinler için dolu dolu kare bulmacalar.",
+  "description": "Gezegenlerden teknolojiye, edebiyattan spora her seviyede keyifle çözülecek 20 genel kültür bölümü.",
   "language": "tr",
   "icon": "psychology",
   "primaryColor": "#6D28D9",
@@ -18,12 +18,12 @@
       "cols": 5,
       "revealed": [
         [
-          4,
-          4
-        ],
-        [
           0,
           2
+        ],
+        [
+          2,
+          0
         ]
       ],
       "entries": [
@@ -32,40 +32,40 @@
           "direction": "across",
           "row": 0,
           "col": 0,
-          "answer": "ROKET",
-          "clue": "Uzaya araç taşımak için itki üreten fırlatma sistemi"
+          "answer": "KÜRE",
+          "clue": "Gezegenlerin ve topların geometrik şekli"
+        },
+        {
+          "number": 3,
+          "direction": "across",
+          "row": 2,
+          "col": 0,
+          "answer": "MISIR",
+          "clue": "Nil Nehri ve piramitleriyle ünlü antik medeniyet"
         },
         {
           "number": 4,
           "direction": "across",
-          "row": 2,
-          "col": 0,
-          "answer": "ROMAN",
-          "clue": "Geniş kurgulu, uzun edebi anlatı türü"
-        },
-        {
-          "number": 5,
-          "direction": "across",
           "row": 4,
           "col": 0,
-          "answer": "VENÜS",
-          "clue": "Güneş sisteminin en sıcak gezegeni, Çoban Yıldızı"
+          "answer": "KEMAN",
+          "clue": "Dört telli, omuzda yayla çalınan klasik çalgı"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 0,
+          "answer": "KEMİK",
+          "clue": "İskelet sistemimizi oluşturan sert doku"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 2,
-          "answer": "KEMAN",
-          "clue": "Dört telli, omuzda yayla çalınan klasik çalgı"
-        },
-        {
-          "number": 3,
-          "direction": "down",
-          "row": 0,
-          "col": 4,
-          "answer": "TENİS",
-          "clue": "Raket ve file ile kortta oynanan spor"
+          "answer": "RESİM",
+          "clue": "Boya ve fırçayla yüzeyde oluşturulan görsel sanat"
         }
       ]
     },
@@ -78,6 +78,198 @@
       "cols": 5,
       "revealed": [
         [
+          4,
+          4
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "entries": [
+        {
+          "number": 3,
+          "direction": "across",
+          "row": 2,
+          "col": 0,
+          "answer": "KİTAP",
+          "clue": "Bilgi ve hikayeleri çağlar ötesine taşıyan basılı eser"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 4,
+          "col": 0,
+          "answer": "TENİS",
+          "clue": "Raket ve file ile kortta oynanan spor"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 0,
+          "answer": "ROKET",
+          "clue": "Uzaya araç taşımak için itki üreten fırlatma sistemi"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "ALTIN",
+          "clue": "Kimyasal simgesi Au olan değerli sarı metal"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 2,
+          "col": 4,
+          "answer": "PAS",
+          "clue": "Takım sporlarında topu arkadaşına aktarma hamlesi"
+        }
+      ]
+    },
+    {
+      "id": "genel_kultur_03",
+      "level": 3,
+      "title": "Sanat Atölyesi",
+      "difficulty": "Başlangıç",
+      "rows": 5,
+      "cols": 5,
+      "revealed": [
+        [
+          2,
+          2
+        ],
+        [
+          0,
+          4
+        ]
+      ],
+      "entries": [
+        {
+          "number": 2,
+          "direction": "across",
+          "row": 0,
+          "col": 2,
+          "answer": "DNA",
+          "clue": "Canlıların genetik şifresini taşıyan çift sarmallı molekül"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 2,
+          "col": 0,
+          "answer": "DÜNYA",
+          "clue": "Yaşam barındırdığı bilinen mavi gezegen"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 4,
+          "col": 0,
+          "answer": "BEYİN",
+          "clue": "Düşünme, hafıza ve hareketin yönetim merkezi"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 0,
+          "answer": "KOD",
+          "clue": "Bilgisayarlara ne yapacağını söyleyen komut dizisi"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "DENEY",
+          "clue": "Bir hipotezi test etmek için kontrollü araştırma"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 0,
+          "col": 4,
+          "answer": "ADA",
+          "clue": "Dört tarafı sularla çevrili kara parçası"
+        }
+      ]
+    },
+    {
+      "id": "genel_kultur_04",
+      "level": 4,
+      "title": "Spor Sahası",
+      "difficulty": "Başlangıç",
+      "rows": 5,
+      "cols": 5,
+      "revealed": [
+        [
+          0,
+          1
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 0,
+          "answer": "DAVUL",
+          "clue": "Tokmakla vurularak ritim tutulan vurmalı çalgı"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 2,
+          "col": 0,
+          "answer": "KITA",
+          "clue": "Okyanuslarla çevrili dev kara parçası"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 4,
+          "col": 0,
+          "answer": "DNA",
+          "clue": "Canlıların genetik şifresini taşıyan çift sarmallı molekül"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 1,
+          "answer": "AŞI",
+          "clue": "Bağışıklık sistemini hastalıklara karşı eğiten biyolojik ürün"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 0,
+          "col": 3,
+          "answer": "UZAY",
+          "clue": "Gök cisimlerini barındıran sonsuz evren boşluğu"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 2,
+          "col": 0,
+          "answer": "KOD",
+          "clue": "Bilgisayarlara ne yapacağını söyleyen komut dizisi"
+        }
+      ]
+    },
+    {
+      "id": "genel_kultur_05",
+      "level": 5,
+      "title": "Doğanın Gücü",
+      "difficulty": "Kolay",
+      "rows": 6,
+      "cols": 6,
+      "revealed": [
+        [
           2,
           4
         ],
@@ -92,61 +284,261 @@
           "direction": "across",
           "row": 0,
           "col": 0,
-          "answer": "UYDU",
-          "clue": "Bir gezegenin yörüngesinde dönen doğal veya yapay cisim"
+          "answer": "GÜNEŞ",
+          "clue": "Sistemimizin merkezindeki ısı ve ışık kaynağımız"
         },
         {
           "number": 4,
           "direction": "across",
           "row": 2,
           "col": 0,
-          "answer": "DENEY",
-          "clue": "Bir hipotezi test etmek için kontrollü araştırma"
+          "answer": "ROBOT",
+          "clue": "Programlanabilen otonom mekanik yardımcı"
         },
         {
           "number": 5,
           "direction": "across",
           "row": 4,
           "col": 0,
-          "answer": "ADA",
-          "clue": "Dört tarafı sularla çevrili kara parçası"
+          "answer": "MÜZE",
+          "clue": "Tarihi ve sanatsal eserlerin sergilendiği kurum"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 2,
-          "answer": "DÜNYA",
-          "clue": "Yaşam barındırdığı bilinen mavi gezegen"
+          "answer": "NABIZ",
+          "clue": "Kalbin dakikadaki atım ritmi"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 1,
+          "row": 0,
           "col": 4,
-          "answer": "ÖYKÜ",
-          "clue": "Kısa ve yoğun kurgulu edebi metin, hikaye"
+          "answer": "ŞUT",
+          "clue": "Futbolda kaleye doğru yapılan sert vuruş"
         },
         {
           "number": 4,
           "direction": "down",
           "row": 2,
           "col": 0,
-          "answer": "DNA",
-          "clue": "Canlıların genetik şifresini taşıyan çift sarmallı molekül"
+          "answer": "ROMA",
+          "clue": "Kolezyum ve hukukuyla antik çağın büyük imparatorluğu"
         }
       ]
     },
     {
-      "id": "genel_kultur_03",
-      "level": 3,
-      "title": "Sanat Atölyesi",
+      "id": "genel_kultur_06",
+      "level": 6,
+      "title": "Müzik ve Ritim",
+      "difficulty": "Kolay",
+      "rows": 6,
+      "cols": 6,
+      "revealed": [
+        [
+          5,
+          2
+        ]
+      ],
+      "entries": [
+        {
+          "number": 3,
+          "direction": "across",
+          "row": 1,
+          "col": 0,
+          "answer": "ELMAS",
+          "clue": "Doğada bilinen en sert karbon minerali"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 3,
+          "col": 0,
+          "answer": "ÜÇGEN",
+          "clue": "İç açıları toplamı 180 derece olan çokgen"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 5,
+          "col": 1,
+          "answer": "FLÜT",
+          "clue": "Üfleyerek çalınan zarif müzik aleti"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 0,
+          "answer": "VENÜS",
+          "clue": "Güneş sisteminin en sıcak gezegeni, Çoban Yıldızı"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 3,
+          "answer": "KARE",
+          "clue": "Dört kenarı eşit ve açıları 90 derece olan şekil"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 3,
+          "col": 2,
+          "answer": "GOL",
+          "clue": "Futbolda topun kale çizgisini geçmesiyle kazanılan sayı"
+        }
+      ]
+    },
+    {
+      "id": "genel_kultur_07",
+      "level": 7,
+      "title": "Dijital Çağ",
       "difficulty": "Kolay",
       "rows": 6,
       "cols": 6,
       "revealed": [
         [
           2,
+          5
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 1,
+          "answer": "MAÇ",
+          "clue": "İki takım veya sporcu arasındaki resmi karşılaşma"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 2,
+          "col": 2,
+          "answer": "IŞIK",
+          "clue": "Saniyede yaklaşık 300 bin kilometre yol alan enerji"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 4,
+          "col": 0,
+          "answer": "DEMİR",
+          "clue": "Kandaki hemoglobinde de bulunan güçlü metal"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "AÇI",
+          "clue": "İki ışının kesişmesiyle oluşan geometrik açıklık"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 0,
+          "col": 5,
+          "answer": "BOKS",
+          "clue": "Ringde eldivenle yapılan dövüş sporu"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 2,
+          "col": 3,
+          "answer": "ŞİİR",
+          "clue": "Duyguları dizeler ve imgelerle anlatan edebiyat türü"
+        },
+        {
+          "number": 6,
+          "direction": "down",
+          "row": 3,
+          "col": 1,
+          "answer": "GEN",
+          "clue": "Kalıtsal özellikleri nesilden nesile aktaran DNA parçası"
+        }
+      ]
+    },
+    {
+      "id": "genel_kultur_08",
+      "level": 8,
+      "title": "İnsan ve Sağlık",
+      "difficulty": "Kolay",
+      "rows": 6,
+      "cols": 6,
+      "revealed": [
+        [
+          3,
+          1
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 1,
+          "answer": "UYDU",
+          "clue": "Bir gezegenin yörüngesinde dönen doğal veya yapay cisim"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 3,
+          "col": 0,
+          "answer": "ENERJİ",
+          "clue": "İş yapabilme yeteneği; kinetik veya potansiyel olabilir"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 5,
+          "col": 1,
+          "answer": "SÜMER",
+          "clue": "Çivi yazısını icat eden Mezopotamya uygarlığı"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 1,
+          "answer": "URANÜS",
+          "clue": "Eksen eğikliği nedeniyle yan yatmış dönen gezegen"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 3,
+          "answer": "DEPREM",
+          "clue": "Yer kabuğundaki fay kırılmasıyla oluşan sarsıntı"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 2,
+          "col": 5,
+          "answer": "ŞİİR",
+          "clue": "Duyguları dizeler ve imgelerle anlatan edebiyat türü"
+        }
+      ]
+    },
+    {
+      "id": "genel_kultur_09",
+      "level": 9,
+      "title": "Bilim Laboratuvarı",
+      "difficulty": "Kolay",
+      "rows": 6,
+      "cols": 6,
+      "revealed": [
+        [
+          3,
           2
         ]
       ],
@@ -156,6 +548,70 @@
           "direction": "across",
           "row": 0,
           "col": 0,
+          "answer": "NOBEL",
+          "clue": "Bilim, edebiyat ve barış alanlarında verilen en prestijli ödül"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 3,
+          "col": 0,
+          "answer": "TAKVİM",
+          "clue": "Gün, hafta ve ayları düzenli gösteren zaman çizelgesi"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 5,
+          "col": 0,
+          "answer": "NOTA",
+          "clue": "Müzik seslerini kağıda aktaran işaretler"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 0,
+          "answer": "NEPTÜN",
+          "clue": "Güneş'e en uzak, fırtınalı mavi gezegen"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "BASKET",
+          "clue": "Potaya top atarak sayı kazanılan salon sporu"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 1,
+          "col": 5,
+          "answer": "ROMAN",
+          "clue": "Geniş kurgulu, uzun edebi anlatı türü"
+        }
+      ]
+    },
+    {
+      "id": "genel_kultur_10",
+      "level": 10,
+      "title": "Dünya Coğrafyası",
+      "difficulty": "Orta",
+      "rows": 7,
+      "cols": 7,
+      "revealed": [
+        [
+          2,
+          4
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 2,
           "answer": "GÜMÜŞ",
           "clue": "Kimyasal simgesi Ag olan parlak beyaz metal"
         },
@@ -163,59 +619,211 @@
           "number": 3,
           "direction": "across",
           "row": 2,
+          "col": 0,
+          "answer": "MELODİ",
+          "clue": "Bir şarkının akılda kalan ezgisi"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 4,
           "col": 2,
-          "answer": "KÜRE",
-          "clue": "Gezegenlerin ve topların geometrik şekli"
+          "answer": "KALE",
+          "clue": "Futbolda kalecinin koruduğu ağlı çerçeve"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 6,
+          "col": 1,
+          "answer": "PİYANO",
+          "clue": "88 siyah-beyaz tuşuyla klasik müziğin temel çalgısı"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "GALAKSİ",
+          "clue": "Milyarlarca yıldızdan oluşan dev kozmik sistem"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 4,
+          "answer": "MADALYA",
+          "clue": "Olimpiyatlarda ilk üçe giren sporculara takılan ödül"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 2,
+          "col": 0,
+          "answer": "MARS",
+          "clue": "Kızıl Gezegen olarak bilinen komşu gezegen"
+        }
+      ]
+    },
+    {
+      "id": "genel_kultur_11",
+      "level": 11,
+      "title": "Tarih Sahnesi",
+      "difficulty": "Orta",
+      "rows": 7,
+      "cols": 7,
+      "revealed": [
+        [
+          4,
+          0
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 0,
+          "answer": "OKSİJEN",
+          "clue": "Solunum için vazgeçilmez, atmosferin %21'ini oluşturan gaz"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 2,
+          "col": 1,
+          "answer": "KALP",
+          "clue": "Vücuda sürekli kan pompalayan hayati organ"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 4,
+          "col": 0,
+          "answer": "TİYATRO",
+          "clue": "Oyuncuların seyirci önünde canlı sahnelediği sanat"
+        },
+        {
+          "number": 8,
+          "direction": "across",
+          "row": 6,
+          "col": 0,
+          "answer": "MİMAR",
+          "clue": "Bina ve mekanları estetik ve işlevsel tasarlayan uzman"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "STADYUM",
+          "clue": "Binlerce seyircinin maç izlediği büyük spor arenası"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 0,
+          "col": 4,
+          "answer": "JÜPİTER",
+          "clue": "Güneş sisteminin en büyük gaz devi gezegeni"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 2,
+          "col": 6,
+          "answer": "TEORİ",
+          "clue": "Gözlem ve deneylerle güçlü biçimde desteklenen bilimsel kuram"
+        },
+        {
+          "number": 6,
+          "direction": "down",
+          "row": 3,
+          "col": 0,
+          "answer": "ATOM",
+          "clue": "Maddenin kimyasal özelliklerini taşıyan temel yapı taşı"
+        }
+      ]
+    },
+    {
+      "id": "genel_kultur_12",
+      "level": 12,
+      "title": "Gezegenler",
+      "difficulty": "Orta",
+      "rows": 7,
+      "cols": 7,
+      "revealed": [
+        [
+          5,
+          4
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 0,
+          "answer": "PİRAMİT",
+          "clue": "Mısır firavunları için inşa edilen dev anıt mezar"
         },
         {
           "number": 4,
           "direction": "across",
           "row": 3,
           "col": 0,
-          "answer": "AÇI",
-          "clue": "İki ışının kesişmesiyle oluşan geometrik açıklık"
+          "answer": "SİMETRİ",
+          "clue": "Bir eksene göre iki tarafın birebir ayna uyumu"
         },
         {
-          "number": 5,
+          "number": 6,
           "direction": "across",
           "row": 5,
-          "col": 1,
-          "answer": "BAKIR",
-          "clue": "Elektrik kablolarında kullanılan kızıl iletken metal"
+          "col": 2,
+          "answer": "ZEKA",
+          "clue": "Öğrenme, akıl yürütme ve problem çözme yetisi"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
           "col": 0,
-          "answer": "GİTAR",
-          "clue": "Altı telli, akor ve solo çalınan popüler enstrüman"
+          "answer": "PİKSEL",
+          "clue": "Dijital bir görüntüyü oluşturan en küçük renk noktası"
         },
         {
           "number": 2,
           "direction": "down",
-          "row": 1,
-          "col": 5,
-          "answer": "DEMİR",
-          "clue": "Kandaki hemoglobinde de bulunan güçlü metal"
+          "row": 0,
+          "col": 4,
+          "answer": "MANTIK",
+          "clue": "Doğru akıl yürütmenin kurallarını inceleyen bilim"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 2,
+          "row": 0,
+          "col": 6,
+          "answer": "TARİH",
+          "clue": "İnsanlığın geçmişini belgelerle inceleyen bilim dalı"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 3,
           "col": 2,
-          "answer": "KITA",
-          "clue": "Okyanuslarla çevrili dev kara parçası"
+          "answer": "MÜZE",
+          "clue": "Tarihi ve sanatsal eserlerin sergilendiği kurum"
         }
       ]
     },
     {
-      "id": "genel_kultur_04",
-      "level": 4,
-      "title": "Dijital Çağ",
-      "difficulty": "Kolay",
-      "rows": 6,
-      "cols": 6,
+      "id": "genel_kultur_13",
+      "level": 13,
+      "title": "Edebiyat Dünyası",
+      "difficulty": "Orta",
+      "rows": 7,
+      "cols": 7,
       "revealed": [
         [
           0,
@@ -227,232 +835,147 @@
           "number": 1,
           "direction": "across",
           "row": 0,
-          "col": 2,
-          "answer": "KÜRE",
-          "clue": "Gezegenlerin ve topların geometrik şekli"
+          "col": 0,
+          "answer": "SENSÖR",
+          "clue": "Sıcaklık, ışık veya hareketi algılayan elektronik parça"
         },
         {
           "number": 4,
           "direction": "across",
           "row": 2,
-          "col": 0,
-          "answer": "ÇİP",
-          "clue": "Elektronik cihazların beyni olan mikro devre"
-        },
-        {
-          "number": 5,
-          "direction": "across",
-          "row": 3,
           "col": 2,
-          "answer": "ATOM",
-          "clue": "Maddenin kimyasal özelliklerini taşıyan temel yapı taşı"
+          "answer": "HAKEM",
+          "clue": "Karşılaşmalarda kuralların uygulanmasını sağlayan görevli"
         },
         {
           "number": 6,
           "direction": "across",
           "row": 5,
+          "col": 3,
+          "answer": "KUPA",
+          "clue": "Turnuva şampiyonlarına verilen simgesel ödül"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 6,
           "col": 0,
-          "answer": "NOTA",
-          "clue": "Müzik seslerini kağıda aktaran işaretler"
+          "answer": "ÇİP",
+          "clue": "Elektronik cihazların beyni olan mikro devre"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
-          "col": 2,
-          "answer": "KUPA",
-          "clue": "Turnuva şampiyonlarına verilen simgesel ödül"
+          "col": 0,
+          "answer": "SATRANÇ",
+          "clue": "64 karede şah mat etmek için oynanan zeka oyunu"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 4,
-          "answer": "ROBOT",
-          "clue": "Programlanabilen otonom mekanik yardımcı"
+          "col": 2,
+          "answer": "NEHİR",
+          "clue": "Deniz veya göle dökülen büyük akarsu"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 1,
-          "col": 0,
-          "answer": "ÜÇGEN",
-          "clue": "İç açıları toplamı 180 derece olan çokgen"
+          "row": 0,
+          "col": 4,
+          "answer": "ÖYKÜ",
+          "clue": "Kısa ve yoğun kurgulu edebi metin, hikaye"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 2,
+          "col": 6,
+          "answer": "MASAL",
+          "clue": "Olağanüstü olaylarla dolu, 'Bir varmış bir yokmuş' anlatısı"
         }
       ]
     },
     {
-      "id": "genel_kultur_05",
-      "level": 5,
-      "title": "Doğanın Gücü",
+      "id": "genel_kultur_14",
+      "level": 14,
+      "title": "Oyun ve Strateji",
       "difficulty": "Orta",
       "rows": 7,
       "cols": 7,
-      "revealed": [
-        [
-          6,
-          2
-        ]
-      ],
+      "revealed": [],
       "entries": [
         {
-          "number": 2,
+          "number": 1,
           "direction": "across",
           "row": 0,
-          "col": 4,
-          "answer": "DNA",
-          "clue": "Canlıların genetik şifresini taşıyan çift sarmallı molekül"
-        },
-        {
-          "number": 4,
-          "direction": "across",
-          "row": 1,
           "col": 1,
-          "answer": "MÜZE",
-          "clue": "Tarihi ve sanatsal eserlerin sergilendiği kurum"
+          "answer": "VOLKAN",
+          "clue": "Magmanın yeryüzüne püskürdüğü yanardağ"
         },
         {
-          "number": 6,
+          "number": 5,
           "direction": "across",
-          "row": 4,
-          "col": 0,
-          "answer": "SATRANÇ",
-          "clue": "64 karede şah mat etmek için oynanan zeka oyunu"
+          "row": 2,
+          "col": 2,
+          "answer": "YAZAR",
+          "clue": "Roman, öykü veya makale kaleme alan kişi"
         },
         {
           "number": 8,
           "direction": "across",
           "row": 6,
           "col": 0,
-          "answer": "MARS",
-          "clue": "Kızıl Gezegen olarak bilinen komşu gezegen"
-        },
-        {
-          "number": 1,
-          "direction": "down",
-          "row": 0,
-          "col": 2,
-          "answer": "JÜPİTER",
-          "clue": "Güneş sisteminin en büyük gaz devi gezegeni"
-        },
-        {
-          "number": 2,
-          "direction": "down",
-          "row": 0,
-          "col": 4,
-          "answer": "DESTAN",
-          "clue": "Milletlerin kahramanlıklarını anlatan uzun manzum eser"
-        },
-        {
-          "number": 3,
-          "direction": "down",
-          "row": 0,
-          "col": 6,
-          "answer": "AŞI",
-          "clue": "Bağışıklık sistemini hastalıklara karşı eğiten biyolojik ürün"
-        },
-        {
-          "number": 5,
-          "direction": "down",
-          "row": 2,
-          "col": 0,
-          "answer": "RESİM",
-          "clue": "Boya ve fırçayla yüzeyde oluşturulan görsel sanat"
-        },
-        {
-          "number": 7,
-          "direction": "down",
-          "row": 4,
-          "col": 6,
-          "answer": "ÇÖL",
-          "clue": "Yağışın çok az olduğu kurak iklim bölgesi"
-        }
-      ]
-    },
-    {
-      "id": "genel_kultur_06",
-      "level": 6,
-      "title": "Bilim Laboratuvarı",
-      "difficulty": "Orta",
-      "rows": 7,
-      "cols": 7,
-      "revealed": [
-        [
-          2,
-          0
-        ]
-      ],
-      "entries": [
-        {
-          "number": 1,
-          "direction": "across",
-          "row": 0,
-          "col": 0,
-          "answer": "KUPA",
-          "clue": "Turnuva şampiyonlarına verilen simgesel ödül"
-        },
-        {
-          "number": 5,
-          "direction": "across",
-          "row": 2,
-          "col": 0,
-          "answer": "FELSEFE",
-          "clue": "Varlık, bilgi ve değer üzerine derin düşünme disiplini"
-        },
-        {
-          "number": 6,
-          "direction": "across",
-          "row": 4,
-          "col": 2,
-          "answer": "BAKIR",
-          "clue": "Elektrik kablolarında kullanılan kızıl iletken metal"
-        },
-        {
-          "number": 7,
-          "direction": "across",
-          "row": 6,
-          "col": 2,
-          "answer": "BİLİM",
-          "clue": "Deney ve gözleme dayalı sistemli bilgi bütünü"
+          "answer": "PUSULA",
+          "clue": "Manyetik iğnesiyle kuzeyi gösteren yön bulma aracı"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 2,
-          "answer": "PİL",
-          "clue": "Kimyasal enerjiyi elektriğe çeviren taşınabilir güç kaynağı"
+          "answer": "OKYANUS",
+          "clue": "Kıtaları birbirinden ayıran devasa tuzlu su kütlesi"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 1,
-          "col": 4,
-          "answer": "HEYKEL",
-          "clue": "Taş, bronz veya kil yontularak yapılan üç boyutlu sanat"
+          "row": 0,
+          "col": 5,
+          "answer": "ADA",
+          "clue": "Dört tarafı sularla çevrili kara parçası"
         },
         {
           "number": 4,
           "direction": "down",
           "row": 1,
-          "col": 6,
-          "answer": "DEPREM",
-          "clue": "Yer kabuğundaki fay kırılmasıyla oluşan sarsıntı"
+          "col": 0,
+          "answer": "MİKROP",
+          "clue": "Gözle görülemeyen tek hücreli canlıların genel adı"
         },
         {
-          "number": 5,
+          "number": 6,
           "direction": "down",
           "row": 2,
-          "col": 0,
-          "answer": "FOSİL",
-          "clue": "Milyonlarca yıl öncesinden taşlaşarak kalan canlı izi"
+          "col": 6,
+          "answer": "ROMA",
+          "clue": "Kolezyum ve hukukuyla antik çağın büyük imparatorluğu"
+        },
+        {
+          "number": 7,
+          "direction": "down",
+          "row": 4,
+          "col": 4,
+          "answer": "PİL",
+          "clue": "Kimyasal enerjiyi elektriğe çeviren taşınabilir güç kaynağı"
         }
       ]
     },
     {
-      "id": "genel_kultur_07",
-      "level": 7,
-      "title": "Spor ve Strateji",
+      "id": "genel_kultur_15",
+      "level": 15,
+      "title": "Keşifler Çağı",
       "difficulty": "Zorlu",
       "rows": 7,
       "cols": 7,
@@ -463,71 +986,138 @@
           "direction": "across",
           "row": 0,
           "col": 0,
-          "answer": "SİMETRİ",
-          "clue": "Bir eksene göre iki tarafın birebir ayna uyumu"
-        },
-        {
-          "number": 4,
-          "direction": "across",
-          "row": 2,
-          "col": 2,
-          "answer": "SÜMER",
-          "clue": "Çivi yazısını icat eden Mezopotamya uygarlığı"
-        },
-        {
-          "number": 7,
-          "direction": "across",
-          "row": 4,
-          "col": 0,
-          "answer": "PİRAMİT",
-          "clue": "Mısır firavunları için inşa edilen dev anıt mezar"
-        },
-        {
-          "number": 8,
-          "direction": "across",
-          "row": 6,
-          "col": 1,
-          "answer": "DEPREM",
-          "clue": "Yer kabuğundaki fay kırılmasıyla oluşan sarsıntı"
+          "answer": "HEYKEL",
+          "clue": "Taş, bronz veya kil yontularak yapılan üç boyutlu sanat"
         },
         {
           "number": 2,
+          "direction": "across",
+          "row": 2,
+          "col": 0,
+          "answer": "RESSAM",
+          "clue": "Tuval üzerine renklerle eser üreten sanatçı"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 4,
+          "col": 2,
+          "answer": "HİTİT",
+          "clue": "Anadolu'da Kadeş Antlaşması'nı imzalayan kadim uygarlık"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 6,
+          "col": 1,
+          "answer": "MERKÜR",
+          "clue": "Güneş'e en yakın ve en hızlı dönen gezegen"
+        },
+        {
+          "number": 1,
           "direction": "down",
           "row": 0,
-          "col": 2,
-          "answer": "MISIR",
-          "clue": "Nil Nehri ve piramitleriyle ünlü antik medeniyet"
+          "col": 0,
+          "answer": "HARİTA",
+          "clue": "Yeryüzünün ölçekli ve düzlem üzerine çizilmiş modeli"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 2,
-          "col": 0,
-          "answer": "KUPA",
-          "clue": "Turnuva şampiyonlarına verilen simgesel ödül"
+          "col": 2,
+          "answer": "SAHNE",
+          "clue": "Tiyatro ve konserlerde performansın sergilendiği alan"
         },
         {
-          "number": 5,
+          "number": 4,
           "direction": "down",
           "row": 2,
           "col": 4,
-          "answer": "MİMAR",
-          "clue": "Bina ve mekanları estetik ve işlevsel tasarlayan uzman"
-        },
-        {
-          "number": 6,
-          "direction": "down",
-          "row": 2,
-          "col": 6,
-          "answer": "RİTİM",
-          "clue": "Müzikte vuruşların düzenli ve ölçülü akışı"
+          "answer": "ANTİK",
+          "clue": "İlk çağlardan kalma tarihi eser veya dönem"
         }
       ]
     },
     {
-      "id": "genel_kultur_08",
-      "level": 8,
-      "title": "Tarih Sahnesi",
+      "id": "genel_kultur_16",
+      "level": 16,
+      "title": "Akıl ve Mantık",
+      "difficulty": "Zorlu",
+      "rows": 8,
+      "cols": 8,
+      "revealed": [],
+      "entries": [
+        {
+          "number": 3,
+          "direction": "across",
+          "row": 1,
+          "col": 0,
+          "answer": "ELEKTRON",
+          "clue": "Atom çekirdeği etrafında dönen eksi yüklü parçacık"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 3,
+          "col": 1,
+          "answer": "MARATON",
+          "clue": "42 kilometre 195 metrelik dayanıklılık koşusu"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 5,
+          "col": 0,
+          "answer": "DİSTOPYA",
+          "clue": "Baskıcı ve karanlık gelecek kurgusu"
+        },
+        {
+          "number": 8,
+          "direction": "across",
+          "row": 7,
+          "col": 3,
+          "answer": "MISIR",
+          "clue": "Nil Nehri ve piramitleriyle ünlü antik medeniyet"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 1,
+          "answer": "OLİMPİK",
+          "clue": "Dört yılda bir düzenlenen dünya oyunlarıyla ilgili"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 6,
+          "answer": "KORO",
+          "clue": "Çok sesli şarkı söyleyen topluluk"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 3,
+          "col": 3,
+          "answer": "RİTİM",
+          "clue": "Müzikte vuruşların düzenli ve ölçülü akışı"
+        },
+        {
+          "number": 7,
+          "direction": "down",
+          "row": 5,
+          "col": 5,
+          "answer": "PAS",
+          "clue": "Takım sporlarında topu arkadaşına aktarma hamlesi"
+        }
+      ]
+    },
+    {
+      "id": "genel_kultur_17",
+      "level": 17,
+      "title": "Teknoloji Üssü",
       "difficulty": "Zorlu",
       "rows": 8,
       "cols": 8,
@@ -537,80 +1127,147 @@
           "number": 1,
           "direction": "across",
           "row": 0,
-          "col": 0,
-          "answer": "FUTBOL",
-          "clue": "Dünyada en çok izlenen on birer kişilik takım sporu"
+          "col": 2,
+          "answer": "YAPAY",
+          "clue": "Doğal olmayan; '... zeka' tamlamasının ilk sözcüğü"
         },
         {
-          "number": 4,
+          "number": 3,
           "direction": "across",
-          "row": 3,
-          "col": 2,
-          "answer": "FOTON",
-          "clue": "Işığı oluşturan kütlesiz enerji paketi"
+          "row": 2,
+          "col": 0,
+          "answer": "REKOR",
+          "clue": "Bir spor dalında şimdiye kadar ulaşılmış en iyi derece"
         },
         {
           "number": 6,
           "direction": "across",
-          "row": 5,
-          "col": 1,
-          "answer": "TEORİ",
-          "clue": "Gözlem ve deneylerle güçlü biçimde desteklenen bilimsel kuram"
-        },
-        {
-          "number": 8,
-          "direction": "across",
-          "row": 7,
-          "col": 1,
-          "answer": "KRİSTAL",
-          "clue": "Atomları düzenli geometrik örgüde dizilmiş katı yapı"
-        },
-        {
-          "number": 1,
-          "direction": "down",
-          "row": 0,
+          "row": 4,
           "col": 0,
-          "answer": "FLÜT",
-          "clue": "Üfleyerek çalınan zarif müzik aleti"
+          "answer": "MERİDYEN",
+          "clue": "Kutupları birleştiren hayali boylam yayı"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 6,
+          "col": 2,
+          "answer": "ESKRİM",
+          "clue": "Kılıç ve maskeyle yapılan zarif salon sporu"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 3,
-          "answer": "BİYOLOJİ",
-          "clue": "Canlı yaşamını tüm boyutlarıyla inceleyen bilim dalı"
+          "col": 4,
+          "answer": "PARADOKS",
+          "clue": "İlk bakışta çelişkili görünüp derin mantık barındıran önerme"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 2,
-          "col": 5,
-          "answer": "SOLİST",
-          "clue": "Orkestra veya koro önünde tek başına eser icra eden sanatçı"
+          "col": 0,
+          "answer": "ROMAN",
+          "clue": "Geniş kurgulu, uzun edebi anlatı türü"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 2,
+          "col": 2,
+          "answer": "KÖRFEZ",
+          "clue": "Denizin karanın içine derinlemesine sokulduğu kısım"
         },
         {
           "number": 5,
           "direction": "down",
-          "row": 4,
-          "col": 1,
-          "answer": "ETİK",
-          "clue": "Ahlaki değerler ve doğru davranış ilkeleri felsefesi"
-        },
-        {
-          "number": 7,
-          "direction": "down",
-          "row": 5,
-          "col": 7,
-          "answer": "GOL",
-          "clue": "Futbolda topun kale çizgisini geçmesiyle kazanılan sayı"
+          "row": 3,
+          "col": 6,
+          "answer": "VERİ",
+          "clue": "İşlenerek bilgiye dönüştürülen ham kayıt veya sayı"
         }
       ]
     },
     {
-      "id": "genel_kultur_09",
-      "level": 9,
-      "title": "Derin Düşünce",
+      "id": "genel_kultur_18",
+      "level": 18,
+      "title": "Klasik Sanatlar",
+      "difficulty": "Usta",
+      "rows": 8,
+      "cols": 8,
+      "revealed": [],
+      "entries": [
+        {
+          "number": 2,
+          "direction": "across",
+          "row": 0,
+          "col": 4,
+          "answer": "MAÇ",
+          "clue": "İki takım veya sporcu arasındaki resmi karşılaşma"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 3,
+          "col": 0,
+          "answer": "ORMAN",
+          "clue": "Yeryüzünün akciğeri sayılan yoğun ağaçlık alan"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 5,
+          "col": 0,
+          "answer": "ATLETİZM",
+          "clue": "Koşu, atlama ve atma branşlarını kapsayan temel spor"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 7,
+          "col": 0,
+          "answer": "KÜRESEL",
+          "clue": "Tüm dünyayı kapsayan, gezegen ölçeğindeki"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "FORMÜL",
+          "clue": "Matematik veya kimyada ilişkileri gösteren sembolik ifade"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 4,
+          "answer": "MIKNATIS",
+          "clue": "Demir ve nikeli çeken manyetik cisim"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 2,
+          "col": 0,
+          "answer": "MOZAİK",
+          "clue": "Küçük renkli taşlarla oluşturulan kadim süsleme sanatı"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 3,
+          "col": 6,
+          "answer": "BUZUL",
+          "clue": "Kutup ve yüksek zirvelerdeki dev hareketli buz kütlesi"
+        }
+      ]
+    },
+    {
+      "id": "genel_kultur_19",
+      "level": 19,
+      "title": "Derin Evren",
       "difficulty": "Usta",
       "rows": 8,
       "cols": 8,
@@ -620,87 +1277,79 @@
           "number": 1,
           "direction": "across",
           "row": 0,
+          "col": 2,
+          "answer": "DİNAMO",
+          "clue": "Mekanik hareketi elektrik enerjisine dönüştüren araç"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 1,
           "col": 0,
-          "answer": "TELESKOP",
-          "clue": "Uzak yıldız ve galaksileri gözlemleyen optik alet"
+          "answer": "GEN",
+          "clue": "Kalıtsal özellikleri nesilden nesile aktaran DNA parçası"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 2,
+          "col": 5,
+          "answer": "MAÇ",
+          "clue": "İki takım veya sporcu arasındaki resmi karşılaşma"
         },
         {
           "number": 6,
           "direction": "across",
-          "row": 3,
-          "col": 0,
-          "answer": "PARADOKS",
-          "clue": "İlk bakışta çelişkili görünüp derin mantık barındıran önerme"
+          "row": 4,
+          "col": 3,
+          "answer": "FOSİL",
+          "clue": "Milyonlarca yıl öncesinden taşlaşarak kalan canlı izi"
         },
         {
-          "number": 8,
+          "number": 7,
           "direction": "across",
-          "row": 5,
-          "col": 5,
-          "answer": "GOL",
-          "clue": "Futbolda topun kale çizgisini geçmesiyle kazanılan sayı"
+          "row": 6,
+          "col": 3,
+          "answer": "FRESK",
+          "clue": "Islak sıva üzerine yapılan kalıcı duvar resmi"
         },
         {
-          "number": 9,
-          "direction": "across",
-          "row": 7,
-          "col": 0,
-          "answer": "ASTRONOM",
-          "clue": "Gök cisimlerini ve evreni inceleyen bilim insanı"
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "DNA",
+          "clue": "Canlıların genetik şifresini taşıyan çift sarmallı molekül"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 1,
-          "answer": "EKRAN",
-          "clue": "Telefon ve bilgisayarlarda görüntüyü sunan panel"
+          "col": 5,
+          "answer": "ATMOSFER",
+          "clue": "Dünya'yı saran koruyucu gaz tabakası"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
-          "col": 3,
-          "answer": "ELMAS",
-          "clue": "Doğada bilinen en sert karbon minerali"
+          "col": 7,
+          "answer": "OKÇULUK",
+          "clue": "Yay ve okla hedefi on ikiden vurma sporu"
         },
         {
           "number": 4,
           "direction": "down",
-          "row": 0,
-          "col": 5,
-          "answer": "KORO",
-          "clue": "Çok sesli şarkı söyleyen topluluk"
-        },
-        {
-          "number": 5,
-          "direction": "down",
-          "row": 0,
-          "col": 7,
-          "answer": "PİKSEL",
-          "clue": "Dijital bir görüntüyü oluşturan en küçük renk noktası"
-        },
-        {
-          "number": 7,
-          "direction": "down",
-          "row": 5,
+          "row": 1,
           "col": 0,
-          "answer": "ADA",
-          "clue": "Dört tarafı sularla çevrili kara parçası"
-        },
-        {
-          "number": 8,
-          "direction": "down",
-          "row": 5,
-          "col": 5,
-          "answer": "GEN",
-          "clue": "Kalıtsal özellikleri nesilden nesile aktaran DNA parçası"
+          "answer": "GRAVİTE",
+          "clue": "Kütlelerin birbirini çekme kuvveti, yerçekimi"
         }
       ]
     },
     {
-      "id": "genel_kultur_10",
-      "level": 10,
+      "id": "genel_kultur_20",
+      "level": 20,
       "title": "Büyük Usta",
       "difficulty": "Usta",
       "rows": 8,
@@ -708,76 +1357,76 @@
       "revealed": [],
       "entries": [
         {
-          "number": 1,
+          "number": 3,
           "direction": "across",
-          "row": 0,
+          "row": 1,
           "col": 0,
-          "answer": "KOD",
-          "clue": "Bilgisayarlara ne yapacağını söyleyen komut dizisi"
+          "answer": "TELESKOP",
+          "clue": "Uzak yıldız ve galaksileri gözlemleyen optik alet"
         },
         {
-          "number": 5,
-          "direction": "across",
-          "row": 2,
-          "col": 0,
-          "answer": "ROMA",
-          "clue": "Kolezyum ve hukukuyla antik çağın büyük imparatorluğu"
-        },
-        {
-          "number": 6,
+          "number": 4,
           "direction": "across",
           "row": 3,
-          "col": 3,
-          "answer": "REKOR",
-          "clue": "Bir spor dalında şimdiye kadar ulaşılmış en iyi derece"
+          "col": 0,
+          "answer": "MÜHENDİS",
+          "clue": "Bilimi kullanarak pratik sistem ve yapılar tasarlayan uzman"
         },
         {
           "number": 7,
           "direction": "across",
           "row": 5,
           "col": 0,
-          "answer": "ELEKTRON",
-          "clue": "Atom çekirdeği etrafında dönen eksi yüklü parçacık"
+          "answer": "ASTRONOM",
+          "clue": "Gök cisimlerini ve evreni inceleyen bilim insanı"
         },
         {
           "number": 8,
           "direction": "across",
           "row": 7,
-          "col": 2,
-          "answer": "FORMÜL",
-          "clue": "Matematik veya kimyada ilişkileri gösteren sembolik ifade"
+          "col": 4,
+          "answer": "ŞAİR",
+          "clue": "Duyguları dizelere döken edebiyatçı"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
           "col": 0,
-          "answer": "KÜRESEL",
-          "clue": "Tüm dünyayı kapsayan, gezegen ölçeğindeki"
+          "answer": "ATOM",
+          "clue": "Maddenin kimyasal özelliklerini taşıyan temel yapı taşı"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 5,
-          "answer": "SPEKTRUM",
-          "clue": "Işığın dalga boylarına göre ayrılmış renk tayfı"
-        },
-        {
-          "number": 3,
-          "direction": "down",
-          "row": 0,
-          "col": 7,
-          "answer": "NÖTRON",
-          "clue": "Atom çekirdeğindeki elektriksel yükü sıfır olan parçacık"
-        },
-        {
-          "number": 4,
-          "direction": "down",
-          "row": 1,
           "col": 3,
-          "answer": "BAROK",
-          "clue": "17. yüzyılın süslü ve görkemli sanat akımı"
+          "answer": "METEOR",
+          "clue": "Atmosfere girip yanarak iz bırakan uzay taşı"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 3,
+          "col": 5,
+          "answer": "DÜNYA",
+          "clue": "Yaşam barındırdığı bilinen mavi gezegen"
+        },
+        {
+          "number": 6,
+          "direction": "down",
+          "row": 3,
+          "col": 7,
+          "answer": "SÜMER",
+          "clue": "Çivi yazısını icat eden Mezopotamya uygarlığı"
+        },
+        {
+          "number": 7,
+          "direction": "down",
+          "row": 5,
+          "col": 0,
+          "answer": "AŞI",
+          "clue": "Bağışıklık sistemini hastalıklara karşı eğiten biyolojik ürün"
         }
       ]
     }

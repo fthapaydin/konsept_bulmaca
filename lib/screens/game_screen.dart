@@ -7,8 +7,10 @@ import '../utils/turkish_text.dart';
 import '../widgets/background_canvas.dart';
 import '../widgets/clue_banner.dart';
 import '../widgets/completion_dialog.dart';
+import '../widgets/confetti_overlay.dart';
 import '../widgets/crossword_grid.dart';
 import '../widgets/game_keyboard.dart';
+import '../widgets/rewards_center_sheet.dart';
 import 'background_gallery_screen.dart';
 
 class GameScreen extends StatefulWidget {
@@ -79,7 +81,7 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _controller.pauseTimer();
+    _controller.pauseTimer(silent: true);
     _controller.dispose();
     _focusNode.dispose();
     super.dispose();
@@ -233,59 +235,149 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                 : SystemUiOverlayStyle.dark,
             child: Scaffold(
               backgroundColor: Colors.transparent,
-              body: BackgroundCanvas(
-                background: activeBg,
-                conceptSurfaceColor: widget.surfaceColor,
-                conceptPrimaryColor: widget.primaryColor,
-                child: SafeArea(
-                  child: Column(
-                    children: [
-                      _buildTopBar(isDark: isDark),
-                      LinearProgressIndicator(
-                        value: _controller.completionProgress,
-                        minHeight: 3.5,
-                        backgroundColor: isDark
-                            ? Colors.white12
-                            : widget.primaryColor.withValues(alpha: 0.14),
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          isDark ? activeBg.accentColor : widget.primaryColor,
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
-                          child: CrosswordGrid(
-                            controller: _controller,
-                            primaryColor: widget.primaryColor,
-                            secondaryColor: widget.secondaryColor,
+              body: Stack(
+                fit: StackFit.expand,
+                children: [
+                  BackgroundCanvas(
+                    background: activeBg,
+                    conceptSurfaceColor: widget.surfaceColor,
+                    conceptPrimaryColor: widget.primaryColor,
+                    child: SafeArea(
+                      child: Column(
+                        children: [
+                          _buildTopBar(isDark: isDark),
+                          LinearProgressIndicator(
+                            value: _controller.completionProgress,
+                            minHeight: 3.5,
+                            backgroundColor: isDark
+                                ? Colors.white12
+                                : widget.primaryColor.withValues(alpha: 0.14),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              isDark
+                                  ? activeBg.accentColor
+                                  : widget.primaryColor,
+                            ),
                           ),
-                        ),
+                          Expanded(
+                            child: Stack(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(12, 10, 12, 8),
+                                  child: CrosswordGrid(
+                                    controller: _controller,
+                                    primaryColor: widget.primaryColor,
+                                    secondaryColor: widget.secondaryColor,
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 8,
+                                  left: 0,
+                                  right: 0,
+                                  child: IgnorePointer(
+                                    child: Center(
+                                      child: AnimatedSwitcher(
+                                        duration:
+                                            const Duration(milliseconds: 220),
+                                        transitionBuilder: (child, anim) =>
+                                            ScaleTransition(
+                                          scale: CurvedAnimation(
+                                            parent: anim,
+                                            curve: Curves.easeOutBack,
+                                          ),
+                                          child: FadeTransition(
+                                            opacity: anim,
+                                            child: child,
+                                          ),
+                                        ),
+                                        child: _controller.recentSolvedBanner ==
+                                                null
+                                            ? const SizedBox.shrink()
+                                            : Container(
+                                                key: ValueKey<String>(
+                                                  _controller
+                                                      .recentSolvedBanner!,
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 14,
+                                                  vertical: 7,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xFF15803D),
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.black
+                                                          .withValues(
+                                                              alpha: 0.25),
+                                                      blurRadius: 10,
+                                                      offset:
+                                                          const Offset(0, 4),
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    const Icon(
+                                                      Icons
+                                                          .auto_awesome_rounded,
+                                                      size: 16,
+                                                      color: Color(0xFFFDE047),
+                                                    ),
+                                                    const SizedBox(width: 6),
+                                                    Text(
+                                                      _controller
+                                                          .recentSolvedBanner!,
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        fontSize: 12.5,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          ClueBanner(
+                            entry: _controller.activeEntry,
+                            primaryColor: widget.primaryColor,
+                            onPrevious: _controller.previousClue,
+                            onNext: _controller.nextClue,
+                            onOpenAllClues: () => showAllCluesSheet(
+                              context: context,
+                              controller: _controller,
+                              primaryColor: widget.primaryColor,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          _buildJokerBar(),
+                          const SizedBox(height: 6),
+                          GameKeyboard(
+                            language: widget.language,
+                            primaryColor: widget.primaryColor,
+                            isDark: isDark,
+                            onLetter: _controller.inputLetter,
+                            onBackspace: _controller.backspace,
+                            onToggleDirection: _controller.toggleDirection,
+                          ),
+                        ],
                       ),
-                      ClueBanner(
-                        entry: _controller.activeEntry,
-                        primaryColor: widget.primaryColor,
-                        onPrevious: _controller.previousClue,
-                        onNext: _controller.nextClue,
-                        onOpenAllClues: () => showAllCluesSheet(
-                          context: context,
-                          controller: _controller,
-                          primaryColor: widget.primaryColor,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      _buildJokerBar(),
-                      const SizedBox(height: 6),
-                      GameKeyboard(
-                        language: widget.language,
-                        primaryColor: widget.primaryColor,
-                        isDark: isDark,
-                        onLetter: _controller.inputLetter,
-                        onBackspace: _controller.backspace,
-                        onToggleDirection: _controller.toggleDirection,
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                  ConfettiOverlay(active: _controller.isCompleted),
+                ],
               ),
             ),
           );
@@ -371,30 +463,34 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
             ),
           ),
           const SizedBox(width: 5),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-            decoration: BoxDecoration(
-              color: const Color(0xFFFEF3C7),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.monetization_on_rounded,
-                  size: 14.5,
-                  color: Color(0xFFD97706),
-                ),
-                const SizedBox(width: 3),
-                Text(
-                  '${widget.appState.coins}',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w900,
-                    color: Color(0xFF92400E),
+          InkWell(
+            onTap: () => showRewardsCenterSheet(context, widget.appState),
+            borderRadius: BorderRadius.circular(14),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFEF3C7),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.monetization_on_rounded,
+                    size: 14.5,
+                    color: Color(0xFFD97706),
                   ),
-                ),
-              ],
+                  const SizedBox(width: 3),
+                  Text(
+                    '${widget.appState.coins}',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w900,
+                      color: Color(0xFF92400E),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           IconButton(
@@ -425,13 +521,13 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
 
   Widget _buildJokerBar() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         children: [
           Expanded(
             child: _JokerButton(
               icon: Icons.lightbulb_outline_rounded,
-              label: 'Harf Aç',
+              label: 'Harf',
               cost: '${AppState.letterHintCost}',
               color: widget.primaryColor,
               onTap: () async {
@@ -440,7 +536,7 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
               },
             ),
           ),
-          const SizedBox(width: 6),
+          const SizedBox(width: 5),
           Expanded(
             child: _JokerButton(
               icon: Icons.auto_awesome_rounded,
@@ -453,7 +549,7 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
               },
             ),
           ),
-          const SizedBox(width: 6),
+          const SizedBox(width: 5),
           Expanded(
             child: _JokerButton(
               icon: Icons.fact_check_outlined,
@@ -466,7 +562,7 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
               },
             ),
           ),
-          const SizedBox(width: 6),
+          const SizedBox(width: 5),
           Expanded(
             child: _JokerButton(
               icon: Icons.list_alt_rounded,
@@ -511,7 +607,7 @@ class _JokerButton extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(11),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 6),
+          padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 4),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(11),
             border: Border.all(color: color.withValues(alpha: 0.25)),
@@ -519,15 +615,15 @@ class _JokerButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 15, color: color),
-              const SizedBox(width: 4),
+              Icon(icon, size: 14, color: color),
+              const SizedBox(width: 3),
               Flexible(
                 child: Text(
                   label,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 11.5,
+                    fontSize: 11,
                     fontWeight: FontWeight.w800,
                     color: color,
                   ),
@@ -547,7 +643,7 @@ class _JokerButton extends StatelessWidget {
                   child: Text(
                     cost!,
                     style: const TextStyle(
-                      fontSize: 10,
+                      fontSize: 9.5,
                       fontWeight: FontWeight.w900,
                       color: Color(0xFF92400E),
                     ),

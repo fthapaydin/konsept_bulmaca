@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:konsept_bulmaca/main.dart';
 import 'package:konsept_bulmaca/models/background_models.dart';
 import 'package:konsept_bulmaca/models/puzzle_models.dart';
+import 'package:konsept_bulmaca/models/retention_models.dart';
 import 'package:konsept_bulmaca/services/puzzle_repository.dart';
 import 'package:konsept_bulmaca/state/app_state.dart';
 import 'package:konsept_bulmaca/state/game_controller.dart';
@@ -39,7 +40,7 @@ void main() {
   });
 
   group('PuzzleRepository & Assets', () {
-    test('loads all 4 concept packs (40 levels) and 15 daily puzzles', () async {
+    test('loads all 4 concept packs (80 levels) and 15 daily puzzles', () async {
       final repo = PuzzleRepository();
       final content = await repo.loadAll();
 
@@ -47,7 +48,7 @@ void main() {
       expect(content.dailyBank.puzzles.length, 15);
 
       for (final pack in content.packs) {
-        expect(pack.levels.length, 10, reason: '${pack.id} must have 10 levels');
+        expect(pack.levels.length, 20, reason: '${pack.id} must have 20 levels');
         // Optimum mobile progression: starts 5x5 and ends 8x8
         expect(pack.levels.first.rows, 5);
         expect(pack.levels.first.cols, 5);
@@ -223,6 +224,23 @@ void main() {
       expect(appState.selectedBackground.id, cappadocia.id);
       expect(appState.coins, coinsBefore - cappadocia.coinCost);
 
+      // Daily gift and mission claim progression
+      expect(appState.canClaimDailyGift, isTrue);
+      final giftEarned = await appState.claimDailyGift();
+      expect(giftEarned, MissionCatalog.dailyGiftCoins);
+      expect(appState.canClaimDailyGift, isFalse);
+
+      // First win mission should now be claimable (3 puzzles solved!)
+      final firstWin = MissionCatalog.all.first;
+      expect(appState.canClaimMission(firstWin), isTrue);
+      final missionCoins = await appState.claimMission(firstWin);
+      expect(missionCoins, firstWin.rewardCoins);
+      expect(appState.isMissionClaimed(firstWin), isTrue);
+
+      // Player rank advanced from 9 stars -> Kelime Kaşifi (Level 2)
+      expect(appState.currentRank.level, 2);
+      expect(appState.currentRank.title, 'Kelime Kaşifi');
+
       appState.dispose();
     });
   });
@@ -293,7 +311,7 @@ void main() {
       expect(find.descendant(of: keyboard, matching: find.text('Ğ')), findsOneWidget);
       expect(find.descendant(of: keyboard, matching: find.text('Ş')), findsOneWidget);
       expect(find.descendant(of: keyboard, matching: find.text('İ')), findsOneWidget);
-      expect(find.text('Harf Aç'), findsOneWidget);
+      expect(find.text('Harf'), findsOneWidget);
 
       // Tap a Turkish key on the keyboard and verify no exceptions
       await tester.tap(find.descendant(of: keyboard, matching: find.text('A')));

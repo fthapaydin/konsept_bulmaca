@@ -1,8 +1,8 @@
 {
   "id": "ingilizce",
   "name": "İngilizce Kelime Avı",
-  "subtitle": "A1'den B2'ye oynayarak İngilizce",
-  "description": "Türkçe ipuçlarıyla İngilizce kelimeleri çöz, seviyeler ilerledikçe kelime hazineni genişlet.",
+  "subtitle": "A1'den basit B1'e keyifli İngilizce",
+  "description": "Günlük hayattan tanıdık, zorlamadan geliştiren A1-A2-B1 İngilizce kelimelerle 20 keyifli bölüm.",
   "language": "en",
   "icon": "translate",
   "primaryColor": "#1D4ED8",
@@ -12,13 +12,73 @@
     {
       "id": "ingilizce_01",
       "level": 1,
-      "title": "First Words (A1)",
+      "title": "İlk Kelimeler (A1)",
       "difficulty": "Başlangıç",
       "rows": 5,
       "cols": 5,
       "revealed": [
         [
+          3,
+          2
+        ],
+        [
           0,
+          4
+        ]
+      ],
+      "entries": [
+        {
+          "number": 2,
+          "direction": "across",
+          "row": 0,
+          "col": 2,
+          "answer": "CUP",
+          "clue": "Fincan, kupa (A1)"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 3,
+          "col": 0,
+          "answer": "SHORT",
+          "clue": "Kısa (A1)"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 0,
+          "answer": "HOUSE",
+          "clue": "Ev (A1)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "COLOR",
+          "clue": "Renk (A1)"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 0,
+          "col": 4,
+          "answer": "PASTA",
+          "clue": "Makarna (A1)"
+        }
+      ]
+    },
+    {
+      "id": "ingilizce_02",
+      "level": 2,
+      "title": "Günlük Hayat (A1)",
+      "difficulty": "Başlangıç",
+      "rows": 5,
+      "cols": 5,
+      "revealed": [
+        [
+          2,
           3
         ],
         [
@@ -31,48 +91,48 @@
           "number": 1,
           "direction": "across",
           "row": 0,
+          "col": 1,
+          "answer": "STAR",
+          "clue": "Yıldız (A1)"
+        },
+        {
+          "number": 3,
+          "direction": "across",
+          "row": 2,
           "col": 0,
-          "answer": "FAST",
-          "clue": "Hızlı (A1)"
+          "answer": "HAPPY",
+          "clue": "Mutlu (A1)"
         },
         {
           "number": 4,
           "direction": "across",
-          "row": 2,
+          "row": 4,
           "col": 1,
-          "answer": "PLAY",
-          "clue": "Oyun oynamak (A1)"
+          "answer": "TREE",
+          "clue": "Ağaç (A1)"
         },
         {
-          "number": 5,
-          "direction": "across",
-          "row": 4,
-          "col": 0,
-          "answer": "BEAR",
-          "clue": "Ayı (hayvan) (A1)"
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 1,
+          "answer": "START",
+          "clue": "Başlamak (A1)"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 1,
+          "col": 3,
           "answer": "APPLE",
           "clue": "Elma (A1)"
-        },
-        {
-          "number": 3,
-          "direction": "down",
-          "row": 0,
-          "col": 3,
-          "answer": "TEA",
-          "clue": "Çay (A1)"
         }
       ]
     },
     {
-      "id": "ingilizce_02",
-      "level": 2,
-      "title": "Daily Life (A1)",
+      "id": "ingilizce_03",
+      "level": 3,
+      "title": "Renkler ve Doğa (A1)",
       "difficulty": "Başlangıç",
       "rows": 5,
       "cols": 5,
@@ -82,137 +142,253 @@
           4
         ],
         [
-          2,
-          0
+          4,
+          2
         ]
       ],
       "entries": [
         {
-          "number": 3,
-          "direction": "across",
-          "row": 1,
-          "col": 2,
-          "answer": "SEA",
-          "clue": "Deniz (A1)"
-        },
-        {
           "number": 4,
           "direction": "across",
-          "row": 2,
+          "row": 1,
           "col": 0,
-          "answer": "TEA",
-          "clue": "Çay (A1)"
+          "answer": "HELLO",
+          "clue": "Merhaba (A1)"
         },
         {
           "number": 5,
           "direction": "across",
           "row": 4,
-          "col": 1,
-          "answer": "STAR",
-          "clue": "Yıldız (A1)"
-        },
-        {
-          "number": 1,
-          "direction": "down",
-          "row": 0,
-          "col": 0,
-          "answer": "HAT",
-          "clue": "Şapka (A1)"
-        },
-        {
-          "number": 2,
-          "direction": "down",
-          "row": 0,
-          "col": 4,
-          "answer": "WATER",
-          "clue": "Su (A1)"
-        },
-        {
-          "number": 3,
-          "direction": "down",
-          "row": 1,
           "col": 2,
-          "answer": "SALT",
-          "clue": "Tuz (A1)"
-        }
-      ]
-    },
-    {
-      "id": "ingilizce_03",
-      "level": 3,
-      "title": "Nature Walk (A1)",
-      "difficulty": "Kolay",
-      "rows": 6,
-      "cols": 6,
-      "revealed": [
-        [
-          5,
-          4
-        ]
-      ],
-      "entries": [
-        {
-          "number": 2,
-          "direction": "across",
-          "row": 0,
-          "col": 2,
-          "answer": "COLD",
-          "clue": "Soğuk (A1)"
-        },
-        {
-          "number": 3,
-          "direction": "across",
-          "row": 2,
-          "col": 2,
-          "answer": "TIME",
-          "clue": "Zaman (A1)"
-        },
-        {
-          "number": 5,
-          "direction": "across",
-          "row": 3,
-          "col": 0,
           "answer": "KEY",
           "clue": "Anahtar (A1)"
         },
         {
-          "number": 6,
-          "direction": "across",
-          "row": 5,
-          "col": 1,
-          "answer": "LION",
-          "clue": "Aslan (A1)"
-        },
-        {
           "number": 1,
           "direction": "down",
           "row": 0,
           "col": 0,
-          "answer": "PARK",
-          "clue": "Park (A1)"
+          "answer": "WHITE",
+          "clue": "Beyaz (A1)"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 2,
-          "answer": "CITY",
-          "clue": "Şehir (A1)"
+          "answer": "BLACK",
+          "clue": "Siyah (A1)"
         },
         {
-          "number": 4,
+          "number": 3,
           "direction": "down",
-          "row": 2,
+          "row": 0,
           "col": 4,
-          "answer": "MOON",
-          "clue": "Ay (gök cismi) (A1)"
+          "answer": "SORRY",
+          "clue": "Üzgünüm, pardon (A1)"
         }
       ]
     },
     {
       "id": "ingilizce_04",
       "level": 4,
-      "title": "City Tour (A1-A2)",
+      "title": "Ev ve Eşyalar (A1)",
+      "difficulty": "Başlangıç",
+      "rows": 5,
+      "cols": 5,
+      "revealed": [
+        [
+          4,
+          2
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 0,
+          "answer": "BOSS",
+          "clue": "Patron (A1)"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 2,
+          "col": 1,
+          "answer": "CAFE",
+          "clue": "Kafe (A1)"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 4,
+          "col": 0,
+          "answer": "SALAD",
+          "clue": "Salata (A1)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "SMALL",
+          "clue": "Küçük (A1)"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 1,
+          "col": 4,
+          "answer": "READ",
+          "clue": "Okumak (A1)"
+        }
+      ]
+    },
+    {
+      "id": "ingilizce_05",
+      "level": 5,
+      "title": "Yemek ve Kafe (A1-A2)",
+      "difficulty": "Kolay",
+      "rows": 6,
+      "cols": 6,
+      "revealed": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          1
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 2,
+          "answer": "WIND",
+          "clue": "Rüzgar (A1)"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 3,
+          "col": 1,
+          "answer": "THANK",
+          "clue": "Teşekkür etmek (A1)"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 5,
+          "col": 0,
+          "answer": "GREEN",
+          "clue": "Yeşil (A1)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 5,
+          "answer": "DARK",
+          "clue": "Karanlık, koyu (A1)"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 1,
+          "col": 1,
+          "answer": "WATER",
+          "clue": "Su (A1)"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 2,
+          "col": 3,
+          "answer": "GAME",
+          "clue": "Oyun (A1)"
+        }
+      ]
+    },
+    {
+      "id": "ingilizce_06",
+      "level": 6,
+      "title": "Aile ve Dostluk (A2)",
+      "difficulty": "Kolay",
+      "rows": 6,
+      "cols": 6,
+      "revealed": [
+        [
+          3,
+          3
+        ]
+      ],
+      "entries": [
+        {
+          "number": 2,
+          "direction": "across",
+          "row": 1,
+          "col": 0,
+          "answer": "OPEN",
+          "clue": "Açık, açmak (A1)"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 3,
+          "col": 0,
+          "answer": "LONG",
+          "clue": "Uzun (A1)"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 4,
+          "col": 3,
+          "answer": "HAT",
+          "clue": "Şapka (A1)"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 5,
+          "col": 0,
+          "answer": "GIFT",
+          "clue": "Hediye (A1)"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 0,
+          "answer": "GOAL",
+          "clue": "Gol, hedef (A1)"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 1,
+          "col": 3,
+          "answer": "NIGHT",
+          "clue": "Gece (A1)"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 2,
+          "col": 5,
+          "answer": "CITY",
+          "clue": "Şehir (A1)"
+        }
+      ]
+    },
+    {
+      "id": "ingilizce_07",
+      "level": 7,
+      "title": "Okul ve Dersler (A2)",
       "difficulty": "Kolay",
       "rows": 6,
       "cols": 6,
@@ -227,39 +403,31 @@
           "number": 1,
           "direction": "across",
           "row": 0,
-          "col": 2,
-          "answer": "FOOD",
-          "clue": "Yiyecek (A1)"
-        },
-        {
-          "number": 3,
-          "direction": "across",
-          "row": 2,
-          "col": 0,
-          "answer": "BUS",
-          "clue": "Otobüs (A1)"
+          "col": 1,
+          "answer": "SPORT",
+          "clue": "Spor (A1)"
         },
         {
           "number": 4,
           "direction": "across",
+          "row": 2,
+          "col": 0,
+          "answer": "CAR",
+          "clue": "Araba (A1)"
+        },
+        {
+          "number": 5,
+          "direction": "across",
           "row": 3,
           "col": 2,
-          "answer": "HAND",
-          "clue": "El (A1)"
+          "answer": "KING",
+          "clue": "Kral (A1)"
         },
         {
           "number": 6,
           "direction": "across",
           "row": 5,
           "col": 0,
-          "answer": "KING",
-          "clue": "Kral (A1)"
-        },
-        {
-          "number": 1,
-          "direction": "down",
-          "row": 0,
-          "col": 2,
           "answer": "FISH",
           "clue": "Balık (A1)"
         },
@@ -267,39 +435,39 @@
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 4,
-          "answer": "OPEN",
-          "clue": "Açık, açmak (A1)"
+          "col": 2,
+          "answer": "PARK",
+          "clue": "Park (A1)"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 2,
-          "col": 0,
-          "answer": "BOOK",
-          "clue": "Kitap (A1)"
+          "row": 0,
+          "col": 4,
+          "answer": "RAIN",
+          "clue": "Yağmur (A1)"
         },
         {
-          "number": 5,
+          "number": 4,
           "direction": "down",
-          "row": 3,
-          "col": 5,
-          "answer": "DAY",
-          "clue": "Gün (A1)"
+          "row": 2,
+          "col": 0,
+          "answer": "CHEF",
+          "clue": "Aşçı, şef (A1)"
         }
       ]
     },
     {
-      "id": "ingilizce_05",
-      "level": 5,
-      "title": "Home & Taste (A2)",
-      "difficulty": "Orta",
-      "rows": 7,
-      "cols": 7,
+      "id": "ingilizce_08",
+      "level": 8,
+      "title": "Mevsimler ve Hava (A2)",
+      "difficulty": "Kolay",
+      "rows": 6,
+      "cols": 6,
       "revealed": [
         [
-          0,
-          4
+          2,
+          2
         ]
       ],
       "entries": [
@@ -308,78 +476,206 @@
           "direction": "across",
           "row": 0,
           "col": 0,
-          "answer": "GLASS",
-          "clue": "Cam, bardak (A2)"
+          "answer": "TRAVEL",
+          "clue": "Seyahat etmek (A2)"
         },
         {
           "number": 4,
           "direction": "across",
           "row": 2,
           "col": 0,
-          "answer": "TOWER",
-          "clue": "Kule (A2)"
+          "answer": "ARTIST",
+          "clue": "Sanatçı (A2)"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 4,
+          "col": 1,
+          "answer": "PRICE",
+          "clue": "Fiyat (A2)"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 0,
+          "answer": "TEAM",
+          "clue": "Takım (A1)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "ACTOR",
+          "clue": "Oyuncu, aktör (A2)"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 0,
+          "col": 5,
+          "answer": "LETTER",
+          "clue": "Mektup, harf (A2)"
+        }
+      ]
+    },
+    {
+      "id": "ingilizce_09",
+      "level": 9,
+      "title": "Şehirde Bir Gün (A2)",
+      "difficulty": "Kolay",
+      "rows": 6,
+      "cols": 6,
+      "revealed": [
+        [
+          5,
+          2
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 1,
+          "answer": "MOVIE",
+          "clue": "Sinema filmi (A2)"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 3,
+          "col": 0,
+          "answer": "MONDAY",
+          "clue": "Pazartesi (A2)"
         },
         {
           "number": 6,
           "direction": "across",
           "row": 5,
-          "col": 2,
-          "answer": "LIGHT",
-          "clue": "Işık, hafif (A2)"
-        },
-        {
-          "number": 7,
-          "direction": "across",
-          "row": 6,
-          "col": 0,
-          "answer": "RED",
-          "clue": "Kırmızı (A1)"
+          "col": 1,
+          "answer": "READY",
+          "clue": "Hazır (A2)"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 4,
-          "answer": "SPRING",
-          "clue": "İlkbahar (A2)"
+          "col": 2,
+          "answer": "ORANGE",
+          "clue": "Portakal, turuncu (A2)"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
-          "col": 6,
-          "answer": "PLANET",
-          "clue": "Gezegen (A2)"
+          "col": 4,
+          "answer": "ISLAND",
+          "clue": "Ada (A2)"
         },
         {
           "number": 4,
           "direction": "down",
-          "row": 2,
+          "row": 1,
           "col": 0,
-          "answer": "TIGER",
-          "clue": "Kaplan (A2)"
-        },
-        {
-          "number": 5,
-          "direction": "down",
-          "row": 2,
-          "col": 2,
-          "answer": "WORLD",
-          "clue": "Dünya, yeryüzü (A2)"
+          "answer": "TIME",
+          "clue": "Zaman (A1)"
         }
       ]
     },
     {
-      "id": "ingilizce_06",
-      "level": 6,
-      "title": "Four Seasons (A2)",
+      "id": "ingilizce_10",
+      "level": 10,
+      "title": "Yolculuk Zamanı (A2)",
       "difficulty": "Orta",
       "rows": 7,
       "cols": 7,
       "revealed": [
         [
-          1,
+          6,
           6
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 2,
+          "answer": "SNOW",
+          "clue": "Kar (A1)"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 2,
+          "col": 0,
+          "answer": "EARTH",
+          "clue": "Dünya, toprak (A2)"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 4,
+          "col": 1,
+          "answer": "SEARCH",
+          "clue": "Aramak, arama (A2)"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 6,
+          "col": 3,
+          "answer": "YEAR",
+          "clue": "Yıl, sene (A1)"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "STREET",
+          "clue": "Sokak, cadde (A2)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 1,
+          "col": 0,
+          "answer": "SEA",
+          "clue": "Deniz (A1)"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 1,
+          "col": 6,
+          "answer": "MOTHER",
+          "clue": "Anne (A2)"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 2,
+          "col": 4,
+          "answer": "HORSE",
+          "clue": "At (A2)"
+        }
+      ]
+    },
+    {
+      "id": "ingilizce_11",
+      "level": 11,
+      "title": "Müzik ve Sinema (A2)",
+      "difficulty": "Orta",
+      "rows": 7,
+      "cols": 7,
+      "revealed": [
+        [
+          2,
+          4
         ]
       ],
       "entries": [
@@ -387,70 +683,372 @@
           "number": 3,
           "direction": "across",
           "row": 1,
-          "col": 2,
-          "answer": "PHONE",
-          "clue": "Telefon (A2)"
+          "col": 4,
+          "answer": "BUS",
+          "clue": "Otobüs (A1)"
         },
         {
           "number": 5,
           "direction": "across",
-          "row": 3,
-          "col": 2,
-          "answer": "ROAD",
-          "clue": "Yol (A1)"
+          "row": 2,
+          "col": 0,
+          "answer": "STONE",
+          "clue": "Taş (A2)"
         },
         {
           "number": 6,
           "direction": "across",
           "row": 4,
           "col": 0,
-          "answer": "MAP",
-          "clue": "Harita (A1)"
+          "answer": "ROAD",
+          "clue": "Yol (A1)"
         },
         {
-          "number": 8,
+          "number": 7,
           "direction": "across",
           "row": 6,
           "col": 1,
-          "answer": "DESERT",
-          "clue": "Çöl (A2)"
+          "answer": "COFFEE",
+          "clue": "Kahve (A2)"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
           "col": 0,
-          "answer": "AUTUMN",
-          "clue": "Sonbahar (A2)"
+          "answer": "DESERT",
+          "clue": "Çöl (A2)"
         },
         {
           "number": 2,
           "direction": "down",
-          "row": 0,
-          "col": 6,
-          "answer": "BED",
-          "clue": "Yatak (A1)"
+          "row": 1,
+          "col": 2,
+          "answer": "TOMATO",
+          "clue": "Domates (A2)"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 1,
-          "col": 2,
-          "answer": "PURPLE",
-          "clue": "Mor renk (A2)"
+          "col": 4,
+          "answer": "BED",
+          "clue": "Yatak (A1)"
         },
         {
           "number": 4,
           "direction": "down",
           "row": 1,
-          "col": 4,
-          "answer": "ORANGE",
-          "clue": "Portakal, turuncu (A2)"
+          "col": 6,
+          "answer": "SQUARE",
+          "clue": "Meydan, kare (A2)"
+        }
+      ]
+    },
+    {
+      "id": "ingilizce_12",
+      "level": 12,
+      "title": "Spor ve Oyun (A2)",
+      "difficulty": "Orta",
+      "rows": 7,
+      "cols": 7,
+      "revealed": [
+        [
+          2,
+          2
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 1,
+          "answer": "SMILE",
+          "clue": "Gülümseme (A2)"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 2,
+          "col": 1,
+          "answer": "ANIMAL",
+          "clue": "Hayvan (A2)"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 4,
+          "col": 0,
+          "answer": "SWEET",
+          "clue": "Tatlı, şekerli (A2)"
         },
         {
           "number": 7,
+          "direction": "across",
+          "row": 6,
+          "col": 3,
+          "answer": "FAST",
+          "clue": "Hızlı (A1)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "MONKEY",
+          "clue": "Maymun (A2)"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 1,
+          "col": 6,
+          "answer": "FLIGHT",
+          "clue": "Uçuş (A2)"
+        },
+        {
+          "number": 5,
           "direction": "down",
           "row": 4,
+          "col": 0,
+          "answer": "SUN",
+          "clue": "Güneş (A1)"
+        },
+        {
+          "number": 6,
+          "direction": "down",
+          "row": 4,
+          "col": 4,
+          "answer": "TEA",
+          "clue": "Çay (A1)"
+        }
+      ]
+    },
+    {
+      "id": "ingilizce_13",
+      "level": 13,
+      "title": "Mutfak ve Lezzet (A2)",
+      "difficulty": "Orta",
+      "rows": 7,
+      "cols": 7,
+      "revealed": [
+        [
+          6,
+          0
+        ]
+      ],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 1,
+          "answer": "BOSS",
+          "clue": "Patron (A1)"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 2,
+          "col": 2,
+          "answer": "TRAIN",
+          "clue": "Tren (A2)"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 4,
+          "col": 0,
+          "answer": "EAGLE",
+          "clue": "Kartal (A2)"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 6,
+          "col": 0,
+          "answer": "MIRROR",
+          "clue": "Ayna (A2)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 4,
+          "answer": "STAGE",
+          "clue": "Sahne (A2)"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 0,
+          "col": 6,
+          "answer": "WINDOW",
+          "clue": "Pencere (A2)"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 1,
+          "col": 0,
+          "answer": "MUSEUM",
+          "clue": "Müze (A2)"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 2,
+          "col": 2,
+          "answer": "TIGER",
+          "clue": "Kaplan (A2)"
+        }
+      ]
+    },
+    {
+      "id": "ingilizce_14",
+      "level": 14,
+      "title": "Dijital Dünya (A2-B1)",
+      "difficulty": "Orta",
+      "rows": 7,
+      "cols": 7,
+      "revealed": [],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 0,
+          "answer": "FOREST",
+          "clue": "Orman (A2)"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 2,
+          "col": 4,
+          "answer": "RED",
+          "clue": "Kırmızı (A1)"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 3,
+          "col": 0,
+          "answer": "PHONE",
+          "clue": "Telefon (A2)"
+        },
+        {
+          "number": 8,
+          "direction": "across",
+          "row": 5,
+          "col": 0,
+          "answer": "CLEAN",
+          "clue": "Temiz (A2)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 4,
+          "answer": "SCREEN",
+          "clue": "Ekran (A2)"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 2,
+          "col": 0,
+          "answer": "SPACE",
+          "clue": "Uzay, boşluk (A2)"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 2,
+          "col": 2,
+          "answer": "TOWER",
+          "clue": "Kule (A2)"
+        },
+        {
+          "number": 6,
+          "direction": "down",
+          "row": 2,
+          "col": 6,
+          "answer": "DOOR",
+          "clue": "Kapı (A1)"
+        }
+      ]
+    },
+    {
+      "id": "ingilizce_15",
+      "level": 15,
+      "title": "Hayvanlar Alemi (A2-B1)",
+      "difficulty": "Zorlu",
+      "rows": 7,
+      "cols": 7,
+      "revealed": [],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 0,
+          "answer": "MENU",
+          "clue": "Yemek listesi, menü (A1)"
+        },
+        {
+          "number": 3,
+          "direction": "across",
+          "row": 2,
+          "col": 0,
+          "answer": "PEPPER",
+          "clue": "Biber (A2)"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 4,
+          "col": 2,
+          "answer": "PASTA",
+          "clue": "Makarna (A1)"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 6,
+          "col": 0,
+          "answer": "SPRING",
+          "clue": "İlkbahar (A2)"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 0,
+          "answer": "MAP",
+          "clue": "Harita (A1)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 1,
+          "col": 4,
+          "answer": "LESSON",
+          "clue": "Ders (A2)"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 2,
+          "col": 2,
+          "answer": "PAPER",
+          "clue": "Kağıt (A2)"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 3,
           "col": 6,
           "answer": "CAT",
           "clue": "Kedi (A1)"
@@ -458,175 +1056,159 @@
       ]
     },
     {
-      "id": "ingilizce_07",
-      "level": 7,
-      "title": "World Traveler (A2)",
-      "difficulty": "Zorlu",
-      "rows": 7,
-      "cols": 7,
-      "revealed": [],
-      "entries": [
-        {
-          "number": 1,
-          "direction": "across",
-          "row": 0,
-          "col": 0,
-          "answer": "SUN",
-          "clue": "Güneş (A1)"
-        },
-        {
-          "number": 2,
-          "direction": "across",
-          "row": 1,
-          "col": 3,
-          "answer": "WOLF",
-          "clue": "Kurt (A1)"
-        },
-        {
-          "number": 4,
-          "direction": "across",
-          "row": 3,
-          "col": 0,
-          "answer": "PLANET",
-          "clue": "Gezegen (A2)"
-        },
-        {
-          "number": 6,
-          "direction": "across",
-          "row": 6,
-          "col": 0,
-          "answer": "ANSWER",
-          "clue": "Cevap, yanıt (A2)"
-        },
-        {
-          "number": 1,
-          "direction": "down",
-          "row": 0,
-          "col": 0,
-          "answer": "SHIP",
-          "clue": "Gemi (A1)"
-        },
-        {
-          "number": 2,
-          "direction": "down",
-          "row": 1,
-          "col": 3,
-          "answer": "WINDOW",
-          "clue": "Pencere (A2)"
-        },
-        {
-          "number": 3,
-          "direction": "down",
-          "row": 1,
-          "col": 5,
-          "answer": "LETTER",
-          "clue": "Mektup, harf (A2)"
-        },
-        {
-          "number": 5,
-          "direction": "down",
-          "row": 3,
-          "col": 1,
-          "answer": "LION",
-          "clue": "Aslan (A1)"
-        }
-      ]
-    },
-    {
-      "id": "ingilizce_08",
-      "level": 8,
-      "title": "Deep Meaning (B1)",
+      "id": "ingilizce_16",
+      "level": 16,
+      "title": "İş ve Ofis (B1)",
       "difficulty": "Zorlu",
       "rows": 8,
       "cols": 8,
       "revealed": [],
       "entries": [
         {
-          "number": 2,
-          "direction": "across",
-          "row": 0,
-          "col": 5,
-          "answer": "DOG",
-          "clue": "Köpek (A1)"
-        },
-        {
-          "number": 4,
+          "number": 5,
           "direction": "across",
           "row": 1,
-          "col": 0,
-          "answer": "RAIN",
-          "clue": "Yağmur (A1)"
+          "col": 2,
+          "answer": "REASON",
+          "clue": "Sebep, neden (B1)"
         },
         {
           "number": 6,
           "direction": "across",
-          "row": 3,
-          "col": 2,
-          "answer": "ARTIST",
-          "clue": "Sanatçı (A2)"
+          "row": 4,
+          "col": 0,
+          "answer": "COMPUTER",
+          "clue": "Bilgisayar (B1)"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 6,
+          "col": 4,
+          "answer": "GAME",
+          "clue": "Oyun (A1)"
         },
         {
           "number": 8,
           "direction": "across",
-          "row": 5,
-          "col": 1,
-          "answer": "EMERALD",
-          "clue": "Zümrüt (B2)"
-        },
-        {
-          "number": 9,
-          "direction": "across",
           "row": 7,
-          "col": 1,
-          "answer": "ROSE",
-          "clue": "Gül (A1)"
+          "col": 0,
+          "answer": "STYLE",
+          "clue": "Stil, tarz (B1)"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
           "col": 0,
-          "answer": "TREE",
-          "clue": "Ağaç (A1)"
+          "answer": "OFFICE",
+          "clue": "Ofis, büro (A2)"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 5,
-          "answer": "DIGITAL",
-          "clue": "Sayısal, dijital (B1)"
+          "col": 2,
+          "answer": "DREAM",
+          "clue": "Rüya, hayal (A2)"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
+          "col": 4,
+          "answer": "LANGUAGE",
+          "clue": "Dil, lisan (B1)"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 0,
           "col": 7,
-          "answer": "GIFT",
-          "clue": "Hediye (A1)"
-        },
-        {
-          "number": 5,
-          "direction": "down",
-          "row": 1,
-          "col": 3,
-          "answer": "NURSE",
-          "clue": "Hemşire (A2)"
-        },
-        {
-          "number": 7,
-          "direction": "down",
-          "row": 4,
-          "col": 1,
-          "answer": "YEAR",
-          "clue": "Yıl, sene (A1)"
+          "answer": "INTERNET",
+          "clue": "İnternet (B1)"
         }
       ]
     },
     {
-      "id": "ingilizce_09",
-      "level": 9,
-      "title": "Bright Minds (B1-B2)",
+      "id": "ingilizce_17",
+      "level": 17,
+      "title": "Duygular ve Hayaller (B1)",
+      "difficulty": "Zorlu",
+      "rows": 8,
+      "cols": 8,
+      "revealed": [],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 0,
+          "answer": "BIRTHDAY",
+          "clue": "Doğum günü (B1)"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 3,
+          "col": 0,
+          "answer": "CHAMPION",
+          "clue": "Şampiyon (B1)"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 5,
+          "col": 1,
+          "answer": "BROTHER",
+          "clue": "Erkek kardeş (A2-B1)"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 7,
+          "col": 0,
+          "answer": "METAL",
+          "clue": "Metal (A2)"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 0,
+          "answer": "BLACK",
+          "clue": "Siyah (A1)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 4,
+          "answer": "HOSPITAL",
+          "clue": "Hastane (B1)"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 2,
+          "col": 2,
+          "answer": "CARROT",
+          "clue": "Havuç (A2)"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 2,
+          "col": 6,
+          "answer": "HONEY",
+          "clue": "Bal (A2)"
+        }
+      ]
+    },
+    {
+      "id": "ingilizce_18",
+      "level": 18,
+      "title": "Kültür ve Sanat (B1)",
       "difficulty": "Usta",
       "rows": 8,
       "cols": 8,
@@ -636,172 +1218,215 @@
           "number": 3,
           "direction": "across",
           "row": 1,
+          "col": 0,
+          "answer": "METRO",
+          "clue": "Metro (A2)"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 3,
+          "col": 2,
+          "answer": "SWEET",
+          "clue": "Tatlı, şekerli (A2)"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 5,
+          "col": 0,
+          "answer": "CALENDAR",
+          "clue": "Takvim (B1)"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 7,
+          "col": 0,
+          "answer": "RADIO",
+          "clue": "Radyo (A2)"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 4,
+          "answer": "MODERN",
+          "clue": "Çağdaş, modern (B1)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 6,
+          "answer": "SUITCASE",
+          "clue": "Valiz, bavul (B1)"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 1,
+          "col": 0,
+          "answer": "MUSIC",
+          "clue": "Müzik (A2)"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 3,
+          "col": 2,
+          "answer": "SALAD",
+          "clue": "Salata (A1)"
+        }
+      ]
+    },
+    {
+      "id": "ingilizce_19",
+      "level": 19,
+      "title": "Bilim ve Gelecek (B1)",
+      "difficulty": "Usta",
+      "rows": 8,
+      "cols": 8,
+      "revealed": [],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
           "col": 1,
-          "answer": "PROTECT",
-          "clue": "Korumak (B1)"
+          "answer": "CAPTAIN",
+          "clue": "Kaptan (B1)"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 2,
+          "col": 1,
+          "answer": "AIRPORT",
+          "clue": "Havalimanı (B1)"
         },
         {
           "number": 5,
           "direction": "across",
           "row": 4,
           "col": 0,
-          "answer": "NETWORK",
-          "clue": "Ağ, şebeke (B1)"
+          "answer": "GREEN",
+          "clue": "Yeşil (A1)"
         },
         {
-          "number": 8,
+          "number": 6,
           "direction": "across",
           "row": 6,
           "col": 0,
-          "answer": "SIGNAL",
-          "clue": "Sinyal, işaret (B1)"
-        },
-        {
-          "number": 9,
-          "direction": "across",
-          "row": 7,
-          "col": 5,
-          "answer": "DAY",
-          "clue": "Gün (A1)"
+          "answer": "FOOTBALL",
+          "clue": "Futbol (B1)"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
-          "col": 3,
-          "answer": "DOG",
-          "clue": "Köpek (A1)"
+          "col": 1,
+          "answer": "CHAIR",
+          "clue": "Sandalye (A2)"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 7,
-          "answer": "STAR",
-          "clue": "Yıldız (A1)"
+          "col": 3,
+          "answer": "PERFECT",
+          "clue": "Mükemmel, kusursuz (B1)"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 1,
-          "col": 1,
-          "answer": "PHOENIX",
-          "clue": "Anka kuşu (B2)"
+          "row": 0,
+          "col": 7,
+          "answer": "NATURAL",
+          "clue": "Doğal (B1)"
         },
         {
-          "number": 4,
+          "number": 5,
           "direction": "down",
-          "row": 1,
-          "col": 5,
-          "answer": "EMERALD",
-          "clue": "Zümrüt (B2)"
+          "row": 4,
+          "col": 0,
+          "answer": "GIFT",
+          "clue": "Hediye (A1)"
+        }
+      ]
+    },
+    {
+      "id": "ingilizce_20",
+      "level": 20,
+      "title": "İngilizce Ustası (B1)",
+      "difficulty": "Usta",
+      "rows": 8,
+      "cols": 8,
+      "revealed": [],
+      "entries": [
+        {
+          "number": 1,
+          "direction": "across",
+          "row": 0,
+          "col": 3,
+          "answer": "WEEK",
+          "clue": "Hafta (A1)"
+        },
+        {
+          "number": 3,
+          "direction": "across",
+          "row": 2,
+          "col": 1,
+          "answer": "CONCERT",
+          "clue": "Konser (A2-B1)"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 5,
+          "col": 0,
+          "answer": "MEDICINE",
+          "clue": "İlaç, tıp (B1)"
         },
         {
           "number": 6,
+          "direction": "across",
+          "row": 7,
+          "col": 0,
+          "answer": "BEACH",
+          "clue": "Plaj, sahil (A2)"
+        },
+        {
+          "number": 1,
           "direction": "down",
-          "row": 4,
+          "row": 0,
           "col": 3,
           "answer": "WIND",
           "clue": "Rüzgar (A1)"
         },
         {
-          "number": 7,
-          "direction": "down",
-          "row": 5,
-          "col": 7,
-          "answer": "SKY",
-          "clue": "Gökyüzü (A1)"
-        }
-      ]
-    },
-    {
-      "id": "ingilizce_10",
-      "level": 10,
-      "title": "Master Vocab (B2)",
-      "difficulty": "Usta",
-      "rows": 8,
-      "cols": 8,
-      "revealed": [],
-      "entries": [
-        {
-          "number": 1,
-          "direction": "across",
-          "row": 0,
-          "col": 1,
-          "answer": "SUCCESS",
-          "clue": "Başarı (B1)"
-        },
-        {
-          "number": 4,
-          "direction": "across",
-          "row": 2,
-          "col": 1,
-          "answer": "LANTERN",
-          "clue": "Fener (B1)"
-        },
-        {
-          "number": 6,
-          "direction": "across",
-          "row": 4,
-          "col": 2,
-          "answer": "HEART",
-          "clue": "Kalp, yürek (A2)"
-        },
-        {
-          "number": 8,
-          "direction": "across",
-          "row": 6,
-          "col": 0,
-          "answer": "FAST",
-          "clue": "Hızlı (A1)"
-        },
-        {
-          "number": 9,
-          "direction": "across",
-          "row": 6,
-          "col": 5,
-          "answer": "HAT",
-          "clue": "Şapka (A1)"
-        },
-        {
-          "number": 1,
-          "direction": "down",
-          "row": 0,
-          "col": 1,
-          "answer": "SALT",
-          "clue": "Tuz (A1)"
-        },
-        {
           "number": 2,
           "direction": "down",
-          "row": 0,
-          "col": 3,
-          "answer": "CONCEPT",
-          "clue": "Kavram, konsept (B1)"
+          "row": 1,
+          "col": 7,
+          "answer": "STUDENT",
+          "clue": "Öğrenci (A2-B1)"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 0,
-          "col": 7,
-          "answer": "SONG",
-          "clue": "Şarkı (A1)"
+          "row": 2,
+          "col": 1,
+          "answer": "CHEESE",
+          "clue": "Peynir (A2)"
         },
         {
-          "number": 5,
+          "number": 4,
           "direction": "down",
           "row": 2,
           "col": 5,
-          "answer": "EARTH",
-          "clue": "Dünya, toprak (A2)"
-        },
-        {
-          "number": 7,
-          "direction": "down",
-          "row": 5,
-          "col": 1,
-          "answer": "CAR",
-          "clue": "Araba (A1)"
+          "answer": "EMAIL",
+          "clue": "E-posta (A2)"
         }
       ]
     }

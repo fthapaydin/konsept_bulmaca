@@ -366,45 +366,53 @@ class PlayerProfile {
     this.coins = 150,
     this.dailyStreak = 0,
     this.lastDailyDate,
+    this.lastDailyGiftDate,
     this.completedDailyDates = const {},
     this.soundEnabled = true,
     this.hapticsEnabled = true,
     this.selectedBackgroundId = 'concept_auto',
     this.unlockedBackgroundIds = const {},
+    this.claimedMissionIds = const {},
     this.puzzleStates = const {},
   });
 
   final int coins;
   final int dailyStreak;
   final String? lastDailyDate;
+  final String? lastDailyGiftDate;
   final Set<String> completedDailyDates;
   final bool soundEnabled;
   final bool hapticsEnabled;
   final String selectedBackgroundId;
   final Set<String> unlockedBackgroundIds;
+  final Set<String> claimedMissionIds;
   final Map<String, PuzzleSaveState> puzzleStates;
 
   PlayerProfile copyWith({
     int? coins,
     int? dailyStreak,
     String? lastDailyDate,
+    String? lastDailyGiftDate,
     Set<String>? completedDailyDates,
     bool? soundEnabled,
     bool? hapticsEnabled,
     String? selectedBackgroundId,
     Set<String>? unlockedBackgroundIds,
+    Set<String>? claimedMissionIds,
     Map<String, PuzzleSaveState>? puzzleStates,
   }) {
     return PlayerProfile(
       coins: coins ?? this.coins,
       dailyStreak: dailyStreak ?? this.dailyStreak,
       lastDailyDate: lastDailyDate ?? this.lastDailyDate,
+      lastDailyGiftDate: lastDailyGiftDate ?? this.lastDailyGiftDate,
       completedDailyDates: completedDailyDates ?? this.completedDailyDates,
       soundEnabled: soundEnabled ?? this.soundEnabled,
       hapticsEnabled: hapticsEnabled ?? this.hapticsEnabled,
       selectedBackgroundId: selectedBackgroundId ?? this.selectedBackgroundId,
       unlockedBackgroundIds:
           unlockedBackgroundIds ?? this.unlockedBackgroundIds,
+      claimedMissionIds: claimedMissionIds ?? this.claimedMissionIds,
       puzzleStates: puzzleStates ?? this.puzzleStates,
     );
   }
@@ -413,11 +421,13 @@ class PlayerProfile {
         'coins': coins,
         'dailyStreak': dailyStreak,
         'lastDailyDate': lastDailyDate,
+        'lastDailyGiftDate': lastDailyGiftDate,
         'completedDailyDates': completedDailyDates.toList(),
         'soundEnabled': soundEnabled,
         'hapticsEnabled': hapticsEnabled,
         'selectedBackgroundId': selectedBackgroundId,
         'unlockedBackgroundIds': unlockedBackgroundIds.toList(),
+        'claimedMissionIds': claimedMissionIds.toList(),
         'puzzleStates': puzzleStates.map((k, v) => MapEntry(k, v.toJson())),
       };
 
@@ -425,16 +435,19 @@ class PlayerProfile {
     final statesRaw = (json['puzzleStates'] as Map<String, dynamic>? ?? {});
     final dailyRaw = (json['completedDailyDates'] as List<dynamic>? ?? []);
     final bgRaw = (json['unlockedBackgroundIds'] as List<dynamic>? ?? []);
+    final missionRaw = (json['claimedMissionIds'] as List<dynamic>? ?? []);
     return PlayerProfile(
       coins: json['coins'] as int? ?? 150,
       dailyStreak: json['dailyStreak'] as int? ?? 0,
       lastDailyDate: json['lastDailyDate'] as String?,
+      lastDailyGiftDate: json['lastDailyGiftDate'] as String?,
       completedDailyDates: dailyRaw.map((e) => e as String).toSet(),
       soundEnabled: json['soundEnabled'] as bool? ?? true,
       hapticsEnabled: json['hapticsEnabled'] as bool? ?? true,
       selectedBackgroundId:
           json['selectedBackgroundId'] as String? ?? 'concept_auto',
       unlockedBackgroundIds: bgRaw.map((e) => e as String).toSet(),
+      claimedMissionIds: missionRaw.map((e) => e as String).toSet(),
       puzzleStates: statesRaw.map(
         (k, v) => MapEntry(k, PuzzleSaveState.fromJson(v as Map<String, dynamic>)),
       ),

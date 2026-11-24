@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import '../models/background_models.dart';
 import '../models/puzzle_models.dart';
+import '../models/retention_models.dart';
 import '../services/feedback_service.dart';
 import '../services/puzzle_repository.dart';
+import '../services/reward_ad_service.dart';
 import '../services/storage_service.dart';
 import '../utils/turkish_text.dart';
 
@@ -36,9 +38,11 @@ class AppState extends ChangeNotifier {
     PuzzleRepository? repository,
     StorageService? storage,
     FeedbackService? feedback,
+    RewardAdService? rewardAdService,
   })  : _repository = repository ?? PuzzleRepository(),
         _storage = storage ?? StorageService(),
-        feedback = feedback ?? FeedbackService();
+        feedback = feedback ?? FeedbackService(),
+        rewardAdService = rewardAdService ?? const PlaceholderRewardAdService();
 
   static const int letterHintCost = 15;
   static const int wordHintCost = 40;
@@ -47,6 +51,7 @@ class AppState extends ChangeNotifier {
   final PuzzleRepository _repository;
   final StorageService _storage;
   final FeedbackService feedback;
+  final RewardAdService rewardAdService;
 
   bool _loading = true;
   String? _error;
@@ -164,8 +169,9 @@ class AppState extends ChangeNotifier {
 
   Future<void> savePuzzleProgress(
     String storageKey,
-    PuzzleSaveState state,
-  ) async {
+    PuzzleSaveState state, {
+    bool notify = true,
+  }) async {
     final existing = _profile.puzzleStates[storageKey];
     // Preserve prior completion / star record if replaying an already solved puzzle
     final merged = existing != null && existing.completed && !state.completed
@@ -179,7 +185,9 @@ class AppState extends ChangeNotifier {
     final updatedMap = Map<String, PuzzleSaveState>.from(_profile.puzzleStates);
     updatedMap[storageKey] = merged;
     _profile = _profile.copyWith(puzzleStates: updatedMap);
-    notifyListeners();
+    if (notify) {
+      notifyListeners();
+    }
     await _storage.saveProfile(_profile);
   }
 
@@ -193,6 +201,84 @@ class AppState extends ChangeNotifier {
 
   AppBackground get selectedBackground =>
       BackgroundCatalog.byId(_profile.selectedBackgroundId);
+
+  PlayerRank get currentRank => RankCatalog.forStars(totalStars);
+
+  bool get canClaimDailyGift => _profile.lastDailyGiftDate != todayDateKey;
+
+  int get perfectThreeStarCount => _profile.puzzleStates.values
+      .where((s) => s.completed && s.stars == 3)
+      .length;
+
+  int missionProgress(MissionItem mission) {
+    switch (mission.metric) {
+      case MissionMetric.solvedPuzzles:
+        return totalSolvedPuzzles;
+      case MissionMetric.totalStars:
+        return totalStars;
+      case MissionMetric.dailyStreak:
+        return dailyStreak;
+      case MissionMetric.perfectThreeStars:
+        return perfectThreeStarCount;
+      case MissionMetric.packYesilcam:
+        final pack = _packs.where((p) => p.id == 'yesilcam').firstOrNull;
+        return pack == null ? 0 : completedCountForPack(pack);
+      case MissionMetric.packIngilizce:
+        final pack = _packs.where((p) => p.id == 'ingilizce').firstOrNull;
+        return pack == null ? 0 : completedCountForPack(pack);
+    }
+  }
+
+  bool isMissionClaimed(MissionItem mission) =>
+      _profile.claimedMissionIds.contains(mission.id);
+
+  bool canClaimMission(MissionItem mission) =>
+      !isMissionClaimed(mission) && missionProgress(mission) >= mission.target;
+
+  int get claimableMissionCount =>
+      MissionCatalog.all.where(canClaimMission).length;
+
+  int get pendingRewardCount =>
+      (canClaimDailyGift ? 1 : 0) + claimableMissionCount;
+
+  Future<int> claimDailyGift() async {
+    if (!canClaimDailyGift) return 0;
+    const reward = MissionCatalog.dailyGiftCoins;
+    _profile = _profile.copyWith(
+      coins: _profile.coins + reward,
+      lastDailyGiftDate: todayDateKey,
+    );
+    feedback.wordSolved();
+    notifyListeners();
+    await _storage.saveProfile(_profile);
+    return reward;
+  }
+
+  Future<int> claimMission(MissionItem mission) async {
+    if (!canClaimMission(mission)) return 0;
+    final updated = Set<String>.from(_profile.claimedMissionIds)
+      ..add(mission.id);
+    _profile = _profile.copyWith(
+      coins: _profile.coins + mission.rewardCoins,
+      claimedMissionIds: updated,
+    );
+    feedback.wordSolved();
+    notifyListeners();
+    await _storage.saveProfile(_profile);
+    return mission.rewardCoins;
+  }
+
+  Future<int> watchRewardedAdForCoins() async {
+    if (!rewardAdService.isAvailable) return 0;
+    final rewarded = await rewardAdService.showRewardedAd();
+    if (!rewarded) return 0;
+    const bonus = MissionCatalog.rewardedAdCoins;
+    _profile = _profile.copyWith(coins: _profile.coins + bonus);
+    feedback.wordSolved();
+    notifyListeners();
+    await _storage.saveProfile(_profile);
+    return bonus;
+  }
 
   int backgroundMetricValue(UnlockMetric metric) {
     switch (metric) {

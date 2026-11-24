@@ -5,6 +5,7 @@ import '../models/puzzle_models.dart';
 import '../state/app_state.dart';
 import '../utils/turkish_text.dart';
 import '../widgets/background_canvas.dart';
+import '../widgets/rewards_center_sheet.dart';
 import '../widgets/stats_settings_sheet.dart';
 import 'background_gallery_screen.dart';
 import 'game_screen.dart';
@@ -72,6 +73,16 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(18, 0, 18, 12),
+                        child: _RankAndMissionsStrip(
+                          appState: appState,
+                          isDark: isDark,
+                          onTap: () => showRewardsCenterSheet(context, appState),
+                        ),
+                      ),
+                    ),
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(20, 4, 20, 10),
@@ -278,32 +289,65 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 6),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-          decoration: BoxDecoration(
-            color: const Color(0xFFFEF3C7),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: const Color(0xFFF59E0B).withValues(alpha: 0.45),
-            ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
+        InkWell(
+          onTap: () => showRewardsCenterSheet(context, appState),
+          borderRadius: BorderRadius.circular(20),
+          child: Stack(
+            clipBehavior: Clip.none,
             children: [
-              const Icon(
-                Icons.monetization_on_rounded,
-                size: 16,
-                color: Color(0xFFD97706),
-              ),
-              const SizedBox(width: 4),
-              Text(
-                '${appState.coins}',
-                style: const TextStyle(
-                  fontSize: 13.5,
-                  fontWeight: FontWeight.w900,
-                  color: Color(0xFF92400E),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFEF3C7),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: const Color(0xFFF59E0B).withValues(alpha: 0.45),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.monetization_on_rounded,
+                      size: 16,
+                      color: Color(0xFFD97706),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${appState.coins}',
+                      style: const TextStyle(
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w900,
+                        color: Color(0xFF92400E),
+                      ),
+                    ),
+                  ],
                 ),
               ),
+              if (appState.pendingRewardCount > 0)
+                Positioned(
+                  top: -3,
+                  right: -3,
+                  child: Container(
+                    width: 14,
+                    height: 14,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFDC2626),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 1.5),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      '${appState.pendingRewardCount}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 8.5,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
@@ -700,6 +744,163 @@ class _ConceptPackCard extends StatelessWidget {
                         valueColor: AlwaysStoppedAnimation<Color>(
                           pack.primaryColor,
                         ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _RankAndMissionsStrip extends StatelessWidget {
+  const _RankAndMissionsStrip({
+    required this.appState,
+    required this.isDark,
+    required this.onTap,
+  });
+
+  final AppState appState;
+  final bool isDark;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final rank = appState.currentRank;
+    final stars = appState.totalStars;
+    final pending = appState.pendingRewardCount;
+
+    return Material(
+      color: isDark
+          ? Colors.white.withValues(alpha: 0.12)
+          : Colors.white.withValues(alpha: 0.95),
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: pending > 0
+                  ? const Color(0xFFF59E0B).withValues(alpha: 0.7)
+                  : (isDark ? Colors.white12 : const Color(0xFFE7E5E4)),
+            ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: rank.color.withValues(alpha: isDark ? 0.35 : 0.14),
+                  borderRadius: BorderRadius.circular(11),
+                ),
+                child: Icon(
+                  rank.icon,
+                  color: isDark ? Colors.white : rank.color,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            rank.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w900,
+                              color: isDark
+                                  ? Colors.white
+                                  : const Color(0xFF1C1917),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        const Icon(
+                          Icons.star_rounded,
+                          size: 13,
+                          color: Color(0xFFF59E0B),
+                        ),
+                        const SizedBox(width: 2),
+                        Text(
+                          rank.nextStars == null
+                              ? '$stars'
+                              : '$stars/${rank.nextStars}',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w800,
+                            color: isDark
+                                ? Colors.white70
+                                : const Color(0xFF78716C),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: LinearProgressIndicator(
+                        value: rank.progressFor(stars),
+                        minHeight: 5,
+                        backgroundColor: isDark
+                            ? Colors.white12
+                            : const Color(0xFFE7E5E4),
+                        valueColor: AlwaysStoppedAnimation<Color>(rank.color),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 10),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: pending > 0
+                      ? const Color(0xFFEA580C)
+                      : (isDark
+                          ? Colors.white.withValues(alpha: 0.15)
+                          : const Color(0xFFF5F5F4)),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      pending > 0
+                          ? Icons.card_giftcard_rounded
+                          : Icons.emoji_events_outlined,
+                      size: 14,
+                      color: pending > 0
+                          ? Colors.white
+                          : (isDark ? Colors.white : const Color(0xFF44403C)),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      pending > 0 ? 'Ödül ($pending)' : 'Görevler',
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w800,
+                        color: pending > 0
+                            ? Colors.white
+                            : (isDark
+                                ? Colors.white
+                                : const Color(0xFF44403C)),
                       ),
                     ),
                   ],

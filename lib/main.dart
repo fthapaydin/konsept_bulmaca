@@ -56,6 +56,7 @@ class _KonseptBulmacaAppState extends State<KonseptBulmacaApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
+        fontFamily: 'Roboto',
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFFB45309),
           surface: const Color(0xFFF8F6F1),
