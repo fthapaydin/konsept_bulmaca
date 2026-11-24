@@ -1,0 +1,9 @@
+{
+  "packs": [
+    "assets/puzzles/yesilcam.json",
+    "assets/puzzles/ingilizce.json",
+    "assets/puzzles/turkiye.json",
+    "assets/puzzles/genel_kultur.json"
+  ],
+  "daily": "assets/puzzles/daily.json"
+}
