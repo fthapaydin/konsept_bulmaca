@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
+import '../core/theme/app_theme.dart';
 import '../models/puzzle_models.dart';
 import '../state/app_state.dart';
 import '../state/game_controller.dart';
@@ -295,24 +296,25 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                                             child: child,
                                           ),
                                         ),
-                                        child: _controller.recentSolvedBanner ==
+                                        child: _controller.activeErrorBanner !=
                                                 null
-                                            ? const SizedBox.shrink()
-                                            : Container(
+                                            ? Container(
                                                 key: ValueKey<String>(
-                                                  _controller
-                                                      .recentSolvedBanner!,
+                                                  'err_${_controller.activeErrorBanner!}',
+                                                ),
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 18,
                                                 ),
                                                 padding:
                                                     const EdgeInsets.symmetric(
-                                                  horizontal: 14,
+                                                  horizontal: 13,
                                                   vertical: 7,
                                                 ),
                                                 decoration: BoxDecoration(
-                                                  color:
-                                                      const Color(0xFF15803D),
+                                                  color: AppPalette.error,
                                                   borderRadius:
-                                                      BorderRadius.circular(20),
+                                                      BorderRadius.circular(18),
                                                   boxShadow: [
                                                     BoxShadow(
                                                       color: Colors.black
@@ -330,24 +332,85 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                                                   children: [
                                                     const Icon(
                                                       Icons
-                                                          .auto_awesome_rounded,
+                                                          .error_outline_rounded,
                                                       size: 16,
-                                                      color: Color(0xFFFDE047),
+                                                      color: Colors.white,
                                                     ),
                                                     const SizedBox(width: 6),
-                                                    Text(
-                                                      _controller
-                                                          .recentSolvedBanner!,
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w900,
-                                                        fontSize: 12.5,
+                                                    Flexible(
+                                                      child: Text(
+                                                        _controller
+                                                            .activeErrorBanner!,
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          fontSize: 12,
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
                                                 ),
-                                              ),
+                                              )
+                                            : _controller.recentSolvedBanner ==
+                                                    null
+                                                ? const SizedBox.shrink()
+                                                : Container(
+                                                    key: ValueKey<String>(
+                                                      _controller
+                                                          .recentSolvedBanner!,
+                                                    ),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal: 14,
+                                                      vertical: 7,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color: AppPalette.correct,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.black
+                                                              .withValues(
+                                                                  alpha: 0.25),
+                                                          blurRadius: 10,
+                                                          offset: const Offset(
+                                                              0, 4),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        const Icon(
+                                                          Icons
+                                                              .check_circle_outline_rounded,
+                                                          size: 16,
+                                                          color: Color(
+                                                              0xFFFDE047),
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 6),
+                                                        Text(
+                                                          _controller
+                                                              .recentSolvedBanner!,
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            fontSize: 12.5,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
                                       ),
                                     ),
                                   ),
@@ -575,6 +638,7 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
     final letterTickets = widget.appState.letterHintTickets;
     final wordTickets = widget.appState.wordHintTickets;
     final checkTickets = widget.appState.checkHintTickets;
+    final hasWrong = _controller.hasWrongCompletedWord;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -588,7 +652,7 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                   ? '×$letterTickets'
                   : '${_controller.nextLetterHintCoins}',
               isTicketBadge: letterTickets > 0,
-              color: widget.primaryColor,
+              color: AppPalette.ink,
               onTap: () async {
                 final fb = await _controller.revealSelectedCell();
                 _showHintFeedback(fb);
@@ -604,7 +668,7 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                   ? '×$wordTickets'
                   : '${_controller.nextWordHintCoins}',
               isTicketBadge: wordTickets > 0,
-              color: widget.secondaryColor,
+              color: AppPalette.ink,
               onTap: () async {
                 final fb = await _controller.revealActiveWord();
                 _showHintFeedback(fb);
@@ -620,7 +684,8 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                   ? '×$checkTickets'
                   : '${_controller.nextCheckHintCoins}',
               isTicketBadge: checkTickets > 0,
-              color: const Color(0xFF0F766E),
+              color: hasWrong ? AppPalette.error : AppPalette.ink,
+              highlightBorder: hasWrong,
               onTap: () async {
                 final fb = await _controller.checkMistakes();
                 _showHintFeedback(fb);
@@ -635,7 +700,7 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                   '${_controller.solvedWordsCount}/${widget.puzzle.entries.length}',
               cost: null,
               isTicketBadge: false,
-              color: const Color(0xFF44403C),
+              color: AppPalette.inkSoft,
               onTap: () => showAllCluesSheet(
                 context: context,
                 controller: _controller,
@@ -657,6 +722,7 @@ class _JokerButton extends StatelessWidget {
     required this.isTicketBadge,
     required this.color,
     required this.onTap,
+    this.highlightBorder = false,
   });
 
   final IconData icon;
@@ -665,11 +731,12 @@ class _JokerButton extends StatelessWidget {
   final bool isTicketBadge;
   final Color color;
   final VoidCallback onTap;
+  final bool highlightBorder;
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white,
+      color: highlightBorder ? AppPalette.errorSoft : AppPalette.card,
       borderRadius: BorderRadius.circular(11),
       child: InkWell(
         onTap: onTap,
@@ -678,7 +745,10 @@ class _JokerButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 4),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(11),
-            border: Border.all(color: color.withValues(alpha: 0.25)),
+            border: Border.all(
+              color: highlightBorder ? AppPalette.errorBorder : AppPalette.hairline,
+              width: highlightBorder ? 1.5 : 1.0,
+            ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

@@ -53,3 +53,8 @@ flutter test
 flutter run
 powershell -ExecutionPolicy Bypass -File tools/build_apk.ps1
 ```
+
+## Geliştirici & İletişim
+- **Geliştirici:** FatalSoft Inc.
+- **Android Paket Adı (`applicationId`):** `fatalsoft.bulmaca`
+- **İletişim E-posta:** `fatalsoft.inc@gmail.com`

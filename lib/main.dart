@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 import 'core/brand/brand_config.dart';
+import 'core/theme/app_theme.dart';
 import 'screens/home_screen.dart';
 import 'state/app_state.dart';
 
@@ -59,16 +60,16 @@ class _KonseptBulmacaAppState extends State<KonseptBulmacaApp> {
         useMaterial3: true,
         fontFamily: 'Roboto',
         colorScheme: ColorScheme.fromSeed(
-          seedColor: BrandConfig.primaryAmber,
-          surface: BrandConfig.warmPaper,
+          seedColor: AppPalette.brass,
+          surface: AppPalette.paper,
         ),
-        scaffoldBackgroundColor: BrandConfig.warmPaper,
+        scaffoldBackgroundColor: AppPalette.paper,
       ),
       home: ListenableBuilder(
         listenable: _appState,
         builder: (context, _) {
           if (_appState.isLoading) {
-            return const _SplashLoadingView();
+            return const KarehaneSplashView();
           }
           if (_appState.error != null) {
             return _ErrorRetryView(
@@ -83,8 +84,8 @@ class _KonseptBulmacaAppState extends State<KonseptBulmacaApp> {
   }
 }
 
-class _SplashLoadingView extends StatelessWidget {
-  const _SplashLoadingView();
+class KarehaneSplashView extends StatelessWidget {
+  const KarehaneSplashView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +94,7 @@ class _SplashLoadingView extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF451A03), BrandConfig.splashDark, Color(0xFF1A0B05)],
+            colors: [Color(0xFF2D1956), BrandConfig.splashDark, Color(0xFF120A2A)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -166,6 +167,16 @@ class _SplashLoadingView extends StatelessWidget {
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: Colors.white.withValues(alpha: 0.68),
+                  ),
+                ),
+                const SizedBox(height: 36),
+                Text(
+                  '${BrandConfig.developerName} • ${BrandConfig.versionLabel}',
+                  style: TextStyle(
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.4,
+                    color: const Color(0xFFFDE68A).withValues(alpha: 0.6),
                   ),
                 ),
               ],

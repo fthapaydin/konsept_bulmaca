@@ -1,13 +1,14 @@
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 import '../core/brand/brand_config.dart';
+import '../core/theme/app_theme.dart';
 import '../features/notebook/word_notebook_screen.dart';
 import '../features/sprint/mini_sprint_screen.dart';
-import '../models/background_models.dart';
 import '../models/puzzle_models.dart';
 import '../state/app_state.dart';
 import '../utils/turkish_text.dart';
 import '../widgets/background_canvas.dart';
+import '../widgets/editorial_emblems.dart';
 import '../widgets/rewards_center_sheet.dart';
 import '../widgets/stats_settings_sheet.dart';
 import 'background_gallery_screen.dart';
@@ -29,7 +30,8 @@ class HomeScreen extends StatelessWidget {
         final dailyDone = appState.isTodayDailyCompleted;
         final activeBg = appState.selectedBackground;
         final isDark = activeBg.isDark;
-        final headingColor = isDark ? Colors.white : const Color(0xFF1C1917);
+        final headingColor = isDark ? Colors.white : AppPalette.ink;
+        final mutedColor = isDark ? Colors.white60 : AppPalette.inkMuted;
 
         return AnnotatedRegion<SystemUiOverlayStyle>(
           value: isDark
@@ -45,14 +47,14 @@ class HomeScreen extends StatelessWidget {
                   slivers: [
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(18, 14, 18, 8),
+                        padding: const EdgeInsets.fromLTRB(18, 14, 18, 10),
                         child: _buildHeader(context, isDark: isDark),
                       ),
                     ),
                     if (dailyPuzzle != null)
                       SliverToBoxAdapter(
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(18, 8, 18, 14),
+                          padding: const EdgeInsets.fromLTRB(18, 4, 18, 12),
                           child: _DailyChallengeCard(
                             puzzle: dailyPuzzle,
                             completed: dailyDone,
@@ -65,9 +67,9 @@ class HomeScreen extends StatelessWidget {
                                     storageKey: appState.todayDailyStorageKey,
                                     language: 'tr',
                                     packTitle: 'Günün Bulmacası',
-                                    primaryColor: const Color(0xFFD97706),
-                                    secondaryColor: const Color(0xFF9A3412),
-                                    surfaceColor: const Color(0xFFFFFBEB),
+                                    primaryColor: AppPalette.brass,
+                                    secondaryColor: AppPalette.ink,
+                                    surfaceColor: AppPalette.paper,
                                     isDaily: true,
                                     appState: appState,
                                   ),
@@ -89,9 +91,10 @@ class HomeScreen extends StatelessWidget {
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(18, 0, 18, 14),
+                        padding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
                         child: _QuickModulesRow(
                           appState: appState,
+                          isDark: isDark,
                           onOpenSprint: () {
                             Navigator.of(context).push(
                               MaterialPageRoute<void>(
@@ -113,8 +116,10 @@ class HomeScreen extends StatelessWidget {
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 4, 20, 10),
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
                           children: [
                             Expanded(
                               child: Text(
@@ -122,97 +127,19 @@ class HomeScreen extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontSize: 19,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.w900,
                                   color: headingColor,
                                   letterSpacing: -0.3,
                                 ),
                               ),
                             ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute<void>(
-                                    builder: (_) => BackgroundGalleryScreen(
-                                      appState: appState,
-                                    ),
-                                  ),
-                                );
-                              },
-                              borderRadius: BorderRadius.circular(20),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 5,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: isDark
-                                      ? Colors.white.withValues(alpha: 0.14)
-                                      : Colors.white.withValues(alpha: 0.9),
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                    color: isDark
-                                        ? Colors.white24
-                                        : const Color(0xFFE7E5E4),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Icons.palette_rounded,
-                                      size: 15,
-                                      color: isDark
-                                          ? activeBg.accentColor
-                                          : const Color(0xFFB45309),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      '${appState.unlockedBackgroundCount}/${BackgroundCatalog.all.length}',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w800,
-                                        color: isDark
-                                            ? Colors.white
-                                            : const Color(0xFF44403C),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 6),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                color: isDark
-                                    ? Colors.white.withValues(alpha: 0.14)
-                                    : const Color(0xFFE7E5E4),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Icon(
-                                    Icons.star_rounded,
-                                    size: 15,
-                                    color: Color(0xFFF59E0B),
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    '${appState.totalStars}',
-                                    style: TextStyle(
-                                      fontSize: 12.5,
-                                      fontWeight: FontWeight.w800,
-                                      color: isDark
-                                          ? Colors.white
-                                          : const Color(0xFF44403C),
-                                    ),
-                                  ),
-                                ],
+                            Text(
+                              '${appState.packs.length} Paket • ${appState.totalStars} Yıldız',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: mutedColor,
                               ),
                             ),
                           ],
@@ -220,15 +147,17 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     SliverPadding(
-                      padding: const EdgeInsets.fromLTRB(18, 0, 18, 16),
+                      padding: const EdgeInsets.fromLTRB(18, 0, 18, 14),
                       sliver: SliverList.separated(
                         itemCount: appState.packs.length,
-                        separatorBuilder: (_, _) => const SizedBox(height: 14),
+                        separatorBuilder: (_, _) => const SizedBox(height: 11),
                         itemBuilder: (context, index) {
                           final pack = appState.packs[index];
                           return _ConceptPackCard(
                             pack: pack,
-                            completedLevels: appState.completedCountForPack(pack),
+                            isDark: isDark,
+                            completedLevels:
+                                appState.completedCountForPack(pack),
                             earnedStars: appState.starsForPack(pack),
                             maxStars: appState.maxStarsForPack(pack),
                             onTap: () {
@@ -273,28 +202,35 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context, {required bool isDark}) {
-    final titleColor = isDark ? Colors.white : const Color(0xFF1C1917);
-    final subtitleColor = isDark ? Colors.white70 : const Color(0xFF78716C);
-    final iconBg = isDark ? Colors.white.withValues(alpha: 0.14) : Colors.white;
-    final iconFg = isDark ? Colors.white : const Color(0xFF44403C);
+    final titleColor = isDark ? Colors.white : AppPalette.ink;
+    final subtitleColor = isDark ? Colors.white70 : AppPalette.inkMuted;
+    final btnBg =
+        isDark ? Colors.white.withValues(alpha: 0.1) : AppPalette.card;
+    final btnBorder =
+        isDark ? Colors.white24 : AppPalette.hairline;
+    final btnFg = isDark ? Colors.white : AppPalette.ink;
 
     return Row(
       children: [
         Container(
-          width: 44,
-          height: 44,
+          width: 42,
+          height: 42,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(13),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: AppPalette.brassBorder.withValues(alpha: 0.7),
+              width: 1,
+            ),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFB45309).withValues(alpha: 0.32),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
+                color: Colors.black.withValues(alpha: 0.12),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
               ),
             ],
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(13),
+            borderRadius: BorderRadius.circular(11),
             child: Image.asset(
               'assets/branding/karehane_icon.png',
               fit: BoxFit.cover,
@@ -314,7 +250,7 @@ class HomeScreen extends StatelessWidget {
                   fontSize: 20,
                   fontWeight: FontWeight.w900,
                   color: titleColor,
-                  letterSpacing: -0.4,
+                  letterSpacing: -0.5,
                 ),
               ),
               Text(
@@ -339,29 +275,36 @@ class HomeScreen extends StatelessWidget {
             children: [
               Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    const EdgeInsets.symmetric(horizontal: 11, vertical: 7),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFEF3C7),
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.12)
+                      : AppPalette.brassSoft,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: const Color(0xFFF59E0B).withValues(alpha: 0.45),
+                    color: isDark
+                        ? AppPalette.brassBright.withValues(alpha: 0.4)
+                        : AppPalette.brassBorder,
                   ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
-                      Icons.monetization_on_rounded,
-                      size: 16,
-                      color: Color(0xFFD97706),
+                    Container(
+                      width: 8,
+                      height: 8,
+                      decoration: const BoxDecoration(
+                        color: AppPalette.brassBright,
+                        shape: BoxShape.circle,
+                      ),
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: 6),
                     Text(
                       '${appState.coins}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13.5,
                         fontWeight: FontWeight.w900,
-                        color: Color(0xFF92400E),
+                        color: isDark ? Colors.white : AppPalette.ink,
                       ),
                     ),
                   ],
@@ -372,12 +315,12 @@ class HomeScreen extends StatelessWidget {
                   top: -3,
                   right: -3,
                   child: Container(
-                    width: 14,
-                    height: 14,
+                    width: 15,
+                    height: 15,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFDC2626),
+                      color: AppPalette.brass,
                       shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 1.5),
+                      border: Border.all(color: AppPalette.card, width: 1.5),
                     ),
                     alignment: Alignment.center,
                     child: Text(
@@ -393,33 +336,72 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(width: 5),
-        IconButton.filledTonal(
-          onPressed: () {
+        const SizedBox(width: 6),
+        _HeaderIconButton(
+          icon: Icons.palette_outlined,
+          tooltip: 'Arka Planlar',
+          bg: btnBg,
+          border: btnBorder,
+          fg: btnFg,
+          onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute<void>(
                 builder: (_) => BackgroundGalleryScreen(appState: appState),
               ),
             );
           },
-          style: IconButton.styleFrom(
-            backgroundColor: iconBg,
-            foregroundColor: iconFg,
-          ),
-          icon: const Icon(Icons.palette_outlined, size: 21),
-          tooltip: 'Arka Planlar',
         ),
-        const SizedBox(width: 4),
-        IconButton.filledTonal(
-          onPressed: () => showStatsAndSettingsSheet(context, appState),
-          style: IconButton.styleFrom(
-            backgroundColor: iconBg,
-            foregroundColor: iconFg,
-          ),
-          icon: const Icon(Icons.bar_chart_rounded, size: 21),
+        const SizedBox(width: 6),
+        _HeaderIconButton(
+          icon: Icons.tune_rounded,
           tooltip: 'İstatistikler ve Ayarlar',
+          bg: btnBg,
+          border: btnBorder,
+          fg: btnFg,
+          onTap: () => showStatsAndSettingsSheet(context, appState),
         ),
       ],
+    );
+  }
+}
+
+class _HeaderIconButton extends StatelessWidget {
+  const _HeaderIconButton({
+    required this.icon,
+    required this.tooltip,
+    required this.bg,
+    required this.border,
+    required this.fg,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String tooltip;
+  final Color bg;
+  final Color border;
+  final Color fg;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: tooltip,
+      child: Material(
+        color: bg,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(color: border),
+        ),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(12),
+          child: SizedBox(
+            width: 38,
+            height: 38,
+            child: Icon(icon, size: 19, color: fg),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -445,353 +427,129 @@ class _DailyChallengeCard extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onPlay,
-        borderRadius: BorderRadius.circular(22),
-        child: Ink(
-          padding: const EdgeInsets.all(18),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Color(0xFFEA580C), Color(0xFFB45309), Color(0xFF7C2D12)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+        borderRadius: BorderRadius.circular(20),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: CustomPaint(
+            foregroundPainter: const CrosswordWatermarkPainter(
+              color: Color(0xFFFDE68A),
+              opacity: 0.08,
             ),
-            borderRadius: BorderRadius.circular(22),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFFB45309).withValues(alpha: 0.35),
-                blurRadius: 16,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.wb_sunny_rounded,
-                          size: 14,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(width: 5),
-                        Text(
-                          todayLabel,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 11.5,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.24),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.local_fire_department_rounded,
-                          size: 15,
-                          color: Color(0xFFFDE047),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          '$streak Gün',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                      ],
-                    ),
+            child: Ink(
+              padding: const EdgeInsets.fromLTRB(18, 16, 16, 16),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF231E1A), Color(0xFF161311)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: AppPalette.brassBright.withValues(alpha: 0.25),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.16),
+                    blurRadius: 16,
+                    offset: const Offset(0, 6),
                   ),
                 ],
               ),
-              const SizedBox(height: 14),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Günün Bulmacası',
-                          style: TextStyle(
+                  Row(
+                    children: [
+                      Text(
+                        todayLabel.toUpperCase(),
+                        style: const TextStyle(
+                          color: AppPalette.brassBright,
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1.1,
+                        ),
+                      ),
+                      const Spacer(),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 9,
+                          vertical: 3,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.08),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.14),
+                          ),
+                        ),
+                        child: Text(
+                          '$streak Gün Seri',
+                          style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: -0.3,
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Karma konsept • ${puzzle.gridSizeLabel} • ${puzzle.entries.length} kelime • 2× Altın',
-                          style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.88),
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 10),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          completed
-                              ? Icons.check_circle_rounded
-                              : Icons.play_arrow_rounded,
-                          size: 18,
-                          color: completed
-                              ? const Color(0xFF16A34A)
-                              : const Color(0xFFB45309),
+                  const SizedBox(height: 12),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Günün Bulmacası',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: -0.4,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Karma konsept • ${puzzle.gridSizeLabel} • ${puzzle.entries.length} kelime • 2× Altın',
+                              style: TextStyle(
+                                color: Colors.white.withValues(alpha: 0.72),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 4),
-                        Text(
+                      ),
+                      const SizedBox(width: 10),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 10,
+                        ),
+                        decoration: BoxDecoration(
+                          color: completed
+                              ? AppPalette.correctSoft
+                              : AppPalette.brassBright,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
                           completed ? 'Çözüldü' : 'Başla',
                           style: TextStyle(
                             color: completed
-                                ? const Color(0xFF15803D)
-                                : const Color(0xFF9A3412),
+                                ? AppPalette.correct
+                                : AppPalette.ink,
                             fontWeight: FontWeight.w900,
                             fontSize: 13.5,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ConceptPackCard extends StatelessWidget {
-  const _ConceptPackCard({
-    required this.pack,
-    required this.completedLevels,
-    required this.earnedStars,
-    required this.maxStars,
-    required this.onTap,
-  });
-
-  final ConceptPack pack;
-  final int completedLevels;
-  final int earnedStars;
-  final int maxStars;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final totalLevels = pack.levels.length;
-    final progress = totalLevels == 0 ? 0.0 : completedLevels / totalLevels;
-    final minGrid = pack.levels.first.gridSizeLabel;
-    final maxGrid = pack.levels.last.gridSizeLabel;
-
-    return Material(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(20),
-      elevation: 1.5,
-      shadowColor: pack.secondaryColor.withValues(alpha: 0.14),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: pack.primaryColor.withValues(alpha: 0.18)),
-          ),
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.fromLTRB(16, 14, 14, 14),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [pack.primaryColor, pack.secondaryColor],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(19),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.18),
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: Icon(pack.icon, color: Colors.white, size: 28),
-                    ),
-                    const SizedBox(width: 13),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  pack.name,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17.5,
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 6),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 2,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withValues(alpha: 0.22),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Text(
-                                  pack.language.toUpperCase(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 3),
-                          Text(
-                            pack.subtitle,
-                            style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.88),
-                              fontSize: 12.5,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: Colors.white70,
-                      size: 18,
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Flexible(
-                          child: Text(
-                            '$completedLevels/$totalLevels Seviye',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 12.5,
-                              fontWeight: FontWeight.w800,
-                              color: Color(0xFF292524),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 6),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 7,
-                            vertical: 2,
-                          ),
-                          decoration: BoxDecoration(
-                            color: pack.surfaceColor,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            '$minGrid–$maxGrid',
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w800,
-                              color: pack.primaryColor,
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        const Icon(
-                          Icons.star_rounded,
-                          size: 16,
-                          color: Color(0xFFF59E0B),
-                        ),
-                        const SizedBox(width: 3),
-                        Text(
-                          '$earnedStars/$maxStars',
-                          style: const TextStyle(
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.w800,
-                            color: Color(0xFF57534E),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 9),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
-                      child: LinearProgressIndicator(
-                        value: progress,
-                        minHeight: 7,
-                        backgroundColor: const Color(0xFFE7E5E4),
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          pack.primaryColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -817,21 +575,17 @@ class _RankAndMissionsStrip extends StatelessWidget {
     final pending = appState.pendingRewardCount;
 
     return Material(
-      color: isDark
-          ? Colors.white.withValues(alpha: 0.12)
-          : Colors.white.withValues(alpha: 0.95),
+      color: isDark ? Colors.white.withValues(alpha: 0.1) : AppPalette.card,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: pending > 0
-                  ? const Color(0xFFF59E0B).withValues(alpha: 0.7)
-                  : (isDark ? Colors.white12 : const Color(0xFFE7E5E4)),
+              color: isDark ? Colors.white12 : AppPalette.hairline,
             ),
           ),
           child: Row(
@@ -840,16 +594,25 @@ class _RankAndMissionsStrip extends StatelessWidget {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: rank.color.withValues(alpha: isDark ? 0.35 : 0.14),
-                  borderRadius: BorderRadius.circular(11),
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.14)
+                      : AppPalette.brassSoft,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: isDark ? Colors.white24 : AppPalette.brassBorder,
+                  ),
                 ),
-                child: Icon(
-                  rank.icon,
-                  color: isDark ? Colors.white : rank.color,
-                  size: 20,
+                alignment: Alignment.center,
+                child: Text(
+                  'S${rank.level}',
+                  style: TextStyle(
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.w900,
+                    color: isDark ? AppPalette.brassBright : AppPalette.brass,
+                  ),
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 11),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -862,61 +625,38 @@ class _RankAndMissionsStrip extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w900,
-                              color: isDark
-                                  ? Colors.white
-                                  : const Color(0xFF1C1917),
+                              fontSize: 13.5,
+                              fontWeight: FontWeight.w800,
+                              color: isDark ? Colors.white : AppPalette.ink,
                             ),
                           ),
                         ),
-                        const SizedBox(width: 6),
-                        const Icon(
-                          Icons.star_rounded,
-                          size: 13,
-                          color: Color(0xFFF59E0B),
-                        ),
-                        const SizedBox(width: 2),
+                        const SizedBox(width: 8),
                         Text(
                           rank.nextStars == null
-                              ? '$stars'
-                              : '$stars/${rank.nextStars}',
+                              ? '$stars Yıldız • ${appState.score} P'
+                              : '$stars/${rank.nextStars} Yıldız • ${appState.score} P',
                           style: TextStyle(
                             fontSize: 11,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w700,
                             color: isDark
-                                ? Colors.white70
-                                : const Color(0xFF78716C),
-                          ),
-                        ),
-                        const SizedBox(width: 6),
-                        const Icon(
-                          Icons.bolt_rounded,
-                          size: 13,
-                          color: Color(0xFF7C3AED),
-                        ),
-                        Text(
-                          '${appState.score}',
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w900,
-                            color: isDark
-                                ? const Color(0xFFC4B5FD)
-                                : const Color(0xFF5B21B6),
+                                ? Colors.white60
+                                : AppPalette.inkMuted,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 6),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(4),
                       child: LinearProgressIndicator(
                         value: rank.progressFor(stars),
-                        minHeight: 5,
-                        backgroundColor: isDark
-                            ? Colors.white12
-                            : const Color(0xFFE7E5E4),
-                        valueColor: AlwaysStoppedAnimation<Color>(rank.color),
+                        minHeight: 4.5,
+                        backgroundColor:
+                            isDark ? Colors.white12 : AppPalette.cardMuted,
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                          AppPalette.brass,
+                        ),
                       ),
                     ),
                   ],
@@ -925,46 +665,396 @@ class _RankAndMissionsStrip extends StatelessWidget {
               const SizedBox(width: 10),
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 6,
+                  horizontal: 11,
+                  vertical: 7,
                 ),
                 decoration: BoxDecoration(
                   color: pending > 0
-                      ? const Color(0xFFEA580C)
+                      ? AppPalette.ink
                       : (isDark
-                          ? Colors.white.withValues(alpha: 0.15)
-                          : const Color(0xFFF5F5F4)),
-                  borderRadius: BorderRadius.circular(12),
+                          ? Colors.white.withValues(alpha: 0.14)
+                          : AppPalette.cardMuted),
+                  borderRadius: BorderRadius.circular(11),
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      pending > 0
-                          ? Icons.card_giftcard_rounded
-                          : Icons.emoji_events_outlined,
-                      size: 14,
-                      color: pending > 0
-                          ? Colors.white
-                          : (isDark ? Colors.white : const Color(0xFF44403C)),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      pending > 0 ? 'Ödül ($pending)' : 'Görevler',
-                      style: TextStyle(
-                        fontSize: 11.5,
-                        fontWeight: FontWeight.w800,
-                        color: pending > 0
-                            ? Colors.white
-                            : (isDark
-                                ? Colors.white
-                                : const Color(0xFF44403C)),
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  pending > 0 ? 'Ödül ($pending)' : 'Mağaza',
+                  style: TextStyle(
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w800,
+                    color: pending > 0
+                        ? AppPalette.brassBright
+                        : (isDark ? Colors.white : AppPalette.ink),
+                  ),
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _QuickModulesRow extends StatelessWidget {
+  const _QuickModulesRow({
+    required this.appState,
+    required this.isDark,
+    required this.onOpenSprint,
+    required this.onOpenNotebook,
+  });
+
+  final AppState appState;
+  final bool isDark;
+  final VoidCallback onOpenSprint;
+  final VoidCallback onOpenNotebook;
+
+  @override
+  Widget build(BuildContext context) {
+    final bestSprint = appState.bestSprintScore;
+    final enCount = appState.learnedEnglishCount;
+
+    return Row(
+      children: [
+        Expanded(
+          child: _QuickModuleCard(
+            title: 'Mini Sprint',
+            subtitle: bestSprint > 0
+                ? 'Rekor: $bestSprint puan'
+                : '5×5 Hız & Kombo',
+            badge: '90 SN',
+            emblemKind: EmblemKind.sprint,
+            isDark: isDark,
+            onTap: onOpenSprint,
+          ),
+        ),
+        const SizedBox(width: 11),
+        Expanded(
+          child: _QuickModuleCard(
+            title: 'Kelime Defteri',
+            subtitle: enCount > 0
+                ? '$enCount kelime • Sözlük'
+                : 'EN – TR Sözlük',
+            badge: 'A1–B1',
+            emblemKind: EmblemKind.dictionary,
+            isDark: isDark,
+            onTap: onOpenNotebook,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _QuickModuleCard extends StatelessWidget {
+  const _QuickModuleCard({
+    required this.title,
+    required this.subtitle,
+    required this.badge,
+    required this.emblemKind,
+    required this.isDark,
+    required this.onTap,
+  });
+
+  final String title;
+  final String subtitle;
+  final String badge;
+  final EmblemKind emblemKind;
+  final bool isDark;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: isDark ? Colors.white.withValues(alpha: 0.1) : AppPalette.card,
+      borderRadius: BorderRadius.circular(18),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(18),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(13, 13, 12, 13),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: isDark ? Colors.white12 : AppPalette.hairline,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  EditorialEmblem(
+                    kind: emblemKind,
+                    size: 36,
+                    accentColor:
+                        isDark ? AppPalette.brassBright : AppPalette.brass,
+                    backgroundColor: isDark
+                        ? Colors.white.withValues(alpha: 0.08)
+                        : AppPalette.cardMuted,
+                    borderColor: isDark ? Colors.white24 : AppPalette.hairline,
+                    onDark: isDark,
+                  ),
+                  const Spacer(),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 7,
+                      vertical: 3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? Colors.white.withValues(alpha: 0.12)
+                          : AppPalette.brassSoft,
+                      borderRadius: BorderRadius.circular(7),
+                      border: Border.all(
+                        color: isDark
+                            ? Colors.white24
+                            : AppPalette.brassBorder,
+                      ),
+                    ),
+                    child: Text(
+                      badge,
+                      style: TextStyle(
+                        color:
+                            isDark ? AppPalette.brassBright : AppPalette.brass,
+                        fontSize: 9.5,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 0.4,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 11),
+              Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: isDark ? Colors.white : AppPalette.ink,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -0.2,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                subtitle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: isDark ? Colors.white60 : AppPalette.inkMuted,
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ConceptPackCard extends StatelessWidget {
+  const _ConceptPackCard({
+    required this.pack,
+    required this.isDark,
+    required this.completedLevels,
+    required this.earnedStars,
+    required this.maxStars,
+    required this.onTap,
+  });
+
+  final ConceptPack pack;
+  final bool isDark;
+  final int completedLevels;
+  final int earnedStars;
+  final int maxStars;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final totalLevels = pack.levels.length;
+    final progress = totalLevels == 0 ? 0.0 : completedLevels / totalLevels;
+    final minGrid = pack.levels.first.gridSizeLabel;
+    final maxGrid = pack.levels.last.gridSizeLabel;
+    final accent = AppPalette.editorialAccentForPack(pack.id);
+
+    return Material(
+      color: isDark ? Colors.white.withValues(alpha: 0.1) : AppPalette.card,
+      borderRadius: BorderRadius.circular(18),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(18),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(18),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(
+                color: isDark ? Colors.white12 : AppPalette.hairline,
+              ),
+            ),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(width: 4, color: accent),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(14, 13, 14, 13),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              EditorialEmblem(
+                                kind: emblemKindForPack(pack.id),
+                                size: 44,
+                                accentColor: accent,
+                                backgroundColor: isDark
+                                    ? Colors.white.withValues(alpha: 0.08)
+                                    : AppPalette.cardMuted,
+                                borderColor: isDark
+                                    ? Colors.white24
+                                    : AppPalette.hairline,
+                                onDark: isDark,
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            pack.name,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: isDark
+                                                  ? Colors.white
+                                                  : AppPalette.ink,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w900,
+                                              letterSpacing: -0.2,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 6),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 6,
+                                            vertical: 2,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: isDark
+                                                ? Colors.white
+                                                    .withValues(alpha: 0.12)
+                                                : AppPalette.cardMuted,
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          child: Text(
+                                            pack.language.toUpperCase(),
+                                            style: TextStyle(
+                                              color: isDark
+                                                  ? Colors.white70
+                                                  : AppPalette.inkSoft,
+                                              fontSize: 9.5,
+                                              fontWeight: FontWeight.w800,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Text(
+                                      pack.subtitle,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: isDark
+                                            ? Colors.white60
+                                            : AppPalette.inkMuted,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Icon(
+                                Icons.chevron_right_rounded,
+                                color: isDark
+                                    ? Colors.white54
+                                    : AppPalette.inkMuted,
+                                size: 22,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 11),
+                          Row(
+                            children: [
+                              Text(
+                                '$completedLevels/$totalLevels Seviye',
+                                style: TextStyle(
+                                  fontSize: 11.5,
+                                  fontWeight: FontWeight.w800,
+                                  color: isDark
+                                      ? Colors.white
+                                      : AppPalette.inkSoft,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                '$minGrid–$maxGrid',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                  color: isDark
+                                      ? Colors.white54
+                                      : AppPalette.inkMuted,
+                                ),
+                              ),
+                              const Spacer(),
+                              Text(
+                                '$earnedStars/$maxStars',
+                                style: TextStyle(
+                                  fontSize: 11.5,
+                                  fontWeight: FontWeight.w800,
+                                  color: isDark
+                                      ? Colors.white70
+                                      : AppPalette.inkSoft,
+                                ),
+                              ),
+                              const SizedBox(width: 3),
+                              const Icon(
+                                Icons.star_rounded,
+                                size: 14,
+                                color: AppPalette.brassBright,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 6),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(4),
+                            child: LinearProgressIndicator(
+                              value: progress,
+                              minHeight: 5,
+                              backgroundColor: isDark
+                                  ? Colors.white12
+                                  : AppPalette.cardMuted,
+                              valueColor: AlwaysStoppedAnimation<Color>(accent),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -990,38 +1080,29 @@ class _MegaArenaBanner extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(18),
         child: Ink(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
-              colors: [Color(0xFF881337), Color(0xFF4C1D95), Color(0xFF1E1B4B)],
+              colors: [Color(0xFF26201C), Color(0xFF181412)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            borderRadius: BorderRadius.circular(22),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFF4C1D95).withValues(alpha: 0.32),
-                blurRadius: 16,
-                offset: const Offset(0, 7),
-              ),
-            ],
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: AppPalette.brassBright.withValues(alpha: 0.25),
+            ),
           ),
           child: Row(
             children: [
-              Container(
-                width: 52,
-                height: 52,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.16),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: const Icon(
-                  Icons.grid_4x4_rounded,
-                  color: Color(0xFFFDE047),
-                  size: 30,
-                ),
+              EditorialEmblem(
+                kind: EmblemKind.megaGrid,
+                size: 46,
+                accentColor: AppPalette.brassBright,
+                backgroundColor: Colors.white.withValues(alpha: 0.08),
+                borderColor: Colors.white24,
+                onDark: true,
               ),
               const SizedBox(width: 13),
               Expanded(
@@ -1037,38 +1118,38 @@ class _MegaArenaBanner extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 17.5,
+                              fontSize: 16.5,
                               fontWeight: FontWeight.w900,
                             ),
                           ),
                         ),
-                        const SizedBox(width: 6),
+                        const SizedBox(width: 7),
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 7,
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFFDE047),
-                            borderRadius: BorderRadius.circular(7),
+                            color: AppPalette.brassBright,
+                            borderRadius: BorderRadius.circular(6),
                           ),
                           child: const Text(
                             '12×12–20×20',
                             style: TextStyle(
-                              color: Color(0xFF1C1917),
-                              fontSize: 10,
+                              color: AppPalette.ink,
+                              fontSize: 9.5,
                               fontWeight: FontWeight.w900,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 3),
                     Text(
                       '$unlockedCount/${items.length} açık • Yakınlaştır & Kaydır • 3× Ödül',
                       style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.86),
-                        fontSize: 12,
+                        color: Colors.white.withValues(alpha: 0.72),
+                        fontSize: 11.5,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -1076,164 +1157,9 @@ class _MegaArenaBanner extends StatelessWidget {
                 ),
               ),
               const Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: Colors.white70,
-                size: 18,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _QuickModulesRow extends StatelessWidget {
-  const _QuickModulesRow({
-    required this.appState,
-    required this.onOpenSprint,
-    required this.onOpenNotebook,
-  });
-
-  final AppState appState;
-  final VoidCallback onOpenSprint;
-  final VoidCallback onOpenNotebook;
-
-  @override
-  Widget build(BuildContext context) {
-    final bestSprint = appState.bestSprintScore;
-    final enCount = appState.learnedEnglishCount;
-
-    return Row(
-      children: [
-        Expanded(
-          child: _QuickModuleCard(
-            title: 'Mini Sprint',
-            subtitle: bestSprint > 0
-                ? 'Rekor: $bestSprint puan'
-                : '5×5 Hız & Kombo',
-            badge: '90sn',
-            icon: Icons.bolt_rounded,
-            gradient: const [Color(0xFFDC2626), Color(0xFF9A3412)],
-            onTap: onOpenSprint,
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: _QuickModuleCard(
-            title: 'Kelime Defteri',
-            subtitle: enCount > 0
-                ? '$enCount kelime • Kartlar'
-                : 'EN Öğrendiklerim',
-            badge: 'A1–B1',
-            icon: Icons.menu_book_rounded,
-            gradient: const [Color(0xFF1D4ED8), Color(0xFF1E3A8A)],
-            onTap: onOpenNotebook,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _QuickModuleCard extends StatelessWidget {
-  const _QuickModuleCard({
-    required this.title,
-    required this.subtitle,
-    required this.badge,
-    required this.icon,
-    required this.gradient,
-    required this.onTap,
-  });
-
-  final String title;
-  final String subtitle;
-  final String badge;
-  final IconData icon;
-  final List<Color> gradient;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(18),
-        child: Ink(
-          padding: const EdgeInsets.fromLTRB(13, 12, 12, 12),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: gradient,
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(18),
-            boxShadow: [
-              BoxShadow(
-                color: gradient.first.withValues(alpha: 0.28),
-                blurRadius: 12,
-                offset: const Offset(0, 5),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Icon(icon, color: Colors.white, size: 19),
-                  ),
-                  const Spacer(),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 7,
-                      vertical: 2.5,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.24),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      badge,
-                      style: const TextStyle(
-                        color: Color(0xFFFDE047),
-                        fontSize: 10,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 9),
-              Text(
-                title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: -0.2,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                subtitle,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.88),
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                ),
+                Icons.chevron_right_rounded,
+                color: Colors.white54,
+                size: 22,
               ),
             ],
           ),

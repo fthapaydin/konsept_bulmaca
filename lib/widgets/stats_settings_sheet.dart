@@ -1,6 +1,8 @@
+import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
+import '../core/brand/brand_config.dart';
+import '../core/theme/app_theme.dart';
 import '../state/app_state.dart';
-import '../utils/turkish_text.dart';
 
 Future<void> showStatsAndSettingsSheet(
   BuildContext context,
@@ -9,7 +11,7 @@ Future<void> showStatsAndSettingsSheet(
   return showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
-    backgroundColor: const Color(0xFFFAF8F5),
+    backgroundColor: AppPalette.paper,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
@@ -17,176 +19,317 @@ Future<void> showStatsAndSettingsSheet(
       return ListenableBuilder(
         listenable: appState,
         builder: (_, _) {
-          final fastest = appState.fastestSolveSeconds;
-          return SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 22),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Container(
-                      width: 40,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFD6D3D1),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  const Text(
-                    'İstatistikler ve Ayarlar',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w900,
-                      color: Color(0xFF1C1917),
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  GridView.count(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    childAspectRatio: 2.2,
-                    children: [
-                      _MetricTile(
-                        icon: Icons.check_circle_rounded,
-                        color: const Color(0xFF0F766E),
-                        label: 'Çözülen Bulmaca',
-                        value: '${appState.totalSolvedPuzzles}',
-                      ),
-                      _MetricTile(
-                        icon: Icons.star_rounded,
-                        color: const Color(0xFFF59E0B),
-                        label: 'Toplam Yıldız',
-                        value: '${appState.totalStars}',
-                      ),
-                      _MetricTile(
-                        icon: Icons.local_fire_department_rounded,
-                        color: const Color(0xFFEA580C),
-                        label: 'Günlük Seri',
-                        value: '${appState.dailyStreak} gün',
-                      ),
-                      _MetricTile(
-                        icon: Icons.bolt_rounded,
-                        color: const Color(0xFF6D28D9),
-                        label: 'Toplam Puan',
-                        value: '${appState.score}',
-                      ),
-                      _MetricTile(
-                        icon: Icons.whatshot_rounded,
-                        color: const Color(0xFFBE123C),
-                        label: 'En İyi Kombo',
-                        value: '${appState.bestCombo}×',
-                      ),
-                      _MetricTile(
-                        icon: Icons.timer_rounded,
-                        color: const Color(0xFF1D4ED8),
-                        label: 'En Hızlı Çözüm',
-                        value: fastest == null
-                            ? '--:--'
-                            : TurkishText.formatDuration(fastest),
-                      ),
-                      _MetricTile(
-                        icon: Icons.grid_4x4_rounded,
-                        color: const Color(0xFF0E7490),
-                        label: 'Dev Bulmaca',
-                        value: '${appState.completedMegaCount}',
-                      ),
-                      _MetricTile(
-                        icon: Icons.speed_rounded,
-                        color: const Color(0xFFDC2626),
-                        label: 'Sprint Rekoru',
-                        value: '${appState.bestSprintScore}',
-                      ),
-                      _MetricTile(
-                        icon: Icons.menu_book_rounded,
-                        color: const Color(0xFF1D4ED8),
-                        label: 'EN Defter',
-                        value: '${appState.learnedEnglishCount}',
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: const Color(0xFFE7E5E4)),
-                    ),
-                    child: Column(
-                      children: [
-                        SwitchListTile(
-                          value: appState.hapticsEnabled,
-                          onChanged: appState.toggleHaptics,
-                          title: const Text(
-                            'Titreşim (Haptik)',
-                            style: TextStyle(fontWeight: FontWeight.w700),
-                          ),
-                          subtitle: const Text('Tuş ve kutu seçiminde hafif titreşim'),
-                          secondary: const Icon(Icons.vibration_rounded),
+          return ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(ctx).size.height * 0.9,
+            ),
+            child: SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 18),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Container(
+                        width: 40,
+                        height: 4,
+                        decoration: BoxDecoration(
+                          color: AppPalette.hairlineStrong,
+                          borderRadius: BorderRadius.circular(4),
                         ),
-                        const Divider(height: 1),
-                        SwitchListTile(
-                          value: appState.soundEnabled,
-                          onChanged: appState.toggleSound,
-                          title: const Text(
-                            'Ses Efektleri',
-                            style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        const Expanded(
+                          child: Text(
+                            'İstatistikler ve Ayarlar',
+                            style: TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.w900,
+                              color: AppPalette.ink,
+                              letterSpacing: -0.3,
+                            ),
                           ),
-                          subtitle: const Text('Tuş, kombo, ipucu ve kutlama sesleri'),
-                          secondary: const Icon(Icons.volume_up_rounded),
+                        ),
+                        IconButton(
+                          onPressed: () => Navigator.of(ctx).pop(),
+                          icon: const Icon(Icons.close_rounded, size: 22),
+                          color: AppPalette.inkSoft,
+                          tooltip: 'Kapat',
+                          visualDensity: VisualDensity.compact,
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 14),
-                  SizedBox(
-                    width: double.infinity,
-                    child: TextButton.icon(
-                      onPressed: () async {
-                        final confirmed = await showDialog<bool>(
-                          context: ctx,
-                          builder: (dCtx) => AlertDialog(
-                            title: const Text('İlerlemeyi Sıfırla?'),
-                            content: const Text(
-                              'Tüm çözülen seviyeler, yıldızlar ve günlük seri başlangıç durumuna dönecektir.',
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(dCtx).pop(false),
-                                child: const Text('Vazgeç'),
+                    const SizedBox(height: 10),
+                    GridView.count(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8,
+                      childAspectRatio: 2.7,
+                      children: [
+                        _MetricTile(
+                          label: 'Çözülen Bulmaca',
+                          value: '${appState.totalSolvedPuzzles}',
+                        ),
+                        _MetricTile(
+                          label: 'Toplam Yıldız',
+                          value: '${appState.totalStars}',
+                          highlight: true,
+                        ),
+                        _MetricTile(
+                          label: 'Günlük Seri',
+                          value: '${appState.dailyStreak} gün',
+                        ),
+                        _MetricTile(
+                          label: 'Toplam Puan',
+                          value: '${appState.score}',
+                          highlight: true,
+                        ),
+                        _MetricTile(
+                          label: 'En İyi Kombo',
+                          value: '${appState.bestCombo}×',
+                        ),
+                        _MetricTile(
+                          label: 'Dev Bulmaca',
+                          value: '${appState.completedMegaCount}',
+                        ),
+                        _MetricTile(
+                          label: 'Sprint Rekoru',
+                          value: '${appState.bestSprintScore}',
+                          highlight: true,
+                        ),
+                        _MetricTile(
+                          label: 'EN Sözlük',
+                          value: '${appState.learnedEnglishCount}',
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Material(
+                      color: AppPalette.card,
+                      clipBehavior: Clip.antiAlias,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        side: const BorderSide(color: AppPalette.hairline),
+                      ),
+                      child: Column(
+                        children: [
+                          SwitchListTile(
+                            dense: true,
+                            activeThumbColor: AppPalette.brass,
+                            value: appState.hapticsEnabled,
+                            onChanged: appState.toggleHaptics,
+                            title: const Text(
+                              'Titreşim (Haptik)',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                color: AppPalette.ink,
                               ),
-                              FilledButton(
-                                style: FilledButton.styleFrom(
-                                  backgroundColor: const Color(0xFFDC2626),
+                            ),
+                            subtitle: const Text(
+                              'Tuş ve kutu seçiminde hafif titreşim',
+                              style: TextStyle(color: AppPalette.inkMuted),
+                            ),
+                          ),
+                          const Divider(height: 1, color: AppPalette.hairline),
+                          SwitchListTile(
+                            dense: true,
+                            activeThumbColor: AppPalette.brass,
+                            value: appState.soundEnabled,
+                            onChanged: appState.toggleSound,
+                            title: const Text(
+                              'Ses Efektleri',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                color: AppPalette.ink,
+                              ),
+                            ),
+                            subtitle: const Text(
+                              'Tuş, kombo, ipucu ve kutlama sesleri',
+                              style: TextStyle(color: AppPalette.inkMuted),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Container(
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: AppPalette.card,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: AppPalette.hairline),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.asset(
+                                  'assets/branding/karehane_icon.png',
+                                  width: 38,
+                                  height: 38,
+                                  fit: BoxFit.cover,
                                 ),
-                                onPressed: () => Navigator.of(dCtx).pop(true),
-                                child: const Text('Sıfırla'),
+                              ),
+                              const SizedBox(width: 11),
+                              const Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${BrandConfig.appName} ${BrandConfig.versionLabel}',
+                                      style: TextStyle(
+                                        fontSize: 14.5,
+                                        fontWeight: FontWeight.w900,
+                                        color: AppPalette.ink,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Geliştirici: ${BrandConfig.developerName}',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppPalette.inkMuted,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                        );
-                        if (confirmed == true) {
-                          await appState.resetAllProgress();
-                          if (ctx.mounted) Navigator.of(ctx).pop();
-                        }
-                      },
-                      style: TextButton.styleFrom(
-                        foregroundColor: const Color(0xFFDC2626),
-                      ),
-                      icon: const Icon(Icons.restart_alt_rounded, size: 19),
-                      label: const Text(
-                        'Tüm İlerlemeyi Sıfırla',
-                        style: TextStyle(fontWeight: FontWeight.w700),
+                          const Divider(height: 18, color: AppPalette.hairline),
+                          Row(
+                            children: [
+                              const Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'İLETİŞİM & DESTEK',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w800,
+                                        letterSpacing: 0.7,
+                                        color: AppPalette.inkMuted,
+                                      ),
+                                    ),
+                                    SizedBox(height: 2),
+                                    Text(
+                                      BrandConfig.contactEmail,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 13.5,
+                                        fontWeight: FontWeight.w800,
+                                        color: AppPalette.ink,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  await Clipboard.setData(
+                                    const ClipboardData(
+                                      text: BrandConfig.contactEmail,
+                                    ),
+                                  );
+                                  if (ctx.mounted) {
+                                    ScaffoldMessenger.of(ctx)
+                                      ..hideCurrentSnackBar()
+                                      ..showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            '${BrandConfig.contactEmail} panoya kopyalandı!',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                          behavior: SnackBarBehavior.floating,
+                                        ),
+                                      );
+                                  }
+                                },
+                                style: TextButton.styleFrom(
+                                  foregroundColor: AppPalette.brass,
+                                  backgroundColor: AppPalette.brassSoft,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 7,
+                                  ),
+                                  minimumSize: Size.zero,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    side: const BorderSide(
+                                      color: AppPalette.brassBorder,
+                                    ),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Kopyala',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: double.infinity,
+                      child: TextButton(
+                        onPressed: () async {
+                          final confirmed = await showDialog<bool>(
+                            context: ctx,
+                            builder: (dCtx) => AlertDialog(
+                              title: const Text('İlerlemeyi Sıfırla?'),
+                              content: const Text(
+                                'Tüm çözülen seviyeler, yıldızlar ve günlük seri başlangıç durumuna dönecektir.',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.of(dCtx).pop(false),
+                                  child: const Text('Vazgeç'),
+                                ),
+                                FilledButton(
+                                  style: FilledButton.styleFrom(
+                                    backgroundColor: AppPalette.error,
+                                  ),
+                                  onPressed: () => Navigator.of(dCtx).pop(true),
+                                  child: const Text('Sıfırla'),
+                                ),
+                              ],
+                            ),
+                          );
+                          if (confirmed == true) {
+                            await appState.resetAllProgress();
+                            if (ctx.mounted) Navigator.of(ctx).pop();
+                          }
+                        },
+                        style: TextButton.styleFrom(
+                          foregroundColor: AppPalette.error,
+                        ),
+                        child: const Text(
+                          'Tüm İlerlemeyi Sıfırla',
+                          style: TextStyle(fontWeight: FontWeight.w800),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
@@ -198,61 +341,50 @@ Future<void> showStatsAndSettingsSheet(
 
 class _MetricTile extends StatelessWidget {
   const _MetricTile({
-    required this.icon,
-    required this.color,
     required this.label,
     required this.value,
+    this.highlight = false,
   });
 
-  final IconData icon;
-  final Color color;
   final String label;
   final String value;
+  final bool highlight;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 9),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFE7E5E4)),
+        color: AppPalette.card,
+        borderRadius: BorderRadius.circular(13),
+        border: Border.all(
+          color: highlight ? AppPalette.brassBorder : AppPalette.hairline,
+        ),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(10),
+          Text(
+            value,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.w900,
+              color: highlight ? AppPalette.brass : AppPalette.ink,
+              height: 1.1,
             ),
-            child: Icon(icon, color: color, size: 20),
           ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w900,
-                    color: Color(0xFF1C1917),
-                  ),
-                ),
-                Text(
-                  label,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF78716C),
-                  ),
-                ),
-              ],
+          const SizedBox(height: 2),
+          Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: AppPalette.inkMuted,
             ),
           ),
         ],

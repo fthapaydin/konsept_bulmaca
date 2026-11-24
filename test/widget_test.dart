@@ -8,6 +8,7 @@ import 'package:konsept_bulmaca/features/notebook/word_notebook_screen.dart';
 import 'package:konsept_bulmaca/features/sprint/mini_sprint_screen.dart';
 import 'package:konsept_bulmaca/main.dart';
 import 'package:konsept_bulmaca/models/background_models.dart';
+import 'package:konsept_bulmaca/models/puzzle_models.dart';
 import 'package:konsept_bulmaca/models/retention_models.dart';
 import 'package:konsept_bulmaca/services/feedback_service.dart';
 import 'package:konsept_bulmaca/services/puzzle_repository.dart';
@@ -287,6 +288,67 @@ void main() {
       appState.dispose();
     });
 
+    test(
+        'detects completed wrong words immediately and pinpoints exact wrong cells on Kontrol',
+        () async {
+      final appState = _createSilentAppState();
+      await appState.initialize();
+
+      final lvl1 = appState.packs.first.levels.first;
+      final controller = GameController(
+        puzzle: lvl1,
+        storageKey: lvl1.id,
+        language: 'tr',
+        isDaily: false,
+        appState: appState,
+      );
+
+      final entry = lvl1.orderedEntries.first;
+      final chars = entry.answer.characters.toList();
+      CellCoord? sabotagedCell;
+
+      // Fill entry with 1 deliberate wrong letter on an unlocked cell
+      for (var i = 0; i < entry.cells.length; i++) {
+        final cell = entry.cells[i];
+        if (controller.isLocked(cell.row, cell.col)) continue;
+        controller.selectCell(cell.row, cell.col);
+        if (sabotagedCell == null) {
+          sabotagedCell = cell;
+          final wrongChar = chars[i] == 'Z' ? 'M' : 'Z';
+          await controller.inputLetter(wrongChar);
+        } else {
+          await controller.inputLetter(chars[i]);
+        }
+      }
+
+      expect(sabotagedCell, isNotNull);
+      expect(controller.hasWrongCompletedWord, isTrue);
+      expect(
+        controller.isCellInWrongEntry(sabotagedCell!.row, sabotagedCell.col),
+        isTrue,
+      );
+      expect(controller.activeErrorBanner, isNotNull);
+
+      // Run Kontrol -> pinpoints ONLY the exact wrong letter!
+      final checkRes = await controller.checkMistakes();
+      expect(checkRes.status, HintStatus.ok);
+      expect(controller.wrongMarkedCellCount, 1);
+      expect(
+        controller.isWrong(sabotagedCell.row, sabotagedCell.col),
+        isTrue,
+      );
+
+      // Fix the wrong letter -> clears error and solves word!
+      final rightIdx = entry.indexOfCell(sabotagedCell.row, sabotagedCell.col);
+      controller.selectCell(sabotagedCell.row, sabotagedCell.col);
+      await controller.inputLetter(chars[rightIdx]);
+      expect(controller.isWrong(sabotagedCell.row, sabotagedCell.col), isFalse);
+      expect(controller.isEntrySolved(entry), isTrue);
+
+      controller.dispose();
+      appState.dispose();
+    });
+
     test('buys bundles, unlocks backgrounds & mega puzzles with Puan', () async {
       final appState = _createSilentAppState();
       await appState.initialize();
@@ -410,6 +472,14 @@ void main() {
       expect(find.text('Mini Sprint'), findsOneWidget);
       expect(find.text('Kelime Defteri'), findsOneWidget);
       expect(find.text('Yeşilçam Klasikleri'), findsOneWidget);
+
+      // 0) Open Stats & Settings sheet and verify FatalSoft Inc. contact email
+      await tester.tap(find.byTooltip('İstatistikler ve Ayarlar'));
+      await tester.pumpAndSettle();
+      expect(find.text(BrandConfig.contactEmail), findsOneWidget);
+      expect(find.text('Geliştirici: ${BrandConfig.developerName}'), findsOneWidget);
+      await tester.tap(find.byTooltip('Kapat'));
+      await tester.pumpAndSettle();
 
       // 1) Launch Word Notebook + Flashcard review dialog
       await tester.tap(find.text('Kelime Defteri'));

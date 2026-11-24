@@ -348,6 +348,7 @@ class _CrosswordGridState extends State<CrosswordGrid> {
     final inWord = controller.isInActiveEntry(r, c);
     final locked = controller.isLocked(r, c);
     final wrong = controller.isWrong(r, c);
+    final inWrongWord = controller.isCellInWrongEntry(r, c);
     final inSolvedWord = controller.isCellInSolvedEntry(r, c);
     final letter = controller.letterAt(r, c) ?? '';
     final number = puzzle.numberAt(r, c);
@@ -367,16 +368,26 @@ class _CrosswordGridState extends State<CrosswordGrid> {
       borderColor = const Color(0xFF15803D);
       textColor = const Color(0xFF14532D);
       borderWidth = 2.4;
+    } else if (isSelected && (wrong || (inWrongWord && !inSolvedWord))) {
+      bgColor = const Color(0xFFB91C1C);
+      borderColor = const Color(0xFFFDE68A);
+      textColor = Colors.white;
+      borderWidth = 2.5;
     } else if (wrong) {
       bgColor = const Color(0xFFFEE2E2);
       borderColor = const Color(0xFFDC2626);
       textColor = const Color(0xFFB91C1C);
-      borderWidth = 2.2;
+      borderWidth = 2.3;
     } else if (isSelected) {
       bgColor = widget.primaryColor;
       borderColor = const Color(0xFFFDE68A);
       textColor = Colors.white;
       borderWidth = 2.5;
+    } else if (inWrongWord && !inSolvedWord) {
+      bgColor = const Color(0xFFFFF1F2);
+      borderColor = const Color(0xFFE11D48);
+      textColor = const Color(0xFF9F1239);
+      borderWidth = 2.0;
     } else if (inWord) {
       bgColor = Color.alphaBlend(
         widget.primaryColor.withValues(alpha: 0.17),
@@ -453,7 +464,33 @@ class _CrosswordGridState extends State<CrosswordGrid> {
                     ),
                   ),
                 ),
-              if (locked && !isSelected)
+              if (wrong)
+                Positioned.fill(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(radius - 1),
+                    child: CustomPaint(
+                      painter: _WrongCornerSlashPainter(
+                        color: isSelected
+                            ? const Color(0xFFFDE68A)
+                            : const Color(0xFFDC2626),
+                      ),
+                    ),
+                  ),
+                ),
+              if (!wrong && inWrongWord && !inSolvedWord && !isSelected)
+                Positioned(
+                  top: 2.5,
+                  right: 2.5,
+                  child: Container(
+                    width: (size * 0.13).clamp(4.5, 6.8),
+                    height: (size * 0.13).clamp(4.5, 6.8),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFE11D48),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              if (locked && !isSelected && !wrong)
                 Positioned(
                   top: 2.5,
                   right: 2.5,
@@ -495,6 +532,36 @@ class _CrosswordGridState extends State<CrosswordGrid> {
       ),
     );
   }
+}
+
+class _WrongCornerSlashPainter extends CustomPainter {
+  const _WrongCornerSlashPainter({required this.color});
+
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final tri = Path()
+      ..moveTo(size.width * 0.62, 0)
+      ..lineTo(size.width, 0)
+      ..lineTo(size.width, size.height * 0.38)
+      ..close();
+    canvas.drawPath(tri, Paint()..color = color);
+
+    final slash = Paint()
+      ..color = color.withValues(alpha: 0.45)
+      ..strokeWidth = 1.6
+      ..strokeCap = StrokeCap.round;
+    canvas.drawLine(
+      Offset(size.width * 0.16, size.height * 0.84),
+      Offset(size.width * 0.84, size.height * 0.16),
+      slash,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _WrongCornerSlashPainter oldDelegate) =>
+      oldDelegate.color != color;
 }
 
 class _ZoomChipButton extends StatelessWidget {

@@ -8,11 +8,14 @@ class BrandConfig {
   static const String appName = 'Karehane';
   static const String tagline = 'Konsept Kare Bulmaca';
   static const String versionLabel = 'v2.0';
+  static const String developerName = 'FatalSoft Inc.';
+  static const String contactEmail = 'fatalsoft.inc@gmail.com';
+  static const String androidPackageId = 'fatalsoft.bulmaca';
 
   static const Color primaryAmber = Color(0xFFB45309);
   static const Color deepMahogany = Color(0xFF7C2D12);
   static const Color warmPaper = Color(0xFFF8F6F1);
-  static const Color splashDark = Color(0xFF2B1209);
+  static const Color splashDark = Color(0xFF1B113C);
 }
 
 enum GameModuleId {

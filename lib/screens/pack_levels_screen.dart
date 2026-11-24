@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import '../core/theme/app_theme.dart';
 import '../features/notebook/word_notebook_screen.dart';
 import '../models/puzzle_models.dart';
 import '../state/app_state.dart';
@@ -48,7 +49,7 @@ class PackLevelsScreen extends StatelessWidget {
                 SliverAppBar(
                   expandedHeight: 190,
                   pinned: true,
-                  backgroundColor: pack.primaryColor,
+                  backgroundColor: AppPalette.ink,
                   foregroundColor: Colors.white,
                   title: Text(
                     pack.name,
@@ -85,7 +86,14 @@ class PackLevelsScreen extends StatelessWidget {
                   background: Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [pack.primaryColor, pack.secondaryColor],
+                        colors: [
+                          AppPalette.ink,
+                          Color.alphaBlend(
+                            AppPalette.editorialAccentForPack(pack.id)
+                                .withValues(alpha: 0.42),
+                            AppPalette.ink,
+                          ),
+                        ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -226,9 +234,9 @@ class PackLevelsScreen extends StatelessWidget {
           storageKey: puzzle.id,
           language: pack.language,
           packTitle: pack.name,
-          primaryColor: pack.primaryColor,
-          secondaryColor: pack.secondaryColor,
-          surfaceColor: pack.surfaceColor,
+          primaryColor: AppPalette.editorialAccentForPack(pack.id),
+          secondaryColor: AppPalette.ink,
+          surfaceColor: AppPalette.paper,
           isDaily: false,
           appState: appState,
           pack: pack,

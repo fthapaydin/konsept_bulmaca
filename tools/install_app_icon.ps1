@@ -51,8 +51,8 @@ try {
     Save-ResizedPng -OutPath (Join-Path $resDir "mipmap-xxhdpi\ic_launcher.png") -Width 144 -Height 144
     Save-ResizedPng -OutPath (Join-Path $resDir "mipmap-xxxhdpi\ic_launcher.png") -Width 192 -Height 192
 
-    # Android Adaptive Icon Foreground (108dp -> 432px @ xxxhdpi with safe padding)
-    Save-ResizedPng -OutPath (Join-Path $resDir "drawable-nodpi\ic_launcher_foreground.png") -Width 432 -Height 432 -PadPercent 8
+    # Android Adaptive Icon Foreground (108dp -> 432px @ xxxhdpi with 15% safe-zone inset)
+    Save-ResizedPng -OutPath (Join-Path $resDir "drawable-nodpi\ic_launcher_foreground.png") -Width 432 -Height 432 -PadPercent 15
 
     # Android Native Splash Logo (centered 260px PNG)
     Save-ResizedPng -OutPath (Join-Path $resDir "drawable-nodpi\splash_logo.png") -Width 260 -Height 260

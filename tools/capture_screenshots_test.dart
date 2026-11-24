@@ -20,6 +20,7 @@ import 'package:konsept_bulmaca/widgets/completion_dialog.dart';
 import 'package:konsept_bulmaca/widgets/confetti_overlay.dart';
 import 'package:konsept_bulmaca/widgets/game_keyboard.dart';
 import 'package:konsept_bulmaca/widgets/rewards_center_sheet.dart';
+import 'package:konsept_bulmaca/widgets/stats_settings_sheet.dart';
 
 const String _fontDir = r'C:\src\flutter\bin\cache\artifacts\material_fonts';
 
@@ -125,26 +126,44 @@ void main() {
     final boundaryKey = GlobalKey();
     Widget frame(Widget child) => RepaintBoundary(key: boundaryKey, child: child);
 
-    // 1) Karehane Ana Ekran (Özel İkon + Mini Sprint + Kelime Defteri + Konseptler)
-    await tester.pumpWidget(frame(KonseptBulmacaApp(appState: appState)));
-    await tester.pumpAndSettle();
-    final homeCtx = tester.element(find.text(BrandConfig.appName));
+    // 0) Karehane Açılış (Splash) Ekranı — Yeni Logo + FatalSoft Inc.
+    await tester.pumpWidget(
+      frame(
+        MaterialApp(
+          key: const ValueKey<String>('splash_app'),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(useMaterial3: true, fontFamily: 'Roboto'),
+          home: const KarehaneSplashView(),
+        ),
+      ),
+    );
+    await tester.pump();
+    final splashCtx = tester.element(find.text(BrandConfig.appName));
     await tester.runAsync(
       () => precacheImage(
         const AssetImage('assets/branding/karehane_icon.png'),
-        homeCtx,
+        splashCtx,
       ),
     );
+    await tester.pump(const Duration(milliseconds: 250));
+    await expectLater(
+      find.byKey(boundaryKey),
+      matchesGoldenFile('screenshots/screen_00_splash.png'),
+    );
+
+    // 1) Karehane Ana Ekran (Yeni Logo + Mini Sprint + Kelime Defteri + Konseptler)
+    await tester.pumpWidget(frame(KonseptBulmacaApp(appState: appState)));
     await tester.pumpAndSettle();
     await expectLater(
       find.byKey(boundaryKey),
       matchesGoldenFile('screenshots/screen_01_home.png'),
     );
 
-    // 2) 90sn Mini Sprint (Hız Modu — Canlı 5x5 Tahta, +5sn Bonus Flash ve Skor HUD)
+    // 2) 90sn Mini Sprint (Hız Modu — Canlı 5x5 Tahta, 01:30 Geri Sayım ve Kombo HUD)
     await tester.pumpWidget(
       frame(
         MaterialApp(
+          key: const ValueKey<String>('mini_sprint_app'),
           debugShowCheckedModeBanner: false,
           theme: ThemeData(useMaterial3: true, fontFamily: 'Roboto'),
           home: MiniSprintScreen(appState: appState),
@@ -153,22 +172,6 @@ void main() {
     );
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 350));
-    // Solve the 1st across word live on Mini Sprint to showcase live combo +5sn flash!
-    final sprintState = appState.sprintBank!.items;
-    final firstSprint = sprintState.firstWhere(
-      (item) => find.text(item.puzzle.orderedEntries.first.clue).evaluate().isNotEmpty,
-      orElse: () => sprintState.first,
-    );
-    final sprintFirstEntry = firstSprint.puzzle.orderedEntries.first;
-    final sprintKb = find.byType(GameKeyboard);
-    for (var i = 0; i < sprintFirstEntry.cells.length; i++) {
-      final cell = sprintFirstEntry.cells[i];
-      if (firstSprint.puzzle.isInitialRevealed(cell.row, cell.col)) continue;
-      final ch = sprintFirstEntry.answer.characters.elementAt(i);
-      await tester.tap(find.descendant(of: sprintKb, matching: find.text(ch)));
-      await tester.pump(const Duration(milliseconds: 35));
-    }
-    await tester.pump(const Duration(milliseconds: 180));
     await expectLater(
       find.byKey(boundaryKey),
       matchesGoldenFile('screenshots/screen_10_mini_sprint.png'),
@@ -225,6 +228,64 @@ void main() {
     await expectLater(
       find.byKey(boundaryKey),
       matchesGoldenFile('screenshots/screen_02_yesilcam_game.png'),
+    );
+
+    // 4b) Hatalı Kelime & Kontrol Ekranı (Doğru Yeşil Kelime + Kırmızı Hata İşaretli Harf + Hata Bannerı)
+    final lvlWrong = yesilcam.levels[1];
+    await tester.pumpWidget(
+      frame(
+        MaterialApp(
+          key: const ValueKey<String>('wrong_word_app'),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(useMaterial3: true, fontFamily: 'Roboto'),
+          home: GameScreen(
+            key: ValueKey<String>('wrong_${lvlWrong.id}'),
+            puzzle: lvlWrong,
+            storageKey: 'preview_wrong_${lvlWrong.id}',
+            language: yesilcam.language,
+            packTitle: yesilcam.name,
+            primaryColor: yesilcam.primaryColor,
+            secondaryColor: yesilcam.secondaryColor,
+            surfaceColor: yesilcam.surfaceColor,
+            isDaily: false,
+            appState: appState,
+            pack: yesilcam,
+            levelIndex: 1,
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    final wKb = find.byType(GameKeyboard);
+    // Solve 1st word cleanly in GREEN
+    final goodWord = lvlWrong.orderedEntries[0];
+    for (var i = 0; i < goodWord.cells.length; i++) {
+      final cell = goodWord.cells[i];
+      if (lvlWrong.isInitialRevealed(cell.row, cell.col)) continue;
+      final ch = goodWord.answer.characters.elementAt(i);
+      await tester.tap(find.descendant(of: wKb, matching: find.text(ch)));
+      await tester.pump(const Duration(milliseconds: 30));
+    }
+    // Fill 2nd word with 2 deliberate wrong letters to trigger instant error highlight!
+    final badWord = lvlWrong.orderedEntries[1];
+    var wrongTyped = 0;
+    for (var i = 0; i < badWord.cells.length; i++) {
+      final cell = badWord.cells[i];
+      if (lvlWrong.isInitialRevealed(cell.row, cell.col)) continue;
+      if (goodWord.containsCell(cell.row, cell.col)) continue;
+      final realCh = badWord.answer.characters.elementAt(i);
+      final tapCh = wrongTyped < 2 ? (realCh == 'Z' ? 'M' : 'Z') : realCh;
+      wrongTyped++;
+      await tester.tap(find.descendant(of: wKb, matching: find.text(tapCh)));
+      await tester.pump(const Duration(milliseconds: 30));
+    }
+    // Tap 'Kontrol' so exact wrong letters get the crisp red slash + corner triangle!
+    await tester.tap(find.text('Kontrol'));
+    await tester.pump(const Duration(milliseconds: 260));
+    await expectLater(
+      find.byKey(boundaryKey),
+      matchesGoldenFile('screenshots/screen_05_wrong_word_check.png'),
     );
 
     // 5) Dev Bulmacalar Ekranı (12x12 -> 15x15 -> 20x20)
@@ -304,6 +365,26 @@ void main() {
     await expectLater(
       find.byKey(boundaryKey),
       matchesGoldenFile('screenshots/screen_09_puan_shop.png'),
+    );
+
+    // 7b) İstatistikler, Ayarlar & İletişim (FatalSoft Inc. — fatalsoft.inc@gmail.com)
+    await tester.pumpWidget(
+      frame(
+        MaterialApp(
+          key: const ValueKey<String>('stats_sheet_app'),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(useMaterial3: true, fontFamily: 'Roboto'),
+          home: KonseptBulmacaApp(appState: appState),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    final statsCtx = tester.element(find.text(BrandConfig.appName));
+    showStatsAndSettingsSheet(statsCtx, appState);
+    await tester.pumpAndSettle();
+    await expectLater(
+      find.byKey(boundaryKey),
+      matchesGoldenFile('screenshots/screen_12_stats_contact.png'),
     );
 
     // 8) Arka Plan Galerisi

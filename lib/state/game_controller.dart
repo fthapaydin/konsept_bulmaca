@@ -54,6 +54,7 @@ class GameController extends ChangeNotifier {
   final Map<String, String> _letters = {};
   final Set<String> _lockedCells = {};
   final Set<String> _wrongCells = {};
+  final Set<String> _wrongEntryIds = {};
   final Set<String> _solvedEntryIds = {};
   final Set<String> _awardedEntryIds = {};
 
@@ -68,12 +69,14 @@ class GameController extends ChangeNotifier {
   bool _isCompleted = false;
   String? _recentSolvedEntryId;
   String? _recentSolvedBanner;
+  String? _activeErrorBanner;
   int _wordComboCount = 0;
   int _maxComboInSession = 0;
   int _sessionComboCoins = 0;
   int _sessionComboScore = 0;
   Timer? _timer;
   Timer? _flashTimer;
+  Timer? _errorBannerTimer;
   bool _disposed = false;
 
   CellCoord get selectedCell => _selectedCell;
@@ -84,6 +87,9 @@ class GameController extends ChangeNotifier {
   bool get isCompleted => _isCompleted;
   String? get recentSolvedEntryId => _recentSolvedEntryId;
   String? get recentSolvedBanner => _recentSolvedBanner;
+  String? get activeErrorBanner => _activeErrorBanner;
+  int get wrongMarkedCellCount => _wrongCells.length;
+  bool get hasWrongCompletedWord => _wrongEntryIds.isNotEmpty;
   int get wordComboCount => _wordComboCount;
   int get maxComboInSession => _maxComboInSession;
   int get sessionComboCoins => _sessionComboCoins;
@@ -126,6 +132,22 @@ class GameController extends ChangeNotifier {
     final down = puzzle.entryAt(r, c, WordDirection.down);
     if (down != null && _solvedEntryIds.contains(down.id)) return true;
     return false;
+  }
+
+  /// Kelimenin tüm kareleri dolmuş ama en az bir harf yanlışsa anında uyarır.
+  bool isCellInWrongEntry(int r, int c) {
+    final across = puzzle.entryAt(r, c, WordDirection.across);
+    if (across != null && _wrongEntryIds.contains(across.id)) return true;
+    final down = puzzle.entryAt(r, c, WordDirection.down);
+    if (down != null && _wrongEntryIds.contains(down.id)) return true;
+    return false;
+  }
+
+  bool isEntryCompletelyFilled(PuzzleEntry entry) {
+    for (final cell in entry.cells) {
+      if ((_letters[cell.key] ?? '').isEmpty) return false;
+    }
+    return true;
   }
 
   double get completionProgress {
@@ -321,7 +343,10 @@ class GameController extends ChangeNotifier {
     _wrongCells.remove(target.key);
 
     final newlySolvedList = _checkNewlySolvedEntries(target);
+    _checkCompletedWrongEntries(target);
+
     if (newlySolvedList.isNotEmpty) {
+      _clearErrorBanner();
       await _grantComboForSolvedEntries(newlySolvedList);
     }
 
@@ -404,6 +429,7 @@ class GameController extends ChangeNotifier {
       _letters.remove(curKey);
       _wrongCells.remove(curKey);
       _recomputeSolvedEntries();
+      _recomputeWrongEntries();
       notifyListeners();
       if (persistSession) unawaited(_persistProgress());
       return;
@@ -419,6 +445,7 @@ class GameController extends ChangeNotifier {
           _letters.remove(prevCell.key);
           _wrongCells.remove(prevCell.key);
           _recomputeSolvedEntries();
+          _recomputeWrongEntries();
           notifyListeners();
           if (persistSession) unawaited(_persistProgress());
           return;
@@ -652,6 +679,10 @@ class GameController extends ChangeNotifier {
     if (wrongCount > 0) {
       _mistakesCount += wrongCount;
       _wordComboCount = 0;
+      _recomputeWrongEntries();
+      _triggerErrorBanner(
+        '$wrongCount hatalı harf kırmızı ile işaretlendi — üzerine yazarak düzelt',
+      );
       appState.feedback.errorPulse();
       notifyListeners();
       if (persistSession) unawaited(_persistProgress());
@@ -660,6 +691,8 @@ class GameController extends ChangeNotifier {
         '$wrongCount hatalı harf kırmızı ile işaretlendi.',
       );
     } else {
+      _wrongEntryIds.clear();
+      _clearErrorBanner();
       appState.feedback.wordSolved();
       notifyListeners();
       return HintFeedback(
@@ -675,6 +708,8 @@ class GameController extends ChangeNotifier {
     _letters.clear();
     _lockedCells.clear();
     _wrongCells.clear();
+    _wrongEntryIds.clear();
+    _clearErrorBanner();
     _solvedEntryIds.clear();
     _awardedEntryIds.clear();
     _isCompleted = false;
@@ -788,6 +823,59 @@ class GameController extends ChangeNotifier {
     }
   }
 
+  void _recomputeWrongEntries() {
+    _wrongEntryIds.clear();
+    for (final entry in puzzle.entries) {
+      if (isEntryCompletelyFilled(entry) && !isEntrySolved(entry)) {
+        _wrongEntryIds.add(entry.id);
+      }
+    }
+  }
+
+  void _checkCompletedWrongEntries(CellCoord coord) {
+    var worstWrongLetters = 0;
+    for (final dir in [WordDirection.across, WordDirection.down]) {
+      final entry = puzzle.entryAt(coord.row, coord.col, dir);
+      if (entry == null) continue;
+      if (isEntryCompletelyFilled(entry) && !isEntrySolved(entry)) {
+        _wrongEntryIds.add(entry.id);
+        final chars = entry.answer.characters.toList();
+        var wrongInEntry = 0;
+        for (var i = 0; i < entry.cells.length; i++) {
+          if (_letters[entry.cells[i].key] != chars[i]) wrongInEntry++;
+        }
+        if (wrongInEntry > worstWrongLetters) {
+          worstWrongLetters = wrongInEntry;
+        }
+      } else {
+        _wrongEntryIds.remove(entry.id);
+      }
+    }
+
+    if (worstWrongLetters > 0) {
+      _wordComboCount = 0;
+      appState.feedback.errorPulse();
+      _triggerErrorBanner(
+        'Hatalı kelime! $worstWrongLetters harf yanlış — düzelt veya Kontrol et',
+      );
+    }
+  }
+
+  void _triggerErrorBanner(String message) {
+    _errorBannerTimer?.cancel();
+    _activeErrorBanner = message;
+    _errorBannerTimer = Timer(const Duration(milliseconds: 2800), () {
+      if (_disposed) return;
+      _activeErrorBanner = null;
+      notifyListeners();
+    });
+  }
+
+  void _clearErrorBanner() {
+    _errorBannerTimer?.cancel();
+    _activeErrorBanner = null;
+  }
+
   void _triggerWordSolvedFlash(String entryId, {required String banner}) {
     _flashTimer?.cancel();
     _recentSolvedEntryId = entryId;
@@ -816,6 +904,8 @@ class GameController extends ChangeNotifier {
     _isCompleted = true;
     _timer?.cancel();
     _wrongCells.clear();
+    _wrongEntryIds.clear();
+    _clearErrorBanner();
     _recomputeSolvedEntries();
     appState.feedback.puzzleSolved();
 
@@ -878,6 +968,7 @@ class GameController extends ChangeNotifier {
     _disposed = true;
     _timer?.cancel();
     _flashTimer?.cancel();
+    _errorBannerTimer?.cancel();
     super.dispose();
   }
 }

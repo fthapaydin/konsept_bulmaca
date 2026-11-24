@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
+import '../core/theme/app_theme.dart';
 import '../models/puzzle_models.dart';
 import '../state/app_state.dart';
 import '../utils/turkish_text.dart';
@@ -73,17 +74,17 @@ class MegaPuzzlesScreen extends StatelessWidget {
                           ),
                           const SizedBox(width: 6),
                           _BalanceChip(
-                            icon: Icons.bolt_rounded,
-                            value: '${appState.score}',
-                            bg: const Color(0xFFEDE9FE),
-                            fg: const Color(0xFF5B21B6),
+                            label: '${appState.score} P',
+                            bg: AppPalette.card,
+                            border: AppPalette.hairline,
+                            fg: AppPalette.ink,
                           ),
                           const SizedBox(width: 5),
                           _BalanceChip(
-                            icon: Icons.monetization_on_rounded,
-                            value: '${appState.coins}',
-                            bg: const Color(0xFFFEF3C7),
-                            fg: const Color(0xFF92400E),
+                            label: '${appState.coins} Altın',
+                            bg: AppPalette.brassSoft,
+                            border: AppPalette.brassBorder,
+                            fg: AppPalette.brass,
                           ),
                         ],
                       ),
@@ -203,39 +204,33 @@ class MegaPuzzlesScreen extends StatelessWidget {
 
 class _BalanceChip extends StatelessWidget {
   const _BalanceChip({
-    required this.icon,
-    required this.value,
+    required this.label,
     required this.bg,
+    required this.border,
     required this.fg,
   });
 
-  final IconData icon;
-  final String value;
+  final String label;
   final Color bg;
+  final Color border;
   final Color fg;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: border),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 15, color: fg),
-          const SizedBox(width: 3),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 12.5,
-              fontWeight: FontWeight.w900,
-              color: fg,
-            ),
-          ),
-        ],
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w800,
+          color: fg,
+        ),
       ),
     );
   }
@@ -290,8 +285,8 @@ class _MegaPuzzleCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: unlocked
-                        ? [item.primaryColor, item.secondaryColor]
-                        : [const Color(0xFF57534E), const Color(0xFF292524)],
+                        ? const [Color(0xFF26201C), Color(0xFF191512)]
+                        : const [Color(0xFF575049), Color(0xFF3A342F)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),

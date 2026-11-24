@@ -1,4 +1,4 @@
-package com.konseptbulmaca.konsept_bulmaca
+package fatalsoft.bulmaca
 
 import io.flutter.embedding.android.FlutterActivity
 
