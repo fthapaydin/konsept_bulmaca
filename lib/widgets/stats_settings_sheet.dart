@@ -74,10 +74,28 @@ Future<void> showStatsAndSettingsSheet(
                       _MetricTile(
                         icon: Icons.bolt_rounded,
                         color: const Color(0xFF6D28D9),
+                        label: 'Toplam Puan',
+                        value: '${appState.score}',
+                      ),
+                      _MetricTile(
+                        icon: Icons.whatshot_rounded,
+                        color: const Color(0xFFBE123C),
+                        label: 'En İyi Kombo',
+                        value: '${appState.bestCombo}×',
+                      ),
+                      _MetricTile(
+                        icon: Icons.timer_rounded,
+                        color: const Color(0xFF1D4ED8),
                         label: 'En Hızlı Çözüm',
                         value: fastest == null
                             ? '--:--'
                             : TurkishText.formatDuration(fastest),
+                      ),
+                      _MetricTile(
+                        icon: Icons.grid_4x4_rounded,
+                        color: const Color(0xFF0E7490),
+                        label: 'Dev Bulmaca',
+                        value: '${appState.completedMegaCount}',
                       ),
                     ],
                   ),

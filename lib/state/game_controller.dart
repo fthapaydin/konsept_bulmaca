@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import '../models/puzzle_models.dart';
+import '../models/retention_models.dart';
 import '../utils/turkish_text.dart';
 import 'app_state.dart';
 
@@ -20,6 +21,7 @@ class GameController extends ChangeNotifier {
     required this.language,
     required this.isDaily,
     required this.appState,
+    this.rewardMultiplier = 1,
     this.onPuzzleCompleted,
   }) {
     _loadInitialState();
@@ -31,6 +33,7 @@ class GameController extends ChangeNotifier {
   final String storageKey;
   final String language;
   final bool isDaily;
+  final int rewardMultiplier;
   final AppState appState;
   final void Function(CompletionReward reward)? onPuzzleCompleted;
 
@@ -38,6 +41,7 @@ class GameController extends ChangeNotifier {
   final Set<String> _lockedCells = {};
   final Set<String> _wrongCells = {};
   final Set<String> _solvedEntryIds = {};
+  final Set<String> _awardedEntryIds = {};
 
   late CellCoord _selectedCell;
   WordDirection _direction = WordDirection.across;
@@ -48,6 +52,9 @@ class GameController extends ChangeNotifier {
   String? _recentSolvedEntryId;
   String? _recentSolvedBanner;
   int _wordComboCount = 0;
+  int _maxComboInSession = 0;
+  int _sessionComboCoins = 0;
+  int _sessionComboScore = 0;
   Timer? _timer;
   Timer? _flashTimer;
   bool _disposed = false;
@@ -61,6 +68,10 @@ class GameController extends ChangeNotifier {
   String? get recentSolvedEntryId => _recentSolvedEntryId;
   String? get recentSolvedBanner => _recentSolvedBanner;
   int get wordComboCount => _wordComboCount;
+  int get maxComboInSession => _maxComboInSession;
+  int get sessionComboCoins => _sessionComboCoins;
+  int get sessionComboScore => _sessionComboScore;
+  ComboReward get nextComboReward => ComboEconomy.rewardFor(_wordComboCount + 1);
 
   String? letterAt(int r, int c) => _letters['$r,$c'];
   bool isLocked(int r, int c) => _lockedCells.contains('$r,$c');
@@ -97,7 +108,8 @@ class GameController extends ChangeNotifier {
     var filled = 0;
     for (var r = 0; r < puzzle.rows; r++) {
       for (var c = 0; c < puzzle.cols; c++) {
-        if (puzzle.isActiveCell(r, c) && (_letters['$r,$c']?.isNotEmpty ?? false)) {
+        if (puzzle.isActiveCell(r, c) &&
+            (_letters['$r,$c']?.isNotEmpty ?? false)) {
           filled++;
         }
       }
@@ -110,7 +122,6 @@ class GameController extends ChangeNotifier {
   void _loadInitialState() {
     final saved = appState.stateFor(storageKey);
 
-    // Always pre-populate starter revealed cells
     for (final coord in puzzle.revealed) {
       final sol = puzzle.solutionAt(coord.row, coord.col);
       if (sol != null) {
@@ -126,13 +137,14 @@ class GameController extends ChangeNotifier {
       _hintsUsed = saved.hintsUsed;
       _mistakesCount = saved.mistakesCount;
     } else if (saved != null && saved.completed) {
-      // Allow replaying cleanly from scratch while preserving stars/bestTime in AppState
       _elapsedSeconds = 0;
       _hintsUsed = 0;
       _mistakesCount = 0;
     }
 
     _recomputeSolvedEntries();
+    // Önceden çözülmüş kelimeler tekrar kombo ödülü vermesin
+    _awardedEntryIds.addAll(_solvedEntryIds);
   }
 
   void _selectInitialCell() {
@@ -213,7 +225,6 @@ class GameController extends ChangeNotifier {
 
   void selectEntry(PuzzleEntry entry) {
     _direction = entry.direction;
-    // Jump to first empty editable cell in this entry, otherwise start cell
     CellCoord? target;
     for (final cell in entry.cells) {
       if ((_letters[cell.key] ?? '').isEmpty) {
@@ -234,9 +245,8 @@ class GameController extends ChangeNotifier {
     final ordered = puzzle.orderedEntries;
     if (ordered.isEmpty) return;
     final current = activeEntry;
-    final idx = current == null
-        ? -1
-        : ordered.indexWhere((e) => e.id == current.id);
+    final idx =
+        current == null ? -1 : ordered.indexWhere((e) => e.id == current.id);
     final next = ordered[(idx + 1) % ordered.length];
     selectEntry(next);
   }
@@ -245,9 +255,8 @@ class GameController extends ChangeNotifier {
     final ordered = puzzle.orderedEntries;
     if (ordered.isEmpty) return;
     final current = activeEntry;
-    final idx = current == null
-        ? 0
-        : ordered.indexWhere((e) => e.id == current.id);
+    final idx =
+        current == null ? 0 : ordered.indexWhere((e) => e.id == current.id);
     final prev = ordered[(idx - 1 + ordered.length) % ordered.length];
     selectEntry(prev);
   }
@@ -259,7 +268,6 @@ class GameController extends ChangeNotifier {
 
     appState.feedback.keyTap();
 
-    // If current cell is locked, try advancing to next unlocked cell in active word
     var target = _selectedCell;
     if (_lockedCells.contains(target.key)) {
       final entry = activeEntry;
@@ -287,10 +295,9 @@ class GameController extends ChangeNotifier {
     _letters[target.key] = letter;
     _wrongCells.remove(target.key);
 
-    final newlySolved = _checkNewlySolvedEntries(target);
-    if (newlySolved != null) {
-      _triggerWordSolvedFlash(newlySolved.id);
-      appState.feedback.wordSolved();
+    final newlySolvedList = _checkNewlySolvedEntries(target);
+    if (newlySolvedList.isNotEmpty) {
+      await _grantComboForSolvedEntries(newlySolvedList);
     }
 
     if (_isBoardCompletelyCorrect()) {
@@ -303,12 +310,53 @@ class GameController extends ChangeNotifier {
     unawaited(_persistProgress());
   }
 
+  Future<void> _grantComboForSolvedEntries(List<PuzzleEntry> solvedList) async {
+    var totalCoins = 0;
+    var totalScore = 0;
+    PuzzleEntry? lastFlash;
+
+    for (final entry in solvedList) {
+      lastFlash = entry;
+      if (_awardedEntryIds.contains(entry.id)) continue;
+      _awardedEntryIds.add(entry.id);
+      _wordComboCount++;
+      if (_wordComboCount > _maxComboInSession) {
+        _maxComboInSession = _wordComboCount;
+      }
+      final reward = ComboEconomy.rewardFor(_wordComboCount);
+      totalCoins += reward.coins;
+      totalScore += reward.score;
+    }
+
+    if (totalCoins > 0 || totalScore > 0) {
+      _sessionComboCoins += totalCoins;
+      _sessionComboScore += totalScore;
+      await appState.awardComboWord(
+        comboCount: _wordComboCount,
+        coinsEarned: totalCoins,
+        scoreEarned: totalScore,
+      );
+      if (lastFlash != null) {
+        final label = _wordComboCount >= 4
+            ? '$_wordComboCount× SÜPER KOMBO! +$totalCoins Altın • +$totalScore Puan'
+            : _wordComboCount >= 2
+                ? '$_wordComboCount× KOMBO! +$totalCoins Altın • +$totalScore Puan'
+                : 'Doğru! +$totalCoins Altın • +$totalScore Puan';
+        _triggerWordSolvedFlash(lastFlash.id, banner: label);
+      }
+    } else if (lastFlash != null) {
+      _triggerWordSolvedFlash(lastFlash.id, banner: 'Süper! Kelime Doğru!');
+    }
+    appState.feedback.wordSolved();
+  }
+
   void backspace() {
     if (_isCompleted) return;
     appState.feedback.keyTap();
 
     final curKey = _selectedCell.key;
-    if (!_lockedCells.contains(curKey) && (_letters[curKey]?.isNotEmpty ?? false)) {
+    if (!_lockedCells.contains(curKey) &&
+        (_letters[curKey]?.isNotEmpty ?? false)) {
       _letters.remove(curKey);
       _wrongCells.remove(curKey);
       _recomputeSolvedEntries();
@@ -317,7 +365,6 @@ class GameController extends ChangeNotifier {
       return;
     }
 
-    // Move backward in active word to find an editable cell
     final entry = activeEntry;
     if (entry != null) {
       final idx = entry.indexOfCell(_selectedCell.row, _selectedCell.col);
@@ -338,10 +385,12 @@ class GameController extends ChangeNotifier {
 
   Future<HintFeedback> revealSelectedCell() async {
     if (_isCompleted) {
-      return const HintFeedback(HintStatus.nothingToDo, 'Bulmaca zaten tamamlandı.');
+      return const HintFeedback(
+        HintStatus.nothingToDo,
+        'Bulmaca zaten tamamlandı.',
+      );
     }
 
-    // Choose selected cell if not already correct & locked; otherwise find next empty/wrong cell in active word
     CellCoord? target;
     final selSol = puzzle.solutionAt(_selectedCell.row, _selectedCell.col);
     if (!_lockedCells.contains(_selectedCell.key) &&
@@ -367,12 +416,15 @@ class GameController extends ChangeNotifier {
       );
     }
 
-    final paid = await appState.spendCoins(AppState.letterHintCost);
+    final (paid, usedTicket) = await appState.useHintTicketOrCoins(
+      HintTicketType.letter,
+      AppState.letterHintCost,
+    );
     if (!paid) {
       appState.feedback.errorPulse();
       return const HintFeedback(
         HintStatus.insufficientCoins,
-        'Yeterli altının yok (${AppState.letterHintCost} altın gerekli).',
+        'Yeterli altının yok (${AppState.letterHintCost} altın gerekli). Mağazadan puanla ipucu alabilirsin!',
       );
     }
 
@@ -382,27 +434,40 @@ class GameController extends ChangeNotifier {
     _wrongCells.remove(target.key);
     _selectedCell = target;
     _hintsUsed++;
+    _wordComboCount = 0; // İpucu kullanımı aktif komboyu sıfırlar
 
     final newlySolved = _checkNewlySolvedEntries(target);
-    if (newlySolved != null) {
-      _triggerWordSolvedFlash(newlySolved.id);
+    for (final e in newlySolved) {
+      _awardedEntryIds.add(e.id);
+    }
+    if (newlySolved.isNotEmpty) {
+      _triggerWordSolvedFlash(newlySolved.first.id, banner: 'Kelime Tamamlandı!');
     }
 
     if (_isBoardCompletelyCorrect()) {
       await _finishPuzzle();
-      return const HintFeedback(HintStatus.ok, 'Son harf açıldı, bulmaca tamamlandı!');
+      return const HintFeedback(
+        HintStatus.ok,
+        'Son harf açıldı, bulmaca tamamlandı!',
+      );
     }
 
     _advanceAfterEdit(target);
     appState.feedback.wordSolved();
     notifyListeners();
     unawaited(_persistProgress());
-    return const HintFeedback(HintStatus.ok, 'Harf açıldı!');
+    return HintFeedback(
+      HintStatus.ok,
+      usedTicket ? 'Harf açıldı! (1 ipucu hakkı kullanıldı)' : 'Harf açıldı!',
+    );
   }
 
   Future<HintFeedback> revealActiveWord() async {
     if (_isCompleted) {
-      return const HintFeedback(HintStatus.nothingToDo, 'Bulmaca zaten tamamlandı.');
+      return const HintFeedback(
+        HintStatus.nothingToDo,
+        'Bulmaca zaten tamamlandı.',
+      );
     }
     final entry = activeEntry;
     if (entry == null) {
@@ -415,12 +480,15 @@ class GameController extends ChangeNotifier {
       );
     }
 
-    final paid = await appState.spendCoins(AppState.wordHintCost);
+    final (paid, usedTicket) = await appState.useHintTicketOrCoins(
+      HintTicketType.word,
+      AppState.wordHintCost,
+    );
     if (!paid) {
       appState.feedback.errorPulse();
       return const HintFeedback(
         HintStatus.insufficientCoins,
-        'Yeterli altının yok (${AppState.wordHintCost} altın gerekli).',
+        'Yeterli altının yok (${AppState.wordHintCost} altın gerekli). Mağazadan puanla ipucu alabilirsin!',
       );
     }
 
@@ -432,27 +500,37 @@ class GameController extends ChangeNotifier {
       _wrongCells.remove(cells[i].key);
     }
     _hintsUsed += 2;
+    _wordComboCount = 0;
     _recomputeSolvedEntries();
-    _triggerWordSolvedFlash(entry.id);
+    _awardedEntryIds.addAll(_solvedEntryIds);
+    _triggerWordSolvedFlash(entry.id, banner: 'Kelime Açıldı!');
 
     if (_isBoardCompletelyCorrect()) {
       await _finishPuzzle();
-      return const HintFeedback(HintStatus.ok, 'Kelime açıldı ve bulmaca tamamlandı!');
+      return const HintFeedback(
+        HintStatus.ok,
+        'Kelime açıldı ve bulmaca tamamlandı!',
+      );
     }
 
     _jumpToNextIncompleteWord();
     appState.feedback.wordSolved();
     notifyListeners();
     unawaited(_persistProgress());
-    return const HintFeedback(HintStatus.ok, 'Kelime açıldı!');
+    return HintFeedback(
+      HintStatus.ok,
+      usedTicket ? 'Kelime açıldı! (1 ipucu hakkı kullanıldı)' : 'Kelime açıldı!',
+    );
   }
 
   Future<HintFeedback> checkMistakes() async {
     if (_isCompleted) {
-      return const HintFeedback(HintStatus.nothingToDo, 'Bulmaca zaten tamamlandı.');
+      return const HintFeedback(
+        HintStatus.nothingToDo,
+        'Bulmaca zaten tamamlandı.',
+      );
     }
 
-    // Count editable filled letters
     final editableFilled = <CellCoord>[];
     for (var r = 0; r < puzzle.rows; r++) {
       for (var c = 0; c < puzzle.cols; c++) {
@@ -471,7 +549,10 @@ class GameController extends ChangeNotifier {
       );
     }
 
-    final paid = await appState.spendCoins(AppState.checkMistakesCost);
+    final (paid, usedTicket) = await appState.useHintTicketOrCoins(
+      HintTicketType.check,
+      AppState.checkMistakesCost,
+    );
     if (!paid) {
       appState.feedback.errorPulse();
       return const HintFeedback(
@@ -492,6 +573,7 @@ class GameController extends ChangeNotifier {
 
     if (wrongCount > 0) {
       _mistakesCount += wrongCount;
+      _wordComboCount = 0;
       appState.feedback.errorPulse();
       notifyListeners();
       unawaited(_persistProgress());
@@ -502,9 +584,11 @@ class GameController extends ChangeNotifier {
     } else {
       appState.feedback.wordSolved();
       notifyListeners();
-      return const HintFeedback(
+      return HintFeedback(
         HintStatus.ok,
-        'Harika! Yazdığın tüm harfler doğru görünüyor.',
+        usedTicket
+            ? 'Harika! Tüm harfler doğru (1 kontrol hakkı kullanıldı).'
+            : 'Harika! Yazdığın tüm harfler doğru görünüyor.',
       );
     }
   }
@@ -514,10 +598,15 @@ class GameController extends ChangeNotifier {
     _lockedCells.clear();
     _wrongCells.clear();
     _solvedEntryIds.clear();
+    _awardedEntryIds.clear();
     _isCompleted = false;
     _elapsedSeconds = 0;
     _hintsUsed = 0;
     _mistakesCount = 0;
+    _wordComboCount = 0;
+    _maxComboInSession = 0;
+    _sessionComboCoins = 0;
+    _sessionComboScore = 0;
 
     for (final coord in puzzle.revealed) {
       final sol = puzzle.solutionAt(coord.row, coord.col);
@@ -528,6 +617,7 @@ class GameController extends ChangeNotifier {
     }
 
     _recomputeSolvedEntries();
+    _awardedEntryIds.addAll(_solvedEntryIds);
     _selectInitialCell();
     _startTimer();
     notifyListeners();
@@ -538,7 +628,6 @@ class GameController extends ChangeNotifier {
     final entry = activeEntry;
     if (entry != null) {
       final idx = entry.indexOfCell(edited.row, edited.col);
-      // 1) Next empty cell forward in active word
       for (var i = idx + 1; i < entry.cells.length; i++) {
         final cell = entry.cells[i];
         if ((_letters[cell.key] ?? '').isEmpty) {
@@ -546,7 +635,6 @@ class GameController extends ChangeNotifier {
           return;
         }
       }
-      // 2) Wrap to an earlier empty cell in active word
       for (var i = 0; i < idx; i++) {
         final cell = entry.cells[i];
         if ((_letters[cell.key] ?? '').isEmpty) {
@@ -554,12 +642,10 @@ class GameController extends ChangeNotifier {
           return;
         }
       }
-      // 3) If active word is now completely filled, jump to next incomplete word
       if (isEntrySolved(entry)) {
         _jumpToNextIncompleteWord();
         return;
       }
-      // 4) Otherwise step one cell forward if unlocked
       for (var i = idx + 1; i < entry.cells.length; i++) {
         if (!_lockedCells.contains(entry.cells[i].key)) {
           _selectedCell = entry.cells[i];
@@ -596,15 +682,15 @@ class GameController extends ChangeNotifier {
     }
   }
 
-  PuzzleEntry? _checkNewlySolvedEntries(CellCoord coord) {
-    PuzzleEntry? newly;
+  List<PuzzleEntry> _checkNewlySolvedEntries(CellCoord coord) {
+    final newly = <PuzzleEntry>[];
     for (final dir in [WordDirection.across, WordDirection.down]) {
       final entry = puzzle.entryAt(coord.row, coord.col, dir);
       if (entry == null) continue;
       final solved = isEntrySolved(entry);
       if (solved && !_solvedEntryIds.contains(entry.id)) {
         _solvedEntryIds.add(entry.id);
-        newly ??= entry;
+        newly.add(entry);
       } else if (!solved) {
         _solvedEntryIds.remove(entry.id);
       }
@@ -621,14 +707,11 @@ class GameController extends ChangeNotifier {
     }
   }
 
-  void _triggerWordSolvedFlash(String entryId) {
+  void _triggerWordSolvedFlash(String entryId, {required String banner}) {
     _flashTimer?.cancel();
-    _wordComboCount++;
     _recentSolvedEntryId = entryId;
-    _recentSolvedBanner = _wordComboCount >= 2
-        ? 'Harika! $_wordComboCount× Kelime Serisi!'
-        : 'Süper! Kelime Doğru!';
-    _flashTimer = Timer(const Duration(milliseconds: 1200), () {
+    _recentSolvedBanner = banner;
+    _flashTimer = Timer(const Duration(milliseconds: 1600), () {
       if (_disposed) return;
       _recentSolvedEntryId = null;
       _recentSolvedBanner = null;
@@ -659,6 +742,10 @@ class GameController extends ChangeNotifier {
       storageKey: storageKey,
       finalState: _buildSaveState(completed: true),
       isDaily: isDaily,
+      rewardMultiplier: rewardMultiplier,
+      sessionComboCoins: _sessionComboCoins,
+      sessionComboScore: _sessionComboScore,
+      maxComboInSession: _maxComboInSession,
     );
 
     notifyListeners();

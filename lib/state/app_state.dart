@@ -12,6 +12,9 @@ class CompletionReward {
   const CompletionReward({
     required this.stars,
     required this.coinsEarned,
+    required this.comboCoinsEarned,
+    required this.scoreEarned,
+    required this.maxCombo,
     required this.elapsedSeconds,
     required this.isFirstCompletion,
     required this.newDailyStreak,
@@ -20,14 +23,19 @@ class CompletionReward {
 
   final int stars;
   final int coinsEarned;
+  final int comboCoinsEarned;
+  final int scoreEarned;
+  final int maxCombo;
   final int elapsedSeconds;
   final bool isFirstCompletion;
   final int? newDailyStreak;
   final List<AppBackground> newlyUnlockedBackgrounds;
+
+  int get totalCoinsWon => coinsEarned + comboCoinsEarned;
 }
 
-class BackgroundUnlockResult {
-  const BackgroundUnlockResult({required this.success, required this.message});
+class ActionOutcome {
+  const ActionOutcome({required this.success, required this.message});
 
   final bool success;
   final String message;
@@ -57,15 +65,22 @@ class AppState extends ChangeNotifier {
   String? _error;
   List<ConceptPack> _packs = const [];
   DailyBank? _dailyBank;
+  MegaBank? _megaBank;
   PlayerProfile _profile = const PlayerProfile();
 
   bool get isLoading => _loading;
   String? get error => _error;
   List<ConceptPack> get packs => _packs;
   DailyBank? get dailyBank => _dailyBank;
+  MegaBank? get megaBank => _megaBank;
   PlayerProfile get profile => _profile;
 
   int get coins => _profile.coins;
+  int get score => _profile.score;
+  int get bestCombo => _profile.bestCombo;
+  int get letterHintTickets => _profile.letterHintTickets;
+  int get wordHintTickets => _profile.wordHintTickets;
+  int get checkHintTickets => _profile.checkHintTickets;
   int get dailyStreak => _profile.dailyStreak;
   bool get soundEnabled => _profile.soundEnabled;
   bool get hapticsEnabled => _profile.hapticsEnabled;
@@ -96,6 +111,7 @@ class AppState extends ChangeNotifier {
 
       _packs = content.packs;
       _dailyBank = content.dailyBank;
+      _megaBank = content.megaBank;
       _profile = loadedProfile;
       _syncFeedbackPrefs();
     } catch (e) {
@@ -121,6 +137,17 @@ class AppState extends ChangeNotifier {
     if (levelIndex <= 0) return true;
     if (levelIndex >= pack.levels.length) return false;
     return isLevelCompleted(pack.levels[levelIndex - 1]);
+  }
+
+  bool isMegaUnlocked(MegaPuzzleItem item) {
+    if (_profile.unlockedMegaIds.contains(item.puzzle.id)) return true;
+    return totalSolvedPuzzles >= item.requiredSolved;
+  }
+
+  int get completedMegaCount {
+    final bank = _megaBank;
+    if (bank == null) return 0;
+    return bank.items.where((i) => isLevelCompleted(i.puzzle)).length;
   }
 
   int completedCountForPack(ConceptPack pack) =>
@@ -151,6 +178,13 @@ class AppState extends ChangeNotifier {
         }
       }
     }
+    if (_megaBank != null) {
+      for (final item in _megaBank!.items) {
+        if (isLevelCompleted(item.puzzle)) {
+          count += item.puzzle.entries.length;
+        }
+      }
+    }
     count += _profile.completedDailyDates.length * 7;
     return count;
   }
@@ -173,7 +207,6 @@ class AppState extends ChangeNotifier {
     bool notify = true,
   }) async {
     final existing = _profile.puzzleStates[storageKey];
-    // Preserve prior completion / star record if replaying an already solved puzzle
     final merged = existing != null && existing.completed && !state.completed
         ? state.copyWith(
             completed: true,
@@ -199,6 +232,62 @@ class AppState extends ChangeNotifier {
     return true;
   }
 
+  /// Önce oyuncunun ipucu bilet stoğunu kullanır, bilet yoksa altın harcar.
+  /// Dönüş: (başarılı mı, bilet mi kullanıldı)
+  Future<(bool paid, bool usedTicket)> useHintTicketOrCoins(
+    HintTicketType type,
+    int coinCost,
+  ) async {
+    switch (type) {
+      case HintTicketType.letter:
+        if (_profile.letterHintTickets > 0) {
+          _profile = _profile.copyWith(
+            letterHintTickets: _profile.letterHintTickets - 1,
+          );
+          notifyListeners();
+          await _storage.saveProfile(_profile);
+          return (true, true);
+        }
+      case HintTicketType.word:
+        if (_profile.wordHintTickets > 0) {
+          _profile = _profile.copyWith(
+            wordHintTickets: _profile.wordHintTickets - 1,
+          );
+          notifyListeners();
+          await _storage.saveProfile(_profile);
+          return (true, true);
+        }
+      case HintTicketType.check:
+        if (_profile.checkHintTickets > 0) {
+          _profile = _profile.copyWith(
+            checkHintTickets: _profile.checkHintTickets - 1,
+          );
+          notifyListeners();
+          await _storage.saveProfile(_profile);
+          return (true, true);
+        }
+    }
+    final paid = await spendCoins(coinCost);
+    return (paid, false);
+  }
+
+  /// Doğru çözülen her kelimede anında kombo altını ve puanı kazandırır.
+  Future<void> awardComboWord({
+    required int comboCount,
+    required int coinsEarned,
+    required int scoreEarned,
+  }) async {
+    final newBestCombo =
+        comboCount > _profile.bestCombo ? comboCount : _profile.bestCombo;
+    _profile = _profile.copyWith(
+      coins: _profile.coins + coinsEarned,
+      score: _profile.score + scoreEarned,
+      bestCombo: newBestCombo,
+    );
+    notifyListeners();
+    await _storage.saveProfile(_profile);
+  }
+
   AppBackground get selectedBackground =>
       BackgroundCatalog.byId(_profile.selectedBackgroundId);
 
@@ -220,6 +309,10 @@ class AppState extends ChangeNotifier {
         return dailyStreak;
       case MissionMetric.perfectThreeStars:
         return perfectThreeStarCount;
+      case MissionMetric.bestCombo:
+        return bestCombo;
+      case MissionMetric.megaSolved:
+        return completedMegaCount;
       case MissionMetric.packYesilcam:
         final pack = _packs.where((p) => p.id == 'yesilcam').firstOrNull;
         return pack == null ? 0 : completedCountForPack(pack);
@@ -280,6 +373,111 @@ class AppState extends ChangeNotifier {
     return bonus;
   }
 
+  /// Mağazadan puan veya altın ile ipucu paketi / puan->altın takası alır.
+  Future<ActionOutcome> buyShopBundle(
+    ShopBundle bundle, {
+    required bool useScore,
+  }) async {
+    if (useScore) {
+      if (_profile.score < bundle.scoreCost) {
+        feedback.errorPulse();
+        return ActionOutcome(
+          success: false,
+          message: 'Yeterli puanın yok (${bundle.scoreCost} puan gerekli).',
+        );
+      }
+    } else {
+      if (bundle.coinCost <= 0) {
+        return const ActionOutcome(
+          success: false,
+          message: 'Bu takas yalnızca puan ile yapılır.',
+        );
+      }
+      if (_profile.coins < bundle.coinCost) {
+        feedback.errorPulse();
+        return ActionOutcome(
+          success: false,
+          message: 'Yeterli altının yok (${bundle.coinCost} altın gerekli).',
+        );
+      }
+    }
+
+    var newCoins = useScore ? _profile.coins : _profile.coins - bundle.coinCost;
+    var newScore =
+        useScore ? _profile.score - bundle.scoreCost : _profile.score;
+    var letterT = _profile.letterHintTickets;
+    var wordT = _profile.wordHintTickets;
+    var checkT = _profile.checkHintTickets;
+
+    switch (bundle.type) {
+      case ShopBundleType.letterPack:
+        letterT += bundle.quantity;
+      case ShopBundleType.wordPack:
+        wordT += bundle.quantity;
+      case ShopBundleType.checkPack:
+        checkT += bundle.quantity;
+      case ShopBundleType.scoreToCoins:
+        newCoins += bundle.quantity;
+    }
+
+    _profile = _profile.copyWith(
+      coins: newCoins,
+      score: newScore,
+      letterHintTickets: letterT,
+      wordHintTickets: wordT,
+      checkHintTickets: checkT,
+    );
+    feedback.wordSolved();
+    notifyListeners();
+    await _storage.saveProfile(_profile);
+    return ActionOutcome(
+      success: true,
+      message: '${bundle.title} hesabına eklendi!',
+    );
+  }
+
+  /// Dev bulmacayı erken açmak için altın veya puan kullanır.
+  Future<ActionOutcome> unlockMegaEarly(
+    MegaPuzzleItem item, {
+    required bool useScore,
+  }) async {
+    if (isMegaUnlocked(item)) {
+      return const ActionOutcome(success: true, message: 'Bu dev bulmaca zaten açık.');
+    }
+    if (useScore) {
+      if (_profile.score < item.earlyUnlockScore) {
+        feedback.errorPulse();
+        return ActionOutcome(
+          success: false,
+          message: 'Yeterli puanın yok (${item.earlyUnlockScore} puan gerekli).',
+        );
+      }
+    } else {
+      if (_profile.coins < item.earlyUnlockCoins) {
+        feedback.errorPulse();
+        return ActionOutcome(
+          success: false,
+          message: 'Yeterli altının yok (${item.earlyUnlockCoins} altın gerekli).',
+        );
+      }
+    }
+
+    final updated = Set<String>.from(_profile.unlockedMegaIds)
+      ..add(item.puzzle.id);
+    _profile = _profile.copyWith(
+      coins: useScore ? _profile.coins : _profile.coins - item.earlyUnlockCoins,
+      score: useScore ? _profile.score - item.earlyUnlockScore : _profile.score,
+      unlockedMegaIds: updated,
+    );
+    feedback.wordSolved();
+    notifyListeners();
+    await _storage.saveProfile(_profile);
+    return ActionOutcome(
+      success: true,
+      message: '${item.puzzle.title} açıldı! İyi oyunlar!',
+    );
+  }
+
   int backgroundMetricValue(UnlockMetric metric) {
     switch (metric) {
       case UnlockMetric.none:
@@ -316,19 +514,14 @@ class AppState extends ChangeNotifier {
     return true;
   }
 
-  Future<BackgroundUnlockResult> unlockBackgroundWithCoins(
-    AppBackground bg,
-  ) async {
+  Future<ActionOutcome> unlockBackgroundWithCoins(AppBackground bg) async {
     if (isBackgroundUnlocked(bg)) {
       await selectBackground(bg.id);
-      return BackgroundUnlockResult(
-        success: true,
-        message: '${bg.name} aktif edildi!',
-      );
+      return ActionOutcome(success: true, message: '${bg.name} aktif edildi!');
     }
     if (_profile.coins < bg.coinCost) {
       feedback.errorPulse();
-      return BackgroundUnlockResult(
+      return ActionOutcome(
         success: false,
         message: 'Yeterli altının yok (${bg.coinCost} altın gerekli).',
       );
@@ -343,9 +536,37 @@ class AppState extends ChangeNotifier {
     feedback.wordSolved();
     notifyListeners();
     await _storage.saveProfile(_profile);
-    return BackgroundUnlockResult(
+    return ActionOutcome(
       success: true,
-      message: '${bg.name} açıldı ve uygulandı!',
+      message: '${bg.name} altınla açıldı ve uygulandı!',
+    );
+  }
+
+  Future<ActionOutcome> unlockBackgroundWithScore(AppBackground bg) async {
+    if (isBackgroundUnlocked(bg)) {
+      await selectBackground(bg.id);
+      return ActionOutcome(success: true, message: '${bg.name} aktif edildi!');
+    }
+    if (_profile.score < bg.scoreCost) {
+      feedback.errorPulse();
+      return ActionOutcome(
+        success: false,
+        message: 'Yeterli puanın yok (${bg.scoreCost} puan gerekli).',
+      );
+    }
+    final updatedUnlocks = Set<String>.from(_profile.unlockedBackgroundIds)
+      ..add(bg.id);
+    _profile = _profile.copyWith(
+      score: _profile.score - bg.scoreCost,
+      unlockedBackgroundIds: updatedUnlocks,
+      selectedBackgroundId: bg.id,
+    );
+    feedback.wordSolved();
+    notifyListeners();
+    await _storage.saveProfile(_profile);
+    return ActionOutcome(
+      success: true,
+      message: '${bg.name} puanla açıldı ve uygulandı!',
     );
   }
 
@@ -353,6 +574,10 @@ class AppState extends ChangeNotifier {
     required String storageKey,
     required PuzzleSaveState finalState,
     required bool isDaily,
+    int rewardMultiplier = 1,
+    int sessionComboCoins = 0,
+    int sessionComboScore = 0,
+    int maxComboInSession = 0,
   }) async {
     final beforeUnlocked = BackgroundCatalog.all
         .where(isBackgroundUnlocked)
@@ -367,13 +592,16 @@ class AppState extends ChangeNotifier {
       mistakesCount: finalState.mistakesCount,
     );
 
-    final baseReward = stars * 10 + 10; // 20 / 30 / 40 coins
+    final mult = isDaily ? 2 : rewardMultiplier;
+    final baseReward = (stars * 10 + 10) * mult;
     var coinsEarned = 0;
     if (!wasCompleted) {
-      coinsEarned = isDaily ? baseReward * 2 : baseReward;
+      coinsEarned = baseReward;
     } else if (stars > (existing?.stars ?? 0)) {
       coinsEarned = 10;
     }
+
+    final completionBonusScore = !wasCompleted ? (stars * 40 * mult) : 20;
 
     final bestTime = existing?.bestTimeSeconds == null
         ? finalState.elapsedSeconds
@@ -402,8 +630,9 @@ class AppState extends ChangeNotifier {
       final today = todayDateKey;
       if (!updatedDailyDates.contains(today)) {
         updatedDailyDates.add(today);
-        final yesterday =
-            TurkishText.dateKey(DateTime.now().subtract(const Duration(days: 1)));
+        final yesterday = TurkishText.dateKey(
+          DateTime.now().subtract(const Duration(days: 1)),
+        );
         if (_profile.lastDailyDate == yesterday) {
           newStreak = _profile.dailyStreak + 1;
         } else {
@@ -414,15 +643,20 @@ class AppState extends ChangeNotifier {
       }
     }
 
+    final newBestCombo = maxComboInSession > _profile.bestCombo
+        ? maxComboInSession
+        : _profile.bestCombo;
+
     _profile = _profile.copyWith(
       coins: _profile.coins + coinsEarned,
+      score: _profile.score + completionBonusScore,
+      bestCombo: newBestCombo,
       dailyStreak: newStreak,
       lastDailyDate: newLastDaily,
       completedDailyDates: updatedDailyDates,
       puzzleStates: updatedMap,
     );
 
-    // Check any progression-earned backgrounds that just unlocked
     final newlyUnlocked = <AppBackground>[];
     final updatedUnlocks = Set<String>.from(_profile.unlockedBackgroundIds);
     for (final bg in BackgroundCatalog.all) {
@@ -441,6 +675,9 @@ class AppState extends ChangeNotifier {
     return CompletionReward(
       stars: stars,
       coinsEarned: coinsEarned,
+      comboCoinsEarned: sessionComboCoins,
+      scoreEarned: completionBonusScore + sessionComboScore,
+      maxCombo: maxComboInSession,
       elapsedSeconds: finalState.elapsedSeconds,
       isFirstCompletion: !wasCompleted,
       newDailyStreak: streakAwarded,

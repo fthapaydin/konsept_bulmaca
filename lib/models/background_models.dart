@@ -5,8 +5,10 @@ enum BackgroundArtworkType {
   newspaperCream,
   midnightStars,
   yesilcamCinema,
+  iznikTiles,
   aegeanCoast,
   cappadociaDawn,
+  autumnForest,
   auroraNight,
   goldenGalaxy,
 }
@@ -30,6 +32,7 @@ class AppBackground {
     this.unlockMetric = UnlockMetric.none,
     this.unlockTarget = 0,
     this.coinCost = 0,
+    this.scoreCost = 0,
   });
 
   final String id;
@@ -42,8 +45,10 @@ class AppBackground {
   final UnlockMetric unlockMetric;
   final int unlockTarget;
   final int coinCost;
+  final int scoreCost;
 
-  bool get isFreeStarter => unlockMetric == UnlockMetric.none && coinCost == 0;
+  bool get isFreeStarter =>
+      unlockMetric == UnlockMetric.none && coinCost == 0 && scoreCost == 0;
 
   String get unlockRequirementLabel {
     switch (unlockMetric) {
@@ -101,6 +106,20 @@ class BackgroundCatalog {
       unlockMetric: UnlockMetric.solvedPuzzles,
       unlockTarget: 3,
       coinCost: 100,
+      scoreCost: 350,
+    ),
+    AppBackground(
+      id: 'osmanli_cini',
+      name: 'İznik Çinisi',
+      subtitle: 'Kobalt ve turkuaz geleneksel geometrik çini deseni',
+      artwork: BackgroundArtworkType.iznikTiles,
+      gradientColors: [Color(0xFFEFF6FF), Color(0xFFDBEAFE), Color(0xFFBAE6FD)],
+      accentColor: Color(0xFF1D4ED8),
+      isDark: false,
+      unlockMetric: UnlockMetric.solvedPuzzles,
+      unlockTarget: 6,
+      coinCost: 120,
+      scoreCost: 450,
     ),
     AppBackground(
       id: 'ege_kiyisi',
@@ -113,6 +132,7 @@ class BackgroundCatalog {
       unlockMetric: UnlockMetric.totalStars,
       unlockTarget: 9,
       coinCost: 150,
+      scoreCost: 550,
     ),
     AppBackground(
       id: 'kapadokya_safak',
@@ -125,6 +145,20 @@ class BackgroundCatalog {
       unlockMetric: UnlockMetric.totalStars,
       unlockTarget: 18,
       coinCost: 200,
+      scoreCost: 750,
+    ),
+    AppBackground(
+      id: 'sonbahar_ormani',
+      name: 'Sonbahar Akşamı',
+      subtitle: 'Sıcak kızıl yapraklar ve dingin akşam güneşi',
+      artwork: BackgroundArtworkType.autumnForest,
+      gradientColors: [Color(0xFF451A03), Color(0xFF7C2D12), Color(0xFF9A3412)],
+      accentColor: Color(0xFFFDBA74),
+      isDark: true,
+      unlockMetric: UnlockMetric.solvedPuzzles,
+      unlockTarget: 12,
+      coinCost: 220,
+      scoreCost: 850,
     ),
     AppBackground(
       id: 'kuzey_isiklari',
@@ -137,6 +171,7 @@ class BackgroundCatalog {
       unlockMetric: UnlockMetric.dailyStreak,
       unlockTarget: 2,
       coinCost: 250,
+      scoreCost: 950,
     ),
     AppBackground(
       id: 'altin_galaksi',
@@ -149,6 +184,7 @@ class BackgroundCatalog {
       unlockMetric: UnlockMetric.totalStars,
       unlockTarget: 30,
       coinCost: 350,
+      scoreCost: 1300,
     ),
   ];
 

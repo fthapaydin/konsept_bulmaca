@@ -115,13 +115,60 @@ class CompletionDialog extends StatelessWidget {
                 Expanded(
                   child: _StatPill(
                     icon: Icons.monetization_on_rounded,
-                    label: 'Ödül',
-                    value: '+${reward.coinsEarned}',
+                    label: 'Altın',
+                    value: '+${reward.totalCoinsWon}',
                     color: const Color(0xFFD97706),
                   ),
                 ),
               ],
             ),
+            if (reward.scoreEarned > 0 || reward.maxCombo >= 2) ...[
+              const SizedBox(height: 10),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEDE9FE),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.bolt_rounded,
+                      color: Color(0xFF6D28D9),
+                      size: 18,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '+${reward.scoreEarned} Puan',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 12.5,
+                        color: Color(0xFF5B21B6),
+                      ),
+                    ),
+                    if (reward.maxCombo >= 2) ...[
+                      const SizedBox(width: 10),
+                      const Icon(
+                        Icons.whatshot_rounded,
+                        color: Color(0xFFEA580C),
+                        size: 18,
+                      ),
+                      const SizedBox(width: 3),
+                      Text(
+                        '${reward.maxCombo}× Kombo (+${reward.comboCoinsEarned})',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 12.5,
+                          color: Color(0xFF9A3412),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
             if (reward.newDailyStreak != null) ...[
               const SizedBox(height: 12),
               Container(

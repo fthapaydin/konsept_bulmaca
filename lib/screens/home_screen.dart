@@ -9,6 +9,7 @@ import '../widgets/rewards_center_sheet.dart';
 import '../widgets/stats_settings_sheet.dart';
 import 'background_gallery_screen.dart';
 import 'game_screen.dart';
+import 'mega_puzzles_screen.dart';
 import 'pack_levels_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -192,7 +193,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     SliverPadding(
-                      padding: const EdgeInsets.fromLTRB(18, 0, 18, 28),
+                      padding: const EdgeInsets.fromLTRB(18, 0, 18, 16),
                       sliver: SliverList.separated(
                         itemCount: appState.packs.length,
                         separatorBuilder: (_, _) => const SizedBox(height: 14),
@@ -217,6 +218,23 @@ class HomeScreen extends StatelessWidget {
                         },
                       ),
                     ),
+                    if (appState.megaBank != null)
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(18, 2, 18, 28),
+                          child: _MegaArenaBanner(
+                            appState: appState,
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute<void>(
+                                  builder: (_) =>
+                                      MegaPuzzlesScreen(appState: appState),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -290,7 +308,7 @@ class HomeScreen extends StatelessWidget {
         ),
         const SizedBox(width: 6),
         InkWell(
-          onTap: () => showRewardsCenterSheet(context, appState),
+          onTap: () => showRewardsCenterSheet(context, appState, initialTab: 1),
           borderRadius: BorderRadius.circular(20),
           child: Stack(
             clipBehavior: Clip.none,
@@ -847,6 +865,22 @@ class _RankAndMissionsStrip extends StatelessWidget {
                                 : const Color(0xFF78716C),
                           ),
                         ),
+                        const SizedBox(width: 6),
+                        const Icon(
+                          Icons.bolt_rounded,
+                          size: 13,
+                          color: Color(0xFF7C3AED),
+                        ),
+                        Text(
+                          '${appState.score}',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w900,
+                            color: isDark
+                                ? const Color(0xFFC4B5FD)
+                                : const Color(0xFF5B21B6),
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 5),
@@ -905,6 +939,122 @@ class _RankAndMissionsStrip extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _MegaArenaBanner extends StatelessWidget {
+  const _MegaArenaBanner({
+    required this.appState,
+    required this.onTap,
+  });
+
+  final AppState appState;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final items = appState.megaBank?.items ?? const <MegaPuzzleItem>[];
+    final unlockedCount = items.where(appState.isMegaUnlocked).length;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(22),
+        child: Ink(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFF881337), Color(0xFF4C1D95), Color(0xFF1E1B4B)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(22),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF4C1D95).withValues(alpha: 0.32),
+                blurRadius: 16,
+                offset: const Offset(0, 7),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 52,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.16),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: const Icon(
+                  Icons.grid_4x4_rounded,
+                  color: Color(0xFFFDE047),
+                  size: 30,
+                ),
+              ),
+              const SizedBox(width: 13),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Flexible(
+                          child: Text(
+                            'Dev Bulmacalar',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17.5,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 7,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFDE047),
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                          child: const Text(
+                            '12×12–20×20',
+                            style: TextStyle(
+                              color: Color(0xFF1C1917),
+                              fontSize: 10,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '$unlockedCount/${items.length} açık • Yakınlaştır & Kaydır • 3× Ödül',
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.86),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: Colors.white70,
+                size: 18,
               ),
             ],
           ),

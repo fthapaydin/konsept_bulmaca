@@ -27,12 +27,15 @@ class BackgroundGalleryScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 8, 14, 8),
+                    padding: const EdgeInsets.fromLTRB(8, 8, 12, 8),
                     child: Row(
                       children: [
                         IconButton(
                           onPressed: () => Navigator.of(context).pop(),
-                          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+                          icon: const Icon(
+                            Icons.arrow_back_ios_new_rounded,
+                            size: 20,
+                          ),
                           color: titleColor,
                           tooltip: 'Geri',
                         ),
@@ -43,17 +46,17 @@ class BackgroundGalleryScreen extends StatelessWidget {
                               Text(
                                 'Arka Plan Galerisi',
                                 style: TextStyle(
-                                  fontSize: 19,
+                                  fontSize: 18.5,
                                   fontWeight: FontWeight.w900,
                                   color: titleColor,
                                 ),
                               ),
                               Text(
-                                '${appState.unlockedBackgroundCount}/${BackgroundCatalog.all.length} tema açık • İlerleyerek veya altınla aç',
+                                '${appState.unlockedBackgroundCount}/${BackgroundCatalog.all.length} tema açık • İlerleyerek, puanla veya altınla aç',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 11.5,
                                   fontWeight: FontWeight.w600,
                                   color: subtitleColor,
                                 ),
@@ -61,29 +64,59 @@ class BackgroundGalleryScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 6),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
+                            horizontal: 8,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFEDE9FE),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.bolt_rounded,
+                                size: 15,
+                                color: Color(0xFF5B21B6),
+                              ),
+                              const SizedBox(width: 2),
+                              Text(
+                                '${appState.score}',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w900,
+                                  color: Color(0xFF5B21B6),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
                             vertical: 5,
                           ),
                           decoration: BoxDecoration(
                             color: const Color(0xFFFEF3C7),
-                            borderRadius: BorderRadius.circular(18),
+                            borderRadius: BorderRadius.circular(16),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               const Icon(
                                 Icons.monetization_on_rounded,
-                                size: 16,
+                                size: 15,
                                 color: Color(0xFFD97706),
                               ),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: 3),
                               Text(
                                 '${appState.coins}',
                                 style: const TextStyle(
-                                  fontSize: 13,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w900,
                                   color: Color(0xFF92400E),
                                 ),
@@ -104,7 +137,7 @@ class BackgroundGalleryScreen extends StatelessWidget {
                         crossAxisCount: 2,
                         mainAxisSpacing: 14,
                         crossAxisSpacing: 12,
-                        childAspectRatio: 0.68,
+                        childAspectRatio: 0.65,
                       ),
                       itemBuilder: (context, index) {
                         final bg = BackgroundCatalog.all[index];
@@ -118,7 +151,8 @@ class BackgroundGalleryScreen extends StatelessWidget {
                           unlocked: unlocked,
                           selected: selected,
                           currentMetric: currentMetric,
-                          canAfford: appState.coins >= bg.coinCost,
+                          canAffordCoins: appState.coins >= bg.coinCost,
+                          canAffordScore: appState.score >= bg.scoreCost,
                           onSelect: () async {
                             await appState.selectBackground(bg.id);
                             if (context.mounted) {
@@ -127,14 +161,15 @@ class BackgroundGalleryScreen extends StatelessWidget {
                                 ..showSnackBar(
                                   SnackBar(
                                     content: Text('${bg.name} uygulandı!'),
-                                    duration: const Duration(milliseconds: 1400),
+                                    duration:
+                                        const Duration(milliseconds: 1400),
                                     behavior: SnackBarBehavior.floating,
                                   ),
                                 );
                             }
                           },
-                          onUnlockWithCoins: () =>
-                              _confirmCoinUnlock(context, bg),
+                          onUnlockOptions: () =>
+                              _showUnlockChoiceDialog(context, bg),
                         );
                       },
                     ),
@@ -148,57 +183,67 @@ class BackgroundGalleryScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _confirmCoinUnlock(BuildContext context, AppBackground bg) async {
-    if (appState.coins < bg.coinCost) {
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(
-            content: Text(
-              'Bu arka planı açmak için ${bg.coinCost} altın gerekli (veya ${bg.unlockRequirementLabel.toLowerCase()}).',
-            ),
-            backgroundColor: const Color(0xFFDC2626),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      return;
-    }
-
-    final confirm = await showDialog<bool>(
+  Future<void> _showUnlockChoiceDialog(
+    BuildContext context,
+    AppBackground bg,
+  ) async {
+    await showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('${bg.name} Açılsın mı?'),
+        title: Text('${bg.name} Temasını Aç'),
         content: Text(
-          '${bg.coinCost} altın harcayarak bu arka planı hemen açabilir ve kullanabilirsin.\n\n(İstersen ${bg.unlockRequirementLabel.toLowerCase()} hedefiyle ücretsiz de kazanabilirsin.)',
+          '${bg.subtitle}\n\n• İlerleyerek ücretsiz: ${bg.unlockRequirementLabel}\n• Puan ile hemen aç: ${bg.scoreCost} Puan\n• Altın ile hemen aç: ${bg.coinCost} Altın',
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Vazgeç'),
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Kapat'),
           ),
-          FilledButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text('${bg.coinCost} Altın ile Aç'),
+          OutlinedButton.icon(
+            onPressed: () async {
+              final res = await appState.unlockBackgroundWithScore(bg);
+              if (ctx.mounted) Navigator.of(ctx).pop();
+              if (context.mounted) {
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: Text(res.message),
+                      backgroundColor: res.success
+                          ? const Color(0xFF15803D)
+                          : const Color(0xFFDC2626),
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
+              }
+            },
+            icon: const Icon(Icons.bolt_rounded, size: 16),
+            label: Text('${bg.scoreCost} Puan'),
+          ),
+          FilledButton.icon(
+            onPressed: () async {
+              final res = await appState.unlockBackgroundWithCoins(bg);
+              if (ctx.mounted) Navigator.of(ctx).pop();
+              if (context.mounted) {
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: Text(res.message),
+                      backgroundColor: res.success
+                          ? const Color(0xFF15803D)
+                          : const Color(0xFFDC2626),
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
+              }
+            },
+            icon: const Icon(Icons.monetization_on_rounded, size: 16),
+            label: Text('${bg.coinCost} Altın'),
           ),
         ],
       ),
     );
-
-    if (confirm == true) {
-      final res = await appState.unlockBackgroundWithCoins(bg);
-      if (context.mounted) {
-        ScaffoldMessenger.of(context)
-          ..hideCurrentSnackBar()
-          ..showSnackBar(
-            SnackBar(
-              content: Text(res.message),
-              backgroundColor:
-                  res.success ? const Color(0xFF15803D) : const Color(0xFFDC2626),
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
-      }
-    }
   }
 }
 
@@ -208,24 +253,27 @@ class _BackgroundCard extends StatelessWidget {
     required this.unlocked,
     required this.selected,
     required this.currentMetric,
-    required this.canAfford,
+    required this.canAffordCoins,
+    required this.canAffordScore,
     required this.onSelect,
-    required this.onUnlockWithCoins,
+    required this.onUnlockOptions,
   });
 
   final AppBackground background;
   final bool unlocked;
   final bool selected;
   final int currentMetric;
-  final bool canAfford;
+  final bool canAffordCoins;
+  final bool canAffordScore;
   final VoidCallback onSelect;
-  final VoidCallback onUnlockWithCoins;
+  final VoidCallback onUnlockOptions;
 
   @override
   Widget build(BuildContext context) {
     final target = background.unlockTarget;
     final progress =
         target <= 0 ? 1.0 : (currentMetric / target).clamp(0.0, 1.0);
+    final canAffordAny = canAffordCoins || canAffordScore;
 
     return Material(
       color: Colors.white,
@@ -233,7 +281,7 @@ class _BackgroundCard extends StatelessWidget {
       shadowColor: Colors.black26,
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
-        onTap: unlocked ? onSelect : onUnlockWithCoins,
+        onTap: unlocked ? onSelect : onUnlockOptions,
         borderRadius: BorderRadius.circular(20),
         child: Container(
           decoration: BoxDecoration(
@@ -248,7 +296,6 @@ class _BackgroundCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Live miniature artwork preview
               Expanded(
                 flex: 9,
                 child: ClipRRect(
@@ -259,7 +306,6 @@ class _BackgroundCard extends StatelessWidget {
                     background: background,
                     child: Stack(
                       children: [
-                        // Miniature crossword tiles floating on the preview
                         Center(
                           child: _MiniGridPreview(
                             accentColor: background.accentColor,
@@ -322,11 +368,10 @@ class _BackgroundCard extends StatelessWidget {
                   ),
                 ),
               ),
-              // Card info & unlock progress
               Expanded(
                 flex: 11,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(11, 9, 11, 9),
+                  padding: const EdgeInsets.fromLTRB(10, 9, 10, 9),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -346,7 +391,7 @@ class _BackgroundCard extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          fontSize: 10.8,
+                          fontSize: 10.6,
                           height: 1.2,
                           color: Color(0xFF78716C),
                           fontWeight: FontWeight.w500,
@@ -354,40 +399,28 @@ class _BackgroundCard extends StatelessWidget {
                       ),
                       const Spacer(),
                       if (unlocked)
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                selected ? 'Şu an seçili' : 'Kullanmak için dokun',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w800,
-                                  color: selected
-                                      ? const Color(0xFF15803D)
-                                      : const Color(0xFFB45309),
-                                ),
-                              ),
-                            ),
-                          ],
+                        Text(
+                          selected ? 'Şu an seçili' : 'Kullanmak için dokun',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w800,
+                            color: selected
+                                ? const Color(0xFF15803D)
+                                : const Color(0xFFB45309),
+                          ),
                         )
                       else ...[
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                '${background.unlockRequirementLabel} (${currentMetric.clamp(0, target)}/$target)',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xFF57534E),
-                                ),
-                              ),
-                            ),
-                          ],
+                        Text(
+                          '${background.unlockRequirementLabel} (${currentMetric.clamp(0, target)}/$target)',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF57534E),
+                          ),
                         ),
                         const SizedBox(height: 4),
                         ClipRRect(
@@ -402,38 +435,79 @@ class _BackgroundCard extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 6),
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          decoration: BoxDecoration(
-                            color: canAfford
-                                ? const Color(0xFFFEF3C7)
-                                : const Color(0xFFF5F5F4),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.monetization_on_rounded,
-                                size: 13,
-                                color: canAfford
-                                    ? const Color(0xFFD97706)
-                                    : const Color(0xFFA8A29E),
-                              ),
-                              const SizedBox(width: 3),
-                              Text(
-                                '${background.coinCost} ile Aç',
-                                style: TextStyle(
-                                  fontSize: 10.8,
-                                  fontWeight: FontWeight.w800,
-                                  color: canAfford
-                                      ? const Color(0xFF92400E)
-                                      : const Color(0xFF78716C),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: canAffordScore
+                                      ? const Color(0xFFEDE9FE)
+                                      : const Color(0xFFF5F5F4),
+                                  borderRadius: BorderRadius.circular(7),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.bolt_rounded,
+                                      size: 12,
+                                      color: canAffordScore
+                                          ? const Color(0xFF6D28D9)
+                                          : const Color(0xFFA8A29E),
+                                    ),
+                                    Text(
+                                      '${background.scoreCost}',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w900,
+                                        color: canAffordScore
+                                            ? const Color(0xFF5B21B6)
+                                            : const Color(0xFF78716C),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(width: 4),
+                            Expanded(
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: canAffordAny && canAffordCoins
+                                      ? const Color(0xFFFEF3C7)
+                                      : const Color(0xFFF5F5F4),
+                                  borderRadius: BorderRadius.circular(7),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.monetization_on_rounded,
+                                      size: 12,
+                                      color: canAffordCoins
+                                          ? const Color(0xFFD97706)
+                                          : const Color(0xFFA8A29E),
+                                    ),
+                                    const SizedBox(width: 1),
+                                    Text(
+                                      '${background.coinCost}',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w900,
+                                        color: canAffordCoins
+                                            ? const Color(0xFF92400E)
+                                            : const Color(0xFF78716C),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ],

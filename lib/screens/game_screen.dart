@@ -25,6 +25,7 @@ class GameScreen extends StatefulWidget {
     required this.surfaceColor,
     required this.isDaily,
     required this.appState,
+    this.rewardMultiplier = 1,
     this.pack,
     this.levelIndex,
   });
@@ -37,6 +38,7 @@ class GameScreen extends StatefulWidget {
   final Color secondaryColor;
   final Color surfaceColor;
   final bool isDaily;
+  final int rewardMultiplier;
   final AppState appState;
   final ConceptPack? pack;
   final int? levelIndex;
@@ -63,6 +65,7 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
       storageKey: widget.storageKey,
       language: widget.language,
       isDaily: widget.isDaily,
+      rewardMultiplier: widget.rewardMultiplier,
       appState: widget.appState,
       onPuzzleCompleted: _handlePuzzleCompleted,
     );
@@ -258,6 +261,8 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                                   : widget.primaryColor,
                             ),
                           ),
+                          if (_controller.wordComboCount >= 1)
+                            _buildComboStrip(isDark: isDark),
                           Expanded(
                             child: Stack(
                               children: [
@@ -464,7 +469,11 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
           ),
           const SizedBox(width: 5),
           InkWell(
-            onTap: () => showRewardsCenterSheet(context, widget.appState),
+            onTap: () => showRewardsCenterSheet(
+              context,
+              widget.appState,
+              initialTab: 1,
+            ),
             borderRadius: BorderRadius.circular(14),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
@@ -519,7 +528,54 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
     );
   }
 
+  Widget _buildComboStrip({required bool isDark}) {
+    final combo = _controller.wordComboCount;
+    final next = _controller.nextComboReward;
+    final bgColor = combo >= 4
+        ? const Color(0xFFBE123C)
+        : combo >= 2
+            ? const Color(0xFFEA580C)
+            : const Color(0xFF15803D);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+      color: bgColor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            combo >= 2
+                ? Icons.whatshot_rounded
+                : Icons.auto_awesome_rounded,
+            size: 15,
+            color: const Color(0xFFFDE047),
+          ),
+          const SizedBox(width: 5),
+          Flexible(
+            child: Text(
+              combo >= 2
+                  ? '$combo× KOMBO! Sonraki doğru kelime: +${next.coins} Altın & +${next.score} Puan'
+                  : '1. Kelime Doğru! 2× Kombo için sıradakini ipucusuz bil (+${next.coins} Altın)',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 11.5,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildJokerBar() {
+    final letterTickets = widget.appState.letterHintTickets;
+    final wordTickets = widget.appState.wordHintTickets;
+    final checkTickets = widget.appState.checkHintTickets;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
@@ -528,7 +584,10 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
             child: _JokerButton(
               icon: Icons.lightbulb_outline_rounded,
               label: 'Harf',
-              cost: '${AppState.letterHintCost}',
+              cost: letterTickets > 0
+                  ? '×$letterTickets'
+                  : '${AppState.letterHintCost}',
+              isTicketBadge: letterTickets > 0,
               color: widget.primaryColor,
               onTap: () async {
                 final fb = await _controller.revealSelectedCell();
@@ -541,7 +600,10 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
             child: _JokerButton(
               icon: Icons.auto_awesome_rounded,
               label: 'Kelime',
-              cost: '${AppState.wordHintCost}',
+              cost: wordTickets > 0
+                  ? '×$wordTickets'
+                  : '${AppState.wordHintCost}',
+              isTicketBadge: wordTickets > 0,
               color: widget.secondaryColor,
               onTap: () async {
                 final fb = await _controller.revealActiveWord();
@@ -554,7 +616,10 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
             child: _JokerButton(
               icon: Icons.fact_check_outlined,
               label: 'Kontrol',
-              cost: '${AppState.checkMistakesCost}',
+              cost: checkTickets > 0
+                  ? '×$checkTickets'
+                  : '${AppState.checkMistakesCost}',
+              isTicketBadge: checkTickets > 0,
               color: const Color(0xFF0F766E),
               onTap: () async {
                 final fb = await _controller.checkMistakes();
@@ -569,6 +634,7 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
               label:
                   '${_controller.solvedWordsCount}/${widget.puzzle.entries.length}',
               cost: null,
+              isTicketBadge: false,
               color: const Color(0xFF44403C),
               onTap: () => showAllCluesSheet(
                 context: context,
@@ -588,6 +654,7 @@ class _JokerButton extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.cost,
+    required this.isTicketBadge,
     required this.color,
     required this.onTap,
   });
@@ -595,6 +662,7 @@ class _JokerButton extends StatelessWidget {
   final IconData icon;
   final String label;
   final String? cost;
+  final bool isTicketBadge;
   final Color color;
   final VoidCallback onTap;
 
@@ -637,15 +705,19 @@ class _JokerButton extends StatelessWidget {
                     vertical: 1,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFEF3C7),
+                    color: isTicketBadge
+                        ? const Color(0xFFDCFCE7)
+                        : const Color(0xFFFEF3C7),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
                     cost!,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 9.5,
                       fontWeight: FontWeight.w900,
-                      color: Color(0xFF92400E),
+                      color: isTicketBadge
+                          ? const Color(0xFF15803D)
+                          : const Color(0xFF92400E),
                     ),
                   ),
                 ),

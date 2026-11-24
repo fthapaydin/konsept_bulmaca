@@ -87,10 +87,14 @@ class _BackgroundArtworkPainter extends CustomPainter {
         _paintMidnightStars(canvas, size);
       case BackgroundArtworkType.yesilcamCinema:
         _paintYesilcam(canvas, size);
+      case BackgroundArtworkType.iznikTiles:
+        _paintIznikTiles(canvas, size);
       case BackgroundArtworkType.aegeanCoast:
         _paintAegeanCoast(canvas, size);
       case BackgroundArtworkType.cappadociaDawn:
         _paintCappadocia(canvas, size);
+      case BackgroundArtworkType.autumnForest:
+        _paintAutumnForest(canvas, size);
       case BackgroundArtworkType.auroraNight:
         _paintAurora(canvas, size);
       case BackgroundArtworkType.goldenGalaxy:
@@ -218,6 +222,76 @@ class _BackgroundArtworkPainter extends CustomPainter {
         ),
         stripPaint,
       );
+    }
+  }
+
+  void _paintIznikTiles(Canvas canvas, Size size) {
+    final stroke = Paint()
+      ..color = const Color(0xFF1D4ED8).withValues(alpha: 0.09)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.2;
+    final fill = Paint()
+      ..color = const Color(0xFF0284C7).withValues(alpha: 0.06);
+
+    const tile = 54.0;
+    for (double y = 0; y < size.height + tile; y += tile) {
+      for (double x = 0; x < size.width + tile; x += tile) {
+        final cx = x + tile / 2;
+        final cy = y + tile / 2;
+        final diamond = Path()
+          ..moveTo(cx, cy - tile * 0.36)
+          ..lineTo(cx + tile * 0.36, cy)
+          ..lineTo(cx, cy + tile * 0.36)
+          ..lineTo(cx - tile * 0.36, cy)
+          ..close();
+        canvas.drawPath(diamond, stroke);
+        canvas.drawCircle(Offset(cx, cy), 4.5, fill);
+      }
+    }
+  }
+
+  void _paintAutumnForest(Canvas canvas, Size size) {
+    final sunGlow = Paint()
+      ..shader = RadialGradient(
+        colors: [
+          const Color(0xFFFDBA74).withValues(alpha: 0.28),
+          const Color(0xFFEA580C).withValues(alpha: 0.10),
+          Colors.transparent,
+        ],
+      ).createShader(
+        Rect.fromCircle(
+          center: Offset(size.width * 0.75, size.height * 0.16),
+          radius: size.width * 0.48,
+        ),
+      );
+    canvas.drawCircle(
+      Offset(size.width * 0.75, size.height * 0.16),
+      size.width * 0.48,
+      sunGlow,
+    );
+
+    // Floating warm autumn leaf silhouettes
+    const leaves = [
+      (0.14, 0.16, 12.0, 0.4),
+      (0.32, 0.28, 9.0, -0.6),
+      (0.84, 0.34, 14.0, 0.9),
+      (0.18, 0.56, 11.0, -0.3),
+      (0.76, 0.64, 10.0, 0.5),
+      (0.45, 0.80, 13.0, -0.8),
+      (0.88, 0.84, 9.5, 0.2),
+    ];
+    final leafPaint = Paint()..color = const Color(0xFFFDBA74).withValues(alpha: 0.18);
+    for (final l in leaves) {
+      canvas.save();
+      canvas.translate(size.width * l.$1, size.height * l.$2);
+      canvas.rotate(l.$4);
+      final p = Path()
+        ..moveTo(0, -l.$3)
+        ..quadraticBezierTo(l.$3 * 0.9, 0, 0, l.$3)
+        ..quadraticBezierTo(-l.$3 * 0.9, 0, 0, -l.$3)
+        ..close();
+      canvas.drawPath(p, leafPaint);
+      canvas.restore();
     }
   }
 

@@ -8,10 +8,12 @@ class LoadedPuzzleContent {
   const LoadedPuzzleContent({
     required this.packs,
     required this.dailyBank,
+    required this.megaBank,
   });
 
   final List<ConceptPack> packs;
   final DailyBank dailyBank;
+  final MegaBank megaBank;
 }
 
 class PuzzleRepository {
@@ -36,6 +38,15 @@ class PuzzleRepository {
     final dailyBank =
         DailyBank.fromJson(jsonDecode(dailyRaw) as Map<String, dynamic>);
 
-    return LoadedPuzzleContent(packs: packs, dailyBank: dailyBank);
+    final megaPath = manifest['mega'] as String? ?? 'assets/puzzles/mega.json';
+    final megaRaw = await _loader(megaPath);
+    final megaBank =
+        MegaBank.fromJson(jsonDecode(megaRaw) as Map<String, dynamic>);
+
+    return LoadedPuzzleContent(
+      packs: packs,
+      dailyBank: dailyBank,
+      megaBank: megaBank,
+    );
   }
 }

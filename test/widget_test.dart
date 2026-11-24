@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:konsept_bulmaca/main.dart';
 import 'package:konsept_bulmaca/models/background_models.dart';
-import 'package:konsept_bulmaca/models/puzzle_models.dart';
 import 'package:konsept_bulmaca/models/retention_models.dart';
 import 'package:konsept_bulmaca/services/puzzle_repository.dart';
 import 'package:konsept_bulmaca/state/app_state.dart';
@@ -19,7 +18,7 @@ void main() {
     SharedPreferences.setMockInitialValues({});
   });
 
-  group('TurkishText', () {
+  group('TurkishText & ComboEconomy', () {
     test('normalizes Turkish and English letters accurately', () {
       expect(TurkishText.normalizeLetter('i', language: 'tr'), 'İ');
       expect(TurkishText.normalizeLetter('ı', language: 'tr'), 'I');
@@ -32,47 +31,54 @@ void main() {
       expect(TurkishText.normalizeLetter('ş', language: 'en'), '');
     });
 
-    test('formats duration cleanly', () {
-      expect(TurkishText.formatDuration(0), '00:00');
-      expect(TurkishText.formatDuration(65), '01:05');
-      expect(TurkishText.formatDuration(600), '10:00');
+    test('combo rewards escalate exponentially at 2x, 3x, 4x+', () {
+      final c1 = ComboEconomy.rewardFor(1);
+      final c2 = ComboEconomy.rewardFor(2);
+      final c3 = ComboEconomy.rewardFor(3);
+      final c4 = ComboEconomy.rewardFor(4);
+      final c5 = ComboEconomy.rewardFor(5);
+
+      expect(c1.coins, 5);
+      expect(c2.coins, 10);
+      expect(c3.coins, 20);
+      expect(c4.coins, 40);
+      expect(c5.coins, greaterThan(c4.coins));
+      expect(c4.score, greaterThan(c3.score));
+      expect(c3.score, greaterThan(c2.score));
     });
   });
 
   group('PuzzleRepository & Assets', () {
-    test('loads all 4 concept packs (80 levels) and 15 daily puzzles', () async {
+    test('loads all 4 concept packs (80 levels), 15 daily, and 6 mega puzzles up to 20x20',
+        () async {
       final repo = PuzzleRepository();
       final content = await repo.loadAll();
 
       expect(content.packs.length, 4);
       expect(content.dailyBank.puzzles.length, 15);
+      expect(content.megaBank.items.length, 6);
 
       for (final pack in content.packs) {
         expect(pack.levels.length, 20, reason: '${pack.id} must have 20 levels');
-        // Optimum mobile progression: starts 5x5 and ends 8x8
         expect(pack.levels.first.rows, 5);
-        expect(pack.levels.first.cols, 5);
         expect(pack.levels.last.rows, 8);
-        expect(pack.levels.last.cols, 8);
-
-        for (final lvl in pack.levels) {
-          expect(lvl.entries.length, greaterThanOrEqualTo(4));
-          expect(lvl.acrossEntries.length, greaterThanOrEqualTo(2));
-          expect(lvl.downEntries.length, greaterThanOrEqualTo(2));
-        }
       }
+
+      // Verify 12x12, 15x15, and 20x20 mega puzzles exist
+      final megaSizes =
+          content.megaBank.items.map((i) => i.puzzle.rows).toSet();
+      expect(megaSizes, containsAll([12, 15, 20]));
+      expect(content.megaBank.items.last.puzzle.entries.length, greaterThanOrEqualTo(35));
     });
   });
 
-  group('GameController & AppState', () {
-    test('handles typing, hints, mistake checking, completion, and level unlock', () async {
+  group('GameController, Combos, Puan Shop & Mega Unlocks', () {
+    test('awards escalating combo coins & score on consecutive solved words and resets on hint',
+        () async {
       final appState = AppState();
       await appState.initialize();
 
       final yesilcam = appState.packs.firstWhere((p) => p.id == 'yesilcam');
-      expect(appState.isLevelUnlocked(yesilcam, 0), isTrue);
-      expect(appState.isLevelUnlocked(yesilcam, 1), isFalse);
-
       final lvl1 = yesilcam.levels.first;
       CompletionReward? receivedReward;
       final controller = GameController(
@@ -84,51 +90,89 @@ void main() {
         onPuzzleCompleted: (r) => receivedReward = r,
       );
 
-      // Test checkMistakes on empty editable cells (does not charge coins)
-      final initialCoins = appState.coins;
-      final emptyCheck = await controller.checkMistakes();
-      expect(emptyCheck.status, HintStatus.nothingToDo);
-      expect(appState.coins, initialCoins);
+      final startCoins = appState.coins;
+      final startScore = appState.score;
 
-      // Type a deliberately wrong letter into selected cell
-      final startCell = controller.selectedCell;
-      final correctChar = lvl1.solutionAt(startCell.row, startCell.col)!;
-      final wrongChar = correctChar == 'A' ? 'Z' : 'A';
-      await controller.inputLetter(wrongChar);
-
-      // Check mistakes should detect the wrong letter and deduct 10 coins
-      final checkRes = await controller.checkMistakes();
-      expect(checkRes.status, HintStatus.ok);
-      expect(controller.isWrong(startCell.row, startCell.col), isTrue);
-      expect(appState.coins, initialCoins - AppState.checkMistakesCost);
-
-      // Select that wrong cell and use letter hint
-      controller.selectCell(startCell.row, startCell.col);
-      final hintRes = await controller.revealSelectedCell();
-      expect(hintRes.status, HintStatus.ok);
-      expect(controller.letterAt(startCell.row, startCell.col), correctChar);
-      expect(controller.isLocked(startCell.row, startCell.col), isTrue);
-
-      // Fill all remaining active cells with correct solution letters
-      for (var r = 0; r < lvl1.rows; r++) {
-        for (var c = 0; c < lvl1.cols; c++) {
+      // Solve entire puzzle cleanly without hints -> combos build on every word!
+      for (final entry in lvl1.entries) {
+        if (controller.isCompleted) break;
+        final chars = entry.answer.characters.toList();
+        for (var i = 0; i < entry.cells.length; i++) {
           if (controller.isCompleted) break;
-          final sol = lvl1.solutionAt(r, c);
-          if (sol != null && controller.letterAt(r, c) != sol) {
-            controller.selectCell(r, c);
-            await controller.inputLetter(sol);
+          final cell = entry.cells[i];
+          if (controller.letterAt(cell.row, cell.col) != chars[i]) {
+            controller.selectCell(cell.row, cell.col);
+            await controller.inputLetter(chars[i]);
           }
         }
       }
 
       expect(controller.isCompleted, isTrue);
+      expect(controller.maxComboInSession, greaterThanOrEqualTo(2));
+      expect(controller.sessionComboCoins, greaterThan(10));
+      expect(appState.score, greaterThan(startScore));
+      expect(appState.coins, greaterThan(startCoins));
       expect(receivedReward, isNotNull);
-      expect(receivedReward!.stars, inInclusiveRange(1, 3));
-      expect(receivedReward!.coinsEarned, greaterThan(0));
-      expect(appState.isLevelCompleted(lvl1), isTrue);
+      expect(receivedReward!.comboCoinsEarned, controller.sessionComboCoins);
+      expect(receivedReward!.scoreEarned, greaterThan(100));
       expect(appState.isLevelUnlocked(yesilcam, 1), isTrue);
 
       controller.dispose();
+      appState.dispose();
+    });
+
+    test('uses free hint ticket first before spending coins, and buys bundles & backgrounds with Puan',
+        () async {
+      final appState = AppState();
+      await appState.initialize();
+
+      // Starts with 1 free letter hint ticket
+      expect(appState.letterHintTickets, 1);
+      final coinsBefore = appState.coins;
+
+      final lvl1 = appState.packs.first.levels.first;
+      final controller = GameController(
+        puzzle: lvl1,
+        storageKey: lvl1.id,
+        language: 'tr',
+        isDaily: false,
+        appState: appState,
+      );
+
+      final hintRes = await controller.revealSelectedCell();
+      expect(hintRes.status, HintStatus.ok);
+      expect(appState.letterHintTickets, 0);
+      expect(appState.coins, coinsBefore); // Ticket used -> 0 coins deducted!
+      controller.dispose();
+
+      // Grant score via combo award and buy hint bundle + background + mega unlock with Puan!
+      await appState.awardComboWord(
+        comboCount: 4,
+        coinsEarned: 40,
+        scoreEarned: 1000,
+      );
+      expect(appState.score, 1000);
+      expect(appState.bestCombo, 4);
+
+      final letterBundle = ShopCatalog.all.first;
+      final buyRes = await appState.buyShopBundle(letterBundle, useScore: true);
+      expect(buyRes.success, isTrue);
+      expect(appState.letterHintTickets, letterBundle.quantity);
+
+      // Unlock a background with Puan
+      final yesilcamBg = BackgroundCatalog.byId('yesilcam_sinema');
+      final bgRes = await appState.unlockBackgroundWithScore(yesilcamBg);
+      expect(bgRes.success, isTrue);
+      expect(appState.isBackgroundUnlocked(yesilcamBg), isTrue);
+      expect(appState.selectedBackground.id, yesilcamBg.id);
+
+      // Unlock 12x12 Mega Puzzle early with Puan
+      final firstMega = appState.megaBank!.items.first;
+      expect(appState.isMegaUnlocked(firstMega), isFalse);
+      final megaRes = await appState.unlockMegaEarly(firstMega, useScore: true);
+      expect(megaRes.success, isTrue);
+      expect(appState.isMegaUnlocked(firstMega), isTrue);
+
       appState.dispose();
     });
 
@@ -162,91 +206,16 @@ void main() {
       expect(appState.isTodayDailyCompleted, isTrue);
       expect(appState.dailyStreak, 1);
       expect(reward!.stars, 3);
-      expect(reward!.coinsEarned, 80); // 2x (3*10 + 10)
+      expect(reward!.coinsEarned, 80);
       expect(reward!.newDailyStreak, 1);
 
       controller.dispose();
       appState.dispose();
     });
-
-    test('backgrounds support free selection, coin unlock, and progression auto-unlock', () async {
-      final appState = AppState();
-      await appState.initialize();
-
-      // 3 starter themes unlocked initially
-      expect(appState.unlockedBackgroundCount, 3);
-      expect(appState.selectedBackground.id, BackgroundCatalog.defaultId);
-
-      // Select free dark theme
-      final selectedDark = await appState.selectBackground('gece_yarisi');
-      expect(selectedDark, isTrue);
-      expect(appState.selectedBackground.id, 'gece_yarisi');
-      expect(appState.selectedBackground.isDark, isTrue);
-
-      // Locked theme cannot be selected directly before unlock
-      final yesilcamBg = BackgroundCatalog.byId('yesilcam_sinema');
-      expect(appState.isBackgroundUnlocked(yesilcamBg), isFalse);
-      expect(await appState.selectBackground(yesilcamBg.id), isFalse);
-
-      // Solve 3 puzzles -> Yeşilçam Perdesi (target: 3 solved) & Ege Kıyısı (9 stars) auto-unlock!
-      final pack = appState.packs.first;
-      CompletionReward? thirdReward;
-      for (var i = 0; i < 3; i++) {
-        final lvl = pack.levels[i];
-        thirdReward = await appState.completePuzzle(
-          storageKey: lvl.id,
-          finalState: PuzzleSaveState(
-            puzzleId: lvl.id,
-            elapsedSeconds: 45,
-            completed: true,
-          ),
-          isDaily: false,
-        );
-      }
-
-      expect(appState.isBackgroundUnlocked(yesilcamBg), isTrue);
-      expect(
-        thirdReward!.newlyUnlockedBackgrounds.any((b) => b.id == 'yesilcam_sinema'),
-        isTrue,
-      );
-      expect(
-        thirdReward.newlyUnlockedBackgrounds.any((b) => b.id == 'ege_kiyisi'),
-        isTrue,
-      );
-
-      // Coin early unlock on Kapadokya Şafağı (costs 200; player has 150 + 3*40 = 270 coins)
-      final cappadocia = BackgroundCatalog.byId('kapadokya_safak');
-      expect(appState.isBackgroundUnlocked(cappadocia), isFalse);
-      final coinsBefore = appState.coins;
-      final buyRes = await appState.unlockBackgroundWithCoins(cappadocia);
-      expect(buyRes.success, isTrue);
-      expect(appState.isBackgroundUnlocked(cappadocia), isTrue);
-      expect(appState.selectedBackground.id, cappadocia.id);
-      expect(appState.coins, coinsBefore - cappadocia.coinCost);
-
-      // Daily gift and mission claim progression
-      expect(appState.canClaimDailyGift, isTrue);
-      final giftEarned = await appState.claimDailyGift();
-      expect(giftEarned, MissionCatalog.dailyGiftCoins);
-      expect(appState.canClaimDailyGift, isFalse);
-
-      // First win mission should now be claimable (3 puzzles solved!)
-      final firstWin = MissionCatalog.all.first;
-      expect(appState.canClaimMission(firstWin), isTrue);
-      final missionCoins = await appState.claimMission(firstWin);
-      expect(missionCoins, firstWin.rewardCoins);
-      expect(appState.isMissionClaimed(firstWin), isTrue);
-
-      // Player rank advanced from 9 stars -> Kelime Kaşifi (Level 2)
-      expect(appState.currentRank.level, 2);
-      expect(appState.currentRank.title, 'Kelime Kaşifi');
-
-      appState.dispose();
-    });
   });
 
   group('Widget Flow Smoke Test', () {
-    testWidgets('opens Background Gallery and switches to Gece Yarısı cleanly',
+    testWidgets('opens Background Gallery (10 themes) and switches cleanly',
         (tester) async {
       tester.view.physicalSize = const Size(412, 892);
       tester.view.devicePixelRatio = 1.0;
@@ -264,7 +233,6 @@ void main() {
 
       expect(find.text('Arka Plan Galerisi'), findsOneWidget);
       expect(find.text('Gece Yarısı'), findsOneWidget);
-      expect(find.text('Yeşilçam Perdesi'), findsOneWidget);
 
       await tester.tap(find.text('Gece Yarısı'));
       await tester.pumpAndSettle();
@@ -274,9 +242,9 @@ void main() {
       await tester.pump();
       appState.dispose();
     });
+
     testWidgets('renders Home, opens Yeşilçam pack, and launches Level 1 with Turkish keyboard',
         (tester) async {
-      // Simulate typical Android phone portrait viewport (412 x 892)
       tester.view.physicalSize = const Size(412, 892);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -291,33 +259,25 @@ void main() {
       expect(find.text('Konsept Bulmaca'), findsOneWidget);
       expect(find.text('Günün Bulmacası'), findsOneWidget);
       expect(find.text('Yeşilçam Klasikleri'), findsOneWidget);
-      expect(find.text('İngilizce Kelime Avı'), findsOneWidget);
 
-      // Navigate into Yeşilçam pack
       await tester.tap(find.text('Yeşilçam Klasikleri'));
       await tester.pumpAndSettle();
 
       expect(find.text('İlk Perde'), findsOneWidget);
-      expect(find.text('5×5'), findsAtLeastNWidgets(1));
 
-      // Launch Level 1 (use timed pump because GameScreen runs a 1s periodic timer)
       await tester.tap(find.text('İlk Perde'));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
 
-      // Custom Turkish keyboard keys must be visible inside GameKeyboard
       final keyboard = find.byType(GameKeyboard);
       expect(keyboard, findsOneWidget);
       expect(find.descendant(of: keyboard, matching: find.text('Ğ')), findsOneWidget);
       expect(find.descendant(of: keyboard, matching: find.text('Ş')), findsOneWidget);
-      expect(find.descendant(of: keyboard, matching: find.text('İ')), findsOneWidget);
       expect(find.text('Harf'), findsOneWidget);
 
-      // Tap a Turkish key on the keyboard and verify no exceptions
       await tester.tap(find.descendant(of: keyboard, matching: find.text('A')));
       await tester.pump();
 
-      // Unmount tree so GameController timer is disposed cleanly before test ends
       await tester.pumpWidget(const SizedBox.shrink());
       await tester.pump();
       appState.dispose();

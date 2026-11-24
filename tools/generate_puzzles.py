@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import random
+import sys
 from collections import deque
 from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
@@ -1566,8 +1567,114 @@ def generate_daily_bank(
     }
 
 
+def generate_mega_bank(seed: int = 202699) -> dict:
+    """
+    İlerledikçe açılan 12x12, 15x15 ve 20x20 Dev Kare Bulmacaları üretir
+    ve bağımsız matematiksel doğrulamadan geçirir.
+    """
+    rng = random.Random(seed)
+
+    combined_tr: List[Tuple[str, str]] = []
+    seen_tr: Set[str] = set()
+    for tag, raw in [
+        ("Yeşilçam", YESILCAM_WORDS),
+        ("Türkiye", TURKIYE_WORDS),
+        ("Genel Kültür", GENEL_KULTUR_WORDS),
+    ]:
+        for w, c, _ in dedupe_pool(raw, "tr"):
+            if w not in seen_tr:
+                seen_tr.add(w)
+                combined_tr.append((w, f"[{tag}] {c}"))
+
+    yesilcam_pool = [(w, c) for w, c, _ in dedupe_pool(YESILCAM_WORDS, "tr")]
+    turkiye_pool = [(w, c) for w, c, _ in dedupe_pool(TURKIYE_WORDS, "tr")]
+    ingilizce_pool = [(w, c) for w, c, _ in dedupe_pool(INGILIZCE_WORDS, "en")]
+    gk_pool = [(w, c) for w, c, _ in dedupe_pool(GENEL_KULTUR_WORDS, "tr")]
+
+    specs = [
+        (
+            "mega_01", 1, "Yeşilçam Dev Gala", "Büyük Kare", 12, 12,
+            15, 22, 2, "tr", "#B45309", "#7C2D12", "#FFFBEB",
+            4, 80, 300, 2, yesilcam_pool,
+        ),
+        (
+            "mega_02", 2, "Türkiye Dev Haritası", "Büyük Kare", 12, 12,
+            15, 22, 2, "tr", "#0F766E", "#115E59", "#F0FDFA",
+            6, 100, 400, 2, turkiye_pool,
+        ),
+        (
+            "mega_03", 3, "İngilizce Mega Pratik", "Dev Bulmaca", 15, 15,
+            22, 32, 3, "en", "#1D4ED8", "#1E3A8A", "#EFF6FF",
+            8, 140, 550, 2, ingilizce_pool,
+        ),
+        (
+            "mega_04", 4, "Bilim & Kültür Maratonu", "Dev Bulmaca", 15, 15,
+            22, 32, 3, "tr", "#6D28D9", "#4C1D95", "#F5F3FF",
+            10, 160, 650, 2, gk_pool,
+        ),
+        (
+            "mega_05", 5, "Büyük Anadolu Efsanesi", "Dev Bulmaca", 15, 15,
+            24, 34, 3, "tr", "#0E7490", "#155E75", "#ECFEFF",
+            12, 180, 750, 3, combined_tr,
+        ),
+        (
+            "mega_06", 6, "20×20 Büyük Şampiyona", "Efsane Dev", 20, 20,
+            38, 56, 4, "tr", "#BE123C", "#881337", "#FFF1F2",
+            16, 240, 1000, 3, combined_tr,
+        ),
+    ]
+
+    mega_items = []
+    for (
+        pid, lvl, title, diff, rows, cols, min_w, max_w, rev,
+        lang, p_hex, s_hex, surf_hex, req_solved, unlock_coins, unlock_score,
+        reward_mult, pool,
+    ) in specs:
+        trials = 40 if rows >= 15 else 80
+        _, placements = build_single_puzzle(
+            rows=rows,
+            cols=cols,
+            min_words=min_w,
+            max_words=max_w,
+            primary_pool=pool,
+            fallback_pool=pool,
+            rng=rng,
+            trials=trials,
+        )
+        puzzle = assign_numbers_and_format(
+            puzzle_id=pid,
+            level=lvl,
+            title=title,
+            difficulty=diff,
+            rows=rows,
+            cols=cols,
+            placements=placements,
+            initial_reveals=rev,
+            rng=rng,
+        )
+        mega_items.append({
+            "language": lang,
+            "primaryColor": p_hex,
+            "secondaryColor": s_hex,
+            "surfaceColor": surf_hex,
+            "requiredSolved": req_solved,
+            "earlyUnlockCoins": unlock_coins,
+            "earlyUnlockScore": unlock_score,
+            "rewardMultiplier": reward_mult,
+            "puzzle": puzzle,
+        })
+        print(f"[OK] {pid:14s} -> {rows}x{cols} | {len(puzzle['entries'])} kelime | {title}")
+
+    return {
+        "id": "mega",
+        "name": "Dev Bulmacalar",
+        "items": mega_items,
+    }
+
+
 def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    mega_only = "--mega-only" in sys.argv
 
     packs_spec = [
         (
@@ -1652,31 +1759,44 @@ def main() -> None:
         ),
     ]
 
-    manifest_packs = []
-    for spec in packs_spec:
-        pack = generate_pack(*spec)
-        out_path = OUT_DIR / f"{pack['id']}.json"
-        out_path.write_text(json.dumps(pack, ensure_ascii=False, indent=2), encoding="utf-8")
-        word_counts = [len(lvl["entries"]) for lvl in pack["levels"]]
-        sizes = [f"{lvl['rows']}x{lvl['cols']}" for lvl in pack["levels"]]
-        print(f"[OK] {pack['id']:14s} -> {len(pack['levels'])} seviye | boyutlar: {sizes[0]}..{sizes[-1]} | kelimeler: {word_counts}")
-        manifest_packs.append(f"assets/puzzles/{pack['id']}.json")
+    manifest_packs = [f"assets/puzzles/{spec[0]}.json" for spec in packs_spec]
 
-    daily = generate_daily_bank([
-        ("Yeşilçam", YESILCAM_WORDS),
-        ("Türkiye", TURKIYE_WORDS),
-        ("Genel Kültür", GENEL_KULTUR_WORDS),
-    ])
-    daily_path = OUT_DIR / "daily.json"
-    daily_path.write_text(json.dumps(daily, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"[OK] {'daily':14s} -> {len(daily['puzzles'])} günlük bulmaca üretildi ve doğrulandı!")
+    if not mega_only:
+        for spec in packs_spec:
+            pack = generate_pack(*spec)
+            out_path = OUT_DIR / f"{pack['id']}.json"
+            out_path.write_text(json.dumps(pack, ensure_ascii=False, indent=2), encoding="utf-8")
+            word_counts = [len(lvl["entries"]) for lvl in pack["levels"]]
+            sizes = [f"{lvl['rows']}x{lvl['cols']}" for lvl in pack["levels"]]
+            print(f"[OK] {pack['id']:14s} -> {len(pack['levels'])} seviye | boyutlar: {sizes[0]}..{sizes[-1]} | kelimeler: {word_counts}")
+
+        daily = generate_daily_bank([
+            ("Yeşilçam", YESILCAM_WORDS),
+            ("Türkiye", TURKIYE_WORDS),
+            ("Genel Kültür", GENEL_KULTUR_WORDS),
+        ])
+        daily_path = OUT_DIR / "daily.json"
+        daily_path.write_text(json.dumps(daily, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"[OK] {'daily':14s} -> {len(daily['puzzles'])} günlük bulmaca üretildi ve doğrulandı!")
+
+    mega = generate_mega_bank()
+    mega_path = OUT_DIR / "mega.json"
+    mega_path.write_text(json.dumps(mega, ensure_ascii=False, indent=2), encoding="utf-8")
 
     manifest_path = OUT_DIR / "manifest.json"
     manifest_path.write_text(
-        json.dumps({"packs": manifest_packs, "daily": "assets/puzzles/daily.json"}, ensure_ascii=False, indent=2),
+        json.dumps(
+            {
+                "packs": manifest_packs,
+                "daily": "assets/puzzles/daily.json",
+                "mega": "assets/puzzles/mega.json",
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
         encoding="utf-8",
     )
-    print(f"\nToplam 95 bulmaca başarıyla {OUT_DIR} içine yazıldı.")
+    print(f"\nToplam 101 doğrulanmış bulmaca (80 konsept + 15 günlük + 6 dev) {OUT_DIR} içinde hazır!")
 
 
 if __name__ == "__main__":

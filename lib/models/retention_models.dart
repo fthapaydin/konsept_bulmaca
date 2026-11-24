@@ -1,5 +1,133 @@
 import 'package:material_ui/material_ui.dart';
 
+class ComboReward {
+  const ComboReward({
+    required this.combo,
+    required this.coins,
+    required this.score,
+  });
+
+  final int combo;
+  final int coins;
+  final int score;
+}
+
+/// Ardışık ipucusuz ve hatasız doğru kelimelerde 2x ve üzeri katlanarak artan
+/// altın + puan ödül motoru.
+class ComboEconomy {
+  static ComboReward rewardFor(int comboCount) {
+    final c = comboCount < 1 ? 1 : comboCount;
+    final int coins;
+    final int score;
+    switch (c) {
+      case 1:
+        coins = 5;
+        score = 20;
+      case 2:
+        coins = 10;
+        score = 40;
+      case 3:
+        coins = 20;
+        score = 80;
+      case 4:
+        coins = 40;
+        score = 160;
+      default:
+        coins = (40 + (c - 4) * 20).clamp(40, 120);
+        score = (160 + (c - 4) * 80).clamp(160, 480);
+    }
+    return ComboReward(combo: c, coins: coins, score: score);
+  }
+}
+
+enum HintTicketType { letter, word, check }
+
+enum ShopBundleType { letterPack, wordPack, checkPack, scoreToCoins }
+
+class ShopBundle {
+  const ShopBundle({
+    required this.id,
+    required this.title,
+    required this.subtitle,
+    required this.type,
+    required this.quantity,
+    required this.coinCost,
+    required this.scoreCost,
+    required this.icon,
+    required this.color,
+  });
+
+  final String id;
+  final String title;
+  final String subtitle;
+  final ShopBundleType type;
+  final int quantity;
+  final int coinCost; // 0 ise yalnızca puanla alınır
+  final int scoreCost;
+  final IconData icon;
+  final Color color;
+}
+
+class ShopCatalog {
+  static const List<ShopBundle> all = [
+    ShopBundle(
+      id: 'letter_pack_3',
+      title: '3× Harf İpucu',
+      subtitle: 'İstediğin 3 kutuyu ücretsiz aç',
+      type: ShopBundleType.letterPack,
+      quantity: 3,
+      coinCost: 35,
+      scoreCost: 150,
+      icon: Icons.lightbulb_rounded,
+      color: Color(0xFFB45309),
+    ),
+    ShopBundle(
+      id: 'word_pack_2',
+      title: '2× Kelime İpucu',
+      subtitle: 'Zorlandığın 2 kelimeyi tamamen aç',
+      type: ShopBundleType.wordPack,
+      quantity: 2,
+      coinCost: 65,
+      scoreCost: 280,
+      icon: Icons.auto_awesome_rounded,
+      color: Color(0xFF6D28D9),
+    ),
+    ShopBundle(
+      id: 'check_pack_5',
+      title: '5× Hata Kontrolü',
+      subtitle: '5 kez ücretsiz tahta kontrolü yap',
+      type: ShopBundleType.checkPack,
+      quantity: 5,
+      coinCost: 35,
+      scoreCost: 150,
+      icon: Icons.fact_check_rounded,
+      color: Color(0xFF0F766E),
+    ),
+    ShopBundle(
+      id: 'score_to_coins_50',
+      title: '+50 Altın Takası',
+      subtitle: 'Biriktirdiğin puanları altına çevir',
+      type: ShopBundleType.scoreToCoins,
+      quantity: 50,
+      coinCost: 0,
+      scoreCost: 200,
+      icon: Icons.currency_exchange_rounded,
+      color: Color(0xFFD97706),
+    ),
+    ShopBundle(
+      id: 'score_to_coins_150',
+      title: '+150 Altın Hazinesi',
+      subtitle: 'Avantajlı puan → altın dönüşümü',
+      type: ShopBundleType.scoreToCoins,
+      quantity: 150,
+      coinCost: 0,
+      scoreCost: 500,
+      icon: Icons.savings_rounded,
+      color: Color(0xFFEA580C),
+    ),
+  ];
+}
+
 class PlayerRank {
   const PlayerRank({
     required this.level,
@@ -95,6 +223,8 @@ enum MissionMetric {
   packYesilcam,
   packIngilizce,
   perfectThreeStars,
+  bestCombo,
+  megaSolved,
 }
 
 class MissionItem {
@@ -133,6 +263,16 @@ class MissionCatalog {
       rewardCoins: 30,
       icon: Icons.flag_rounded,
       color: Color(0xFF0F766E),
+    ),
+    MissionItem(
+      id: 'combo_3',
+      title: 'Kombo Ustası',
+      description: 'Hatasız ve ipucusuz 3× kelime kombosu yakala',
+      metric: MissionMetric.bestCombo,
+      target: 3,
+      rewardCoins: 50,
+      icon: Icons.whatshot_rounded,
+      color: Color(0xFFEA580C),
     ),
     MissionItem(
       id: 'perfect_star',
@@ -183,6 +323,16 @@ class MissionCatalog {
       rewardCoins: 60,
       icon: Icons.translate_rounded,
       color: Color(0xFF2563EB),
+    ),
+    MissionItem(
+      id: 'mega_win',
+      title: 'Dev Kare Fatihi',
+      description: 'İlk 12×12 veya üzeri Dev Bulmacanı tamamla',
+      metric: MissionMetric.megaSolved,
+      target: 1,
+      rewardCoins: 120,
+      icon: Icons.grid_4x4_rounded,
+      color: Color(0xFFBE123C),
     ),
     MissionItem(
       id: 'streak_3',

@@ -284,6 +284,66 @@ class DailyBank {
   }
 }
 
+class MegaPuzzleItem {
+  const MegaPuzzleItem({
+    required this.language,
+    required this.primaryColor,
+    required this.secondaryColor,
+    required this.surfaceColor,
+    required this.requiredSolved,
+    required this.earlyUnlockCoins,
+    required this.earlyUnlockScore,
+    required this.rewardMultiplier,
+    required this.puzzle,
+  });
+
+  final String language;
+  final Color primaryColor;
+  final Color secondaryColor;
+  final Color surfaceColor;
+  final int requiredSolved;
+  final int earlyUnlockCoins;
+  final int earlyUnlockScore;
+  final int rewardMultiplier;
+  final CrosswordPuzzle puzzle;
+
+  factory MegaPuzzleItem.fromJson(Map<String, dynamic> json) {
+    return MegaPuzzleItem(
+      language: json['language'] as String,
+      primaryColor: TurkishText.colorFromHex(json['primaryColor'] as String),
+      secondaryColor: TurkishText.colorFromHex(json['secondaryColor'] as String),
+      surfaceColor: TurkishText.colorFromHex(json['surfaceColor'] as String),
+      requiredSolved: json['requiredSolved'] as int,
+      earlyUnlockCoins: json['earlyUnlockCoins'] as int,
+      earlyUnlockScore: json['earlyUnlockScore'] as int,
+      rewardMultiplier: json['rewardMultiplier'] as int? ?? 2,
+      puzzle: CrosswordPuzzle.fromJson(json['puzzle'] as Map<String, dynamic>),
+    );
+  }
+}
+
+class MegaBank {
+  const MegaBank({
+    required this.id,
+    required this.name,
+    required this.items,
+  });
+
+  final String id;
+  final String name;
+  final List<MegaPuzzleItem> items;
+
+  factory MegaBank.fromJson(Map<String, dynamic> json) {
+    return MegaBank(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      items: (json['items'] as List<dynamic>)
+          .map((e) => MegaPuzzleItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+}
+
 class PuzzleSaveState {
   const PuzzleSaveState({
     required this.puzzleId,
@@ -364,6 +424,11 @@ class PuzzleSaveState {
 class PlayerProfile {
   const PlayerProfile({
     this.coins = 150,
+    this.score = 0,
+    this.bestCombo = 0,
+    this.letterHintTickets = 1,
+    this.wordHintTickets = 0,
+    this.checkHintTickets = 1,
     this.dailyStreak = 0,
     this.lastDailyDate,
     this.lastDailyGiftDate,
@@ -372,11 +437,17 @@ class PlayerProfile {
     this.hapticsEnabled = true,
     this.selectedBackgroundId = 'concept_auto',
     this.unlockedBackgroundIds = const {},
+    this.unlockedMegaIds = const {},
     this.claimedMissionIds = const {},
     this.puzzleStates = const {},
   });
 
   final int coins;
+  final int score;
+  final int bestCombo;
+  final int letterHintTickets;
+  final int wordHintTickets;
+  final int checkHintTickets;
   final int dailyStreak;
   final String? lastDailyDate;
   final String? lastDailyGiftDate;
@@ -385,11 +456,17 @@ class PlayerProfile {
   final bool hapticsEnabled;
   final String selectedBackgroundId;
   final Set<String> unlockedBackgroundIds;
+  final Set<String> unlockedMegaIds;
   final Set<String> claimedMissionIds;
   final Map<String, PuzzleSaveState> puzzleStates;
 
   PlayerProfile copyWith({
     int? coins,
+    int? score,
+    int? bestCombo,
+    int? letterHintTickets,
+    int? wordHintTickets,
+    int? checkHintTickets,
     int? dailyStreak,
     String? lastDailyDate,
     String? lastDailyGiftDate,
@@ -398,11 +475,17 @@ class PlayerProfile {
     bool? hapticsEnabled,
     String? selectedBackgroundId,
     Set<String>? unlockedBackgroundIds,
+    Set<String>? unlockedMegaIds,
     Set<String>? claimedMissionIds,
     Map<String, PuzzleSaveState>? puzzleStates,
   }) {
     return PlayerProfile(
       coins: coins ?? this.coins,
+      score: score ?? this.score,
+      bestCombo: bestCombo ?? this.bestCombo,
+      letterHintTickets: letterHintTickets ?? this.letterHintTickets,
+      wordHintTickets: wordHintTickets ?? this.wordHintTickets,
+      checkHintTickets: checkHintTickets ?? this.checkHintTickets,
       dailyStreak: dailyStreak ?? this.dailyStreak,
       lastDailyDate: lastDailyDate ?? this.lastDailyDate,
       lastDailyGiftDate: lastDailyGiftDate ?? this.lastDailyGiftDate,
@@ -412,6 +495,7 @@ class PlayerProfile {
       selectedBackgroundId: selectedBackgroundId ?? this.selectedBackgroundId,
       unlockedBackgroundIds:
           unlockedBackgroundIds ?? this.unlockedBackgroundIds,
+      unlockedMegaIds: unlockedMegaIds ?? this.unlockedMegaIds,
       claimedMissionIds: claimedMissionIds ?? this.claimedMissionIds,
       puzzleStates: puzzleStates ?? this.puzzleStates,
     );
@@ -419,6 +503,11 @@ class PlayerProfile {
 
   Map<String, dynamic> toJson() => {
         'coins': coins,
+        'score': score,
+        'bestCombo': bestCombo,
+        'letterHintTickets': letterHintTickets,
+        'wordHintTickets': wordHintTickets,
+        'checkHintTickets': checkHintTickets,
         'dailyStreak': dailyStreak,
         'lastDailyDate': lastDailyDate,
         'lastDailyGiftDate': lastDailyGiftDate,
@@ -427,6 +516,7 @@ class PlayerProfile {
         'hapticsEnabled': hapticsEnabled,
         'selectedBackgroundId': selectedBackgroundId,
         'unlockedBackgroundIds': unlockedBackgroundIds.toList(),
+        'unlockedMegaIds': unlockedMegaIds.toList(),
         'claimedMissionIds': claimedMissionIds.toList(),
         'puzzleStates': puzzleStates.map((k, v) => MapEntry(k, v.toJson())),
       };
@@ -435,9 +525,15 @@ class PlayerProfile {
     final statesRaw = (json['puzzleStates'] as Map<String, dynamic>? ?? {});
     final dailyRaw = (json['completedDailyDates'] as List<dynamic>? ?? []);
     final bgRaw = (json['unlockedBackgroundIds'] as List<dynamic>? ?? []);
+    final megaRaw = (json['unlockedMegaIds'] as List<dynamic>? ?? []);
     final missionRaw = (json['claimedMissionIds'] as List<dynamic>? ?? []);
     return PlayerProfile(
       coins: json['coins'] as int? ?? 150,
+      score: json['score'] as int? ?? 0,
+      bestCombo: json['bestCombo'] as int? ?? 0,
+      letterHintTickets: json['letterHintTickets'] as int? ?? 1,
+      wordHintTickets: json['wordHintTickets'] as int? ?? 0,
+      checkHintTickets: json['checkHintTickets'] as int? ?? 1,
       dailyStreak: json['dailyStreak'] as int? ?? 0,
       lastDailyDate: json['lastDailyDate'] as String?,
       lastDailyGiftDate: json['lastDailyGiftDate'] as String?,
@@ -447,6 +543,7 @@ class PlayerProfile {
       selectedBackgroundId:
           json['selectedBackgroundId'] as String? ?? 'concept_auto',
       unlockedBackgroundIds: bgRaw.map((e) => e as String).toSet(),
+      unlockedMegaIds: megaRaw.map((e) => e as String).toSet(),
       claimedMissionIds: missionRaw.map((e) => e as String).toSet(),
       puzzleStates: statesRaw.map(
         (k, v) => MapEntry(k, PuzzleSaveState.fromJson(v as Map<String, dynamic>)),
