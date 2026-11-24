@@ -1,8 +1,12 @@
+import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
+import '../models/background_models.dart';
 import '../models/puzzle_models.dart';
 import '../state/app_state.dart';
 import '../utils/turkish_text.dart';
+import '../widgets/background_canvas.dart';
 import '../widgets/stats_settings_sheet.dart';
+import 'background_gallery_screen.dart';
 import 'game_screen.dart';
 import 'pack_levels_screen.dart';
 
@@ -18,122 +22,193 @@ class HomeScreen extends StatelessWidget {
       builder: (context, _) {
         final dailyPuzzle = appState.todayDailyPuzzle;
         final dailyDone = appState.isTodayDailyCompleted;
+        final activeBg = appState.selectedBackground;
+        final isDark = activeBg.isDark;
+        final headingColor = isDark ? Colors.white : const Color(0xFF1C1917);
 
-        return Scaffold(
-          backgroundColor: const Color(0xFFF8F6F1),
-          body: SafeArea(
-            child: CustomScrollView(
-              physics: const BouncingScrollPhysics(),
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(18, 14, 18, 8),
-                    child: _buildHeader(context),
-                  ),
-                ),
-                if (dailyPuzzle != null)
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(18, 8, 18, 14),
-                      child: _DailyChallengeCard(
-                        puzzle: dailyPuzzle,
-                        completed: dailyDone,
-                        streak: appState.dailyStreak,
-                        onPlay: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (_) => GameScreen(
-                                puzzle: dailyPuzzle,
-                                storageKey: appState.todayDailyStorageKey,
-                                language: 'tr',
-                                packTitle: 'Günün Bulmacası',
-                                primaryColor: const Color(0xFFD97706),
-                                secondaryColor: const Color(0xFF9A3412),
-                                surfaceColor: const Color(0xFFFFFBEB),
-                                isDaily: true,
-                                appState: appState,
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: isDark
+              ? SystemUiOverlayStyle.light
+              : SystemUiOverlayStyle.dark,
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: BackgroundCanvas(
+              background: activeBg,
+              child: SafeArea(
+                child: CustomScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(18, 14, 18, 8),
+                        child: _buildHeader(context, isDark: isDark),
+                      ),
+                    ),
+                    if (dailyPuzzle != null)
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(18, 8, 18, 14),
+                          child: _DailyChallengeCard(
+                            puzzle: dailyPuzzle,
+                            completed: dailyDone,
+                            streak: appState.dailyStreak,
+                            onPlay: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute<void>(
+                                  builder: (_) => GameScreen(
+                                    puzzle: dailyPuzzle,
+                                    storageKey: appState.todayDailyStorageKey,
+                                    language: 'tr',
+                                    packTitle: 'Günün Bulmacası',
+                                    primaryColor: const Color(0xFFD97706),
+                                    secondaryColor: const Color(0xFF9A3412),
+                                    surfaceColor: const Color(0xFFFFFBEB),
+                                    isDaily: true,
+                                    appState: appState,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 4, 20, 10),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Konsept Dünyaları',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.w900,
+                                  color: headingColor,
+                                  letterSpacing: -0.3,
+                                ),
                               ),
                             ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute<void>(
+                                    builder: (_) => BackgroundGalleryScreen(
+                                      appState: appState,
+                                    ),
+                                  ),
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 5,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: isDark
+                                      ? Colors.white.withValues(alpha: 0.14)
+                                      : Colors.white.withValues(alpha: 0.9),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: isDark
+                                        ? Colors.white24
+                                        : const Color(0xFFE7E5E4),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.palette_rounded,
+                                      size: 15,
+                                      color: isDark
+                                          ? activeBg.accentColor
+                                          : const Color(0xFFB45309),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      '${appState.unlockedBackgroundCount}/${BackgroundCatalog.all.length}',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w800,
+                                        color: isDark
+                                            ? Colors.white
+                                            : const Color(0xFF44403C),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 5,
+                              ),
+                              decoration: BoxDecoration(
+                                color: isDark
+                                    ? Colors.white.withValues(alpha: 0.14)
+                                    : const Color(0xFFE7E5E4),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(
+                                    Icons.star_rounded,
+                                    size: 15,
+                                    color: Color(0xFFF59E0B),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    '${appState.totalStars}',
+                                    style: TextStyle(
+                                      fontSize: 12.5,
+                                      fontWeight: FontWeight.w800,
+                                      color: isDark
+                                          ? Colors.white
+                                          : const Color(0xFF44403C),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: const EdgeInsets.fromLTRB(18, 0, 18, 28),
+                      sliver: SliverList.separated(
+                        itemCount: appState.packs.length,
+                        separatorBuilder: (_, _) => const SizedBox(height: 14),
+                        itemBuilder: (context, index) {
+                          final pack = appState.packs[index];
+                          return _ConceptPackCard(
+                            pack: pack,
+                            completedLevels: appState.completedCountForPack(pack),
+                            earnedStars: appState.starsForPack(pack),
+                            maxStars: appState.maxStarsForPack(pack),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute<void>(
+                                  builder: (_) => PackLevelsScreen(
+                                    pack: pack,
+                                    appState: appState,
+                                  ),
+                                ),
+                              );
+                            },
                           );
                         },
                       ),
                     ),
-                  ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 4, 20, 10),
-                    child: Row(
-                      children: [
-                        const Text(
-                          'Konsept Dünyaları',
-                          style: TextStyle(
-                            fontSize: 19,
-                            fontWeight: FontWeight.w900,
-                            color: Color(0xFF1C1917),
-                            letterSpacing: -0.3,
-                          ),
-                        ),
-                        const Spacer(),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFE7E5E4),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Icons.star_rounded,
-                                size: 15,
-                                color: Color(0xFFF59E0B),
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                '${appState.totalStars}',
-                                style: const TextStyle(
-                                  fontSize: 12.5,
-                                  fontWeight: FontWeight.w800,
-                                  color: Color(0xFF44403C),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  ],
                 ),
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(18, 0, 18, 28),
-                  sliver: SliverList.separated(
-                    itemCount: appState.packs.length,
-                    separatorBuilder: (_, _) => const SizedBox(height: 14),
-                    itemBuilder: (context, index) {
-                      final pack = appState.packs[index];
-                      return _ConceptPackCard(
-                        pack: pack,
-                        completedLevels: appState.completedCountForPack(pack),
-                        earnedStars: appState.starsForPack(pack),
-                        maxStars: appState.maxStarsForPack(pack),
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (_) => PackLevelsScreen(
-                                pack: pack,
-                                appState: appState,
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         );
@@ -141,7 +216,12 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildHeader(BuildContext context, {required bool isDark}) {
+    final titleColor = isDark ? Colors.white : const Color(0xFF1C1917);
+    final subtitleColor = isDark ? Colors.white70 : const Color(0xFF78716C);
+    final iconBg = isDark ? Colors.white.withValues(alpha: 0.14) : Colors.white;
+    final iconFg = isDark ? Colors.white : const Color(0xFF44403C);
+
     return Row(
       children: [
         Container(
@@ -168,33 +248,38 @@ class HomeScreen extends StatelessWidget {
             size: 24,
           ),
         ),
-        const SizedBox(width: 12),
-        const Expanded(
+        const SizedBox(width: 11),
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Konsept Bulmaca',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 19,
                   fontWeight: FontWeight.w900,
-                  color: Color(0xFF1C1917),
+                  color: titleColor,
                   letterSpacing: -0.4,
                 ),
               ),
               Text(
                 'Tematik Kare Bulmaca Dünyası',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 11.5,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF78716C),
+                  color: subtitleColor,
                 ),
               ),
             ],
           ),
         ),
+        const SizedBox(width: 6),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(
             color: const Color(0xFFFEF3C7),
             borderRadius: BorderRadius.circular(20),
@@ -207,14 +292,14 @@ class HomeScreen extends StatelessWidget {
             children: [
               const Icon(
                 Icons.monetization_on_rounded,
-                size: 18,
+                size: 16,
                 color: Color(0xFFD97706),
               ),
-              const SizedBox(width: 5),
+              const SizedBox(width: 4),
               Text(
                 '${appState.coins}',
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 13.5,
                   fontWeight: FontWeight.w900,
                   color: Color(0xFF92400E),
                 ),
@@ -222,14 +307,30 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(width: 6),
+        const SizedBox(width: 5),
+        IconButton.filledTonal(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => BackgroundGalleryScreen(appState: appState),
+              ),
+            );
+          },
+          style: IconButton.styleFrom(
+            backgroundColor: iconBg,
+            foregroundColor: iconFg,
+          ),
+          icon: const Icon(Icons.palette_outlined, size: 21),
+          tooltip: 'Arka Planlar',
+        ),
+        const SizedBox(width: 4),
         IconButton.filledTonal(
           onPressed: () => showStatsAndSettingsSheet(context, appState),
           style: IconButton.styleFrom(
-            backgroundColor: Colors.white,
-            foregroundColor: const Color(0xFF44403C),
+            backgroundColor: iconBg,
+            foregroundColor: iconFg,
           ),
-          icon: const Icon(Icons.bar_chart_rounded, size: 22),
+          icon: const Icon(Icons.bar_chart_rounded, size: 21),
           tooltip: 'İstatistikler ve Ayarlar',
         ),
       ],

@@ -4,10 +4,12 @@ import '../models/puzzle_models.dart';
 import '../state/app_state.dart';
 import '../state/game_controller.dart';
 import '../utils/turkish_text.dart';
+import '../widgets/background_canvas.dart';
 import '../widgets/clue_banner.dart';
 import '../widgets/completion_dialog.dart';
 import '../widgets/crossword_grid.dart';
 import '../widgets/game_keyboard.dart';
+import 'background_gallery_screen.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({
@@ -124,6 +126,19 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
             Navigator.of(dCtx).pop();
             Navigator.of(context).pop();
           },
+          onApplyBackground: (bg) async {
+            await widget.appState.selectBackground(bg.id);
+            if (mounted) {
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Text('${bg.name} arka planı uygulandı!'),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+            }
+          },
         ),
       );
     });
@@ -206,78 +221,97 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
       focusNode: _focusNode,
       autofocus: true,
       onKeyEvent: _onPhysicalKey,
-      child: Scaffold(
-        backgroundColor: widget.surfaceColor,
-        body: SafeArea(
-          child: ListenableBuilder(
-            listenable: Listenable.merge([_controller, widget.appState]),
-            builder: (context, _) {
-              return Column(
-                children: [
-                  _buildTopBar(),
-                  LinearProgressIndicator(
-                    value: _controller.completionProgress,
-                    minHeight: 3.5,
-                    backgroundColor: widget.primaryColor.withValues(alpha: 0.14),
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      widget.primaryColor,
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
-                      child: CrosswordGrid(
-                        controller: _controller,
-                        primaryColor: widget.primaryColor,
-                        secondaryColor: widget.secondaryColor,
+      child: ListenableBuilder(
+        listenable: Listenable.merge([_controller, widget.appState]),
+        builder: (context, _) {
+          final activeBg = widget.appState.selectedBackground;
+          final isDark = activeBg.isDark;
+
+          return AnnotatedRegion<SystemUiOverlayStyle>(
+            value: isDark
+                ? SystemUiOverlayStyle.light
+                : SystemUiOverlayStyle.dark,
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              body: BackgroundCanvas(
+                background: activeBg,
+                conceptSurfaceColor: widget.surfaceColor,
+                conceptPrimaryColor: widget.primaryColor,
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      _buildTopBar(isDark: isDark),
+                      LinearProgressIndicator(
+                        value: _controller.completionProgress,
+                        minHeight: 3.5,
+                        backgroundColor: isDark
+                            ? Colors.white12
+                            : widget.primaryColor.withValues(alpha: 0.14),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          isDark ? activeBg.accentColor : widget.primaryColor,
+                        ),
                       ),
-                    ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
+                          child: CrosswordGrid(
+                            controller: _controller,
+                            primaryColor: widget.primaryColor,
+                            secondaryColor: widget.secondaryColor,
+                          ),
+                        ),
+                      ),
+                      ClueBanner(
+                        entry: _controller.activeEntry,
+                        primaryColor: widget.primaryColor,
+                        onPrevious: _controller.previousClue,
+                        onNext: _controller.nextClue,
+                        onOpenAllClues: () => showAllCluesSheet(
+                          context: context,
+                          controller: _controller,
+                          primaryColor: widget.primaryColor,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      _buildJokerBar(),
+                      const SizedBox(height: 6),
+                      GameKeyboard(
+                        language: widget.language,
+                        primaryColor: widget.primaryColor,
+                        isDark: isDark,
+                        onLetter: _controller.inputLetter,
+                        onBackspace: _controller.backspace,
+                        onToggleDirection: _controller.toggleDirection,
+                      ),
+                    ],
                   ),
-                  ClueBanner(
-                    entry: _controller.activeEntry,
-                    primaryColor: widget.primaryColor,
-                    onPrevious: _controller.previousClue,
-                    onNext: _controller.nextClue,
-                    onOpenAllClues: () => showAllCluesSheet(
-                      context: context,
-                      controller: _controller,
-                      primaryColor: widget.primaryColor,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  _buildJokerBar(),
-                  const SizedBox(height: 6),
-                  GameKeyboard(
-                    language: widget.language,
-                    primaryColor: widget.primaryColor,
-                    onLetter: _controller.inputLetter,
-                    onBackspace: _controller.backspace,
-                    onToggleDirection: _controller.toggleDirection,
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildTopBar() {
+  Widget _buildTopBar({required bool isDark}) {
     final subtitle = widget.isDaily
         ? '${widget.puzzle.gridSizeLabel} • 2× Altın'
         : 'Sv. ${widget.puzzle.level} • ${widget.puzzle.title} (${widget.puzzle.gridSizeLabel})';
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(6, 6, 10, 6),
-      color: Colors.white,
+      padding: const EdgeInsets.fromLTRB(4, 6, 6, 6),
+      color: isDark
+          ? const Color(0xFF141418).withValues(alpha: 0.85)
+          : Colors.white.withValues(alpha: 0.94),
       child: Row(
         children: [
           IconButton(
             onPressed: () => Navigator.of(context).pop(),
             icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
-            color: const Color(0xFF1C1917),
+            color: isDark ? Colors.white : const Color(0xFF1C1917),
             tooltip: 'Geri',
+            visualDensity: VisualDensity.compact,
           ),
           Expanded(
             child: Column(
@@ -289,54 +323,56 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 14.5,
                     fontWeight: FontWeight.w900,
-                    color: widget.secondaryColor,
+                    color: isDark ? Colors.white : widget.secondaryColor,
                   ),
                 ),
                 Text(
                   subtitle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 11.5,
+                  style: TextStyle(
+                    fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF78716C),
+                    color: isDark ? Colors.white70 : const Color(0xFF78716C),
                   ),
                 ),
               ],
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
             decoration: BoxDecoration(
-              color: const Color(0xFFF5F5F4),
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.12)
+                  : const Color(0xFFF5F5F4),
               borderRadius: BorderRadius.circular(14),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(
+                Icon(
                   Icons.timer_outlined,
-                  size: 14,
-                  color: Color(0xFF57534E),
+                  size: 13.5,
+                  color: isDark ? Colors.white70 : const Color(0xFF57534E),
                 ),
-                const SizedBox(width: 4),
+                const SizedBox(width: 3),
                 Text(
                   TurkishText.formatDuration(_controller.elapsedSeconds),
-                  style: const TextStyle(
-                    fontSize: 12.5,
+                  style: TextStyle(
+                    fontSize: 12,
                     fontWeight: FontWeight.w800,
-                    fontFeatures: [FontFeature.tabularFigures()],
-                    color: Color(0xFF292524),
+                    fontFeatures: const [FontFeature.tabularFigures()],
+                    color: isDark ? Colors.white : const Color(0xFF292524),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 6),
+          const SizedBox(width: 5),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
             decoration: BoxDecoration(
               color: const Color(0xFFFEF3C7),
               borderRadius: BorderRadius.circular(14),
@@ -346,14 +382,14 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
               children: [
                 const Icon(
                   Icons.monetization_on_rounded,
-                  size: 15,
+                  size: 14.5,
                   color: Color(0xFFD97706),
                 ),
                 const SizedBox(width: 3),
                 Text(
                   '${widget.appState.coins}',
                   style: const TextStyle(
-                    fontSize: 12.5,
+                    fontSize: 12,
                     fontWeight: FontWeight.w900,
                     color: Color(0xFF92400E),
                   ),
@@ -362,9 +398,23 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
             ),
           ),
           IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) =>
+                      BackgroundGalleryScreen(appState: widget.appState),
+                ),
+              );
+            },
+            icon: const Icon(Icons.palette_outlined, size: 20),
+            color: isDark ? Colors.white70 : const Color(0xFF57534E),
+            tooltip: 'Arka Planlar',
+            visualDensity: VisualDensity.compact,
+          ),
+          IconButton(
             onPressed: _confirmReset,
-            icon: const Icon(Icons.refresh_rounded, size: 21),
-            color: const Color(0xFF57534E),
+            icon: const Icon(Icons.refresh_rounded, size: 20),
+            color: isDark ? Colors.white70 : const Color(0xFF57534E),
             tooltip: 'Temizle',
             visualDensity: VisualDensity.compact,
           ),

@@ -3,6 +3,8 @@ import 'package:material_ui/material_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:konsept_bulmaca/main.dart';
+import 'package:konsept_bulmaca/models/background_models.dart';
+import 'package:konsept_bulmaca/models/puzzle_models.dart';
 import 'package:konsept_bulmaca/services/puzzle_repository.dart';
 import 'package:konsept_bulmaca/state/app_state.dart';
 import 'package:konsept_bulmaca/state/game_controller.dart';
@@ -165,9 +167,95 @@ void main() {
       controller.dispose();
       appState.dispose();
     });
+
+    test('backgrounds support free selection, coin unlock, and progression auto-unlock', () async {
+      final appState = AppState();
+      await appState.initialize();
+
+      // 3 starter themes unlocked initially
+      expect(appState.unlockedBackgroundCount, 3);
+      expect(appState.selectedBackground.id, BackgroundCatalog.defaultId);
+
+      // Select free dark theme
+      final selectedDark = await appState.selectBackground('gece_yarisi');
+      expect(selectedDark, isTrue);
+      expect(appState.selectedBackground.id, 'gece_yarisi');
+      expect(appState.selectedBackground.isDark, isTrue);
+
+      // Locked theme cannot be selected directly before unlock
+      final yesilcamBg = BackgroundCatalog.byId('yesilcam_sinema');
+      expect(appState.isBackgroundUnlocked(yesilcamBg), isFalse);
+      expect(await appState.selectBackground(yesilcamBg.id), isFalse);
+
+      // Solve 3 puzzles -> Yeşilçam Perdesi (target: 3 solved) & Ege Kıyısı (9 stars) auto-unlock!
+      final pack = appState.packs.first;
+      CompletionReward? thirdReward;
+      for (var i = 0; i < 3; i++) {
+        final lvl = pack.levels[i];
+        thirdReward = await appState.completePuzzle(
+          storageKey: lvl.id,
+          finalState: PuzzleSaveState(
+            puzzleId: lvl.id,
+            elapsedSeconds: 45,
+            completed: true,
+          ),
+          isDaily: false,
+        );
+      }
+
+      expect(appState.isBackgroundUnlocked(yesilcamBg), isTrue);
+      expect(
+        thirdReward!.newlyUnlockedBackgrounds.any((b) => b.id == 'yesilcam_sinema'),
+        isTrue,
+      );
+      expect(
+        thirdReward.newlyUnlockedBackgrounds.any((b) => b.id == 'ege_kiyisi'),
+        isTrue,
+      );
+
+      // Coin early unlock on Kapadokya Şafağı (costs 200; player has 150 + 3*40 = 270 coins)
+      final cappadocia = BackgroundCatalog.byId('kapadokya_safak');
+      expect(appState.isBackgroundUnlocked(cappadocia), isFalse);
+      final coinsBefore = appState.coins;
+      final buyRes = await appState.unlockBackgroundWithCoins(cappadocia);
+      expect(buyRes.success, isTrue);
+      expect(appState.isBackgroundUnlocked(cappadocia), isTrue);
+      expect(appState.selectedBackground.id, cappadocia.id);
+      expect(appState.coins, coinsBefore - cappadocia.coinCost);
+
+      appState.dispose();
+    });
   });
 
   group('Widget Flow Smoke Test', () {
+    testWidgets('opens Background Gallery and switches to Gece Yarısı cleanly',
+        (tester) async {
+      tester.view.physicalSize = const Size(412, 892);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      final appState = AppState();
+      await tester.runAsync(() => appState.initialize());
+
+      await tester.pumpWidget(KonseptBulmacaApp(appState: appState));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byTooltip('Arka Planlar'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Arka Plan Galerisi'), findsOneWidget);
+      expect(find.text('Gece Yarısı'), findsOneWidget);
+      expect(find.text('Yeşilçam Perdesi'), findsOneWidget);
+
+      await tester.tap(find.text('Gece Yarısı'));
+      await tester.pumpAndSettle();
+      expect(appState.selectedBackground.id, 'gece_yarisi');
+
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pump();
+      appState.dispose();
+    });
     testWidgets('renders Home, opens Yeşilçam pack, and launches Level 1 with Turkish keyboard',
         (tester) async {
       // Simulate typical Android phone portrait viewport (412 x 892)

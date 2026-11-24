@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import '../models/background_models.dart';
 import '../models/puzzle_models.dart';
 import '../services/feedback_service.dart';
 import '../services/puzzle_repository.dart';
@@ -12,6 +13,7 @@ class CompletionReward {
     required this.elapsedSeconds,
     required this.isFirstCompletion,
     required this.newDailyStreak,
+    this.newlyUnlockedBackgrounds = const [],
   });
 
   final int stars;
@@ -19,6 +21,14 @@ class CompletionReward {
   final int elapsedSeconds;
   final bool isFirstCompletion;
   final int? newDailyStreak;
+  final List<AppBackground> newlyUnlockedBackgrounds;
+}
+
+class BackgroundUnlockResult {
+  const BackgroundUnlockResult({required this.success, required this.message});
+
+  final bool success;
+  final String message;
 }
 
 class AppState extends ChangeNotifier {
@@ -181,11 +191,88 @@ class AppState extends ChangeNotifier {
     return true;
   }
 
+  AppBackground get selectedBackground =>
+      BackgroundCatalog.byId(_profile.selectedBackgroundId);
+
+  int backgroundMetricValue(UnlockMetric metric) {
+    switch (metric) {
+      case UnlockMetric.none:
+        return 0;
+      case UnlockMetric.solvedPuzzles:
+        return totalSolvedPuzzles;
+      case UnlockMetric.totalStars:
+        return totalStars;
+      case UnlockMetric.dailyStreak:
+        return dailyStreak;
+    }
+  }
+
+  bool isBackgroundUnlocked(AppBackground bg) {
+    if (bg.isFreeStarter) return true;
+    if (_profile.unlockedBackgroundIds.contains(bg.id)) return true;
+    if (bg.unlockMetric != UnlockMetric.none &&
+        backgroundMetricValue(bg.unlockMetric) >= bg.unlockTarget) {
+      return true;
+    }
+    return false;
+  }
+
+  int get unlockedBackgroundCount =>
+      BackgroundCatalog.all.where(isBackgroundUnlocked).length;
+
+  Future<bool> selectBackground(String id) async {
+    final bg = BackgroundCatalog.byId(id);
+    if (!isBackgroundUnlocked(bg)) return false;
+    _profile = _profile.copyWith(selectedBackgroundId: bg.id);
+    feedback.cellSelect();
+    notifyListeners();
+    await _storage.saveProfile(_profile);
+    return true;
+  }
+
+  Future<BackgroundUnlockResult> unlockBackgroundWithCoins(
+    AppBackground bg,
+  ) async {
+    if (isBackgroundUnlocked(bg)) {
+      await selectBackground(bg.id);
+      return BackgroundUnlockResult(
+        success: true,
+        message: '${bg.name} aktif edildi!',
+      );
+    }
+    if (_profile.coins < bg.coinCost) {
+      feedback.errorPulse();
+      return BackgroundUnlockResult(
+        success: false,
+        message: 'Yeterli altının yok (${bg.coinCost} altın gerekli).',
+      );
+    }
+    final updatedUnlocks = Set<String>.from(_profile.unlockedBackgroundIds)
+      ..add(bg.id);
+    _profile = _profile.copyWith(
+      coins: _profile.coins - bg.coinCost,
+      unlockedBackgroundIds: updatedUnlocks,
+      selectedBackgroundId: bg.id,
+    );
+    feedback.wordSolved();
+    notifyListeners();
+    await _storage.saveProfile(_profile);
+    return BackgroundUnlockResult(
+      success: true,
+      message: '${bg.name} açıldı ve uygulandı!',
+    );
+  }
+
   Future<CompletionReward> completePuzzle({
     required String storageKey,
     required PuzzleSaveState finalState,
     required bool isDaily,
   }) async {
+    final beforeUnlocked = BackgroundCatalog.all
+        .where(isBackgroundUnlocked)
+        .map((b) => b.id)
+        .toSet();
+
     final existing = _profile.puzzleStates[storageKey];
     final wasCompleted = existing?.completed ?? false;
 
@@ -248,6 +335,20 @@ class AppState extends ChangeNotifier {
       completedDailyDates: updatedDailyDates,
       puzzleStates: updatedMap,
     );
+
+    // Check any progression-earned backgrounds that just unlocked
+    final newlyUnlocked = <AppBackground>[];
+    final updatedUnlocks = Set<String>.from(_profile.unlockedBackgroundIds);
+    for (final bg in BackgroundCatalog.all) {
+      if (!beforeUnlocked.contains(bg.id) && isBackgroundUnlocked(bg)) {
+        newlyUnlocked.add(bg);
+        updatedUnlocks.add(bg.id);
+      }
+    }
+    if (newlyUnlocked.isNotEmpty) {
+      _profile = _profile.copyWith(unlockedBackgroundIds: updatedUnlocks);
+    }
+
     notifyListeners();
     await _storage.saveProfile(_profile);
 
@@ -257,6 +358,7 @@ class AppState extends ChangeNotifier {
       elapsedSeconds: finalState.elapsedSeconds,
       isFirstCompletion: !wasCompleted,
       newDailyStreak: streakAwarded,
+      newlyUnlockedBackgrounds: newlyUnlocked,
     );
   }
 

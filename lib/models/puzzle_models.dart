@@ -369,6 +369,8 @@ class PlayerProfile {
     this.completedDailyDates = const {},
     this.soundEnabled = true,
     this.hapticsEnabled = true,
+    this.selectedBackgroundId = 'concept_auto',
+    this.unlockedBackgroundIds = const {},
     this.puzzleStates = const {},
   });
 
@@ -378,6 +380,8 @@ class PlayerProfile {
   final Set<String> completedDailyDates;
   final bool soundEnabled;
   final bool hapticsEnabled;
+  final String selectedBackgroundId;
+  final Set<String> unlockedBackgroundIds;
   final Map<String, PuzzleSaveState> puzzleStates;
 
   PlayerProfile copyWith({
@@ -387,6 +391,8 @@ class PlayerProfile {
     Set<String>? completedDailyDates,
     bool? soundEnabled,
     bool? hapticsEnabled,
+    String? selectedBackgroundId,
+    Set<String>? unlockedBackgroundIds,
     Map<String, PuzzleSaveState>? puzzleStates,
   }) {
     return PlayerProfile(
@@ -396,6 +402,9 @@ class PlayerProfile {
       completedDailyDates: completedDailyDates ?? this.completedDailyDates,
       soundEnabled: soundEnabled ?? this.soundEnabled,
       hapticsEnabled: hapticsEnabled ?? this.hapticsEnabled,
+      selectedBackgroundId: selectedBackgroundId ?? this.selectedBackgroundId,
+      unlockedBackgroundIds:
+          unlockedBackgroundIds ?? this.unlockedBackgroundIds,
       puzzleStates: puzzleStates ?? this.puzzleStates,
     );
   }
@@ -407,12 +416,15 @@ class PlayerProfile {
         'completedDailyDates': completedDailyDates.toList(),
         'soundEnabled': soundEnabled,
         'hapticsEnabled': hapticsEnabled,
+        'selectedBackgroundId': selectedBackgroundId,
+        'unlockedBackgroundIds': unlockedBackgroundIds.toList(),
         'puzzleStates': puzzleStates.map((k, v) => MapEntry(k, v.toJson())),
       };
 
   factory PlayerProfile.fromJson(Map<String, dynamic> json) {
     final statesRaw = (json['puzzleStates'] as Map<String, dynamic>? ?? {});
     final dailyRaw = (json['completedDailyDates'] as List<dynamic>? ?? []);
+    final bgRaw = (json['unlockedBackgroundIds'] as List<dynamic>? ?? []);
     return PlayerProfile(
       coins: json['coins'] as int? ?? 150,
       dailyStreak: json['dailyStreak'] as int? ?? 0,
@@ -420,6 +432,9 @@ class PlayerProfile {
       completedDailyDates: dailyRaw.map((e) => e as String).toSet(),
       soundEnabled: json['soundEnabled'] as bool? ?? true,
       hapticsEnabled: json['hapticsEnabled'] as bool? ?? true,
+      selectedBackgroundId:
+          json['selectedBackgroundId'] as String? ?? 'concept_auto',
+      unlockedBackgroundIds: bgRaw.map((e) => e as String).toSet(),
       puzzleStates: statesRaw.map(
         (k, v) => MapEntry(k, PuzzleSaveState.fromJson(v as Map<String, dynamic>)),
       ),

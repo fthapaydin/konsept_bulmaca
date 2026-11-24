@@ -2,6 +2,8 @@ import 'package:material_ui/material_ui.dart';
 import '../models/puzzle_models.dart';
 import '../state/app_state.dart';
 import '../utils/turkish_text.dart';
+import '../widgets/background_canvas.dart';
+import 'background_gallery_screen.dart';
 import 'game_screen.dart';
 
 class PackLevelsScreen extends StatelessWidget {
@@ -34,19 +36,37 @@ class PackLevelsScreen extends StatelessWidget {
         }
 
         return Scaffold(
-          backgroundColor: const Color(0xFFF8F6F1),
-          body: CustomScrollView(
-            physics: const BouncingScrollPhysics(),
-            slivers: [
-              SliverAppBar(
-                expandedHeight: 190,
-                pinned: true,
-                backgroundColor: pack.primaryColor,
-                foregroundColor: Colors.white,
-                title: Text(
-                  pack.name,
-                  style: const TextStyle(fontWeight: FontWeight.w800),
-                ),
+          backgroundColor: Colors.transparent,
+          body: BackgroundCanvas(
+            background: appState.selectedBackground,
+            conceptSurfaceColor: const Color(0xFFF8F6F1),
+            conceptPrimaryColor: pack.primaryColor,
+            child: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                SliverAppBar(
+                  expandedHeight: 190,
+                  pinned: true,
+                  backgroundColor: pack.primaryColor,
+                  foregroundColor: Colors.white,
+                  title: Text(
+                    pack.name,
+                    style: const TextStyle(fontWeight: FontWeight.w800),
+                  ),
+                  actions: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) =>
+                                BackgroundGalleryScreen(appState: appState),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.palette_outlined),
+                      tooltip: 'Arka Planlar',
+                    ),
+                  ],
                 flexibleSpace: FlexibleSpaceBar(
                   background: Container(
                     decoration: BoxDecoration(
@@ -176,6 +196,7 @@ class PackLevelsScreen extends StatelessWidget {
                 ),
               ),
             ],
+          ),
           ),
         );
       },

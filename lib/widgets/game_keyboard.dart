@@ -8,6 +8,7 @@ class GameKeyboard extends StatelessWidget {
     required this.onLetter,
     required this.onBackspace,
     required this.onToggleDirection,
+    this.isDark = false,
   });
 
   final String language;
@@ -15,6 +16,7 @@ class GameKeyboard extends StatelessWidget {
   final ValueChanged<String> onLetter;
   final VoidCallback onBackspace;
   final VoidCallback onToggleDirection;
+  final bool isDark;
 
   static const List<String> _trRow1 = [
     'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'Ğ', 'Ü',
@@ -45,10 +47,14 @@ class GameKeyboard extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.fromLTRB(5, 8, 5, 8),
-      decoration: const BoxDecoration(
-        color: Color(0xFFE7E5E4),
+      decoration: BoxDecoration(
+        color: isDark
+            ? const Color(0xFF141418).withValues(alpha: 0.94)
+            : const Color(0xFFE7E5E4),
         border: Border(
-          top: BorderSide(color: Color(0xFFD6D3D1)),
+          top: BorderSide(
+            color: isDark ? Colors.white12 : const Color(0xFFD6D3D1),
+          ),
         ),
       ),
       child: Column(
@@ -65,8 +71,10 @@ class GameKeyboard extends StatelessWidget {
             children: [
               _ActionKey(
                 flex: 15,
-                backgroundColor: primaryColor.withValues(alpha: 0.14),
-                foregroundColor: primaryColor,
+                backgroundColor: isDark
+                    ? primaryColor.withValues(alpha: 0.28)
+                    : primaryColor.withValues(alpha: 0.14),
+                foregroundColor: isDark ? Colors.white : primaryColor,
                 icon: Icons.swap_horiz_rounded,
                 tooltip: 'Yön Değiştir',
                 onTap: onToggleDirection,
@@ -74,13 +82,16 @@ class GameKeyboard extends StatelessWidget {
               ...row3.map(
                 (ch) => _LetterKey(
                   letter: ch,
+                  isDark: isDark,
                   onTap: () => onLetter(ch),
                 ),
               ),
               _ActionKey(
                 flex: 16,
-                backgroundColor: const Color(0xFFD6D3D1),
-                foregroundColor: const Color(0xFF292524),
+                backgroundColor: isDark
+                    ? const Color(0xFF3F3F46)
+                    : const Color(0xFFD6D3D1),
+                foregroundColor: isDark ? Colors.white : const Color(0xFF292524),
                 icon: Icons.backspace_outlined,
                 tooltip: 'Sil',
                 onTap: onBackspace,
@@ -98,6 +109,7 @@ class GameKeyboard extends StatelessWidget {
           .map(
             (ch) => _LetterKey(
               letter: ch,
+              isDark: isDark,
               onTap: () => onLetter(ch),
             ),
           )
@@ -109,10 +121,12 @@ class GameKeyboard extends StatelessWidget {
 class _LetterKey extends StatelessWidget {
   const _LetterKey({
     required this.letter,
+    required this.isDark,
     required this.onTap,
   });
 
   final String letter;
+  final bool isDark;
   final VoidCallback onTap;
 
   @override
@@ -122,7 +136,7 @@ class _LetterKey extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 2.2),
         child: Material(
-          color: Colors.white,
+          color: isDark ? const Color(0xFF27272A) : Colors.white,
           elevation: 1.2,
           shadowColor: Colors.black26,
           borderRadius: BorderRadius.circular(8),
@@ -134,16 +148,21 @@ class _LetterKey extends StatelessWidget {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                border: const Border(
-                  bottom: BorderSide(color: Color(0xFFD6D3D1), width: 2),
+                border: Border(
+                  bottom: BorderSide(
+                    color: isDark
+                        ? const Color(0xFF09090B)
+                        : const Color(0xFFD6D3D1),
+                    width: 2,
+                  ),
                 ),
               ),
               child: Text(
                 letter,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16.5,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF1C1917),
+                  color: isDark ? Colors.white : const Color(0xFF1C1917),
                 ),
               ),
             ),

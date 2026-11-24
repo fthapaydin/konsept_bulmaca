@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import '../models/background_models.dart';
 import '../state/app_state.dart';
 import '../utils/turkish_text.dart';
 
@@ -12,6 +13,7 @@ class CompletionDialog extends StatelessWidget {
     required this.hasNextLevel,
     required this.onNextLevel,
     required this.onBackToMap,
+    this.onApplyBackground,
   });
 
   final String title;
@@ -21,6 +23,7 @@ class CompletionDialog extends StatelessWidget {
   final bool hasNextLevel;
   final VoidCallback onNextLevel;
   final VoidCallback onBackToMap;
+  final ValueChanged<AppBackground>? onApplyBackground;
 
   @override
   Widget build(BuildContext context) {
@@ -138,6 +141,86 @@ class CompletionDialog extends StatelessWidget {
                   ],
                 ),
               ),
+            ],
+            if (reward.newlyUnlockedBackgrounds.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              ...reward.newlyUnlockedBackgrounds.map((bg) {
+                return Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.only(bottom: 6),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 9,
+                    horizontal: 12,
+                  ),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: bg.gradientColors.length >= 2
+                          ? [bg.gradientColors.first, bg.gradientColors.last]
+                          : [primaryColor, primaryColor],
+                    ),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: const Color(0xFFE7E5E4)),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.palette_rounded,
+                        size: 20,
+                        color: bg.isDark ? Colors.white : const Color(0xFF1C1917),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Yeni Arka Plan Kazanıldı!',
+                              style: TextStyle(
+                                fontSize: 10.5,
+                                fontWeight: FontWeight.w700,
+                                color: bg.isDark
+                                    ? Colors.white70
+                                    : const Color(0xFF57534E),
+                              ),
+                            ),
+                            Text(
+                              bg.name,
+                              style: TextStyle(
+                                fontSize: 13.5,
+                                fontWeight: FontWeight.w900,
+                                color: bg.isDark
+                                    ? Colors.white
+                                    : const Color(0xFF1C1917),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (onApplyBackground != null)
+                        TextButton(
+                          onPressed: () => onApplyBackground!(bg),
+                          style: TextButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: const Color(0xFF1C1917),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 6,
+                            ),
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          child: const Text(
+                            'Kullan',
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                );
+              }),
             ],
             const SizedBox(height: 20),
             if (hasNextLevel) ...[
