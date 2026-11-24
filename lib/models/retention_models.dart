@@ -117,7 +117,7 @@ class ShopCatalog {
     ShopBundle(
       id: 'score_to_coins_150',
       title: '+150 Altın Hazinesi',
-      subtitle: 'Avantajlı puan → altın dönüşümü',
+      subtitle: 'Avantajlı puan – altın dönüşümü',
       type: ShopBundleType.scoreToCoins,
       quantity: 150,
       coinCost: 0,
@@ -225,6 +225,8 @@ enum MissionMetric {
   perfectThreeStars,
   bestCombo,
   megaSolved,
+  sprintScore,
+  englishLearned,
 }
 
 class MissionItem {
@@ -343,6 +345,26 @@ class MissionCatalog {
       rewardCoins: 75,
       icon: Icons.local_fire_department_rounded,
       color: Color(0xFFEA580C),
+    ),
+    MissionItem(
+      id: 'sprint_200',
+      title: 'Hız Tutkunu',
+      description: '90sn Mini Sprint modunda 200+ puan topla',
+      metric: MissionMetric.sprintScore,
+      target: 200,
+      rewardCoins: 60,
+      icon: Icons.bolt_rounded,
+      color: Color(0xFFDC2626),
+    ),
+    MissionItem(
+      id: 'english_notebook_10',
+      title: 'Kelime Koleksiyoneri',
+      description: 'Kelime Defterine 10 İngilizce kelime kaydet',
+      metric: MissionMetric.englishLearned,
+      target: 10,
+      rewardCoins: 60,
+      icon: Icons.menu_book_rounded,
+      color: Color(0xFF1D4ED8),
     ),
     MissionItem(
       id: 'fifteen_wins',

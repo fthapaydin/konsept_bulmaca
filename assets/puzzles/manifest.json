@@ -6,5 +6,6 @@
     "assets/puzzles/genel_kultur.json"
   ],
   "daily": "assets/puzzles/daily.json",
-  "mega": "assets/puzzles/mega.json"
+  "mega": "assets/puzzles/mega.json",
+  "sprint": "assets/puzzles/sprint.json"
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
+import '../core/economy/hint_pricing.dart';
 import '../models/puzzle_models.dart';
 import '../models/retention_models.dart';
 import '../utils/turkish_text.dart';
@@ -22,11 +23,19 @@ class GameController extends ChangeNotifier {
     required this.isDaily,
     required this.appState,
     this.rewardMultiplier = 1,
+    this.persistSession = true,
+    this.enableInternalTimer = true,
+    this.initialComboCount = 0,
+    this.onWordSolved,
     this.onPuzzleCompleted,
   }) {
+    _wordComboCount = initialComboCount;
+    _maxComboInSession = initialComboCount;
     _loadInitialState();
     _selectInitialCell();
-    _startTimer();
+    if (enableInternalTimer) {
+      _startTimer();
+    }
   }
 
   final CrosswordPuzzle puzzle;
@@ -34,7 +43,12 @@ class GameController extends ChangeNotifier {
   final String language;
   final bool isDaily;
   final int rewardMultiplier;
+  final bool persistSession;
+  final bool enableInternalTimer;
+  final int initialComboCount;
   final AppState appState;
+  final void Function(int newCombo, int coinsEarned, int scoreEarned)?
+      onWordSolved;
   final void Function(CompletionReward reward)? onPuzzleCompleted;
 
   final Map<String, String> _letters = {};
@@ -47,6 +61,9 @@ class GameController extends ChangeNotifier {
   WordDirection _direction = WordDirection.across;
   int _elapsedSeconds = 0;
   int _hintsUsed = 0;
+  int _letterPaidHints = 0;
+  int _wordPaidHints = 0;
+  int _checkPaidHints = 0;
   int _mistakesCount = 0;
   bool _isCompleted = false;
   String? _recentSolvedEntryId;
@@ -72,6 +89,14 @@ class GameController extends ChangeNotifier {
   int get sessionComboCoins => _sessionComboCoins;
   int get sessionComboScore => _sessionComboScore;
   ComboReward get nextComboReward => ComboEconomy.rewardFor(_wordComboCount + 1);
+
+  /// Artan dinamik ipucu bedelleri (10 -> 15 -> 25 -> 40 -> 60...)
+  int get nextLetterHintCoins =>
+      HintPricingCurve.coinCostFor(HintTicketType.letter, _letterPaidHints);
+  int get nextWordHintCoins =>
+      HintPricingCurve.coinCostFor(HintTicketType.word, _wordPaidHints);
+  int get nextCheckHintCoins =>
+      HintPricingCurve.coinCostFor(HintTicketType.check, _checkPaidHints);
 
   String? letterAt(int r, int c) => _letters['$r,$c'];
   bool isLocked(int r, int c) => _lockedCells.contains('$r,$c');
@@ -120,8 +145,6 @@ class GameController extends ChangeNotifier {
   int get solvedWordsCount => _solvedEntryIds.length;
 
   void _loadInitialState() {
-    final saved = appState.stateFor(storageKey);
-
     for (final coord in puzzle.revealed) {
       final sol = puzzle.solutionAt(coord.row, coord.col);
       if (sol != null) {
@@ -130,20 +153,18 @@ class GameController extends ChangeNotifier {
       }
     }
 
-    if (saved != null && !saved.completed) {
-      _letters.addAll(saved.letters);
-      _lockedCells.addAll(saved.lockedCells);
-      _elapsedSeconds = saved.elapsedSeconds;
-      _hintsUsed = saved.hintsUsed;
-      _mistakesCount = saved.mistakesCount;
-    } else if (saved != null && saved.completed) {
-      _elapsedSeconds = 0;
-      _hintsUsed = 0;
-      _mistakesCount = 0;
+    if (persistSession) {
+      final saved = appState.stateFor(storageKey);
+      if (saved != null && !saved.completed) {
+        _letters.addAll(saved.letters);
+        _lockedCells.addAll(saved.lockedCells);
+        _elapsedSeconds = saved.elapsedSeconds;
+        _hintsUsed = saved.hintsUsed;
+        _mistakesCount = saved.mistakesCount;
+      }
     }
 
     _recomputeSolvedEntries();
-    // Önceden çözülmüş kelimeler tekrar kombo ödülü vermesin
     _awardedEntryIds.addAll(_solvedEntryIds);
   }
 
@@ -171,7 +192,7 @@ class GameController extends ChangeNotifier {
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (_disposed || _isCompleted) return;
       _elapsedSeconds++;
-      if (_elapsedSeconds % 10 == 0) {
+      if (persistSession && _elapsedSeconds % 10 == 0) {
         _persistProgress();
       }
       notifyListeners();
@@ -180,11 +201,15 @@ class GameController extends ChangeNotifier {
 
   void pauseTimer({bool silent = false}) {
     _timer?.cancel();
-    _persistProgress(notify: !silent);
+    if (persistSession) {
+      _persistProgress(notify: !silent);
+    }
   }
 
   void resumeTimer() {
-    if (!_isCompleted && (_timer == null || !_timer!.isActive)) {
+    if (enableInternalTimer &&
+        !_isCompleted &&
+        (_timer == null || !_timer!.isActive)) {
       _startTimer();
     }
   }
@@ -307,16 +332,22 @@ class GameController extends ChangeNotifier {
 
     _advanceAfterEdit(target);
     notifyListeners();
-    unawaited(_persistProgress());
+    if (persistSession) {
+      unawaited(_persistProgress());
+    }
   }
 
   Future<void> _grantComboForSolvedEntries(List<PuzzleEntry> solvedList) async {
     var totalCoins = 0;
     var totalScore = 0;
     PuzzleEntry? lastFlash;
+    final freshEnglish = <PuzzleEntry>[];
 
     for (final entry in solvedList) {
       lastFlash = entry;
+      if (language == 'en') {
+        freshEnglish.add(entry);
+      }
       if (_awardedEntryIds.contains(entry.id)) continue;
       _awardedEntryIds.add(entry.id);
       _wordComboCount++;
@@ -328,14 +359,22 @@ class GameController extends ChangeNotifier {
       totalScore += reward.score;
     }
 
+    if (freshEnglish.isNotEmpty) {
+      await appState.recordLearnedEnglishWords(freshEnglish);
+    }
+
     if (totalCoins > 0 || totalScore > 0) {
       _sessionComboCoins += totalCoins;
       _sessionComboScore += totalScore;
-      await appState.awardComboWord(
-        comboCount: _wordComboCount,
-        coinsEarned: totalCoins,
-        scoreEarned: totalScore,
-      );
+      if (persistSession) {
+        await appState.awardComboWord(
+          comboCount: _wordComboCount,
+          coinsEarned: totalCoins,
+          scoreEarned: totalScore,
+        );
+      }
+      onWordSolved?.call(_wordComboCount, totalCoins, totalScore);
+
       if (lastFlash != null) {
         final label = _wordComboCount >= 4
             ? '$_wordComboCount× SÜPER KOMBO! +$totalCoins Altın • +$totalScore Puan'
@@ -344,15 +383,20 @@ class GameController extends ChangeNotifier {
                 : 'Doğru! +$totalCoins Altın • +$totalScore Puan';
         _triggerWordSolvedFlash(lastFlash.id, banner: label);
       }
+      if (_wordComboCount >= 2) {
+        appState.feedback.comboSolved();
+      } else {
+        appState.feedback.wordSolved();
+      }
     } else if (lastFlash != null) {
       _triggerWordSolvedFlash(lastFlash.id, banner: 'Süper! Kelime Doğru!');
+      appState.feedback.wordSolved();
     }
-    appState.feedback.wordSolved();
   }
 
   void backspace() {
     if (_isCompleted) return;
-    appState.feedback.keyTap();
+    appState.feedback.backspaceTap();
 
     final curKey = _selectedCell.key;
     if (!_lockedCells.contains(curKey) &&
@@ -361,7 +405,7 @@ class GameController extends ChangeNotifier {
       _wrongCells.remove(curKey);
       _recomputeSolvedEntries();
       notifyListeners();
-      unawaited(_persistProgress());
+      if (persistSession) unawaited(_persistProgress());
       return;
     }
 
@@ -376,7 +420,7 @@ class GameController extends ChangeNotifier {
           _wrongCells.remove(prevCell.key);
           _recomputeSolvedEntries();
           notifyListeners();
-          unawaited(_persistProgress());
+          if (persistSession) unawaited(_persistProgress());
           return;
         }
       }
@@ -416,16 +460,24 @@ class GameController extends ChangeNotifier {
       );
     }
 
-    final (paid, usedTicket) = await appState.useHintTicketOrCoins(
+    final charge = await appState.useEscalatingHint(
       HintTicketType.letter,
-      AppState.letterHintCost,
+      _letterPaidHints,
     );
-    if (!paid) {
+    if (!charge.paid) {
       appState.feedback.errorPulse();
-      return const HintFeedback(
-        HintStatus.insufficientCoins,
-        'Yeterli altının yok (${AppState.letterHintCost} altın gerekli). Mağazadan puanla ipucu alabilirsin!',
+      final needScore = HintPricingCurve.scoreCostFor(
+        HintTicketType.letter,
+        _letterPaidHints,
       );
+      return HintFeedback(
+        HintStatus.insufficientCoins,
+        'Yeterli bakiye yok (${charge.amountPaid} altın veya $needScore puan gerekli).',
+      );
+    }
+
+    if (!charge.usedTicket) {
+      _letterPaidHints++;
     }
 
     final sol = puzzle.solutionAt(target.row, target.col)!;
@@ -434,9 +486,12 @@ class GameController extends ChangeNotifier {
     _wrongCells.remove(target.key);
     _selectedCell = target;
     _hintsUsed++;
-    _wordComboCount = 0; // İpucu kullanımı aktif komboyu sıfırlar
+    _wordComboCount = 0;
 
     final newlySolved = _checkNewlySolvedEntries(target);
+    if (language == 'en' && newlySolved.isNotEmpty) {
+      await appState.recordLearnedEnglishWords(newlySolved);
+    }
     for (final e in newlySolved) {
       _awardedEntryIds.add(e.id);
     }
@@ -453,13 +508,17 @@ class GameController extends ChangeNotifier {
     }
 
     _advanceAfterEdit(target);
-    appState.feedback.wordSolved();
+    appState.feedback.hintUsed();
     notifyListeners();
-    unawaited(_persistProgress());
-    return HintFeedback(
-      HintStatus.ok,
-      usedTicket ? 'Harf açıldı! (1 ipucu hakkı kullanıldı)' : 'Harf açıldı!',
-    );
+    if (persistSession) unawaited(_persistProgress());
+
+    final nextPrice = nextLetterHintCoins;
+    final msg = charge.usedTicket
+        ? 'Harf açıldı! (1 ipucu hakkı kullanıldı)'
+        : charge.usedScore
+            ? 'Harf açıldı! (-${charge.amountPaid} puan • Sonraki: $nextPrice altın)'
+            : 'Harf açıldı! (-${charge.amountPaid} altın • Sonraki: $nextPrice altın)';
+    return HintFeedback(HintStatus.ok, msg);
   }
 
   Future<HintFeedback> revealActiveWord() async {
@@ -480,16 +539,24 @@ class GameController extends ChangeNotifier {
       );
     }
 
-    final (paid, usedTicket) = await appState.useHintTicketOrCoins(
+    final charge = await appState.useEscalatingHint(
       HintTicketType.word,
-      AppState.wordHintCost,
+      _wordPaidHints,
     );
-    if (!paid) {
+    if (!charge.paid) {
       appState.feedback.errorPulse();
-      return const HintFeedback(
-        HintStatus.insufficientCoins,
-        'Yeterli altının yok (${AppState.wordHintCost} altın gerekli). Mağazadan puanla ipucu alabilirsin!',
+      final needScore = HintPricingCurve.scoreCostFor(
+        HintTicketType.word,
+        _wordPaidHints,
       );
+      return HintFeedback(
+        HintStatus.insufficientCoins,
+        'Yeterli bakiye yok (${charge.amountPaid} altın veya $needScore puan gerekli).',
+      );
+    }
+
+    if (!charge.usedTicket) {
+      _wordPaidHints++;
     }
 
     final chars = entry.answer.characters.toList();
@@ -503,6 +570,9 @@ class GameController extends ChangeNotifier {
     _wordComboCount = 0;
     _recomputeSolvedEntries();
     _awardedEntryIds.addAll(_solvedEntryIds);
+    if (language == 'en') {
+      await appState.recordLearnedEnglishWords([entry]);
+    }
     _triggerWordSolvedFlash(entry.id, banner: 'Kelime Açıldı!');
 
     if (_isBoardCompletelyCorrect()) {
@@ -514,13 +584,17 @@ class GameController extends ChangeNotifier {
     }
 
     _jumpToNextIncompleteWord();
-    appState.feedback.wordSolved();
+    appState.feedback.hintUsed();
     notifyListeners();
-    unawaited(_persistProgress());
-    return HintFeedback(
-      HintStatus.ok,
-      usedTicket ? 'Kelime açıldı! (1 ipucu hakkı kullanıldı)' : 'Kelime açıldı!',
-    );
+    if (persistSession) unawaited(_persistProgress());
+
+    final nextPrice = nextWordHintCoins;
+    final msg = charge.usedTicket
+        ? 'Kelime açıldı! (1 ipucu hakkı kullanıldı)'
+        : charge.usedScore
+            ? 'Kelime açıldı! (-${charge.amountPaid} puan • Sonraki: $nextPrice altın)'
+            : 'Kelime açıldı! (-${charge.amountPaid} altın • Sonraki: $nextPrice altın)';
+    return HintFeedback(HintStatus.ok, msg);
   }
 
   Future<HintFeedback> checkMistakes() async {
@@ -549,16 +623,20 @@ class GameController extends ChangeNotifier {
       );
     }
 
-    final (paid, usedTicket) = await appState.useHintTicketOrCoins(
+    final charge = await appState.useEscalatingHint(
       HintTicketType.check,
-      AppState.checkMistakesCost,
+      _checkPaidHints,
     );
-    if (!paid) {
+    if (!charge.paid) {
       appState.feedback.errorPulse();
-      return const HintFeedback(
+      return HintFeedback(
         HintStatus.insufficientCoins,
-        'Yeterli altının yok (${AppState.checkMistakesCost} altın gerekli).',
+        'Yeterli bakiye yok (${charge.amountPaid} altın gerekli).',
       );
+    }
+
+    if (!charge.usedTicket) {
+      _checkPaidHints++;
     }
 
     _wrongCells.clear();
@@ -576,7 +654,7 @@ class GameController extends ChangeNotifier {
       _wordComboCount = 0;
       appState.feedback.errorPulse();
       notifyListeners();
-      unawaited(_persistProgress());
+      if (persistSession) unawaited(_persistProgress());
       return HintFeedback(
         HintStatus.ok,
         '$wrongCount hatalı harf kırmızı ile işaretlendi.',
@@ -586,7 +664,7 @@ class GameController extends ChangeNotifier {
       notifyListeners();
       return HintFeedback(
         HintStatus.ok,
-        usedTicket
+        charge.usedTicket
             ? 'Harika! Tüm harfler doğru (1 kontrol hakkı kullanıldı).'
             : 'Harika! Yazdığın tüm harfler doğru görünüyor.',
       );
@@ -602,6 +680,9 @@ class GameController extends ChangeNotifier {
     _isCompleted = false;
     _elapsedSeconds = 0;
     _hintsUsed = 0;
+    _letterPaidHints = 0;
+    _wordPaidHints = 0;
+    _checkPaidHints = 0;
     _mistakesCount = 0;
     _wordComboCount = 0;
     _maxComboInSession = 0;
@@ -619,9 +700,9 @@ class GameController extends ChangeNotifier {
     _recomputeSolvedEntries();
     _awardedEntryIds.addAll(_solvedEntryIds);
     _selectInitialCell();
-    _startTimer();
+    if (enableInternalTimer) _startTimer();
     notifyListeners();
-    await _persistProgress();
+    if (persistSession) await _persistProgress();
   }
 
   void _advanceAfterEdit(CellCoord edited) {
@@ -738,18 +819,37 @@ class GameController extends ChangeNotifier {
     _recomputeSolvedEntries();
     appState.feedback.puzzleSolved();
 
-    final reward = await appState.completePuzzle(
-      storageKey: storageKey,
-      finalState: _buildSaveState(completed: true),
-      isDaily: isDaily,
-      rewardMultiplier: rewardMultiplier,
-      sessionComboCoins: _sessionComboCoins,
-      sessionComboScore: _sessionComboScore,
-      maxComboInSession: _maxComboInSession,
-    );
+    if (language == 'en') {
+      await appState.recordLearnedEnglishWords(puzzle.entries);
+    }
 
-    notifyListeners();
-    onPuzzleCompleted?.call(reward);
+    if (persistSession) {
+      final reward = await appState.completePuzzle(
+        storageKey: storageKey,
+        finalState: _buildSaveState(completed: true),
+        isDaily: isDaily,
+        rewardMultiplier: rewardMultiplier,
+        sessionComboCoins: _sessionComboCoins,
+        sessionComboScore: _sessionComboScore,
+        maxComboInSession: _maxComboInSession,
+      );
+      notifyListeners();
+      onPuzzleCompleted?.call(reward);
+    } else {
+      notifyListeners();
+      onPuzzleCompleted?.call(
+        CompletionReward(
+          stars: 3,
+          coinsEarned: 20,
+          comboCoinsEarned: _sessionComboCoins,
+          scoreEarned: 100 + _sessionComboScore,
+          maxCombo: _maxComboInSession,
+          elapsedSeconds: _elapsedSeconds,
+          isFirstCompletion: true,
+          newDailyStreak: null,
+        ),
+      );
+    }
   }
 
   PuzzleSaveState _buildSaveState({required bool completed}) {
@@ -765,7 +865,7 @@ class GameController extends ChangeNotifier {
   }
 
   Future<void> _persistProgress({bool notify = true}) async {
-    if (_disposed || _isCompleted) return;
+    if (_disposed || _isCompleted || !persistSession) return;
     await appState.savePuzzleProgress(
       storageKey,
       _buildSaveState(completed: false),

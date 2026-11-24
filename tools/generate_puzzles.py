@@ -19,6 +19,13 @@ from collections import deque
 from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
+from extra_word_banks import (
+    EXTRA_GENEL_KULTUR,
+    EXTRA_INGILIZCE,
+    EXTRA_TURKIYE,
+    EXTRA_YESILCAM,
+)
+
 ROOT = Path(__file__).resolve().parent.parent
 OUT_DIR = ROOT / "assets" / "puzzles"
 
@@ -1444,26 +1451,25 @@ def generate_pack(
     assert len(level_titles) == len(LEVEL_BLUEPRINTS), f"{pack_id} başlık sayısı 20 olmalı"
     rng = random.Random(seed)
     pool = dedupe_pool(raw_words, lang)
-    used_counts: Dict[str, int] = {}
+    used_in_pack: Set[str] = set()
     levels = []
 
     for idx, (lvl, rows, cols, min_w, max_w, rev, diff_label, tier) in enumerate(LEVEL_BLUEPRINTS):
+        # KESİN SIFIR TEKRAR: Önceki seviyelerde kullanılan hiçbir kelime bu seviyeye giremez!
+        unused_all = [(w, c, t) for (w, c, t) in pool if w not in used_in_pack]
         tier_allowed = {1} if tier == 1 else ({1, 2} if tier == 2 else {1, 2, 3})
-        eligible = [(w, c, t) for (w, c, t) in pool if t in tier_allowed]
-        # En az kullanılan kelimelere öncelik ver (20 seviye boyunca maksimum çeşitlilik)
-        min_use = min((used_counts.get(w, 0) for (w, _, _) in eligible), default=0)
-        primary = [
-            (w, c) for (w, c, t) in eligible
-            if used_counts.get(w, 0) <= min_use
-        ]
-        if tier == 3:
-            hard = [(w, c) for (w, c, t) in eligible if t == 3 and used_counts.get(w, 0) <= min_use]
-            med = [(w, c) for (w, c, t) in eligible if t == 2 and used_counts.get(w, 0) <= min_use]
-            short_conn = [(w, c) for (w, c, t) in eligible if len(w) <= 5]
-            rng.shuffle(short_conn)
-            primary = hard + med + short_conn[:35]
+        tier_unused = [(w, c) for (w, c, t) in unused_all if t in tier_allowed]
+        other_unused = [(w, c) for (w, c, t) in unused_all if t not in tier_allowed]
 
-        fallback = [(w, c) for (w, c, _) in eligible]
+        if tier == 3:
+            hard = [(w, c) for (w, c, t) in unused_all if t == 3]
+            med = [(w, c) for (w, c, t) in unused_all if t == 2]
+            easy = [(w, c) for (w, c, t) in unused_all if t == 1]
+            primary = hard + med + easy
+            fallback = primary
+        else:
+            primary = tier_unused if len(tier_unused) >= min_w * 3 else (tier_unused + other_unused)
+            fallback = tier_unused + other_unused
 
         _, placements = build_single_puzzle(
             rows=rows,
@@ -1477,7 +1483,8 @@ def generate_pack(
         )
 
         for w, _, _, _, _ in placements:
-            used_counts[w] = used_counts.get(w, 0) + 1
+            assert w not in used_in_pack, f"Tekrar tespit edildi: {pack_id} -> {w}"
+            used_in_pack.add(w)
 
         puzzle = assign_numbers_and_format(
             puzzle_id=f"{pack_id}_{lvl:02d}",
@@ -1492,6 +1499,12 @@ def generate_pack(
         )
         levels.append(puzzle)
 
+    # Paket genelinde %0 kelime tekrarı matematiksel garantisi
+    all_answers = [e["answer"] for lvl in levels for e in lvl["entries"]]
+    assert len(all_answers) == len(set(all_answers)), (
+        f"{pack_id} paketinde tekrar eden kelime bulundu!"
+    )
+
     return {
         "id": pack_id,
         "name": name,
@@ -1503,6 +1516,86 @@ def generate_pack(
         "secondaryColor": secondary_hex,
         "surfaceColor": surface_hex,
         "levels": levels,
+    }
+
+
+def generate_sprint_bank(
+    tr_pools: List[Tuple[str, List[Tuple[str, str, int]]]],
+    en_pool: List[Tuple[str, str, int]],
+    seed: int = 202655,
+) -> dict:
+    """90 saniyelik Mini Sprint modu için 16 adet hızlı, tekrarsız 5x5 bulmaca üretir."""
+    rng = random.Random(seed)
+    tr_combined: List[Tuple[str, str]] = []
+    seen_tr: Set[str] = set()
+    for tag, raw in tr_pools:
+        for w, c, t in dedupe_pool(raw, "tr"):
+            if t <= 2 and 3 <= len(w) <= 5 and w not in seen_tr:
+                seen_tr.add(w)
+                tr_combined.append((w, f"[{tag}] {c}"))
+
+    en_short: List[Tuple[str, str]] = [
+        (w, f"[İngilizce] {c}")
+        for w, c, t in dedupe_pool(en_pool, "en")
+        if t <= 2 and 3 <= len(w) <= 5
+    ]
+
+    used_tr: Set[str] = set()
+    used_en: Set[str] = set()
+    items = []
+
+    # 12 Türkçe + 4 İngilizce hızlı 5x5 Mini Sprint kartı
+    for i in range(1, 17):
+        is_en = i % 4 == 0
+        if is_en:
+            pool = [(w, c) for (w, c) in en_short if w not in used_en]
+            lang = "en"
+            p_hex, s_hex, surf_hex = "#1D4ED8", "#1E3A8A", "#EFF6FF"
+        else:
+            pool = [(w, c) for (w, c) in tr_combined if w not in used_tr]
+            lang = "tr"
+            p_hex, s_hex, surf_hex = "#EA580C", "#9A3412", "#FFF7ED"
+
+        _, placements = build_single_puzzle(
+            rows=5,
+            cols=5,
+            min_words=4,
+            max_words=5,
+            primary_pool=pool,
+            fallback_pool=pool,
+            rng=rng,
+            trials=240,
+        )
+        for w, _, _, _, _ in placements:
+            if is_en:
+                used_en.add(w)
+            else:
+                used_tr.add(w)
+
+        puzzle = assign_numbers_and_format(
+            puzzle_id=f"sprint_{i:02d}",
+            level=i,
+            title=f"Mini Sprint #{i}",
+            difficulty="Hız Turu",
+            rows=5,
+            cols=5,
+            placements=placements,
+            initial_reveals=2,
+            rng=rng,
+        )
+        items.append({
+            "language": lang,
+            "primaryColor": p_hex,
+            "secondaryColor": s_hex,
+            "surfaceColor": surf_hex,
+            "puzzle": puzzle,
+        })
+
+    print(f"[OK] {'sprint':14s} -> {len(items)} adet tekrarsız 5x5 Mini Sprint bulmacası üretildi!")
+    return {
+        "id": "sprint",
+        "name": "Mini Sprint (90sn)",
+        "items": items,
     }
 
 
@@ -1676,18 +1769,23 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     mega_only = "--mega-only" in sys.argv
 
+    yesilcam_all = YESILCAM_WORDS + EXTRA_YESILCAM
+    ingilizce_all = INGILIZCE_WORDS + EXTRA_INGILIZCE
+    turkiye_all = TURKIYE_WORDS + EXTRA_TURKIYE
+    gk_all = GENEL_KULTUR_WORDS + EXTRA_GENEL_KULTUR
+
     packs_spec = [
         (
             "yesilcam",
             "Yeşilçam Klasikleri",
             "Efsane filmler, replikler ve yıldızlar",
-            "Hababam'dan Al Yazmalım'a, Tosun Paşa'dan Neşeli Günler'e 20 bölümlük nostaljik sinema yolculuğu.",
+            "Hababam'dan Al Yazmalım'a, Tosun Paşa'dan Neşeli Günler'e 20 bölümlük sıfır tekrarlı nostaljik sinema yolculuğu.",
             "tr",
             "movie",
             "#B45309",
             "#7C2D12",
             "#FFFBEB",
-            YESILCAM_WORDS,
+            yesilcam_all,
             [
                 "İlk Perde", "Hababam Zili", "Yazlık Sinema", "Turşu Kavgası",
                 "Beyaz Perde", "Çamlıca Lisesi", "Mavi Boncuk", "Süt Kardeşler",
@@ -1701,13 +1799,13 @@ def main() -> None:
             "ingilizce",
             "İngilizce Kelime Avı",
             "A1'den basit B1'e keyifli İngilizce",
-            "Günlük hayattan tanıdık, zorlamadan geliştiren A1-A2-B1 İngilizce kelimelerle 20 keyifli bölüm.",
+            "Günlük hayattan tanıdık, zorlamadan geliştiren A1-A2-B1 İngilizce kelimelerle 20 benzersiz bölüm.",
             "en",
             "translate",
             "#1D4ED8",
             "#1E3A8A",
             "#EFF6FF",
-            INGILIZCE_WORDS,
+            ingilizce_all,
             [
                 "İlk Kelimeler (A1)", "Günlük Hayat (A1)", "Renkler ve Doğa (A1)", "Ev ve Eşyalar (A1)",
                 "Yemek ve Kafe (A1-A2)", "Aile ve Dostluk (A2)", "Okul ve Dersler (A2)", "Mevsimler ve Hava (A2)",
@@ -1721,13 +1819,13 @@ def main() -> None:
             "turkiye",
             "Türkiye & Mutfak",
             "İller, yöresel lezzetler ve miras",
-            "Ege'den Karadeniz'e, baklavadan antik kentlere Türkiye'nin dört bir yanından 20 özel bulmaca.",
+            "Ege'den Karadeniz'e, baklavadan antik kentlere Türkiye'nin dört bir yanından 20 özgün bulmaca.",
             "tr",
             "explore",
             "#0F766E",
             "#115E59",
             "#F0FDFA",
-            TURKIYE_WORDS,
+            turkiye_all,
             [
                 "Sabah Sofrası", "Ege Rüzgarı", "Karadeniz Çayı", "Anadolu Lezzetleri",
                 "Dört Deniz", "Kahve Molası", "Yöresel Tatlar", "Şehir Turu",
@@ -1741,13 +1839,13 @@ def main() -> None:
             "genel_kultur",
             "Genel Kültür & Bilim",
             "Uzay, teknoloji, sanat ve spor",
-            "Gezegenlerden teknolojiye, edebiyattan spora her seviyede keyifle çözülecek 20 genel kültür bölümü.",
+            "Gezegenlerden teknolojiye, edebiyattan spora her seviyede keyifle çözülecek 20 benzersiz bölüm.",
             "tr",
             "psychology",
             "#6D28D9",
             "#4C1D95",
             "#F5F3FF",
-            GENEL_KULTUR_WORDS,
+            gk_all,
             [
                 "Temel Bilgi", "Yıldızlara Bakış", "Sanat Atölyesi", "Spor Sahası",
                 "Doğanın Gücü", "Müzik ve Ritim", "Dijital Çağ", "İnsan ve Sağlık",
@@ -1767,17 +1865,29 @@ def main() -> None:
             out_path = OUT_DIR / f"{pack['id']}.json"
             out_path.write_text(json.dumps(pack, ensure_ascii=False, indent=2), encoding="utf-8")
             word_counts = [len(lvl["entries"]) for lvl in pack["levels"]]
+            total_unique = sum(word_counts)
             sizes = [f"{lvl['rows']}x{lvl['cols']}" for lvl in pack["levels"]]
-            print(f"[OK] {pack['id']:14s} -> {len(pack['levels'])} seviye | boyutlar: {sizes[0]}..{sizes[-1]} | kelimeler: {word_counts}")
+            print(f"[OK] {pack['id']:14s} -> {len(pack['levels'])} seviye | {total_unique} benzersiz kelime (%0 tekrar!) | {sizes[0]}..{sizes[-1]}")
 
         daily = generate_daily_bank([
-            ("Yeşilçam", YESILCAM_WORDS),
-            ("Türkiye", TURKIYE_WORDS),
-            ("Genel Kültür", GENEL_KULTUR_WORDS),
+            ("Yeşilçam", yesilcam_all),
+            ("Türkiye", turkiye_all),
+            ("Genel Kültür", gk_all),
         ])
         daily_path = OUT_DIR / "daily.json"
         daily_path.write_text(json.dumps(daily, ensure_ascii=False, indent=2), encoding="utf-8")
         print(f"[OK] {'daily':14s} -> {len(daily['puzzles'])} günlük bulmaca üretildi ve doğrulandı!")
+
+        sprint = generate_sprint_bank(
+            [
+                ("Yeşilçam", yesilcam_all),
+                ("Türkiye", turkiye_all),
+                ("Genel Kültür", gk_all),
+            ],
+            ingilizce_all,
+        )
+        sprint_path = OUT_DIR / "sprint.json"
+        sprint_path.write_text(json.dumps(sprint, ensure_ascii=False, indent=2), encoding="utf-8")
 
     mega = generate_mega_bank()
     mega_path = OUT_DIR / "mega.json"
@@ -1790,13 +1900,14 @@ def main() -> None:
                 "packs": manifest_packs,
                 "daily": "assets/puzzles/daily.json",
                 "mega": "assets/puzzles/mega.json",
+                "sprint": "assets/puzzles/sprint.json",
             },
             ensure_ascii=False,
             indent=2,
         ),
         encoding="utf-8",
     )
-    print(f"\nToplam 101 doğrulanmış bulmaca (80 konsept + 15 günlük + 6 dev) {OUT_DIR} içinde hazır!")
+    print(f"\nToplam 117 doğrulanmış bulmaca (80 sıfır-tekrarlı konsept + 15 günlük + 16 sprint + 6 dev) {OUT_DIR} içinde hazır!")
 
 
 if __name__ == "__main__":

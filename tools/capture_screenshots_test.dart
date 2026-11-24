@@ -5,12 +5,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:konsept_bulmaca/core/brand/brand_config.dart';
+import 'package:konsept_bulmaca/features/notebook/word_notebook_screen.dart';
+import 'package:konsept_bulmaca/features/sprint/mini_sprint_screen.dart';
 import 'package:konsept_bulmaca/main.dart';
 import 'package:konsept_bulmaca/models/background_models.dart';
 import 'package:konsept_bulmaca/models/puzzle_models.dart';
 import 'package:konsept_bulmaca/screens/background_gallery_screen.dart';
 import 'package:konsept_bulmaca/screens/game_screen.dart';
 import 'package:konsept_bulmaca/screens/mega_puzzles_screen.dart';
+import 'package:konsept_bulmaca/services/feedback_service.dart';
 import 'package:konsept_bulmaca/state/app_state.dart';
 import 'package:konsept_bulmaca/widgets/completion_dialog.dart';
 import 'package:konsept_bulmaca/widgets/confetti_overlay.dart';
@@ -51,14 +55,16 @@ void main() {
     SharedPreferences.setMockInitialValues({});
   });
 
-  testWidgets('Captures crisp Android preview screenshots of all key screens',
+  testWidgets('Captures crisp Android preview screenshots of Karehane screens',
       (tester) async {
     tester.view.physicalSize = const Size(824, 1784);
     tester.view.devicePixelRatio = 2.0;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
 
-    final appState = AppState();
+    final appState = AppState(
+      feedback: FeedbackService(enableAudioEngine: false),
+    );
     await tester.runAsync(() => appState.initialize());
 
     final yesilcam = appState.packs.firstWhere((p) => p.id == 'yesilcam');
@@ -66,7 +72,6 @@ void main() {
     final megaItems = appState.megaBank!.items;
 
     await tester.runAsync(() async {
-      // Solve 4 puzzles & earn realistic combo score so Mega Arena + Puan Shop shine!
       for (var i = 0; i < 3; i++) {
         await appState.completePuzzle(
           storageKey: yesilcam.levels[i].id,
@@ -98,15 +103,135 @@ void main() {
         coinsEarned: 35,
         scoreEarned: 220,
       );
+      await appState.recordSprintResult(
+        sprintScore: 420,
+        puzzlesSolved: 3,
+        coinsBonus: 55,
+        maxCombo: 4,
+      );
+      // Populate English Word Notebook with mixed A1, A2, and B1 levels!
+      await appState.recordLearnedEnglishWords([
+        ...ingilizce.levels[1].entries,
+        ...ingilizce.levels[17].entries,
+        ...ingilizce.levels[0].entries,
+      ]);
+      final words = appState.learnedEnglishWords;
+      if (words.length >= 4) {
+        await appState.toggleWordFavorite(words[1].word);
+        await appState.toggleWordFavorite(words[2].word);
+      }
     });
 
     final boundaryKey = GlobalKey();
     Widget frame(Widget child) => RepaintBoundary(key: boundaryKey, child: child);
 
-    // 1) Dev Bulmacalar Ekranı (12x12 -> 15x15 -> 20x20)
+    // 1) Karehane Ana Ekran (Özel İkon + Mini Sprint + Kelime Defteri + Konseptler)
+    await tester.pumpWidget(frame(KonseptBulmacaApp(appState: appState)));
+    await tester.pumpAndSettle();
+    final homeCtx = tester.element(find.text(BrandConfig.appName));
+    await tester.runAsync(
+      () => precacheImage(
+        const AssetImage('assets/branding/karehane_icon.png'),
+        homeCtx,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await expectLater(
+      find.byKey(boundaryKey),
+      matchesGoldenFile('screenshots/screen_01_home.png'),
+    );
+
+    // 2) 90sn Mini Sprint (Hız Modu — Canlı 5x5 Tahta, +5sn Bonus Flash ve Skor HUD)
     await tester.pumpWidget(
       frame(
         MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(useMaterial3: true, fontFamily: 'Roboto'),
+          home: MiniSprintScreen(appState: appState),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 350));
+    // Solve the 1st across word live on Mini Sprint to showcase live combo +5sn flash!
+    final sprintState = appState.sprintBank!.items;
+    final firstSprint = sprintState.firstWhere(
+      (item) => find.text(item.puzzle.orderedEntries.first.clue).evaluate().isNotEmpty,
+      orElse: () => sprintState.first,
+    );
+    final sprintFirstEntry = firstSprint.puzzle.orderedEntries.first;
+    final sprintKb = find.byType(GameKeyboard);
+    for (var i = 0; i < sprintFirstEntry.cells.length; i++) {
+      final cell = sprintFirstEntry.cells[i];
+      if (firstSprint.puzzle.isInitialRevealed(cell.row, cell.col)) continue;
+      final ch = sprintFirstEntry.answer.characters.elementAt(i);
+      await tester.tap(find.descendant(of: sprintKb, matching: find.text(ch)));
+      await tester.pump(const Duration(milliseconds: 35));
+    }
+    await tester.pump(const Duration(milliseconds: 180));
+    await expectLater(
+      find.byKey(boundaryKey),
+      matchesGoldenFile('screenshots/screen_10_mini_sprint.png'),
+    );
+
+    // 3) İngilizce Kelime Defteri (A1-B1 Öğrendiklerim + Favoriler + Kartla Çalış)
+    await tester.pumpWidget(
+      frame(
+        MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(useMaterial3: true, fontFamily: 'Roboto'),
+          home: WordNotebookScreen(appState: appState),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await expectLater(
+      find.byKey(boundaryKey),
+      matchesGoldenFile('screenshots/screen_11_word_notebook.png'),
+    );
+
+    // 4) Yeşilçam Bulmacası — Artan Dinamik İpucu Fiyatı (10 -> 15 -> 25)
+    final lvl4 = yesilcam.levels[3];
+    await tester.pumpWidget(
+      frame(
+        MaterialApp(
+          key: const ValueKey<String>('yesilcam_hint_app'),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(useMaterial3: true, fontFamily: 'Roboto'),
+          home: GameScreen(
+            key: ValueKey<String>(lvl4.id),
+            puzzle: lvl4,
+            storageKey: lvl4.id,
+            language: yesilcam.language,
+            packTitle: yesilcam.name,
+            primaryColor: yesilcam.primaryColor,
+            secondaryColor: yesilcam.secondaryColor,
+            surfaceColor: yesilcam.surfaceColor,
+            isDaily: false,
+            appState: appState,
+            pack: yesilcam,
+            levelIndex: 3,
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    // Tap 'Harf' twice (1st uses free ticket, 2nd pays 10 coins -> next badge shows 15!)
+    await tester.tap(find.text('Harf'));
+    await tester.pump(const Duration(milliseconds: 120));
+    await tester.tap(find.text('Harf'));
+    await tester.pump(const Duration(milliseconds: 300));
+    await expectLater(
+      find.byKey(boundaryKey),
+      matchesGoldenFile('screenshots/screen_02_yesilcam_game.png'),
+    );
+
+    // 5) Dev Bulmacalar Ekranı (12x12 -> 15x15 -> 20x20)
+    await tester.pumpWidget(
+      frame(
+        MaterialApp(
+          key: const ValueKey<String>('mega_arena_app'),
           debugShowCheckedModeBanner: false,
           theme: ThemeData(useMaterial3: true, fontFamily: 'Roboto'),
           home: MegaPuzzlesScreen(appState: appState),
@@ -119,11 +244,12 @@ void main() {
       matchesGoldenFile('screenshots/screen_07_mega_arena.png'),
     );
 
-    // 2) 15x15 Dev Bulmaca + Canlı 3x KOMBO Şeridi + Zoom Kontrolü!
-    final mega15 = megaItems[3]; // Bilim & Kültür Maratonu (15x15)
+    // 6) 15x15 Dev Bulmaca + Canlı 2x KOMBO Şeridi + Zoom Kontrolü
+    final mega15 = megaItems[3];
     await tester.pumpWidget(
       frame(
         MaterialApp(
+          key: const ValueKey<String>('mega15_app'),
           debugShowCheckedModeBanner: false,
           theme: ThemeData(useMaterial3: true, fontFamily: 'Roboto'),
           home: GameScreen(
@@ -145,11 +271,9 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 350));
 
-    // Solve 2 full words cleanly via GameKeyboard to showcase real live 2x KOMBO strip!
     final firstEntry = mega15.puzzle.orderedEntries.first;
     final secondEntry = mega15.puzzle.orderedEntries[1];
     final kbFinder = find.byType(GameKeyboard);
-    // First word is already selected by default
     for (var i = 0; i < firstEntry.cells.length; i++) {
       final cell = firstEntry.cells[i];
       if (mega15.puzzle.isInitialRevealed(cell.row, cell.col)) continue;
@@ -157,7 +281,6 @@ void main() {
       await tester.tap(find.descendant(of: kbFinder, matching: find.text(ch)));
       await tester.pump(const Duration(milliseconds: 30));
     }
-    // Now second word is automatically focused -> solve it to trigger 2x KOMBO!
     for (var i = 0; i < secondEntry.cells.length; i++) {
       final cell = secondEntry.cells[i];
       if (mega15.puzzle.isInitialRevealed(cell.row, cell.col)) continue;
@@ -172,10 +295,10 @@ void main() {
       matchesGoldenFile('screenshots/screen_08_mega_15x15_combo.png'),
     );
 
-    // 3) Puan Mağazası (İpucu Paketleri & Puan->Altın Takası)
+    // 7) Puan Mağazası (İpucu Paketleri & Puan-Altın Takası)
     await tester.pumpWidget(frame(KonseptBulmacaApp(appState: appState)));
     await tester.pumpAndSettle();
-    final ctx = tester.element(find.text('Konsept Bulmaca'));
+    final ctx = tester.element(find.text(BrandConfig.appName));
     showRewardsCenterSheet(ctx, appState, initialTab: 1);
     await tester.pumpAndSettle();
     await expectLater(
@@ -183,7 +306,7 @@ void main() {
       matchesGoldenFile('screenshots/screen_09_puan_shop.png'),
     );
 
-    // 4) Güncel Arka Plan Galerisi (10 Tema — Puan ve Altın fiyatları!)
+    // 8) Arka Plan Galerisi
     await tester.pumpWidget(
       frame(
         MaterialApp(
@@ -199,7 +322,7 @@ void main() {
       matchesGoldenFile('screenshots/screen_04_backgrounds.png'),
     );
 
-    // 5) Güncel Kutlama Dialogu (Kombo Bonusu + Puan + Konfeti)
+    // 9) Kutlama Dialogu (Kombo Bonusu + Puan + Konfeti)
     await tester.pumpWidget(
       frame(
         MaterialApp(

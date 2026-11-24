@@ -586,7 +586,7 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
               label: 'Harf',
               cost: letterTickets > 0
                   ? '×$letterTickets'
-                  : '${AppState.letterHintCost}',
+                  : '${_controller.nextLetterHintCoins}',
               isTicketBadge: letterTickets > 0,
               color: widget.primaryColor,
               onTap: () async {
@@ -602,7 +602,7 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
               label: 'Kelime',
               cost: wordTickets > 0
                   ? '×$wordTickets'
-                  : '${AppState.wordHintCost}',
+                  : '${_controller.nextWordHintCoins}',
               isTicketBadge: wordTickets > 0,
               color: widget.secondaryColor,
               onTap: () async {
@@ -618,7 +618,7 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
               label: 'Kontrol',
               cost: checkTickets > 0
                   ? '×$checkTickets'
-                  : '${AppState.checkMistakesCost}',
+                  : '${_controller.nextCheckHintCoins}',
               isTicketBadge: checkTickets > 0,
               color: const Color(0xFF0F766E),
               onTap: () async {

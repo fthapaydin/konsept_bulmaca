@@ -2,7 +2,7 @@
   "id": "turkiye",
   "name": "Türkiye & Mutfak",
   "subtitle": "İller, yöresel lezzetler ve miras",
-  "description": "Ege'den Karadeniz'e, baklavadan antik kentlere Türkiye'nin dört bir yanından 20 özel bulmaca.",
+  "description": "Ege'den Karadeniz'e, baklavadan antik kentlere Türkiye'nin dört bir yanından 20 özgün bulmaca.",
   "language": "tr",
   "icon": "explore",
   "primaryColor": "#0F766E",
@@ -18,54 +18,54 @@
       "cols": 5,
       "revealed": [
         [
-          0,
-          3
+          3,
+          0
         ],
         [
-          2,
-          0
+          1,
+          2
         ]
       ],
       "entries": [
         {
-          "number": 1,
-          "direction": "across",
-          "row": 0,
-          "col": 0,
-          "answer": "KİRAZ",
-          "clue": "Afyon ve Kemalpaşa ile anılan kırmızı yaz meyvesi"
-        },
-        {
-          "number": 3,
-          "direction": "across",
-          "row": 2,
-          "col": 0,
-          "answer": "BOĞAZ",
-          "clue": "İstanbul'da Asya ile Avrupa'yı ayıran su yolu"
-        },
-        {
           "number": 4,
           "direction": "across",
-          "row": 4,
+          "row": 1,
           "col": 0,
-          "answer": "PİLAV",
-          "clue": "Kuru fasulyenin ayrılmaz pirinçli eşlikçisi"
+          "answer": "ADANA",
+          "clue": "Taşköprü, şalgam ve acılı kebabın şehri"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 3,
+          "col": 0,
+          "answer": "TRUVA",
+          "clue": "Çanakkale'de tahta atıyla ünlü antik kent"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
           "col": 0,
-          "answer": "KEBAP",
-          "clue": "Adana ve Urfa usulüyle ünlü ızgara et yemeği"
+          "answer": "MANTI",
+          "clue": "Kayseri ile özdeşleşen yoğurtlu hamur yemeği"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 3,
-          "answer": "ADANA",
-          "clue": "Taşköprü, şalgam ve acılı kebabın şehri"
+          "col": 2,
+          "answer": "KAVUN",
+          "clue": "Kırkağaç ile özdeşleşen kokulu yaz meyvesi"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 0,
+          "col": 4,
+          "answer": "HALAY",
+          "clue": "Davul zurna eşliğinde el ele tutuşularak çekilen oyun"
         }
       ]
     },
@@ -78,54 +78,54 @@
       "cols": 5,
       "revealed": [
         [
-          2,
-          4
+          1,
+          0
         ],
         [
-          4,
+          3,
           0
         ]
       ],
       "entries": [
         {
-          "number": 4,
+          "number": 3,
           "direction": "across",
-          "row": 2,
+          "row": 1,
           "col": 0,
-          "answer": "FIRAT",
-          "clue": "Anadolu'dan doğup Basra'ya dökülen büyük nehir"
+          "answer": "AYDER",
+          "clue": "Rize Çamlıhemşin'in sisli ve yeşil yaylası"
         },
         {
           "number": 5,
           "direction": "across",
-          "row": 4,
+          "row": 3,
           "col": 0,
-          "answer": "SİNOP",
-          "clue": "Türkiye'nin en kuzey ucundaki sakin liman şehri"
+          "answer": "MUĞLA",
+          "clue": "Bodrum, Fethiye ve Marmaris'in bağlı olduğu il"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
-          "col": 2,
-          "answer": "AYRAN",
-          "clue": "Yoğurt, su ve tuzla çırpılan ferahlatıcı içecek"
+          "col": 0,
+          "answer": "SARMA",
+          "clue": "Asma yaprağına incecik sarılan zeytinyağlı yemek"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 4,
-          "answer": "ANTEP",
-          "clue": "Baklavası ve yeşil fıstığıyla gastronomi başkenti"
+          "answer": "URFA",
+          "clue": "Balıklıgöl ve Göbeklitepe'nin şehri"
         },
         {
-          "number": 3,
+          "number": 4,
           "direction": "down",
           "row": 1,
-          "col": 0,
-          "answer": "EFES",
-          "clue": "İzmir Selçuk'taki görkemli antik kent"
+          "col": 2,
+          "answer": "DAĞ",
+          "clue": "Ağrı, Erciyes ve Uludağ gibi yüksek yeryüzü şekli"
         }
       ]
     },
@@ -139,11 +139,11 @@
       "revealed": [
         [
           0,
-          4
+          2
         ],
         [
           0,
-          0
+          4
         ]
       ],
       "entries": [
@@ -152,32 +152,40 @@
           "direction": "across",
           "row": 0,
           "col": 0,
-          "answer": "HELVA",
-          "clue": "İrmik veya unla kavrulan geleneksel tatlı"
+          "answer": "KONYA",
+          "clue": "Mevlana Müzesi ve etli ekmeğiyle ünlü şehir"
         },
         {
           "number": 4,
           "direction": "across",
-          "row": 3,
+          "row": 2,
           "col": 0,
-          "answer": "AŞURE",
-          "clue": "Muharrem ayında bolluk ve bereketle pişen tatlı"
+          "answer": "FIRAT",
+          "clue": "Anadolu'dan doğup Basra'ya dökülen büyük nehir"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 4,
+          "col": 0,
+          "answer": "EGE",
+          "clue": "Zeytin ağaçları ve koylarıyla ünlü bölgemiz"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
           "col": 0,
-          "answer": "HATAY",
-          "clue": "Künefesi ve zengin mutfağıyla medeniyetler şehri"
+          "answer": "KÖFTE",
+          "clue": "Tekirdağ, Akçaabat ve İnegöl çeşitleriyle ünlü et yemeği"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 2,
-          "answer": "LOKUM",
-          "clue": "Türk kahvesinin yanında ikram edilen tatlı"
+          "answer": "NAR",
+          "clue": "Bereket simgesi, ekşisi salatalarda kullanılan meyve"
         },
         {
           "number": 3,
@@ -198,8 +206,8 @@
       "cols": 5,
       "revealed": [
         [
-          2,
-          4
+          0,
+          0
         ]
       ],
       "entries": [
@@ -208,40 +216,48 @@
           "direction": "across",
           "row": 0,
           "col": 0,
-          "answer": "DİCLE",
-          "clue": "Diyarbakır surlarının yanından akan kadim ırmak"
+          "answer": "SALEP",
+          "clue": "Tarçın serpilerek içilen sıcak kış içeceği"
         },
         {
           "number": 3,
           "direction": "across",
           "row": 2,
           "col": 0,
-          "answer": "NİĞDE",
-          "clue": "Aladağlar ve patatesiyle bilinen İç Anadolu ili"
+          "answer": "SİVAS",
+          "clue": "Kangal köpeği ve Kongre binasıyla bilinen il"
         },
         {
-          "number": 4,
+          "number": 5,
           "direction": "across",
           "row": 4,
           "col": 0,
-          "answer": "REÇEL",
-          "clue": "Kahvaltıların meyveli tatlı eşlikçisi"
+          "answer": "MUŞ",
+          "clue": "Lalesi ve ovasıyla bilinen Doğu Anadolu ili"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
           "col": 0,
-          "answer": "DÖNER",
-          "clue": "Dikey şişte ağır ağır pişen dünyaca ünlü lezzet"
+          "answer": "SUSAM",
+          "clue": "Simit ve tahinin ana maddesi küçük tohum"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
+          "col": 2,
+          "answer": "LAVAŞ",
+          "clue": "Kebap ve dürümün incecik sıcak hamuru"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 2,
           "col": 4,
-          "answer": "EGE",
-          "clue": "Zeytin ağaçları ve koylarıyla ünlü bölgemiz"
+          "answer": "SÜT",
+          "clue": "Sütlaç, kazandibi ve yoğurdun ana maddesi"
         }
       ]
     },
@@ -254,12 +270,12 @@
       "cols": 6,
       "revealed": [
         [
-          5,
-          1
+          2,
+          5
         ],
         [
-          0,
-          1
+          4,
+          5
         ]
       ],
       "entries": [
@@ -267,49 +283,49 @@
           "number": 1,
           "direction": "across",
           "row": 0,
-          "col": 0,
-          "answer": "EBRU",
-          "clue": "Su üzerine boya serpilerek yapılan geleneksel sanat"
+          "col": 1,
+          "answer": "KEKİK",
+          "clue": "Ege dağlarından toplanan mis kokulu baharat"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 2,
+          "col": 3,
+          "answer": "ÇAY",
+          "clue": "Rize yamaçlarının vazgeçilmez sıcak içeceği"
         },
         {
           "number": 5,
           "direction": "across",
-          "row": 3,
-          "col": 1,
-          "answer": "TOKAT",
-          "clue": "Kebabı ve asma yaprağıyla ünlü Karadeniz ili"
+          "row": 4,
+          "col": 0,
+          "answer": "POĞAÇA",
+          "clue": "Pastanelerde sabah sıcacık çıkan yumuşak hamur işi"
         },
         {
-          "number": 6,
-          "direction": "across",
-          "row": 5,
-          "col": 0,
-          "answer": "İNCİR",
-          "clue": "Aydın ilimizin dünyaca meşhur meyvesi"
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 1,
+          "answer": "KİMYON",
+          "clue": "Köfte ve sucuk harcının vazgeçilmez baharatı"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 1,
-          "answer": "BARTIN",
-          "clue": "Amasra sahiliyle meşhur Batı Karadeniz ili"
+          "col": 3,
+          "answer": "KAÇKAR",
+          "clue": "Doğu Karadeniz'in bulutlara uzanan görkemli dağları"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
-          "col": 3,
-          "answer": "UŞAK",
-          "clue": "Tarhanası ve halısıyla bilinen Ege ilimiz"
-        },
-        {
-          "number": 4,
-          "direction": "down",
-          "row": 0,
           "col": 5,
-          "answer": "KÖFTE",
-          "clue": "Tekirdağ, Akçaabat ve İnegöl çeşitleriyle ünlü et yemeği"
+          "answer": "KAYMAK",
+          "clue": "Afyon'un ekmek kadayıfına eşlik eden süt ürünü"
         }
       ]
     },
@@ -322,58 +338,66 @@
       "cols": 6,
       "revealed": [
         [
-          3,
-          3
+          0,
+          0
         ]
       ],
       "entries": [
         {
-          "number": 3,
+          "number": 1,
           "direction": "across",
-          "row": 1,
+          "row": 0,
           "col": 0,
-          "answer": "KARS",
-          "clue": "Kaşarı, kazı ve Ani Harabeleri ile bilinen şehir"
+          "answer": "KOY",
+          "clue": "Ege ve Akdeniz'de teknelerin demirlediği sakin girinti"
         },
         {
-          "number": 5,
+          "number": 4,
           "direction": "across",
-          "row": 3,
-          "col": 1,
-          "answer": "TURŞU",
-          "clue": "Lahanadan salatalığa sofraların ekşi tamamlayıcısı"
+          "row": 2,
+          "col": 0,
+          "answer": "YOĞURT",
+          "clue": "Silivri ve Kanlıca ile anılan milli süt ürünümüz"
         },
         {
           "number": 6,
           "direction": "across",
           "row": 5,
-          "col": 2,
-          "answer": "VAN",
-          "clue": "Kedisi ve büyük gölüyle ünlü doğu ilimiz"
+          "col": 0,
+          "answer": "SUMAK",
+          "clue": "Soğan salatası ve lahmacuna ekşilik veren baharat"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
-          "col": 1,
-          "answer": "MANTI",
-          "clue": "Kayseri ile özdeşleşen yoğurtlu hamur yemeği"
+          "col": 0,
+          "answer": "KÖY",
+          "clue": "Anadolu'nun sıcak ve doğal yerleşim birimi"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 5,
-          "answer": "ÇORUM",
-          "clue": "Leblebisi ve Hattuşa'sıyla bilinen ilimiz"
+          "answer": "HATAY",
+          "clue": "Künefesi ve zengin mutfağıyla medeniyetler şehri"
         },
         {
-          "number": 4,
+          "number": 3,
           "direction": "down",
           "row": 1,
           "col": 3,
-          "answer": "SARMA",
-          "clue": "Asma yaprağına incecik sarılan zeytinyağlı yemek"
+          "answer": "YUFKA",
+          "clue": "Oklavayla incecik açılan börek ve baklava hamuru"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 2,
+          "col": 1,
+          "answer": "ORDU",
+          "clue": "Fındığı ve Boztepe'siyle ünlü Karadeniz ili"
         }
       ]
     },
@@ -386,8 +410,8 @@
       "cols": 6,
       "revealed": [
         [
-          3,
-          3
+          5,
+          2
         ]
       ],
       "entries": [
@@ -396,48 +420,48 @@
           "direction": "across",
           "row": 1,
           "col": 1,
-          "answer": "BOLU",
-          "clue": "Aşçıları ve Abant Gölü ile meşhur ilimiz"
+          "answer": "KİRAZ",
+          "clue": "Afyon ve Kemalpaşa ile anılan kırmızı yaz meyvesi"
         },
         {
           "number": 4,
           "direction": "across",
           "row": 3,
           "col": 0,
-          "answer": "URFA",
-          "clue": "Balıklıgöl ve Göbeklitepe'nin şehri"
+          "answer": "ARMUT",
+          "clue": "Ankara ve Bursa bahçelerinin sulu meyvesi"
         },
         {
           "number": 5,
           "direction": "across",
           "row": 5,
-          "col": 1,
-          "answer": "KAHVE",
-          "clue": "Kırk yıl hatırı olan köpüklü geleneksel içecek"
+          "col": 0,
+          "answer": "AYRAN",
+          "clue": "Yoğurt, su ve tuzla çırpılan ferahlatıcı içecek"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
-          "col": 3,
-          "answer": "ELMA",
-          "clue": "Amasya ve Isparta bahçelerinin meşhur meyvesi"
-        },
-        {
-          "number": 2,
-          "direction": "down",
-          "row": 1,
-          "col": 1,
-          "answer": "BÖREK",
-          "clue": "Yufka katmanlarıyla hazırlanan peynirli veya kıymalı lezzet"
+          "col": 4,
+          "answer": "BARTIN",
+          "clue": "Amasra sahiliyle meşhur Batı Karadeniz ili"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 2,
-          "col": 5,
-          "answer": "MEZE",
-          "clue": "Sofraların başlangıcında sunulan soğuk lezzetler"
+          "row": 1,
+          "col": 2,
+          "answer": "İZMİR",
+          "clue": "Saat Kulesi ve Kordon'uyla Ege'nin incisi"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 3,
+          "col": 0,
+          "answer": "ADA",
+          "clue": "Gökçeada ve Bozcaada gibi sularla çevrili kara"
         }
       ]
     },
@@ -450,8 +474,8 @@
       "cols": 6,
       "revealed": [
         [
-          0,
-          5
+          5,
+          0
         ]
       ],
       "entries": [
@@ -460,48 +484,48 @@
           "direction": "across",
           "row": 0,
           "col": 0,
-          "answer": "GALATA",
-          "clue": "İstanbul'un siluetini süsleyen tarihi Ceneviz kulesi"
+          "answer": "KAŞ",
+          "clue": "Dalış noktaları ve begonvilleriyle ünlü Antalya ilçesi"
         },
         {
           "number": 4,
           "direction": "across",
-          "row": 2,
-          "col": 1,
-          "answer": "TRUVA",
-          "clue": "Çanakkale'de tahta atıyla ünlü antik kent"
+          "row": 3,
+          "col": 0,
+          "answer": "KÜNEFE",
+          "clue": "Sıcak şerbetli, uzayan peynirli Hatay tatlısı"
         },
         {
-          "number": 6,
+          "number": 5,
           "direction": "across",
           "row": 5,
           "col": 0,
-          "answer": "ANKARA",
-          "clue": "Anıtkabir'in bulunduğu Türkiye Cumhuriyeti başkenti"
+          "answer": "LOKUM",
+          "clue": "Türk kahvesinin yanında ikram edilen tatlı"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 0,
+          "answer": "KEŞKÜL",
+          "clue": "Bademli geleneksel Osmanlı süt tatlısı"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 1,
-          "answer": "ARTVİN",
-          "clue": "Karagöl'ü ve yeşil vadileriyle doğa harikası il"
+          "col": 2,
+          "answer": "ŞIRNAK",
+          "clue": "Cudi Dağı'nın eteklerindeki Güneydoğu ilimiz"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
           "col": 5,
-          "answer": "AMASYA",
-          "clue": "Yeşilırmak kıyısındaki yalı boyu evleri ve elmasıyla ünlü il"
-        },
-        {
-          "number": 5,
-          "direction": "down",
-          "row": 2,
-          "col": 3,
-          "answer": "URFA",
-          "clue": "Balıklıgöl ve Göbeklitepe'nin şehri"
+          "answer": "BÖREK",
+          "clue": "Yufka katmanlarıyla hazırlanan peynirli veya kıymalı lezzet"
         }
       ]
     },
@@ -524,48 +548,48 @@
           "direction": "across",
           "row": 0,
           "col": 0,
-          "answer": "FISTIK",
-          "clue": "Baklavanın vazgeçilmez yeşil malzemesi"
+          "answer": "BODRUM",
+          "clue": "Beyaz evleri ve kalesiyle ünlü tatil beldesi"
         },
         {
           "number": 4,
           "direction": "across",
-          "row": 3,
+          "row": 2,
           "col": 0,
-          "answer": "DOLMA",
-          "clue": "Biber veya patlıcanın pirinçli harçla doldurulmuş hali"
+          "answer": "TANDIR",
+          "clue": "Toprak fırında ağır ağır pişen Anadolu eti"
         },
         {
           "number": 5,
           "direction": "across",
           "row": 5,
-          "col": 0,
-          "answer": "KAÇKAR",
-          "clue": "Doğu Karadeniz'in bulutlara uzanan görkemli dağları"
+          "col": 3,
+          "answer": "VAN",
+          "clue": "Kedisi ve büyük gölüyle ünlü doğu ilimiz"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
           "col": 0,
-          "answer": "FINDIK",
-          "clue": "Giresun ve Ordu'nun dünyaya ihraç ettiği kuruyemiş"
+          "answer": "BİTLİS",
+          "clue": "Nemrut Krater Gölü ve büryanıyla ünlü il"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 2,
-          "answer": "SÜTLAÇ",
-          "clue": "Üzeri fırında kızartılan pirinçli süt tatlısı"
+          "answer": "DÖNER",
+          "clue": "Dikey şişte ağır ağır pişen dünyaca ünlü lezzet"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
           "col": 5,
-          "answer": "KAŞ",
-          "clue": "Dalış noktaları ve begonvilleriyle ünlü Antalya ilçesi"
+          "answer": "MARDİN",
+          "clue": "Taş evleri ve Mezopotamya manzarasıyla masalsı şehir"
         }
       ]
     },
@@ -578,8 +602,8 @@
       "cols": 7,
       "revealed": [
         [
-          2,
-          2
+          6,
+          6
         ]
       ],
       "entries": [
@@ -587,65 +611,57 @@
           "number": 1,
           "direction": "across",
           "row": 0,
-          "col": 0,
-          "answer": "MERİÇ",
-          "clue": "Yunanistan sınırımızı çizen Trakya nehri"
+          "col": 2,
+          "answer": "SİMİT",
+          "clue": "Susamlı, çıtır sabah kahvaltısı klasiği"
         },
         {
           "number": 5,
           "direction": "across",
           "row": 2,
           "col": 0,
-          "answer": "KEMENÇE",
-          "clue": "Karadeniz türkülerinin ruhunu veren yaylı çalgı"
+          "answer": "İNCİR",
+          "clue": "Aydın ilimizin dünyaca meşhur meyvesi"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 4,
+          "col": 0,
+          "answer": "BAĞLAMA",
+          "clue": "Aşık Veysel ve Neşet Ertaş'ın elinde dillenen telli çalgı"
         },
         {
           "number": 7,
           "direction": "across",
           "row": 6,
           "col": 0,
-          "answer": "TRABZON",
-          "clue": "Uzungöl ve kemençesiyle ünlü Doğu Karadeniz şehri"
+          "answer": "HAKKARİ",
+          "clue": "Cilo Buzulları ve ters laleleriyle ünlü il"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 1,
-          "answer": "EGE",
-          "clue": "Zeytin ağaçları ve koylarıyla ünlü bölgemiz"
+          "col": 4,
+          "answer": "MARMARA",
+          "clue": "İç denizimiz ve Türkiye'nin en kalabalık bölgesi"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
-          "col": 4,
-          "answer": "ÇİNİ",
-          "clue": "İznik ve Kütahya ile özdeşleşen sırlı seramik sanatı"
+          "col": 6,
+          "answer": "TELKARİ",
+          "clue": "Gümüş tellerin incecik işlenmesiyle yapılan Mardin sanatı"
         },
         {
           "number": 4,
           "direction": "down",
           "row": 1,
-          "col": 6,
-          "answer": "ZEYTİN",
-          "clue": "Gemlik ve Ayvalık sofralarının baş tacı meyve"
-        },
-        {
-          "number": 5,
-          "direction": "down",
-          "row": 2,
-          "col": 0,
-          "answer": "KAŞ",
-          "clue": "Dalış noktaları ve begonvilleriyle ünlü Antalya ilçesi"
-        },
-        {
-          "number": 6,
-          "direction": "down",
-          "row": 2,
-          "col": 2,
-          "answer": "MUĞLA",
-          "clue": "Bodrum, Fethiye ve Marmaris'in bağlı olduğu il"
+          "col": 1,
+          "answer": "ANKARA",
+          "clue": "Anıtkabir'in bulunduğu Türkiye Cumhuriyeti başkenti"
         }
       ]
     },
@@ -658,74 +674,74 @@
       "cols": 7,
       "revealed": [
         [
-          2,
+          3,
           2
         ]
       ],
       "entries": [
         {
-          "number": 2,
+          "number": 1,
           "direction": "across",
           "row": 0,
-          "col": 2,
-          "answer": "SİMİT",
-          "clue": "Susamlı, çıtır sabah kahvaltısı klasiği"
+          "col": 0,
+          "answer": "TUZ",
+          "clue": "İç Anadolu'daki dev beyaz göle adını veren mineral"
         },
         {
           "number": 3,
           "direction": "across",
-          "row": 2,
-          "col": 0,
-          "answer": "SÜMELA",
-          "clue": "Trabzon Maçka'da sarp kayalığa kurulu tarihi manastır"
+          "row": 1,
+          "col": 3,
+          "answer": "NANE",
+          "clue": "Cacık ve yayla çorbasına ferahlık katan ot"
         },
         {
           "number": 5,
           "direction": "across",
-          "row": 4,
+          "row": 3,
           "col": 0,
-          "answer": "AŞURE",
-          "clue": "Muharrem ayında bolluk ve bereketle pişen tatlı"
+          "answer": "ŞEFTALİ",
+          "clue": "Bursa ovalarında yetişen tüylü yaz meyvesi"
         },
         {
           "number": 7,
           "direction": "across",
           "row": 6,
-          "col": 3,
-          "answer": "MEZE",
-          "clue": "Sofraların başlangıcında sunulan soğuk lezzetler"
+          "col": 0,
+          "answer": "ÇANKIRI",
+          "clue": "Dev tuz mağarasıyla tanınan İç Anadolu ili"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
           "col": 0,
-          "answer": "KESTANE",
-          "clue": "Bursa'da şekerlemesi, sokaklarda közlemesi yapılan lezzet"
+          "answer": "TURŞU",
+          "clue": "Lahanadan salatalığa sofraların ekşi tamamlayıcısı"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 2,
-          "answer": "SAMSUN",
-          "clue": "Kurtuluş Mücadelesi'nin başladığı Karadeniz şehri"
+          "col": 6,
+          "answer": "CEVİZ",
+          "clue": "Baklava ve güllaç içine konulan besleyici kuruyemiş"
         },
         {
           "number": 4,
           "direction": "down",
-          "row": 3,
-          "col": 6,
-          "answer": "RİZE",
-          "clue": "Ayder Yaylası ve çay bahçelerinin başkenti"
+          "row": 2,
+          "col": 2,
+          "answer": "AFYON",
+          "clue": "Kaymağı, sucuğu ve termalleriyle meşhur ilimiz"
         },
         {
           "number": 6,
           "direction": "down",
-          "row": 4,
+          "row": 3,
           "col": 4,
-          "answer": "EGE",
-          "clue": "Zeytin ağaçları ve koylarıyla ünlü bölgemiz"
+          "answer": "AĞRI",
+          "clue": "Türkiye'nin en yüksek dağına adını veren il"
         }
       ]
     },
@@ -738,66 +754,74 @@
       "cols": 7,
       "revealed": [
         [
-          1,
-          1
+          2,
+          3
         ]
       ],
       "entries": [
         {
-          "number": 4,
+          "number": 2,
           "direction": "across",
-          "row": 1,
-          "col": 0,
-          "answer": "MALATYA",
-          "clue": "Dünyanın kayısı başkenti olan ilimiz"
+          "row": 0,
+          "col": 2,
+          "answer": "DOLMA",
+          "clue": "Biber veya patlıcanın pirinçli harçla doldurulmuş hali"
         },
         {
-          "number": 6,
+          "number": 5,
           "direction": "across",
-          "row": 4,
+          "row": 2,
           "col": 0,
-          "answer": "ANTALYA",
-          "clue": "Düden Şelalesi ve antik kentleriyle turizm başkenti"
+          "answer": "DOMATES",
+          "clue": "Menemen ve salçanın kırmızı vazgeçilmezi"
         },
         {
-          "number": 7,
+          "number": 8,
           "direction": "across",
-          "row": 6,
+          "row": 5,
           "col": 0,
-          "answer": "ISPARTA",
-          "clue": "Gül bahçeleri ve lavanta tarlalarıyla ünlü il"
+          "answer": "TARHANA",
+          "clue": "Yazdan kurutulup kışın pişirilen şifalı geleneksel çorba"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
-          "col": 1,
-          "answer": "NAR",
-          "clue": "Bereket simgesi, ekşisi salatalarda kullanılan meyve"
-        },
-        {
-          "number": 2,
-          "direction": "down",
-          "row": 0,
-          "col": 3,
-          "answer": "BAĞLAMA",
-          "clue": "Aşık Veysel ve Neşet Ertaş'ın elinde dillenen telli çalgı"
+          "col": 0,
+          "answer": "PİDE",
+          "clue": "Taş fırından çıkan uzun, çıtır hamur işi"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
-          "col": 6,
-          "answer": "BAKLAVA",
-          "clue": "İncecik kırk kat yufkadan yapılan şerbetli şölen tatlısı"
+          "col": 3,
+          "answer": "OVA",
+          "clue": "Çukurova ve Konya gibi verimli geniş düzlük"
         },
         {
-          "number": 5,
+          "number": 4,
           "direction": "down",
-          "row": 3,
-          "col": 0,
-          "answer": "HALI",
-          "clue": "Hereke, Uşak ve Isparta'da dokunan geleneksel zemin örtüsü"
+          "row": 0,
+          "col": 6,
+          "answer": "AKSARAY",
+          "clue": "Ihlara Vadisi ve Hasan Dağı'nın bulunduğu il"
+        },
+        {
+          "number": 6,
+          "direction": "down",
+          "row": 2,
+          "col": 4,
+          "answer": "TOKAT",
+          "clue": "Kebabı ve asma yaprağıyla ünlü Karadeniz ili"
+        },
+        {
+          "number": 7,
+          "direction": "down",
+          "row": 4,
+          "col": 1,
+          "answer": "HAN",
+          "clue": "Tarihi ticaret yollarındaki kervan konaklama yapısı"
         }
       ]
     },
@@ -810,29 +834,29 @@
       "cols": 7,
       "revealed": [
         [
-          4,
-          3
+          6,
+          5
         ]
       ],
       "entries": [
         {
-          "number": 2,
+          "number": 1,
           "direction": "across",
           "row": 0,
-          "col": 3,
-          "answer": "KAŞ",
-          "clue": "Dalış noktaları ve begonvilleriyle ünlü Antalya ilçesi"
+          "col": 0,
+          "answer": "KEŞKEK",
+          "clue": "Buğday ve etin dövülerek pişirildiği düğün yemeği"
         },
         {
-          "number": 3,
+          "number": 4,
           "direction": "across",
           "row": 2,
-          "col": 1,
-          "answer": "ZEYBEK",
-          "clue": "Ege bölgesinin ağır ve heybetli halk oyunu"
+          "col": 0,
+          "answer": "FETHİYE",
+          "clue": "Ölüdeniz ve yamaç paraşütüyle ünlü tatil cenneti"
         },
         {
-          "number": 5,
+          "number": 6,
           "direction": "across",
           "row": 4,
           "col": 0,
@@ -840,36 +864,36 @@
           "clue": "Domates, biber ve yumurtanın tavadaki efsane buluşması"
         },
         {
-          "number": 6,
+          "number": 7,
           "direction": "across",
           "row": 6,
-          "col": 0,
-          "answer": "DENİZLİ",
-          "clue": "Horozu ve Pamukkale travertenleriyle ünlü ilimiz"
-        },
-        {
-          "number": 1,
-          "direction": "down",
-          "row": 0,
-          "col": 1,
-          "answer": "GÖZLEME",
-          "clue": "Sac üzerinde pişirilen incecik açılmış Anadolu hamuru"
+          "col": 2,
+          "answer": "KİLİS",
+          "clue": "Tava yemeği ve zeytinyağıyla bilinen sınır ilimiz"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 3,
+          "answer": "KAHVE",
+          "clue": "Kırk yıl hatırı olan köpüklü geleneksel içecek"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 0,
+          "col": 5,
           "answer": "KAYSERİ",
           "clue": "Mantısı, pastırması ve Erciyes'iyle ünlü ilimiz"
         },
         {
-          "number": 4,
+          "number": 5,
           "direction": "down",
           "row": 2,
-          "col": 5,
-          "answer": "EGE",
-          "clue": "Zeytin ağaçları ve koylarıyla ünlü bölgemiz"
+          "col": 1,
+          "answer": "EFES",
+          "clue": "İzmir Selçuk'taki görkemli antik kent"
         }
       ]
     },
@@ -885,58 +909,58 @@
         {
           "number": 4,
           "direction": "across",
-          "row": 1,
-          "col": 3,
-          "answer": "BOZA",
-          "clue": "Kış akşamlarının tarçınlı ve leblebili içeceği"
+          "row": 2,
+          "col": 2,
+          "answer": "ÇORBA",
+          "clue": "Mercimek ve ezogelinle sofranın sıcak başlangıcı"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 4,
+          "col": 0,
+          "answer": "TOROS",
+          "clue": "Akdeniz kıyılarına paralel uzanan sıradağlar"
         },
         {
           "number": 6,
           "direction": "across",
-          "row": 4,
-          "col": 0,
-          "answer": "MARMARA",
-          "clue": "İç denizimiz ve Türkiye'nin en kalabalık bölgesi"
-        },
-        {
-          "number": 7,
-          "direction": "across",
           "row": 6,
           "col": 0,
-          "answer": "ELAZIĞ",
-          "clue": "Harput Kalesi ve orcik tatlısıyla bilinen il"
+          "answer": "LİMON",
+          "clue": "Mersin ve Adana bahçelerinin ekşi meyvesi"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
           "col": 4,
-          "answer": "TOPKAPI",
-          "clue": "Osmanlı padişahlarına yüzyıllar boyu ev sahipliği yapan saray"
+          "answer": "GİRESUN",
+          "clue": "Fındık ve kiraz diyarı yeşil Karadeniz ili"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 6,
-          "answer": "ŞALGAM",
-          "clue": "Mor havuçtan yapılan acılı veya acısız Adana içeceği"
+          "answer": "TRABZON",
+          "clue": "Uzungöl ve kemençesiyle ünlü Doğu Karadeniz şehri"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 1,
           "col": 0,
-          "answer": "ÜZÜM",
-          "clue": "Manisa bağlarında yetişen şifalı yaz meyvesi"
+          "answer": "PESTİL",
+          "clue": "Gümüşhane'nin dut ve cevizle yapılan enerji tatlısı"
         },
         {
-          "number": 5,
+          "number": 4,
           "direction": "down",
           "row": 2,
           "col": 2,
-          "answer": "BURSA",
-          "clue": "Uludağ, kestane şekeri ve İskender'in şehri"
+          "answer": "ÇORUM",
+          "clue": "Leblebisi ve Hattuşa'sıyla bilinen ilimiz"
         }
       ]
     },
@@ -950,60 +974,60 @@
       "revealed": [],
       "entries": [
         {
-          "number": 1,
+          "number": 4,
           "direction": "across",
-          "row": 0,
+          "row": 2,
           "col": 0,
-          "answer": "DİCLE",
-          "clue": "Diyarbakır surlarının yanından akan kadim ırmak"
+          "answer": "KESTANE",
+          "clue": "Bursa'da şekerlemesi, sokaklarda közlemesi yapılan lezzet"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 4,
+          "col": 0,
+          "answer": "MALATYA",
+          "clue": "Dünyanın kayısı başkenti olan ilimiz"
         },
         {
           "number": 6,
           "direction": "across",
-          "row": 4,
-          "col": 0,
-          "answer": "KADAYIF",
-          "clue": "Tel veya burma çeşitleriyle sevilen çıtır tatlı"
+          "row": 6,
+          "col": 1,
+          "answer": "MERİÇ",
+          "clue": "Yunanistan sınırımızı çizen Trakya nehri"
         },
         {
-          "number": 7,
-          "direction": "across",
-          "row": 6,
-          "col": 0,
-          "answer": "MANİSA",
-          "clue": "Mesir macunu ve Spil Dağı ile bilinen Ege ili"
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "FASULYE",
+          "clue": "İspir ve Çayeli çeşitleriyle pilavın kadim dostu"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 4,
-          "answer": "ERCİYES",
-          "clue": "Kayseri'de yükselen görkemli sönmüş yanardağ"
+          "answer": "ABANT",
+          "clue": "Bolu'nun nilüferli ve çam kokulu krater gölü"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 0,
+          "row": 1,
           "col": 6,
-          "answer": "KÜNEFE",
-          "clue": "Sıcak şerbetli, uzayan peynirli Hatay tatlısı"
+          "answer": "KEBAP",
+          "clue": "Adana ve Urfa usulüyle ünlü ızgara et yemeği"
         },
         {
           "number": 4,
           "direction": "down",
           "row": 2,
           "col": 0,
-          "answer": "LOKUM",
-          "clue": "Türk kahvesinin yanında ikram edilen tatlı"
-        },
-        {
-          "number": 5,
-          "direction": "down",
-          "row": 2,
-          "col": 2,
-          "answer": "AYDIN",
-          "clue": "Didim ve Kuşadası'na ev sahipliği yapan Ege ili"
+          "answer": "KÖME",
+          "clue": "Cevizli sucuk olarak da bilinen Gümüşhane lezzeti"
         }
       ]
     },
@@ -1017,76 +1041,76 @@
       "revealed": [],
       "entries": [
         {
-          "number": 1,
-          "direction": "across",
-          "row": 0,
-          "col": 0,
-          "answer": "ELMA",
-          "clue": "Amasya ve Isparta bahçelerinin meşhur meyvesi"
-        },
-        {
           "number": 4,
           "direction": "across",
-          "row": 2,
-          "col": 1,
-          "answer": "ERZURUM",
-          "clue": "Cağ kebabı ve Palandöken'iyle ünlü Doğu şehri"
+          "row": 1,
+          "col": 0,
+          "answer": "İSTANBUL",
+          "clue": "İki kıtayı birleştiren yedi tepeli eşsiz metropol"
         },
         {
-          "number": 7,
+          "number": 6,
           "direction": "across",
-          "row": 4,
-          "col": 0,
-          "answer": "OYA",
-          "clue": "Anadolu kadınlarının tığ ve iğneyle işlediği zarif kenar süsü"
+          "row": 3,
+          "col": 4,
+          "answer": "EBRU",
+          "clue": "Su üzerine boya serpilerek yapılan geleneksel sanat"
         },
         {
           "number": 8,
           "direction": "across",
           "row": 5,
-          "col": 2,
-          "answer": "REVANİ",
-          "clue": "İrmikle hazırlanan limon aromalı şerbetli tatlı"
+          "col": 0,
+          "answer": "CEZERYE",
+          "clue": "Mersin'in havuç ve cevizle yapılan enerji tatlısı"
         },
         {
           "number": 9,
           "direction": "across",
           "row": 7,
-          "col": 4,
-          "answer": "HAN",
-          "clue": "Tarihi ticaret yollarındaki kervan konaklama yapısı"
+          "col": 1,
+          "answer": "ŞEHRİYE",
+          "clue": "Pilav ve çorbalara lezzet katan ince hamur tanesi"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 0,
+          "answer": "ŞİRİNCE",
+          "clue": "Tarihi Rum evleriyle ünlü masalsı İzmir köyü"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 2,
-          "answer": "MARMARİS",
-          "clue": "Çam ormanlarıyla çevrili Muğla tatil beldesi"
+          "col": 3,
+          "answer": "BAL",
+          "clue": "Anzer ve çiçek çeşitleriyle ünlü şifa kaynağı"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
-          "col": 5,
-          "answer": "PERİBACA",
-          "clue": "Ürgüp ve Göreme'deki doğa harikası tüf oluşumu"
+          "col": 7,
+          "answer": "OLTU",
+          "clue": "Erzurum'da tespih yapılan parlak siyah taş"
         },
         {
           "number": 5,
           "direction": "down",
-          "row": 2,
-          "col": 7,
-          "answer": "MERİÇ",
-          "clue": "Yunanistan sınırımızı çizen Trakya nehri"
+          "row": 3,
+          "col": 2,
+          "answer": "DÜZCE",
+          "clue": "Şelaleleri ve yaylalarıyla Batı Karadeniz ilimiz"
         },
         {
-          "number": 6,
+          "number": 7,
           "direction": "down",
           "row": 3,
-          "col": 0,
-          "answer": "BOĞAZ",
-          "clue": "İstanbul'da Asya ile Avrupa'yı ayıran su yolu"
+          "col": 5,
+          "answer": "BEYTİ",
+          "clue": "Lavaşa sarılıp yoğurt ve sosla sunulan kebap"
         }
       ]
     },
@@ -1100,68 +1124,68 @@
       "revealed": [],
       "entries": [
         {
-          "number": 5,
+          "number": 2,
           "direction": "across",
-          "row": 2,
-          "col": 1,
-          "answer": "HELVA",
-          "clue": "İrmik veya unla kavrulan geleneksel tatlı"
+          "row": 1,
+          "col": 0,
+          "answer": "OYA",
+          "clue": "Anadolu kadınlarının tığ ve iğneyle işlediği zarif kenar süsü"
         },
         {
-          "number": 6,
+          "number": 5,
           "direction": "across",
-          "row": 4,
-          "col": 1,
-          "answer": "ALAÇATI",
-          "clue": "Rüzgar sörfü ve taş değirmenleriyle ünlü Çeşme beldesi"
+          "row": 3,
+          "col": 0,
+          "answer": "TEKİRDAĞ",
+          "clue": "Köftesi ve kiraz festivaliyle meşhur Trakya ili"
         },
         {
           "number": 7,
           "direction": "across",
-          "row": 6,
+          "row": 5,
           "col": 0,
-          "answer": "KAŞ",
-          "clue": "Dalış noktaları ve begonvilleriyle ünlü Antalya ilçesi"
+          "answer": "KEMENÇE",
+          "clue": "Karadeniz türkülerinin ruhunu veren yaylı çalgı"
         },
         {
           "number": 8,
           "direction": "across",
           "row": 7,
-          "col": 3,
-          "answer": "ADANA",
-          "clue": "Taşköprü, şalgam ve acılı kebabın şehri"
+          "col": 2,
+          "answer": "URLA",
+          "clue": "Enginarı ve sanat sokağıyla ünlü İzmir ilçesi"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
-          "col": 1,
-          "answer": "KAHRAMAN",
-          "clue": "İstiklal madalyalı ...maraş şehrimizin unvanı"
-        },
-        {
-          "number": 2,
-          "direction": "down",
-          "row": 0,
-          "col": 3,
-          "answer": "SALDA",
-          "clue": "Burdur'daki beyaz kumsallı turkuaz göl"
+          "col": 0,
+          "answer": "PORTAKAL",
+          "clue": "Finike ve Dörtyol bahçelerinin C vitamini deposu"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 0,
-          "col": 7,
-          "answer": "PASTIRMA",
-          "clue": "Çemenle kaplanarak kurutulan Kayseri lezzeti"
+          "row": 1,
+          "col": 4,
+          "answer": "HORON",
+          "clue": "Karadeniz'in kemençe eşliğinde oynanan hızlı halk oyunu"
         },
         {
           "number": 4,
           "direction": "down",
-          "row": 1,
-          "col": 5,
-          "answer": "SAKARYA",
-          "clue": "Adını büyük ırmaktan alan Marmara ilimiz"
+          "row": 2,
+          "col": 6,
+          "answer": "BADEM",
+          "clue": "Datça yarımadasıyla özdeşleşen lezzetli kuruyemiş"
+        },
+        {
+          "number": 6,
+          "direction": "down",
+          "row": 3,
+          "col": 2,
+          "answer": "KUMRU",
+          "clue": "Çeşme ve İzmir'in susamlı sıcak sandviçi"
         }
       ]
     },
@@ -1178,73 +1202,65 @@
           "number": 1,
           "direction": "across",
           "row": 0,
-          "col": 3,
-          "answer": "KİLİM",
-          "clue": "Düz dokuma tekniğiyle üretilen motifli Anadolu örtüsü"
+          "col": 0,
+          "answer": "MERSİN",
+          "clue": "Tantunisi ve limanıyla Akdeniz'in canlı şehri"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 2,
+          "col": 5,
+          "answer": "GÖL",
+          "clue": "Van, Tuz ve Beyşehir gibi iç su kütlesi"
         },
         {
           "number": 6,
           "direction": "across",
-          "row": 2,
-          "col": 4,
-          "answer": "KARS",
-          "clue": "Kaşarı, kazı ve Ani Harabeleri ile bilinen şehir"
+          "row": 5,
+          "col": 0,
+          "answer": "PERİBACA",
+          "clue": "Ürgüp ve Göreme'deki doğa harikası tüf oluşumu"
         },
         {
           "number": 7,
           "direction": "across",
-          "row": 3,
-          "col": 0,
-          "answer": "NAR",
-          "clue": "Bereket simgesi, ekşisi salatalarda kullanılan meyve"
-        },
-        {
-          "number": 8,
-          "direction": "across",
-          "row": 5,
-          "col": 1,
-          "answer": "MARDİN",
-          "clue": "Taş evleri ve Mezopotamya manzarasıyla masalsı şehir"
-        },
-        {
-          "number": 9,
-          "direction": "across",
           "row": 7,
-          "col": 1,
-          "answer": "SAFRAN",
-          "clue": "Karabük'ün tarihi konaklı ilçesine adını veren değerli bitki"
+          "col": 0,
+          "answer": "LÜLETAŞI",
+          "clue": "Eskişehir'de çıkarılan beyaz ve hafif işlemelik taş"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 4,
-          "answer": "İSKENDER",
-          "clue": "Tereyağı ve yoğurtla taçlanan Bursa döner klasiği"
+          "col": 1,
+          "answer": "EDİRNE",
+          "clue": "Selimiye Camii ve Kırkpınar güreşlerinin şehri"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
-          "col": 7,
-          "answer": "MESİR",
-          "clue": "Manisa'da her bahar saçılan 41 baharatlı şifa macunu"
+          "col": 3,
+          "answer": "SELİMİYE",
+          "clue": "Mimar Sinan'ın Edirne'deki ustalık eseri cami"
         },
         {
           "number": 4,
           "direction": "down",
           "row": 1,
-          "col": 0,
-          "answer": "ÇİNİ",
-          "clue": "İznik ve Kütahya ile özdeşleşen sırlı seramik sanatı"
+          "col": 7,
+          "answer": "ALAÇATI",
+          "clue": "Rüzgar sörfü ve taş değirmenleriyle ünlü Çeşme beldesi"
         },
         {
           "number": 5,
           "direction": "down",
-          "row": 1,
-          "col": 2,
-          "answer": "TARHANA",
-          "clue": "Yazdan kurutulup kışın pişirilen şifalı geleneksel çorba"
+          "row": 2,
+          "col": 5,
+          "answer": "GALATA",
+          "clue": "İstanbul'un siluetini süsleyen tarihi Ceneviz kulesi"
         }
       ]
     },
@@ -1258,68 +1274,68 @@
       "revealed": [],
       "entries": [
         {
-          "number": 1,
+          "number": 4,
           "direction": "across",
-          "row": 0,
+          "row": 1,
           "col": 1,
-          "answer": "ULUDAĞ",
-          "clue": "Bursa'daki ünlü kış turizmi ve kayak merkezi"
+          "answer": "ISPARTA",
+          "clue": "Gül bahçeleri ve lavanta tarlalarıyla ünlü il"
         },
         {
-          "number": 5,
+          "number": 6,
           "direction": "across",
-          "row": 2,
+          "row": 3,
           "col": 0,
-          "answer": "ŞEHRİYE",
-          "clue": "Pilav ve çorbalara lezzet katan ince hamur tanesi"
+          "answer": "AYASOFYA",
+          "clue": "İstanbul'un bin beş yüz yıllık mimari başyapıtı"
         },
         {
           "number": 7,
           "direction": "across",
-          "row": 4,
-          "col": 2,
-          "answer": "ALANYA",
-          "clue": "Kızıl Kule ve Kleopatra Plajı ile ünlü ilçe"
+          "row": 5,
+          "col": 4,
+          "answer": "AYVA",
+          "clue": "Tatlısı kaymakla sunulan sonbahar meyvesi"
         },
         {
           "number": 8,
           "direction": "across",
-          "row": 6,
+          "row": 7,
           "col": 1,
-          "answer": "TULUMBA",
-          "clue": "Çıtır şerbetli sevilen sokak tatlısı"
+          "answer": "LEBLEBİ",
+          "clue": "Çorum ile özdeşleşen kavrulmuş nohut çerezi"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 2,
+          "answer": "OSMANİYE",
+          "clue": "Yer fıstığıyla ünlü Çukurova ilimiz"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 2,
-          "answer": "LAHMACUN",
-          "clue": "İnce hamur üstü baharatlı kıymayla fırınlanan lezzet"
+          "col": 4,
+          "answer": "YALOVA",
+          "clue": "Termal kaplıcaları ve Marmara sahiliyle bilinen il"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
-          "col": 5,
-          "answer": "AFYON",
-          "clue": "Kaymağı, sucuğu ve termalleriyle meşhur ilimiz"
-        },
-        {
-          "number": 4,
-          "direction": "down",
-          "row": 1,
-          "col": 0,
-          "answer": "UŞAK",
-          "clue": "Tarhanası ve halısıyla bilinen Ege ilimiz"
-        },
-        {
-          "number": 6,
-          "direction": "down",
-          "row": 3,
           "col": 7,
-          "answer": "ÇANAK",
-          "clue": "Avanos'ta Kızılırmak kiliyle çarkta döndürülen toprak kap"
+          "answer": "MALABADİ",
+          "clue": "Diyarbakır Silvan'daki görkemli Artuklu taş köprüsü"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 2,
+          "col": 0,
+          "answer": "CACIK",
+          "clue": "Yoğurt, salatalık ve naneyle yapılan serin lezzet"
         }
       ]
     },
@@ -1333,76 +1349,68 @@
       "revealed": [],
       "entries": [
         {
-          "number": 4,
+          "number": 1,
           "direction": "across",
-          "row": 1,
-          "col": 1,
-          "answer": "FETHİYE",
-          "clue": "Ölüdeniz ve yamaç paraşütüyle ünlü tatil cenneti"
+          "row": 0,
+          "col": 0,
+          "answer": "MANDALİN",
+          "clue": "Bodrum bahçelerinin mis kokulu turunçgili"
         },
         {
           "number": 5,
           "direction": "across",
           "row": 3,
-          "col": 1,
-          "answer": "KOCAELİ",
-          "clue": "İzmit pişmaniyesi ve sanayisiyle tanınan Marmara ili"
+          "col": 0,
+          "answer": "SÜLEYMAN",
+          "clue": "Mimar Sinan'ın İstanbul siluetindeki kalfalık eseri ...iye"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 5,
+          "col": 5,
+          "answer": "CAĞ",
+          "clue": "Erzurum'un yatay şişte pişen meşhur kebabı"
         },
         {
           "number": 8,
           "direction": "across",
-          "row": 5,
-          "col": 2,
-          "answer": "AYDIN",
-          "clue": "Didim ve Kuşadası'na ev sahipliği yapan Ege ili"
-        },
-        {
-          "number": 9,
-          "direction": "across",
           "row": 7,
           "col": 0,
-          "answer": "KOKOREÇ",
-          "clue": "Baharatlı, közde pişen meşhur sokak lezzeti"
-        },
-        {
-          "number": 1,
-          "direction": "down",
-          "row": 0,
-          "col": 2,
-          "answer": "KEKOVA",
-          "clue": "Tekne turuyla gezilen batık şehir koyu"
+          "answer": "HARRAN",
+          "clue": "Konik kubbeli tarihi evleriyle Şanlıurfa ilçesi"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 5,
-          "answer": "PİDE",
-          "clue": "Taş fırından çıkan uzun, çıtır hamur işi"
+          "answer": "LAHMACUN",
+          "clue": "İnce hamur üstü baharatlı kıymayla fırınlanan lezzet"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 0,
-          "col": 7,
-          "answer": "MESİR",
-          "clue": "Manisa'da her bahar saçılan 41 baharatlı şifa macunu"
+          "row": 2,
+          "col": 1,
+          "answer": "SÜMELA",
+          "clue": "Trabzon Maçka'da sarp kayalığa kurulu tarihi manastır"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 2,
+          "col": 3,
+          "answer": "PEYNİR",
+          "clue": "Ezine, tulum ve kaşar gibi onlarca yöresel çeşidi olan gıda"
         },
         {
           "number": 6,
           "direction": "down",
           "row": 3,
-          "col": 4,
-          "answer": "AYDER",
-          "clue": "Rize Çamlıhemşin'in sisli ve yeşil yaylası"
-        },
-        {
-          "number": 7,
-          "direction": "down",
-          "row": 4,
-          "col": 0,
-          "answer": "UŞAK",
-          "clue": "Tarhanası ve halısıyla bilinen Ege ilimiz"
+          "col": 7,
+          "answer": "NİĞDE",
+          "clue": "Aladağlar ve patatesiyle bilinen İç Anadolu ili"
         }
       ]
     }

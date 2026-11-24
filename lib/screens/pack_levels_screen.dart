@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import '../features/notebook/word_notebook_screen.dart';
 import '../models/puzzle_models.dart';
 import '../state/app_state.dart';
 import '../utils/turkish_text.dart';
@@ -54,6 +55,19 @@ class PackLevelsScreen extends StatelessWidget {
                     style: const TextStyle(fontWeight: FontWeight.w800),
                   ),
                   actions: [
+                    if (pack.language == 'en')
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder: (_) =>
+                                  WordNotebookScreen(appState: appState),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.menu_book_rounded),
+                        tooltip: 'Kelime Defteri',
+                      ),
                     IconButton(
                       onPressed: () {
                         Navigator.of(context).push(

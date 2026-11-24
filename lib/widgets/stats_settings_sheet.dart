@@ -19,7 +19,7 @@ Future<void> showStatsAndSettingsSheet(
         builder: (_, _) {
           final fastest = appState.fastestSolveSeconds;
           return SafeArea(
-            child: Padding(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 22),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -97,6 +97,18 @@ Future<void> showStatsAndSettingsSheet(
                         label: 'Dev Bulmaca',
                         value: '${appState.completedMegaCount}',
                       ),
+                      _MetricTile(
+                        icon: Icons.speed_rounded,
+                        color: const Color(0xFFDC2626),
+                        label: 'Sprint Rekoru',
+                        value: '${appState.bestSprintScore}',
+                      ),
+                      _MetricTile(
+                        icon: Icons.menu_book_rounded,
+                        color: const Color(0xFF1D4ED8),
+                        label: 'EN Defter',
+                        value: '${appState.learnedEnglishCount}',
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -123,10 +135,10 @@ Future<void> showStatsAndSettingsSheet(
                           value: appState.soundEnabled,
                           onChanged: appState.toggleSound,
                           title: const Text(
-                            'Tuş Sesleri',
+                            'Ses Efektleri',
                             style: TextStyle(fontWeight: FontWeight.w700),
                           ),
-                          subtitle: const Text('Klavye dokunuş tıklama sesi'),
+                          subtitle: const Text('Tuş, kombo, ipucu ve kutlama sesleri'),
                           secondary: const Icon(Icons.volume_up_rounded),
                         ),
                       ],

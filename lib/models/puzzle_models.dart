@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import '../core/models/notebook_models.dart';
 import '../utils/turkish_text.dart';
 
 enum WordDirection {
@@ -344,6 +345,54 @@ class MegaBank {
   }
 }
 
+class SprintPuzzleItem {
+  const SprintPuzzleItem({
+    required this.language,
+    required this.primaryColor,
+    required this.secondaryColor,
+    required this.surfaceColor,
+    required this.puzzle,
+  });
+
+  final String language;
+  final Color primaryColor;
+  final Color secondaryColor;
+  final Color surfaceColor;
+  final CrosswordPuzzle puzzle;
+
+  factory SprintPuzzleItem.fromJson(Map<String, dynamic> json) {
+    return SprintPuzzleItem(
+      language: json['language'] as String,
+      primaryColor: TurkishText.colorFromHex(json['primaryColor'] as String),
+      secondaryColor: TurkishText.colorFromHex(json['secondaryColor'] as String),
+      surfaceColor: TurkishText.colorFromHex(json['surfaceColor'] as String),
+      puzzle: CrosswordPuzzle.fromJson(json['puzzle'] as Map<String, dynamic>),
+    );
+  }
+}
+
+class SprintBank {
+  const SprintBank({
+    required this.id,
+    required this.name,
+    required this.items,
+  });
+
+  final String id;
+  final String name;
+  final List<SprintPuzzleItem> items;
+
+  factory SprintBank.fromJson(Map<String, dynamic> json) {
+    return SprintBank(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      items: (json['items'] as List<dynamic>)
+          .map((e) => SprintPuzzleItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+}
+
 class PuzzleSaveState {
   const PuzzleSaveState({
     required this.puzzleId,
@@ -426,6 +475,8 @@ class PlayerProfile {
     this.coins = 150,
     this.score = 0,
     this.bestCombo = 0,
+    this.bestSprintScore = 0,
+    this.bestSprintPuzzles = 0,
     this.letterHintTickets = 1,
     this.wordHintTickets = 0,
     this.checkHintTickets = 1,
@@ -439,12 +490,15 @@ class PlayerProfile {
     this.unlockedBackgroundIds = const {},
     this.unlockedMegaIds = const {},
     this.claimedMissionIds = const {},
+    this.learnedEnglishWords = const {},
     this.puzzleStates = const {},
   });
 
   final int coins;
   final int score;
   final int bestCombo;
+  final int bestSprintScore;
+  final int bestSprintPuzzles;
   final int letterHintTickets;
   final int wordHintTickets;
   final int checkHintTickets;
@@ -458,12 +512,15 @@ class PlayerProfile {
   final Set<String> unlockedBackgroundIds;
   final Set<String> unlockedMegaIds;
   final Set<String> claimedMissionIds;
+  final Map<String, LearnedWord> learnedEnglishWords;
   final Map<String, PuzzleSaveState> puzzleStates;
 
   PlayerProfile copyWith({
     int? coins,
     int? score,
     int? bestCombo,
+    int? bestSprintScore,
+    int? bestSprintPuzzles,
     int? letterHintTickets,
     int? wordHintTickets,
     int? checkHintTickets,
@@ -477,12 +534,15 @@ class PlayerProfile {
     Set<String>? unlockedBackgroundIds,
     Set<String>? unlockedMegaIds,
     Set<String>? claimedMissionIds,
+    Map<String, LearnedWord>? learnedEnglishWords,
     Map<String, PuzzleSaveState>? puzzleStates,
   }) {
     return PlayerProfile(
       coins: coins ?? this.coins,
       score: score ?? this.score,
       bestCombo: bestCombo ?? this.bestCombo,
+      bestSprintScore: bestSprintScore ?? this.bestSprintScore,
+      bestSprintPuzzles: bestSprintPuzzles ?? this.bestSprintPuzzles,
       letterHintTickets: letterHintTickets ?? this.letterHintTickets,
       wordHintTickets: wordHintTickets ?? this.wordHintTickets,
       checkHintTickets: checkHintTickets ?? this.checkHintTickets,
@@ -497,6 +557,7 @@ class PlayerProfile {
           unlockedBackgroundIds ?? this.unlockedBackgroundIds,
       unlockedMegaIds: unlockedMegaIds ?? this.unlockedMegaIds,
       claimedMissionIds: claimedMissionIds ?? this.claimedMissionIds,
+      learnedEnglishWords: learnedEnglishWords ?? this.learnedEnglishWords,
       puzzleStates: puzzleStates ?? this.puzzleStates,
     );
   }
@@ -505,6 +566,8 @@ class PlayerProfile {
         'coins': coins,
         'score': score,
         'bestCombo': bestCombo,
+        'bestSprintScore': bestSprintScore,
+        'bestSprintPuzzles': bestSprintPuzzles,
         'letterHintTickets': letterHintTickets,
         'wordHintTickets': wordHintTickets,
         'checkHintTickets': checkHintTickets,
@@ -518,11 +581,15 @@ class PlayerProfile {
         'unlockedBackgroundIds': unlockedBackgroundIds.toList(),
         'unlockedMegaIds': unlockedMegaIds.toList(),
         'claimedMissionIds': claimedMissionIds.toList(),
+        'learnedEnglishWords':
+            learnedEnglishWords.map((k, v) => MapEntry(k, v.toJson())),
         'puzzleStates': puzzleStates.map((k, v) => MapEntry(k, v.toJson())),
       };
 
   factory PlayerProfile.fromJson(Map<String, dynamic> json) {
     final statesRaw = (json['puzzleStates'] as Map<String, dynamic>? ?? {});
+    final wordsRaw =
+        (json['learnedEnglishWords'] as Map<String, dynamic>? ?? {});
     final dailyRaw = (json['completedDailyDates'] as List<dynamic>? ?? []);
     final bgRaw = (json['unlockedBackgroundIds'] as List<dynamic>? ?? []);
     final megaRaw = (json['unlockedMegaIds'] as List<dynamic>? ?? []);
@@ -531,6 +598,8 @@ class PlayerProfile {
       coins: json['coins'] as int? ?? 150,
       score: json['score'] as int? ?? 0,
       bestCombo: json['bestCombo'] as int? ?? 0,
+      bestSprintScore: json['bestSprintScore'] as int? ?? 0,
+      bestSprintPuzzles: json['bestSprintPuzzles'] as int? ?? 0,
       letterHintTickets: json['letterHintTickets'] as int? ?? 1,
       wordHintTickets: json['wordHintTickets'] as int? ?? 0,
       checkHintTickets: json['checkHintTickets'] as int? ?? 1,
@@ -545,6 +614,9 @@ class PlayerProfile {
       unlockedBackgroundIds: bgRaw.map((e) => e as String).toSet(),
       unlockedMegaIds: megaRaw.map((e) => e as String).toSet(),
       claimedMissionIds: missionRaw.map((e) => e as String).toSet(),
+      learnedEnglishWords: wordsRaw.map(
+        (k, v) => MapEntry(k, LearnedWord.fromJson(v as Map<String, dynamic>)),
+      ),
       puzzleStates: statesRaw.map(
         (k, v) => MapEntry(k, PuzzleSaveState.fromJson(v as Map<String, dynamic>)),
       ),

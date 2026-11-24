@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import '../core/economy/hint_pricing.dart';
+import '../core/models/notebook_models.dart';
 import '../models/background_models.dart';
 import '../models/puzzle_models.dart';
 import '../models/retention_models.dart';
@@ -41,6 +43,20 @@ class ActionOutcome {
   final String message;
 }
 
+class HintChargeResult {
+  const HintChargeResult({
+    required this.paid,
+    required this.usedTicket,
+    required this.usedScore,
+    required this.amountPaid,
+  });
+
+  final bool paid;
+  final bool usedTicket;
+  final bool usedScore;
+  final int amountPaid;
+}
+
 class AppState extends ChangeNotifier {
   AppState({
     PuzzleRepository? repository,
@@ -52,8 +68,8 @@ class AppState extends ChangeNotifier {
         feedback = feedback ?? FeedbackService(),
         rewardAdService = rewardAdService ?? const PlaceholderRewardAdService();
 
-  static const int letterHintCost = 15;
-  static const int wordHintCost = 40;
+  static const int letterHintCost = 10;
+  static const int wordHintCost = 25;
   static const int checkMistakesCost = 10;
 
   final PuzzleRepository _repository;
@@ -66,6 +82,7 @@ class AppState extends ChangeNotifier {
   List<ConceptPack> _packs = const [];
   DailyBank? _dailyBank;
   MegaBank? _megaBank;
+  SprintBank? _sprintBank;
   PlayerProfile _profile = const PlayerProfile();
 
   bool get isLoading => _loading;
@@ -73,17 +90,28 @@ class AppState extends ChangeNotifier {
   List<ConceptPack> get packs => _packs;
   DailyBank? get dailyBank => _dailyBank;
   MegaBank? get megaBank => _megaBank;
+  SprintBank? get sprintBank => _sprintBank;
   PlayerProfile get profile => _profile;
 
   int get coins => _profile.coins;
   int get score => _profile.score;
   int get bestCombo => _profile.bestCombo;
+  int get bestSprintScore => _profile.bestSprintScore;
+  int get bestSprintPuzzles => _profile.bestSprintPuzzles;
   int get letterHintTickets => _profile.letterHintTickets;
   int get wordHintTickets => _profile.wordHintTickets;
   int get checkHintTickets => _profile.checkHintTickets;
   int get dailyStreak => _profile.dailyStreak;
   bool get soundEnabled => _profile.soundEnabled;
   bool get hapticsEnabled => _profile.hapticsEnabled;
+
+  List<LearnedWord> get learnedEnglishWords {
+    final list = _profile.learnedEnglishWords.values.toList();
+    list.sort((a, b) => b.firstLearnedIso.compareTo(a.firstLearnedIso));
+    return list;
+  }
+
+  int get learnedEnglishCount => _profile.learnedEnglishWords.length;
 
   String get todayDateKey => TurkishText.dateKey(DateTime.now());
   String get todayDailyStorageKey => 'daily_$todayDateKey';
@@ -112,6 +140,7 @@ class AppState extends ChangeNotifier {
       _packs = content.packs;
       _dailyBank = content.dailyBank;
       _megaBank = content.megaBank;
+      _sprintBank = content.sprintBank;
       _profile = loadedProfile;
       _syncFeedbackPrefs();
     } catch (e) {
@@ -232,11 +261,13 @@ class AppState extends ChangeNotifier {
     return true;
   }
 
-  /// Önce oyuncunun ipucu bilet stoğunu kullanır, bilet yoksa altın harcar.
-  /// Dönüş: (başarılı mı, bilet mi kullanıldı)
-  Future<(bool paid, bool usedTicket)> useHintTicketOrCoins(
+  /// Kademeli artan ipucu ödemesi:
+  /// 1) Önce ücretsiz ipucu bilet hakkını kullanır,
+  /// 2) Bilet yoksa artan Altın bedelini (10->15->25->40...) tahsil eder,
+  /// 3) Altın yetmezse otomatik Puan karşılığı (4x) ile öder!
+  Future<HintChargeResult> useEscalatingHint(
     HintTicketType type,
-    int coinCost,
+    int previousPaidUses,
   ) async {
     switch (type) {
       case HintTicketType.letter:
@@ -246,7 +277,12 @@ class AppState extends ChangeNotifier {
           );
           notifyListeners();
           await _storage.saveProfile(_profile);
-          return (true, true);
+          return const HintChargeResult(
+            paid: true,
+            usedTicket: true,
+            usedScore: false,
+            amountPaid: 0,
+          );
         }
       case HintTicketType.word:
         if (_profile.wordHintTickets > 0) {
@@ -255,7 +291,12 @@ class AppState extends ChangeNotifier {
           );
           notifyListeners();
           await _storage.saveProfile(_profile);
-          return (true, true);
+          return const HintChargeResult(
+            paid: true,
+            usedTicket: true,
+            usedScore: false,
+            amountPaid: 0,
+          );
         }
       case HintTicketType.check:
         if (_profile.checkHintTickets > 0) {
@@ -264,11 +305,116 @@ class AppState extends ChangeNotifier {
           );
           notifyListeners();
           await _storage.saveProfile(_profile);
-          return (true, true);
+          return const HintChargeResult(
+            paid: true,
+            usedTicket: true,
+            usedScore: false,
+            amountPaid: 0,
+          );
         }
     }
-    final paid = await spendCoins(coinCost);
-    return (paid, false);
+
+    final coinCost = HintPricingCurve.coinCostFor(type, previousPaidUses);
+    if (_profile.coins >= coinCost) {
+      _profile = _profile.copyWith(coins: _profile.coins - coinCost);
+      notifyListeners();
+      await _storage.saveProfile(_profile);
+      return HintChargeResult(
+        paid: true,
+        usedTicket: false,
+        usedScore: false,
+        amountPaid: coinCost,
+      );
+    }
+
+    final scoreCost = HintPricingCurve.scoreCostFor(type, previousPaidUses);
+    if (_profile.score >= scoreCost) {
+      _profile = _profile.copyWith(score: _profile.score - scoreCost);
+      notifyListeners();
+      await _storage.saveProfile(_profile);
+      return HintChargeResult(
+        paid: true,
+        usedTicket: false,
+        usedScore: true,
+        amountPaid: scoreCost,
+      );
+    }
+
+    return HintChargeResult(
+      paid: false,
+      usedTicket: false,
+      usedScore: false,
+      amountPaid: coinCost,
+    );
+  }
+
+  /// Çözülen İngilizce kelimeleri otomatik "Kelime Defteri"ne kaydeder.
+  Future<void> recordLearnedEnglishWords(List<PuzzleEntry> entries) async {
+    if (entries.isEmpty) return;
+    final updated = Map<String, LearnedWord>.from(_profile.learnedEnglishWords);
+    final nowIso = DateTime.now().toIso8601String();
+    var changed = false;
+
+    for (final entry in entries) {
+      final key = entry.answer.trim().toUpperCase();
+      if (key.isEmpty) continue;
+      final cleanedClue = entry.clue.replaceFirst(RegExp(r'^\[.*?\]\s*'), '');
+      final parsed = LearnedWord.parseClue(cleanedClue);
+      final existing = updated[key];
+      if (existing != null) {
+        updated[key] = existing.copyWith(timesSolved: existing.timesSolved + 1);
+      } else {
+        updated[key] = LearnedWord(
+          word: key,
+          meaning: parsed.meaning,
+          cefrLevel: parsed.cefr,
+          timesSolved: 1,
+          firstLearnedIso: nowIso,
+        );
+      }
+      changed = true;
+    }
+
+    if (changed) {
+      _profile = _profile.copyWith(learnedEnglishWords: updated);
+      notifyListeners();
+      await _storage.saveProfile(_profile);
+    }
+  }
+
+  Future<void> toggleWordFavorite(String word) async {
+    final key = word.toUpperCase();
+    final existing = _profile.learnedEnglishWords[key];
+    if (existing == null) return;
+    final updated = Map<String, LearnedWord>.from(_profile.learnedEnglishWords);
+    updated[key] = existing.copyWith(isFavorite: !existing.isFavorite);
+    _profile = _profile.copyWith(learnedEnglishWords: updated);
+    feedback.cellSelect();
+    notifyListeners();
+    await _storage.saveProfile(_profile);
+  }
+
+  /// 90 saniyelik Mini Sprint tur sonu rekor ve ödüllerini kaydeder.
+  Future<bool> recordSprintResult({
+    required int sprintScore,
+    required int puzzlesSolved,
+    required int coinsBonus,
+    required int maxCombo,
+  }) async {
+    final isNewRecord = sprintScore > _profile.bestSprintScore;
+    _profile = _profile.copyWith(
+      coins: _profile.coins + coinsBonus,
+      score: _profile.score + sprintScore,
+      bestSprintScore:
+          isNewRecord ? sprintScore : _profile.bestSprintScore,
+      bestSprintPuzzles: puzzlesSolved > _profile.bestSprintPuzzles
+          ? puzzlesSolved
+          : _profile.bestSprintPuzzles,
+      bestCombo: maxCombo > _profile.bestCombo ? maxCombo : _profile.bestCombo,
+    );
+    notifyListeners();
+    await _storage.saveProfile(_profile);
+    return isNewRecord;
   }
 
   /// Doğru çözülen her kelimede anında kombo altını ve puanı kazandırır.
@@ -313,6 +459,10 @@ class AppState extends ChangeNotifier {
         return bestCombo;
       case MissionMetric.megaSolved:
         return completedMegaCount;
+      case MissionMetric.sprintScore:
+        return bestSprintScore;
+      case MissionMetric.englishLearned:
+        return learnedEnglishCount;
       case MissionMetric.packYesilcam:
         final pack = _packs.where((p) => p.id == 'yesilcam').firstOrNull;
         return pack == null ? 0 : completedCountForPack(pack);
@@ -373,7 +523,6 @@ class AppState extends ChangeNotifier {
     return bonus;
   }
 
-  /// Mağazadan puan veya altın ile ipucu paketi / puan->altın takası alır.
   Future<ActionOutcome> buyShopBundle(
     ShopBundle bundle, {
     required bool useScore,
@@ -436,13 +585,15 @@ class AppState extends ChangeNotifier {
     );
   }
 
-  /// Dev bulmacayı erken açmak için altın veya puan kullanır.
   Future<ActionOutcome> unlockMegaEarly(
     MegaPuzzleItem item, {
     required bool useScore,
   }) async {
     if (isMegaUnlocked(item)) {
-      return const ActionOutcome(success: true, message: 'Bu dev bulmaca zaten açık.');
+      return const ActionOutcome(
+        success: true,
+        message: 'Bu dev bulmaca zaten açık.',
+      );
     }
     if (useScore) {
       if (_profile.score < item.earlyUnlockScore) {
@@ -715,5 +866,11 @@ class AppState extends ChangeNotifier {
     );
     notifyListeners();
     await _storage.saveProfile(_profile);
+  }
+
+  @override
+  void dispose() {
+    feedback.dispose();
+    super.dispose();
   }
 }

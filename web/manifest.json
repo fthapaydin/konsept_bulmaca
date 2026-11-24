@@ -1,11 +1,11 @@
 {
-    "name": "konsept_bulmaca",
-    "short_name": "konsept_bulmaca",
+    "name": "Karehane — Konsept Kare Bulmaca",
+    "short_name": "Karehane",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#2B1209",
+    "theme_color": "#B45309",
+    "description": "Tematik kare bulmaca, 90sn Mini Sprint, İngilizce Kelime Defteri ve Dev Bulmacalar.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

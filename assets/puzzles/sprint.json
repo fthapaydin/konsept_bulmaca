@@ -1,0 +1,1062 @@
+{
+  "id": "sprint",
+  "name": "Mini Sprint (90sn)",
+  "items": [
+    {
+      "language": "tr",
+      "primaryColor": "#EA580C",
+      "secondaryColor": "#9A3412",
+      "surfaceColor": "#FFF7ED",
+      "puzzle": {
+        "id": "sprint_01",
+        "level": 1,
+        "title": "Mini Sprint #1",
+        "difficulty": "Hız Turu",
+        "rows": 5,
+        "cols": 5,
+        "revealed": [
+          [
+            0,
+            2
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "entries": [
+          {
+            "number": 1,
+            "direction": "across",
+            "row": 0,
+            "col": 0,
+            "answer": "KİBAR",
+            "clue": "[Yeşilçam] Başrolünde Kemal Sunal'ın olduğu '... Feyzo' filmi"
+          },
+          {
+            "number": 3,
+            "direction": "across",
+            "row": 2,
+            "col": 0,
+            "answer": "BURSA",
+            "clue": "[Türkiye] Uludağ, kestane şekeri ve İskender'in şehri"
+          },
+          {
+            "number": 1,
+            "direction": "down",
+            "row": 0,
+            "col": 0,
+            "answer": "KABLO",
+            "clue": "[Genel Kültür] Elektrik veya veri taşıyan yalıtılmış iletken hat"
+          },
+          {
+            "number": 2,
+            "direction": "down",
+            "row": 0,
+            "col": 2,
+            "answer": "BÖREK",
+            "clue": "[Türkiye] Yufka katmanlarıyla hazırlanan peynirli veya kıymalı lezzet"
+          },
+          {
+            "number": 4,
+            "direction": "down",
+            "row": 2,
+            "col": 4,
+            "answer": "ANA",
+            "clue": "[Yeşilçam] Hababam'ın zili çalan şefkatli emekçisi Hafize ..."
+          }
+        ]
+      }
+    },
+    {
+      "language": "tr",
+      "primaryColor": "#EA580C",
+      "secondaryColor": "#9A3412",
+      "surfaceColor": "#FFF7ED",
+      "puzzle": {
+        "id": "sprint_02",
+        "level": 2,
+        "title": "Mini Sprint #2",
+        "difficulty": "Hız Turu",
+        "rows": 5,
+        "cols": 5,
+        "revealed": [
+          [
+            4,
+            4
+          ],
+          [
+            0,
+            2
+          ]
+        ],
+        "entries": [
+          {
+            "number": 1,
+            "direction": "across",
+            "row": 0,
+            "col": 0,
+            "answer": "SİMİT",
+            "clue": "[Türkiye] Susamlı, çıtır sabah kahvaltısı klasiği"
+          },
+          {
+            "number": 4,
+            "direction": "across",
+            "row": 4,
+            "col": 0,
+            "answer": "KAVGA",
+            "clue": "[Yeşilçam] Cüneyt Arkın filmlerinin uçan tekmeli aksiyonu"
+          },
+          {
+            "number": 1,
+            "direction": "down",
+            "row": 0,
+            "col": 0,
+            "answer": "SUMAK",
+            "clue": "[Türkiye] Soğan salatası ve lahmacuna ekşilik veren baharat"
+          },
+          {
+            "number": 2,
+            "direction": "down",
+            "row": 0,
+            "col": 2,
+            "answer": "MANAV",
+            "clue": "[Yeşilçam] Vesikalı Yarim'de İzzet Günay'ın mesleği"
+          },
+          {
+            "number": 3,
+            "direction": "down",
+            "row": 0,
+            "col": 4,
+            "answer": "TAHTA",
+            "clue": "[Yeşilçam] Sınıfta öğrencilerin soru çözdüğü yeşil veya siyah pano"
+          }
+        ]
+      }
+    },
+    {
+      "language": "tr",
+      "primaryColor": "#EA580C",
+      "secondaryColor": "#9A3412",
+      "surfaceColor": "#FFF7ED",
+      "puzzle": {
+        "id": "sprint_03",
+        "level": 3,
+        "title": "Mini Sprint #3",
+        "difficulty": "Hız Turu",
+        "rows": 5,
+        "cols": 5,
+        "revealed": [
+          [
+            2,
+            4
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "entries": [
+          {
+            "number": 1,
+            "direction": "across",
+            "row": 0,
+            "col": 0,
+            "answer": "RESİF",
+            "clue": "[Genel Kültür] Deniz tabanında mercanların oluşturduğu zengin ekosistem"
+          },
+          {
+            "number": 4,
+            "direction": "across",
+            "row": 2,
+            "col": 0,
+            "answer": "KANAL",
+            "clue": "[Genel Kültür] Süveyş ve Panama gibi insan yapımı su geçidi"
+          },
+          {
+            "number": 5,
+            "direction": "across",
+            "row": 4,
+            "col": 0,
+            "answer": "CEVİZ",
+            "clue": "[Türkiye] Baklava ve güllaç içine konulan besleyici kuruyemiş"
+          },
+          {
+            "number": 2,
+            "direction": "down",
+            "row": 0,
+            "col": 2,
+            "answer": "SINAV",
+            "clue": "[Yeşilçam] Hababam öğrencilerinin korkulu rüyası"
+          },
+          {
+            "number": 3,
+            "direction": "down",
+            "row": 0,
+            "col": 4,
+            "answer": "FİLİZ",
+            "clue": "[Yeşilçam] Sarışın zarafetiyle tanınan Yeşilçam yıldızı ... Akın"
+          }
+        ]
+      }
+    },
+    {
+      "language": "en",
+      "primaryColor": "#1D4ED8",
+      "secondaryColor": "#1E3A8A",
+      "surfaceColor": "#EFF6FF",
+      "puzzle": {
+        "id": "sprint_04",
+        "level": 4,
+        "title": "Mini Sprint #4",
+        "difficulty": "Hız Turu",
+        "rows": 5,
+        "cols": 5,
+        "revealed": [
+          [
+            4,
+            2
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "entries": [
+          {
+            "number": 3,
+            "direction": "across",
+            "row": 1,
+            "col": 0,
+            "answer": "COLOR",
+            "clue": "[İngilizce] Renk (A1)"
+          },
+          {
+            "number": 5,
+            "direction": "across",
+            "row": 4,
+            "col": 0,
+            "answer": "NIGHT",
+            "clue": "[İngilizce] Gece (A1)"
+          },
+          {
+            "number": 1,
+            "direction": "down",
+            "row": 0,
+            "col": 0,
+            "answer": "OCEAN",
+            "clue": "[İngilizce] Okyanus (A2)"
+          },
+          {
+            "number": 2,
+            "direction": "down",
+            "row": 0,
+            "col": 4,
+            "answer": "FRUIT",
+            "clue": "[İngilizce] Meyve (A2)"
+          },
+          {
+            "number": 4,
+            "direction": "down",
+            "row": 1,
+            "col": 2,
+            "answer": "LONG",
+            "clue": "[İngilizce] Uzun (A1)"
+          }
+        ]
+      }
+    },
+    {
+      "language": "tr",
+      "primaryColor": "#EA580C",
+      "secondaryColor": "#9A3412",
+      "surfaceColor": "#FFF7ED",
+      "puzzle": {
+        "id": "sprint_05",
+        "level": 5,
+        "title": "Mini Sprint #5",
+        "difficulty": "Hız Turu",
+        "rows": 5,
+        "cols": 5,
+        "revealed": [
+          [
+            2,
+            2
+          ],
+          [
+            0,
+            4
+          ]
+        ],
+        "entries": [
+          {
+            "number": 1,
+            "direction": "across",
+            "row": 0,
+            "col": 0,
+            "answer": "BULUT",
+            "clue": "[Genel Kültür] İnternet üzerinden uzak sunucularda veri depolama modeli"
+          },
+          {
+            "number": 4,
+            "direction": "across",
+            "row": 2,
+            "col": 0,
+            "answer": "PAZAR",
+            "clue": "[Yeşilçam] Ailece yazlık sinemaya gidilen tatil günü"
+          },
+          {
+            "number": 5,
+            "direction": "across",
+            "row": 4,
+            "col": 0,
+            "answer": "PARİS",
+            "clue": "[Genel Kültür] Eyfel Kulesi ve Louvre Müzesi'nin bulunduğu başkent"
+          },
+          {
+            "number": 2,
+            "direction": "down",
+            "row": 0,
+            "col": 2,
+            "answer": "LAZER",
+            "clue": "[Genel Kültür] Yoğunlaştırılmış tek dalga boylu ışık demeti"
+          },
+          {
+            "number": 3,
+            "direction": "down",
+            "row": 0,
+            "col": 4,
+            "answer": "TOROS",
+            "clue": "[Türkiye] Akdeniz kıyılarına paralel uzanan sıradağlar"
+          }
+        ]
+      }
+    },
+    {
+      "language": "tr",
+      "primaryColor": "#EA580C",
+      "secondaryColor": "#9A3412",
+      "surfaceColor": "#FFF7ED",
+      "puzzle": {
+        "id": "sprint_06",
+        "level": 6,
+        "title": "Mini Sprint #6",
+        "difficulty": "Hız Turu",
+        "rows": 5,
+        "cols": 5,
+        "revealed": [
+          [
+            4,
+            4
+          ],
+          [
+            2,
+            4
+          ]
+        ],
+        "entries": [
+          {
+            "number": 3,
+            "direction": "across",
+            "row": 2,
+            "col": 0,
+            "answer": "HAKEM",
+            "clue": "[Genel Kültür] Karşılaşmalarda kuralların uygulanmasını sağlayan görevli"
+          },
+          {
+            "number": 5,
+            "direction": "across",
+            "row": 4,
+            "col": 0,
+            "answer": "AYŞEN",
+            "clue": "[Yeşilçam] Domates Güzeli lakaplı komedi ustası ... Gruda"
+          },
+          {
+            "number": 1,
+            "direction": "down",
+            "row": 0,
+            "col": 0,
+            "answer": "SAHRA",
+            "clue": "[Genel Kültür] Kuzey Afrika'daki dünyanın en büyük sıcak çölü"
+          },
+          {
+            "number": 2,
+            "direction": "down",
+            "row": 0,
+            "col": 4,
+            "answer": "LİMON",
+            "clue": "[Yeşilçam] Neşeli Günler'de Saadet Hanım'ın turşu tercihi"
+          },
+          {
+            "number": 4,
+            "direction": "down",
+            "row": 2,
+            "col": 2,
+            "answer": "KAŞ",
+            "clue": "[Yeşilçam] Kemal Sunal ve Münir Özkul mimiklerinin vazgeçilmezi"
+          }
+        ]
+      }
+    },
+    {
+      "language": "tr",
+      "primaryColor": "#EA580C",
+      "secondaryColor": "#9A3412",
+      "surfaceColor": "#FFF7ED",
+      "puzzle": {
+        "id": "sprint_07",
+        "level": 7,
+        "title": "Mini Sprint #7",
+        "difficulty": "Hız Turu",
+        "rows": 5,
+        "cols": 5,
+        "revealed": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            2
+          ]
+        ],
+        "entries": [
+          {
+            "number": 1,
+            "direction": "across",
+            "row": 0,
+            "col": 0,
+            "answer": "BAKIR",
+            "clue": "[Genel Kültür] Elektrik kablolarında kullanılan kızıl iletken metal"
+          },
+          {
+            "number": 3,
+            "direction": "across",
+            "row": 2,
+            "col": 0,
+            "answer": "BOLU",
+            "clue": "[Türkiye] Aşçıları ve Abant Gölü ile meşhur ilimiz"
+          },
+          {
+            "number": 4,
+            "direction": "across",
+            "row": 4,
+            "col": 0,
+            "answer": "ROMAN",
+            "clue": "[Genel Kültür] Geniş kurgulu, uzun edebi anlatı türü"
+          },
+          {
+            "number": 1,
+            "direction": "down",
+            "row": 0,
+            "col": 0,
+            "answer": "BİBER",
+            "clue": "[Türkiye] Urfa isotu ve Antep salçasının ana malzemesi"
+          },
+          {
+            "number": 2,
+            "direction": "down",
+            "row": 0,
+            "col": 2,
+            "answer": "KİLİM",
+            "clue": "[Türkiye] Düz dokuma tekniğiyle üretilen motifli Anadolu örtüsü"
+          }
+        ]
+      }
+    },
+    {
+      "language": "en",
+      "primaryColor": "#1D4ED8",
+      "secondaryColor": "#1E3A8A",
+      "surfaceColor": "#EFF6FF",
+      "puzzle": {
+        "id": "sprint_08",
+        "level": 8,
+        "title": "Mini Sprint #8",
+        "difficulty": "Hız Turu",
+        "rows": 5,
+        "cols": 5,
+        "revealed": [
+          [
+            0,
+            3
+          ],
+          [
+            4,
+            3
+          ]
+        ],
+        "entries": [
+          {
+            "number": 1,
+            "direction": "across",
+            "row": 0,
+            "col": 0,
+            "answer": "SUNNY",
+            "clue": "[İngilizce] Güneşli (A2)"
+          },
+          {
+            "number": 3,
+            "direction": "across",
+            "row": 2,
+            "col": 0,
+            "answer": "ANGRY",
+            "clue": "[İngilizce] Kızgın (A2)"
+          },
+          {
+            "number": 4,
+            "direction": "across",
+            "row": 4,
+            "col": 0,
+            "answer": "TIGER",
+            "clue": "[İngilizce] Kaplan (A2)"
+          },
+          {
+            "number": 1,
+            "direction": "down",
+            "row": 0,
+            "col": 0,
+            "answer": "SMART",
+            "clue": "[İngilizce] Akıllı, zeki (A2)"
+          },
+          {
+            "number": 2,
+            "direction": "down",
+            "row": 0,
+            "col": 3,
+            "answer": "NURSE",
+            "clue": "[İngilizce] Hemşire (A2)"
+          }
+        ]
+      }
+    },
+    {
+      "language": "tr",
+      "primaryColor": "#EA580C",
+      "secondaryColor": "#9A3412",
+      "surfaceColor": "#FFF7ED",
+      "puzzle": {
+        "id": "sprint_09",
+        "level": 9,
+        "title": "Mini Sprint #9",
+        "difficulty": "Hız Turu",
+        "rows": 5,
+        "cols": 5,
+        "revealed": [
+          [
+            0,
+            2
+          ],
+          [
+            3,
+            0
+          ]
+        ],
+        "entries": [
+          {
+            "number": 1,
+            "direction": "across",
+            "row": 0,
+            "col": 0,
+            "answer": "SUSAM",
+            "clue": "[Türkiye] Simit ve tahinin ana maddesi küçük tohum"
+          },
+          {
+            "number": 4,
+            "direction": "across",
+            "row": 3,
+            "col": 0,
+            "answer": "ADANA",
+            "clue": "[Türkiye] Taşköprü, şalgam ve acılı kebabın şehri"
+          },
+          {
+            "number": 1,
+            "direction": "down",
+            "row": 0,
+            "col": 0,
+            "answer": "SİVAS",
+            "clue": "[Türkiye] Kangal köpeği ve Kongre binasıyla bilinen il"
+          },
+          {
+            "number": 2,
+            "direction": "down",
+            "row": 0,
+            "col": 2,
+            "answer": "SANAL",
+            "clue": "[Genel Kültür] Gerçekte fiziksel olmayıp dijital ortamda üretilen"
+          },
+          {
+            "number": 3,
+            "direction": "down",
+            "row": 0,
+            "col": 4,
+            "answer": "MİMAR",
+            "clue": "[Genel Kültür] Bina ve mekanları estetik ve işlevsel tasarlayan uzman"
+          }
+        ]
+      }
+    },
+    {
+      "language": "tr",
+      "primaryColor": "#EA580C",
+      "secondaryColor": "#9A3412",
+      "surfaceColor": "#FFF7ED",
+      "puzzle": {
+        "id": "sprint_10",
+        "level": 10,
+        "title": "Mini Sprint #10",
+        "difficulty": "Hız Turu",
+        "rows": 5,
+        "cols": 5,
+        "revealed": [
+          [
+            2,
+            3
+          ],
+          [
+            0,
+            3
+          ]
+        ],
+        "entries": [
+          {
+            "number": 1,
+            "direction": "across",
+            "row": 0,
+            "col": 1,
+            "answer": "PİL",
+            "clue": "[Genel Kültür] Kimyasal enerjiyi elektriğe çeviren taşınabilir güç kaynağı"
+          },
+          {
+            "number": 3,
+            "direction": "across",
+            "row": 2,
+            "col": 0,
+            "answer": "MANTI",
+            "clue": "[Türkiye] Kayseri ile özdeşleşen yoğurtlu hamur yemeği"
+          },
+          {
+            "number": 4,
+            "direction": "across",
+            "row": 4,
+            "col": 0,
+            "answer": "POLEN",
+            "clue": "[Genel Kültür] Bitkilerin üremesini sağlayan ince çiçek tozu"
+          },
+          {
+            "number": 1,
+            "direction": "down",
+            "row": 0,
+            "col": 1,
+            "answer": "PLATO",
+            "clue": "[Genel Kültür] Akarsularca derin yarılmış yüksek geniş düzlük"
+          },
+          {
+            "number": 2,
+            "direction": "down",
+            "row": 0,
+            "col": 3,
+            "answer": "LİTRE",
+            "clue": "[Genel Kültür] Sıvıların hacmini ölçmek için kullanılan birim"
+          }
+        ]
+      }
+    },
+    {
+      "language": "tr",
+      "primaryColor": "#EA580C",
+      "secondaryColor": "#9A3412",
+      "surfaceColor": "#FFF7ED",
+      "puzzle": {
+        "id": "sprint_11",
+        "level": 11,
+        "title": "Mini Sprint #11",
+        "difficulty": "Hız Turu",
+        "rows": 5,
+        "cols": 5,
+        "revealed": [
+          [
+            2,
+            2
+          ],
+          [
+            0,
+            4
+          ]
+        ],
+        "entries": [
+          {
+            "number": 1,
+            "direction": "across",
+            "row": 0,
+            "col": 0,
+            "answer": "VİRÜS",
+            "clue": "[Genel Kültür] Sadece canlı konak içinde çoğalabilen mikroskobik etken"
+          },
+          {
+            "number": 4,
+            "direction": "across",
+            "row": 2,
+            "col": 0,
+            "answer": "ŞAKİR",
+            "clue": "[Yeşilçam] Çiçek Abbas'ta Şener Şen'in oynadığı kurnaz şoför"
+          },
+          {
+            "number": 5,
+            "direction": "across",
+            "row": 4,
+            "col": 0,
+            "answer": "FATMA",
+            "clue": "[Yeşilçam] Dört Yapraklı Yonca'nın güçlü oyuncusu ... Girik"
+          },
+          {
+            "number": 2,
+            "direction": "down",
+            "row": 0,
+            "col": 2,
+            "answer": "ROKET",
+            "clue": "[Genel Kültür] Uzaya araç taşımak için itki üreten fırlatma sistemi"
+          },
+          {
+            "number": 3,
+            "direction": "down",
+            "row": 0,
+            "col": 4,
+            "answer": "SARMA",
+            "clue": "[Türkiye] Asma yaprağına incecik sarılan zeytinyağlı yemek"
+          }
+        ]
+      }
+    },
+    {
+      "language": "en",
+      "primaryColor": "#1D4ED8",
+      "secondaryColor": "#1E3A8A",
+      "surfaceColor": "#EFF6FF",
+      "puzzle": {
+        "id": "sprint_12",
+        "level": 12,
+        "title": "Mini Sprint #12",
+        "difficulty": "Hız Turu",
+        "rows": 5,
+        "cols": 5,
+        "revealed": [
+          [
+            4,
+            3
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "entries": [
+          {
+            "number": 1,
+            "direction": "across",
+            "row": 0,
+            "col": 0,
+            "answer": "PLANT",
+            "clue": "[İngilizce] Bitki (A2)"
+          },
+          {
+            "number": 4,
+            "direction": "across",
+            "row": 2,
+            "col": 0,
+            "answer": "BRAVE",
+            "clue": "[İngilizce] Cesur (A2)"
+          },
+          {
+            "number": 5,
+            "direction": "across",
+            "row": 4,
+            "col": 0,
+            "answer": "YEAR",
+            "clue": "[İngilizce] Yıl, sene (A1)"
+          },
+          {
+            "number": 2,
+            "direction": "down",
+            "row": 0,
+            "col": 1,
+            "answer": "LARGE",
+            "clue": "[İngilizce] Büyük, geniş (A2)"
+          },
+          {
+            "number": 3,
+            "direction": "down",
+            "row": 0,
+            "col": 3,
+            "answer": "NEVER",
+            "clue": "[İngilizce] Asla, hiç (A2)"
+          }
+        ]
+      }
+    },
+    {
+      "language": "tr",
+      "primaryColor": "#EA580C",
+      "secondaryColor": "#9A3412",
+      "surfaceColor": "#FFF7ED",
+      "puzzle": {
+        "id": "sprint_13",
+        "level": 13,
+        "title": "Mini Sprint #13",
+        "difficulty": "Hız Turu",
+        "rows": 5,
+        "cols": 5,
+        "revealed": [
+          [
+            2,
+            0
+          ],
+          [
+            4,
+            3
+          ]
+        ],
+        "entries": [
+          {
+            "number": 1,
+            "direction": "across",
+            "row": 0,
+            "col": 0,
+            "answer": "EKRAN",
+            "clue": "[Genel Kültür] Telefon ve bilgisayarlarda görüntüyü sunan panel"
+          },
+          {
+            "number": 3,
+            "direction": "across",
+            "row": 2,
+            "col": 0,
+            "answer": "MARTI",
+            "clue": "[Yeşilçam] Vapurda simit atılan İstanbul'un simge kuşu"
+          },
+          {
+            "number": 4,
+            "direction": "across",
+            "row": 4,
+            "col": 0,
+            "answer": "KARNE",
+            "clue": "[Yeşilçam] Dönem sonunda öğrencilerin heyecanla aldığı belge"
+          },
+          {
+            "number": 1,
+            "direction": "down",
+            "row": 0,
+            "col": 0,
+            "answer": "EKMEK",
+            "clue": "[Türkiye] Trabzon vakfıkebir ve taş fırın klasiği"
+          },
+          {
+            "number": 2,
+            "direction": "down",
+            "row": 0,
+            "col": 3,
+            "answer": "ALTIN",
+            "clue": "[Yeşilçam] Köyden İndim Şehire'de kardeşlerin bulduğu define"
+          }
+        ]
+      }
+    },
+    {
+      "language": "tr",
+      "primaryColor": "#EA580C",
+      "secondaryColor": "#9A3412",
+      "surfaceColor": "#FFF7ED",
+      "puzzle": {
+        "id": "sprint_14",
+        "level": 14,
+        "title": "Mini Sprint #14",
+        "difficulty": "Hız Turu",
+        "rows": 5,
+        "cols": 5,
+        "revealed": [
+          [
+            2,
+            4
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "entries": [
+          {
+            "number": 1,
+            "direction": "across",
+            "row": 0,
+            "col": 0,
+            "answer": "DOSYA",
+            "clue": "[Genel Kültür] Bilgisayarda bilgi saklayan temel kayıt birimi"
+          },
+          {
+            "number": 3,
+            "direction": "across",
+            "row": 2,
+            "col": 0,
+            "answer": "BEYİN",
+            "clue": "[Genel Kültür] Düşünme, hafıza ve hareketin yönetim merkezi"
+          },
+          {
+            "number": 5,
+            "direction": "across",
+            "row": 4,
+            "col": 0,
+            "answer": "MÜNİR",
+            "clue": "[Yeşilçam] Mahmut Hoca ve Yaşar Usta'ya hayat veren ... Özkul"
+          },
+          {
+            "number": 2,
+            "direction": "down",
+            "row": 0,
+            "col": 2,
+            "answer": "SAYIN",
+            "clue": "[Yeşilçam] Mavi Boncuk'un unutulmaz sesi Emel ..."
+          },
+          {
+            "number": 4,
+            "direction": "down",
+            "row": 2,
+            "col": 4,
+            "answer": "NAR",
+            "clue": "[Türkiye] Bereket simgesi, ekşisi salatalarda kullanılan meyve"
+          }
+        ]
+      }
+    },
+    {
+      "language": "tr",
+      "primaryColor": "#EA580C",
+      "secondaryColor": "#9A3412",
+      "surfaceColor": "#FFF7ED",
+      "puzzle": {
+        "id": "sprint_15",
+        "level": 15,
+        "title": "Mini Sprint #15",
+        "difficulty": "Hız Turu",
+        "rows": 5,
+        "cols": 5,
+        "revealed": [
+          [
+            3,
+            4
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "entries": [
+          {
+            "number": 1,
+            "direction": "across",
+            "row": 0,
+            "col": 0,
+            "answer": "TİBET",
+            "clue": "[Yeşilçam] Tosun Paşa'nın yönetmeni, Tarkan'ın yıldızı Kartal ..."
+          },
+          {
+            "number": 4,
+            "direction": "across",
+            "row": 3,
+            "col": 0,
+            "answer": "PİYAZ",
+            "clue": "[Türkiye] Antalya usulünde tahinle tatlandırılan fasulye salatası"
+          },
+          {
+            "number": 1,
+            "direction": "down",
+            "row": 0,
+            "col": 0,
+            "answer": "TEMPO",
+            "clue": "[Genel Kültür] Bir müzik parçasının çalınma hızı"
+          },
+          {
+            "number": 2,
+            "direction": "down",
+            "row": 0,
+            "col": 2,
+            "answer": "BAMYA",
+            "clue": "[Türkiye] Konya düğün çorbasının başrolündeki sebze"
+          },
+          {
+            "number": 3,
+            "direction": "down",
+            "row": 0,
+            "col": 4,
+            "answer": "TERZİ",
+            "clue": "[Yeşilçam] Eski mahalle filmlerinde elbise diken zanaatkar"
+          }
+        ]
+      }
+    },
+    {
+      "language": "en",
+      "primaryColor": "#1D4ED8",
+      "secondaryColor": "#1E3A8A",
+      "surfaceColor": "#EFF6FF",
+      "puzzle": {
+        "id": "sprint_16",
+        "level": 16,
+        "title": "Mini Sprint #16",
+        "difficulty": "Hız Turu",
+        "rows": 5,
+        "cols": 5,
+        "revealed": [
+          [
+            0,
+            1
+          ],
+          [
+            2,
+            4
+          ]
+        ],
+        "entries": [
+          {
+            "number": 1,
+            "direction": "across",
+            "row": 0,
+            "col": 0,
+            "answer": "HELLO",
+            "clue": "[İngilizce] Merhaba (A1)"
+          },
+          {
+            "number": 4,
+            "direction": "across",
+            "row": 2,
+            "col": 1,
+            "answer": "GIFT",
+            "clue": "[İngilizce] Hediye (A1)"
+          },
+          {
+            "number": 5,
+            "direction": "across",
+            "row": 4,
+            "col": 0,
+            "answer": "LEMON",
+            "clue": "[İngilizce] Limon (A2)"
+          },
+          {
+            "number": 2,
+            "direction": "down",
+            "row": 0,
+            "col": 1,
+            "answer": "EAGLE",
+            "clue": "[İngilizce] Kartal (A2)"
+          },
+          {
+            "number": 3,
+            "direction": "down",
+            "row": 0,
+            "col": 4,
+            "answer": "OFTEN",
+            "clue": "[İngilizce] Sık sık (A2)"
+          }
+        ]
+      }
+    }
+  ]
+}

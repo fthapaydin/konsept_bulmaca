@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
+import 'core/brand/brand_config.dart';
 import 'screens/home_screen.dart';
 import 'state/app_state.dart';
 
@@ -52,16 +53,16 @@ class _KonseptBulmacaAppState extends State<KonseptBulmacaApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Konsept Bulmaca',
+      title: BrandConfig.appName,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
         fontFamily: 'Roboto',
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFB45309),
-          surface: const Color(0xFFF8F6F1),
+          seedColor: BrandConfig.primaryAmber,
+          surface: BrandConfig.warmPaper,
         ),
-        scaffoldBackgroundColor: const Color(0xFFF8F6F1),
+        scaffoldBackgroundColor: BrandConfig.warmPaper,
       ),
       home: ListenableBuilder(
         listenable: _appState,
@@ -87,22 +88,89 @@ class _SplashLoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xFFF8F6F1),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CircularProgressIndicator(color: Color(0xFFB45309)),
-            SizedBox(height: 16),
-            Text(
-              'Konsept Bulmacalar Hazırlanıyor...',
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF57534E),
-              ),
+    return Scaffold(
+      backgroundColor: BrandConfig.splashDark,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF451A03), BrandConfig.splashDark, Color(0xFF1A0B05)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 112,
+                  height: 112,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(28),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFFF59E0B).withValues(alpha: 0.35),
+                        blurRadius: 28,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(28),
+                    child: Image.asset(
+                      'assets/branding/karehane_icon.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 22),
+                const Text(
+                  BrandConfig.appName,
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white,
+                    letterSpacing: -0.6,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  BrandConfig.tagline,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFFFDE68A).withValues(alpha: 0.9),
+                  ),
+                ),
+                const SizedBox(height: 28),
+                const SizedBox(
+                  width: 140,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    child: LinearProgressIndicator(
+                      minHeight: 5,
+                      backgroundColor: Color(0xFF572914),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Color(0xFFF59E0B),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Bulmaca dünyası hazırlanıyor...',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white.withValues(alpha: 0.68),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

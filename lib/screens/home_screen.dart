@@ -1,5 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
+import '../core/brand/brand_config.dart';
+import '../features/notebook/word_notebook_screen.dart';
+import '../features/sprint/mini_sprint_screen.dart';
 import '../models/background_models.dart';
 import '../models/puzzle_models.dart';
 import '../state/app_state.dart';
@@ -81,6 +84,30 @@ class HomeScreen extends StatelessWidget {
                           appState: appState,
                           isDark: isDark,
                           onTap: () => showRewardsCenterSheet(context, appState),
+                        ),
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(18, 0, 18, 14),
+                        child: _QuickModulesRow(
+                          appState: appState,
+                          onOpenSprint: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) =>
+                                    MiniSprintScreen(appState: appState),
+                              ),
+                            );
+                          },
+                          onOpenNotebook: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) =>
+                                    WordNotebookScreen(appState: appState),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -254,27 +281,24 @@ class HomeScreen extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 42,
-          height: 42,
+          width: 44,
+          height: 44,
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Color(0xFFB45309), Color(0xFF7C2D12)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
             borderRadius: BorderRadius.circular(13),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFB45309).withValues(alpha: 0.3),
+                color: const Color(0xFFB45309).withValues(alpha: 0.32),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
             ],
           ),
-          child: const Icon(
-            Icons.grid_view_rounded,
-            color: Colors.white,
-            size: 24,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(13),
+            child: Image.asset(
+              'assets/branding/karehane_icon.png',
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         const SizedBox(width: 11),
@@ -283,18 +307,18 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Konsept Bulmaca',
+                BrandConfig.appName,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: 19,
+                  fontSize: 20,
                   fontWeight: FontWeight.w900,
                   color: titleColor,
                   letterSpacing: -0.4,
                 ),
               ),
               Text(
-                'Tematik Kare Bulmaca Dünyası',
+                BrandConfig.tagline,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -1055,6 +1079,161 @@ class _MegaArenaBanner extends StatelessWidget {
                 Icons.arrow_forward_ios_rounded,
                 color: Colors.white70,
                 size: 18,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _QuickModulesRow extends StatelessWidget {
+  const _QuickModulesRow({
+    required this.appState,
+    required this.onOpenSprint,
+    required this.onOpenNotebook,
+  });
+
+  final AppState appState;
+  final VoidCallback onOpenSprint;
+  final VoidCallback onOpenNotebook;
+
+  @override
+  Widget build(BuildContext context) {
+    final bestSprint = appState.bestSprintScore;
+    final enCount = appState.learnedEnglishCount;
+
+    return Row(
+      children: [
+        Expanded(
+          child: _QuickModuleCard(
+            title: 'Mini Sprint',
+            subtitle: bestSprint > 0
+                ? 'Rekor: $bestSprint puan'
+                : '5×5 Hız & Kombo',
+            badge: '90sn',
+            icon: Icons.bolt_rounded,
+            gradient: const [Color(0xFFDC2626), Color(0xFF9A3412)],
+            onTap: onOpenSprint,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: _QuickModuleCard(
+            title: 'Kelime Defteri',
+            subtitle: enCount > 0
+                ? '$enCount kelime • Kartlar'
+                : 'EN Öğrendiklerim',
+            badge: 'A1–B1',
+            icon: Icons.menu_book_rounded,
+            gradient: const [Color(0xFF1D4ED8), Color(0xFF1E3A8A)],
+            onTap: onOpenNotebook,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _QuickModuleCard extends StatelessWidget {
+  const _QuickModuleCard({
+    required this.title,
+    required this.subtitle,
+    required this.badge,
+    required this.icon,
+    required this.gradient,
+    required this.onTap,
+  });
+
+  final String title;
+  final String subtitle;
+  final String badge;
+  final IconData icon;
+  final List<Color> gradient;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(18),
+        child: Ink(
+          padding: const EdgeInsets.fromLTRB(13, 12, 12, 12),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: gradient,
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(18),
+            boxShadow: [
+              BoxShadow(
+                color: gradient.first.withValues(alpha: 0.28),
+                blurRadius: 12,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Icon(icon, color: Colors.white, size: 19),
+                  ),
+                  const Spacer(),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 7,
+                      vertical: 2.5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.24),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      badge,
+                      style: const TextStyle(
+                        color: Color(0xFFFDE047),
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 9),
+              Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -0.2,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                subtitle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.88),
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),

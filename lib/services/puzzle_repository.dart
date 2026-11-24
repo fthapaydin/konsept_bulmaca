@@ -9,11 +9,13 @@ class LoadedPuzzleContent {
     required this.packs,
     required this.dailyBank,
     required this.megaBank,
+    required this.sprintBank,
   });
 
   final List<ConceptPack> packs;
   final DailyBank dailyBank;
   final MegaBank megaBank;
+  final SprintBank sprintBank;
 }
 
 class PuzzleRepository {
@@ -43,10 +45,17 @@ class PuzzleRepository {
     final megaBank =
         MegaBank.fromJson(jsonDecode(megaRaw) as Map<String, dynamic>);
 
+    final sprintPath =
+        manifest['sprint'] as String? ?? 'assets/puzzles/sprint.json';
+    final sprintRaw = await _loader(sprintPath);
+    final sprintBank =
+        SprintBank.fromJson(jsonDecode(sprintRaw) as Map<String, dynamic>);
+
     return LoadedPuzzleContent(
       packs: packs,
       dailyBank: dailyBank,
       megaBank: megaBank,
+      sprintBank: sprintBank,
     );
   }
 }
