@@ -216,23 +216,16 @@ class HomeScreen extends StatelessWidget {
           width: 42,
           height: 42,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(11),
             border: Border.all(
-              color: AppPalette.brassBorder.withValues(alpha: 0.7),
-              width: 1,
+              color: isDark ? Colors.white30 : AppPalette.ink,
+              width: 1.2,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.12),
-                blurRadius: 8,
-                offset: const Offset(0, 3),
-              ),
-            ],
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(11),
+            borderRadius: BorderRadius.circular(10),
             child: Image.asset(
-              'assets/branding/karehane_icon.png',
+              BrandConfig.iconAssetPath,
               fit: BoxFit.cover,
             ),
           ),
@@ -617,36 +610,32 @@ class _RankAndMissionsStrip extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Flexible(
-                          child: Text(
-                            rank.title,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 13.5,
-                              fontWeight: FontWeight.w800,
-                              color: isDark ? Colors.white : AppPalette.ink,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          rank.nextStars == null
-                              ? '$stars Yıldız • ${appState.score} P'
-                              : '$stars/${rank.nextStars} Yıldız • ${appState.score} P',
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                            color: isDark
-                                ? Colors.white60
-                                : AppPalette.inkMuted,
-                          ),
-                        ),
-                      ],
+                    Text(
+                      rank.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w800,
+                        color: isDark ? Colors.white : AppPalette.ink,
+                      ),
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 1),
+                    Text(
+                      rank.nextStars == null
+                          ? '$stars Yıldız • ${appState.score} Puan'
+                          : '$stars/${rank.nextStars} Yıldız • ${appState.score} Puan',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: isDark
+                            ? Colors.white60
+                            : AppPalette.inkMuted,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(4),
                       child: LinearProgressIndicator(

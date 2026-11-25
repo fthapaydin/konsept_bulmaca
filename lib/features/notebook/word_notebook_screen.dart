@@ -246,30 +246,35 @@ class _WordNotebookScreenState extends State<WordNotebookScreen> {
                         child: Row(
                           children: [
                             _MiniTogglePill(
-                              label: _sortAlphabetical ? 'Sıra: A–Z' : 'Sıra: Yeni',
+                              label: _sortAlphabetical ? 'A–Z' : 'Yeni',
                               active: _sortAlphabetical,
                               onTap: () => setState(
                                 () => _sortAlphabetical = !_sortAlphabetical,
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: 7),
                             _MiniTogglePill(
                               label: _hideMeanings
-                                  ? 'Anlamlar Gizli (Test)'
-                                  : 'Anlamları Gizle',
+                                  ? 'Test: Gizli'
+                                  : 'Anlamı Gizle',
                               active: _hideMeanings,
                               onTap: () => setState(() {
                                 _hideMeanings = !_hideMeanings;
                                 _temporarilyRevealed.clear();
                               }),
                             ),
-                            const Spacer(),
-                            Text(
-                              '${filtered.length} kayıt',
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w700,
-                                color: subColor,
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                '${filtered.length} kayıt',
+                                textAlign: TextAlign.right,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                  color: subColor,
+                                ),
                               ),
                             ),
                           ],

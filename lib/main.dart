@@ -69,7 +69,7 @@ class _KonseptBulmacaAppState extends State<KonseptBulmacaApp> {
         listenable: _appState,
         builder: (context, _) {
           if (_appState.isLoading) {
-            return const KarehaneSplashView();
+            return const EkareSplashView();
           }
           if (_appState.error != null) {
             return _ErrorRetryView(
@@ -84,44 +84,43 @@ class _KonseptBulmacaAppState extends State<KonseptBulmacaApp> {
   }
 }
 
-class KarehaneSplashView extends StatelessWidget {
-  const KarehaneSplashView({super.key});
+class EkareSplashView extends StatelessWidget {
+  const EkareSplashView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: BrandConfig.splashDark,
+      backgroundColor: BrandConfig.newsprintPaper,
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF2D1956), BrandConfig.splashDark, Color(0xFF120A2A)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        color: BrandConfig.newsprintPaper,
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
+            padding: const EdgeInsets.symmetric(horizontal: 36),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  width: 112,
-                  height: 112,
+                  width: 116,
+                  height: 116,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(28),
+                    color: BrandConfig.newsprintPaper,
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(
+                      color: BrandConfig.newsprintInk,
+                      width: 1.8,
+                    ),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFFF59E0B).withValues(alpha: 0.35),
-                        blurRadius: 28,
-                        offset: const Offset(0, 10),
+                        color: Colors.black.withValues(alpha: 0.08),
+                        blurRadius: 18,
+                        offset: const Offset(0, 8),
                       ),
                     ],
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(28),
+                    borderRadius: BorderRadius.circular(22),
                     child: Image.asset(
-                      'assets/branding/karehane_icon.png',
+                      BrandConfig.iconAssetPath,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -130,53 +129,60 @@ class KarehaneSplashView extends StatelessWidget {
                 const Text(
                   BrandConfig.appName,
                   style: TextStyle(
-                    fontSize: 32,
+                    fontSize: 30,
                     fontWeight: FontWeight.w900,
-                    color: Colors.white,
-                    letterSpacing: -0.6,
+                    color: BrandConfig.newsprintInk,
+                    letterSpacing: -0.7,
                   ),
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 8),
+                Container(
+                  width: 54,
+                  height: 1.5,
+                  color: BrandConfig.newsprintInk.withValues(alpha: 0.7),
+                ),
+                const SizedBox(height: 8),
                 Text(
-                  BrandConfig.tagline,
+                  BrandConfig.tagline.toUpperCase(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 13.5,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFFFDE68A).withValues(alpha: 0.9),
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 1.8,
+                    color: AppPalette.inkSoft,
                   ),
                 ),
                 const SizedBox(height: 28),
                 const SizedBox(
-                  width: 140,
+                  width: 136,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
                     child: LinearProgressIndicator(
-                      minHeight: 5,
-                      backgroundColor: Color(0xFF572914),
+                      minHeight: 4,
+                      backgroundColor: AppPalette.hairline,
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        Color(0xFFF59E0B),
+                        BrandConfig.newsprintInk,
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 12),
-                Text(
-                  'Bulmaca dünyası hazırlanıyor...',
+                const Text(
+                  'Bulmacalar hazırlanıyor...',
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white.withValues(alpha: 0.68),
+                    color: AppPalette.inkMuted,
                   ),
                 ),
                 const SizedBox(height: 36),
-                Text(
+                const Text(
                   '${BrandConfig.developerName} • ${BrandConfig.versionLabel}',
                   style: TextStyle(
                     fontSize: 11.5,
                     fontWeight: FontWeight.w700,
                     letterSpacing: 0.4,
-                    color: const Color(0xFFFDE68A).withValues(alpha: 0.6),
+                    color: AppPalette.inkMuted,
                   ),
                 ),
               ],

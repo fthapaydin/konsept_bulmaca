@@ -56,7 +56,7 @@ void main() {
     SharedPreferences.setMockInitialValues({});
   });
 
-  testWidgets('Captures crisp Android preview screenshots of Karehane screens',
+  testWidgets('Captures crisp Android preview screenshots of eKare Bulmaca screens',
       (tester) async {
     tester.view.physicalSize = const Size(824, 1784);
     tester.view.devicePixelRatio = 2.0;
@@ -126,14 +126,14 @@ void main() {
     final boundaryKey = GlobalKey();
     Widget frame(Widget child) => RepaintBoundary(key: boundaryKey, child: child);
 
-    // 0) Karehane Açılış (Splash) Ekranı — Yeni Logo + FatalSoft Inc.
+    // 0) eKare Bulmaca Açılış (Splash) Ekranı — Siyah-Beyaz Gazete Logosu + FatalSoft Inc.
     await tester.pumpWidget(
       frame(
         MaterialApp(
           key: const ValueKey<String>('splash_app'),
           debugShowCheckedModeBanner: false,
           theme: ThemeData(useMaterial3: true, fontFamily: 'Roboto'),
-          home: const KarehaneSplashView(),
+          home: const EkareSplashView(),
         ),
       ),
     );
@@ -141,7 +141,7 @@ void main() {
     final splashCtx = tester.element(find.text(BrandConfig.appName));
     await tester.runAsync(
       () => precacheImage(
-        const AssetImage('assets/branding/karehane_icon.png'),
+        const AssetImage(BrandConfig.iconAssetPath),
         splashCtx,
       ),
     );

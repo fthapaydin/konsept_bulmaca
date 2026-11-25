@@ -1,4 +1,4 @@
-# Karehane — Konsept Kare Bulmaca Dünyası (Android-Öncelikli Flutter)
+# eKare Bulmaca — Konsept Kare Bulmaca Dünyası (Android-Öncelikli Flutter)
 
 Tamamen Türkçe arayüzlü, modüler mimarili, **0 kelime tekrarlı** tematik kare bulmacalar (`5×5 – 8×8`), **90 Saniyelik Mini Sprint (Hız Modu)**, **İngilizce Kelime Defteri (A1–B1 + Kart Tekrarı)**, **Dinamik Artan İpucu Fiyatlandırması (`10 → 15 → 25 → 40 → 60...`)**, **Dev Bulmacalar (`12×12`, `15×15`, `20×20`)**, **Katlanarak Artan Kombo Sistemi**, **Özel Uygulama İkonu + Açılış Ekranı + 8 Parçalı Ses Paketi** ve **10 sanatsal arka plan** içeren çevrimdışı Android bulmaca oyunu.
 
@@ -22,7 +22,7 @@ Tamamen Türkçe arayüzlü, modüler mimarili, **0 kelime tekrarlı** tematik k
 ```text
 lib/
 ├── core/
-│   ├── brand/brand_config.dart       # Merkezi marka (Karehane) & modül tanımları
+│   ├── brand/brand_config.dart       # Merkezi marka (eKare Bulmaca) & modül tanımları
 │   ├── economy/hint_pricing.dart     # Artan ipucu fiyatlandırma eğrisi
 │   └── models/notebook_models.dart   # Kelime Defteri & CEFR ayrıştırıcı
 ├── features/

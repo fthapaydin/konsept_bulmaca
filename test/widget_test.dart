@@ -446,7 +446,7 @@ void main() {
     });
 
     testWidgets(
-        'renders Karehane Home, launches Mini Sprint, Word Notebook, and Yeşilçam Level 1',
+        'renders eKare Bulmaca Home, launches Mini Sprint, Word Notebook, and Yeşilçam Level 1',
         (tester) async {
       tester.view.physicalSize = const Size(412, 892);
       tester.view.devicePixelRatio = 1.0;

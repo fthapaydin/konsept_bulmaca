@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 
-/// Karehane bütünsel editoryal tasarım sistemi ("Kağıt, Mürekkep & Antik Altın").
+/// eKare Bulmaca bütünsel editoryal tasarım sistemi ("Gazete Kâğıdı, Mürekkep & Antik Altın").
 /// Uygulamanın her ekranında tek, sakin ve zarif bir renk dili korur;
 /// karmaşık gökkuşağı gradyanları yerine sıcak kâğıt, derin mürekkep ve
 /// tek imza vurgu rengi (antik pirinç/altın) kullanır.

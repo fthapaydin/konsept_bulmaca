@@ -5,17 +5,19 @@ import 'package:material_ui/material_ui.dart';
 class BrandConfig {
   const BrandConfig._();
 
-  static const String appName = 'Karehane';
+  static const String appName = 'eKare Bulmaca';
+  static const String shortName = 'eKare';
   static const String tagline = 'Konsept Kare Bulmaca';
   static const String versionLabel = 'v2.0';
   static const String developerName = 'FatalSoft Inc.';
   static const String contactEmail = 'fatalsoft.inc@gmail.com';
   static const String androidPackageId = 'fatalsoft.bulmaca';
+  static const String iconAssetPath = 'assets/branding/ekare_icon.png';
 
-  static const Color primaryAmber = Color(0xFFB45309);
-  static const Color deepMahogany = Color(0xFF7C2D12);
-  static const Color warmPaper = Color(0xFFF8F6F1);
-  static const Color splashDark = Color(0xFF1B113C);
+  static const Color newsprintPaper = Color(0xFFF3EEE2);
+  static const Color newsprintInk = Color(0xFF141210);
+  static const Color primaryAmber = Color(0xFFA85513);
+  static const Color warmPaper = Color(0xFFF6F2EA);
 }
 
 enum GameModuleId {

@@ -170,13 +170,22 @@ Future<void> showStatsAndSettingsSheet(
                         children: [
                           Row(
                             children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.asset(
-                                  'assets/branding/karehane_icon.png',
-                                  width: 38,
-                                  height: 38,
-                                  fit: BoxFit.cover,
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: AppPalette.ink,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(9),
+                                  child: Image.asset(
+                                    BrandConfig.iconAssetPath,
+                                    width: 38,
+                                    height: 38,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                               const SizedBox(width: 11),

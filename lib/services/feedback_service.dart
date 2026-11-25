@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart';
 
-/// Karehane özel ses efektleri + titreşim (haptik) servisi.
+/// eKare Bulmaca özel ses efektleri + titreşim (haptik) servisi.
 /// Test ortamında veya ses kapalıyken güvenle sessiz moda düşer.
 class FeedbackService {
   FeedbackService({this.enableAudioEngine = true});

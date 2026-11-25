@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'package:material_ui/material_ui.dart';
-import '../theme/app_theme.dart';
+import '../core/theme/app_theme.dart';
 
 enum EmblemKind {
   yesilcam,
@@ -28,7 +28,7 @@ EmblemKind emblemKindForPack(String packId) {
   }
 }
 
-/// Standart Material ikonları yerine Karehane için özel çizilmiş minimal
+/// Standart Material ikonları yerine eKare Bulmaca için özel çizilmiş minimal
 /// geometrik editoryal amblemler.
 class EditorialEmblem extends StatelessWidget {
   const EditorialEmblem({
