@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gizlilik Politikası — eKare Bulmaca (FatalSoft Inc.)</title>
+  <style>
+    :root {
+      --paper: #f6f2ea;
+      --card: #fffdf9;
+      --muted-card: #efe9dc;
+      --ink: #1d1916;
+      --ink-soft: #5c5349;
+      --ink-muted: #8c8174;
+      --hairline: #e2d9c8;
+      --brass: #a85513;
+      --brass-soft: #fbf2e2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 28px 16px 56px;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.68;
+    }
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--hairline);
+      border-radius: 18px;
+      padding: 36px 32px;
+      box-shadow: 0 12px 32px rgba(29, 25, 22, 0.05);
+    }
+    .masthead {
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: 18px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin: 0;
+    }
+    .subtitle {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-top: 4px;
+    }
+    .lang-links {
+      display: flex;
+      gap: 8px;
+    }
+    .lang-links a {
+      text-decoration: none;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--ink);
+      background: var(--muted-card);
+      border: 1px solid var(--hairline);
+      padding: 6px 12px;
+      border-radius: 999px;
+    }
+    .lang-links a:hover {
+      background: var(--ink);
+      color: #fff;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+      background: var(--paper);
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 26px;
+      font-size: 13px;
+    }
+    .meta-label {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+    .meta-value {
+      font-weight: 800;
+      color: var(--ink);
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 900;
+      margin: 0 0 12px;
+      letter-spacing: -0.3px;
+    }
+    h2 {
+      font-size: 16.5px;
+      font-weight: 800;
+      margin: 26px 0 8px;
+      color: var(--ink);
+    }
+    p, li {
+      color: var(--ink-soft);
+      font-size: 14.5px;
+    }
+    ul {
+      padding-left: 20px;
+      margin: 8px 0 14px;
+    }
+    li { margin-bottom: 6px; }
+    .callout {
+      background: var(--brass-soft);
+      border: 1px solid #e6cca0;
+      border-left: 4px solid var(--brass);
+      border-radius: 10px;
+      padding: 13px 16px;
+      margin: 18px 0;
+      font-size: 14px;
+      color: var(--ink);
+    }
+    hr.section-divider {
+      border: 0;
+      border-top: 1px dashed var(--hairline);
+      margin: 40px 0 32px;
+    }
+    a.mail {
+      color: var(--brass);
+      font-weight: 800;
+      text-decoration: none;
+    }
+    a.mail:hover { text-decoration: underline; }
+    footer {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid var(--hairline);
+      font-size: 12.5px;
+      color: var(--ink-muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    @media (max-width: 560px) {
+      .page { padding: 24px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="masthead">
+      <div>
+        <p class="brand">eKare Bulmaca</p>
+        <div class="subtitle">Gizlilik Politikası • Privacy Policy</div>
+      </div>
+      <nav class="lang-links" aria-label="Dil Seçimi">
+        <a href="#tr">Türkçe</a>
+        <a href="#en">English</a>
+      </nav>
+    </header>
+
+    <section class="meta-grid">
+      <div>
+        <span class="meta-label">Uygulama / App</span>
+        <span class="meta-value">eKare Bulmaca</span>
+      </div>
+      <div>
+        <span class="meta-label">Paket Adı / Package ID</span>
+        <span class="meta-value">fatalsoft.bulmaca</span>
+      </div>
+      <div>
+        <span class="meta-label">Geliştirici / Developer</span>
+        <span class="meta-value">FatalSoft Inc.</span>
+      </div>
+      <div>
+        <span class="meta-label">Son Güncelleme / Updated</span>
+        <span class="meta-value">25 Kasım 2026</span>
+      </div>
+    </section>
+
+    <!-- TURKCE -->
+    <section id="tr">
+      <h1>Gizlilik Politikası (Türkçe)</h1>
+      <p>
+        <strong>FatalSoft Inc.</strong> tarafından geliştirilen <strong>eKare Bulmaca</strong>
+        (paket adı: <code>fatalsoft.bulmaca</code>) mobil uygulamasının kullanıcı gizliliğine
+        verdiği önem bu Gizlilik Politikası ile açıklanmaktadır.
+      </p>
+
+      <div class="callout">
+        <strong>Özet:</strong> eKare Bulmaca tamamen çevrimdışı çalışır. Herhangi bir
+        kişisel verinizi toplamaz, sunuculara aktarmaz ve üçüncü taraflarla paylaşmaz.
+      </div>
+
+      <h2>1. Toplanan Veriler</h2>
+      <p>
+        eKare Bulmaca uygulaması kullanıcılarından ad, soyad, e-posta, telefon numarası,
+        konum, rehber, fotoğraf, kamera, mikrofon veya cihaz kimlik bilgisi gibi
+        <strong>hiçbir kişisel veri toplamaz</strong>. Uygulamayı kullanmak için hesap
+        oluşturmanız veya giriş yapmanız gerekmez.
+      </p>
+
+      <h2>2. Cihaz İçi Yerel Depolama</h2>
+      <p>
+        Oyun deneyiminizi sürdürebilmek amacıyla aşağıdaki oyun içi veriler
+        <strong>yalnızca kendi cihazınızda yerel olarak</strong> (Android yerel depolama /
+        SharedPreferences) saklanır ve cihaz dışına aktarılmaz:
+      </p>
+      <ul>
+        <li>Tamamlanan ve devam eden bulmaca ilerlemeleri, yıldızlar ve en iyi süreler</li>
+        <li>Oyun içi puan, altın bakiyesi, kombo ve 90sn Mini Sprint rekorları</li>
+        <li>İngilizce Kelime Defteri'ne otomatik kaydedilen kelimeler ve favorileriniz</li>
+        <li>Seçili arka plan teması, ses efektleri ve titreşim (haptik) ayarları</li>
+      </ul>
+
+      <h2>3. Veri Silme ve Kontrol</h2>
+      <p>
+        Cihazınızda yerel olarak tutulan tüm oyun verilerini dilediğiniz zaman uygulama
+        içindeki <em>İstatistikler ve Ayarlar → Tüm İlerlemeyi Sıfırla</em> seçeneğini
+        kullanarak veya uygulamayı cihazınızdan kaldırarak kalıcı olarak silebilirsiniz.
+      </p>
+
+      <h2>4. Üçüncü Taraf Hizmetler ve Reklamlar</h2>
+      <p>
+        Mevcut sürümde (<code>v1.0.0</code>) uygulama içerisinde hiçbir üçüncü taraf
+        analitik, izleme (tracking) veya reklam SDK'sı yer almamaktadır. Gelecek
+        sürümlerde isteğe bağlı ödüllü reklam veya ek çevrimiçi hizmetler eklenmesi
+        durumunda, bu gizlilik politikası ve Google Play Veri Güvenliği beyanı
+        güncelleme öncesinde şeffaf biçimde güncellenecektir.
+      </p>
+
+      <h2>5. Çocukların Gizliliği</h2>
+      <p>
+        eKare Bulmaca tüm yaş gruplarına uygun, güvenli bir kelime ve bulmaca oyunudur.
+        13 yaş altı çocuklar dahil olmak üzere hiçbir kullanıcıdan bilerek kişisel veri
+        toplanmamaktadır.
+      </p>
+
+      <h2>6. Politika Değişiklikleri</h2>
+      <p>
+        Bu Gizlilik Politikası zaman zaman güncellenebilir. Yapılan değişiklikler bu
+        sayfada yayımlandığı tarihten itibaren geçerli olur.
+      </p>
+
+      <h2>7. İletişim</h2>
+      <p>
+        Gizlilik politikamız veya uygulama ile ilgili her türlü soru ve talebiniz için
+        bize ulaşabilirsiniz:<br />
+        <strong>Geliştirici:</strong> FatalSoft Inc.<br />
+        <strong>E-posta:</strong>
+        <a class="mail" href="mailto:fatalsoft.inc@gmail.com">fatalsoft.inc@gmail.com</a>
+      </p>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ENGLISH -->
+    <section id="en" lang="en">
+      <h1>Privacy Policy (English)</h1>
+      <p>
+        This Privacy Policy describes how <strong>FatalSoft Inc.</strong> handles
+        information in the <strong>eKare Bulmaca</strong> mobile application
+        (Android package ID: <code>fatalsoft.bulmaca</code>).
+      </p>
+
+      <div class="callout">
+        <strong>Summary:</strong> eKare Bulmaca works fully offline. It does not
+        collect, transmit, sell, or share any personal data with third parties.
+      </div>
+
+      <h2>1. Information We Collect</h2>
+      <p>
+        eKare Bulmaca does <strong>not</strong> collect any personally identifiable
+        information (such as name, email address, location, contacts, camera,
+        microphone, or advertising identifiers). No account registration or sign-in
+        is required to play.
+      </p>
+
+      <h2>2. Local On-Device Storage</h2>
+      <p>
+        To preserve your progress, the app stores non-personal gameplay state
+        <strong>strictly locally on your device</strong> (via Android SharedPreferences):
+      </p>
+      <ul>
+        <li>Completed and in-progress puzzle boards, stars, and best solve times</li>
+        <li>In-game score, coins, combo streaks, and Mini Sprint personal records</li>
+        <li>Learned English vocabulary entries and favorites in your Word Notebook</li>
+        <li>Selected background theme, sound effects, and haptics preferences</li>
+      </ul>
+
+      <h2>3. Data Deletion</h2>
+      <p>
+        Because all gameplay data is stored exclusively on your device, you can
+        permanently delete all saved data at any time via
+        <em>Settings → Reset All Progress</em> inside the app or by uninstalling the app.
+      </p>
+
+      <h2>4. Third-Party Services &amp; Advertising</h2>
+      <p>
+        Version <code>1.0.0</code> operates offline and does not integrate third-party
+        analytics, tracking, or advertising SDKs. Should optional rewarded ads or
+        online features be introduced in a future update, this policy and our Google
+        Play Data Safety declaration will be updated accordingly beforehand.
+      </p>
+
+      <h2>5. Children's Privacy</h2>
+      <p>
+        eKare Bulmaca is safe for general audiences and does not knowingly collect
+        personal information from children under 13 or any other users.
+      </p>
+
+      <h2>6. Contact Us</h2>
+      <p>
+        If you have any questions about this Privacy Policy, please contact:<br />
+        <strong>Developer:</strong> FatalSoft Inc.<br />
+        <strong>Email:</strong>
+        <a class="mail" href="mailto:fatalsoft.inc@gmail.com">fatalsoft.inc@gmail.com</a>
+      </p>
+    </section>
+
+    <footer>
+      <span>© 2026 FatalSoft Inc. — eKare Bulmaca (fatalsoft.bulmaca)</span>
+      <span><a class="mail" href="mailto:fatalsoft.inc@gmail.com">fatalsoft.inc@gmail.com</a></span>
+    </footer>
+  </main>
+</body>
+</html>
