@@ -60,3 +60,4 @@ powershell -ExecutionPolicy Bypass -File tools/build_release.ps1
 - **Android Paket Adı (`applicationId`):** `fatalsoft.bulmaca`
 - **İletişim E-posta:** `fatalsoft.inc@gmail.com`
 - **Gizlilik Politikası:** https://fthapaydin.github.io/konsept_bulmaca/privacy-policy.html
+- **Gelir & Büyüme Yol Haritası:** [MONETIZATION_AND_GROWTH_ROADMAP.md](MONETIZATION_AND_GROWTH_ROADMAP.md)
