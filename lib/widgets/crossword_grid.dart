@@ -413,18 +413,19 @@ class _CrosswordGridState extends State<CrosswordGrid> {
     final numberFontSize = (size * 0.23).clamp(7.5, 13.0);
     final letterFontSize = (size * 0.51).clamp(14.0, 29.0);
 
-    return GestureDetector(
-      onTap: () => controller.selectCell(r, c),
-      child: AnimatedScale(
-        scale: isFlashing ? 1.09 : (isSelected ? 1.04 : 1.0),
-        duration: const Duration(milliseconds: 190),
-        curve: Curves.easeOutBack,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
-          curve: Curves.easeOut,
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
+    return SizedBox(
+      width: size,
+      height: size,
+      child: GestureDetector(
+        onTap: () => controller.selectCell(r, c),
+        child: AnimatedScale(
+          scale: isFlashing ? 1.09 : (isSelected ? 1.04 : 1.0),
+          duration: const Duration(milliseconds: 190),
+          curve: Curves.easeOutBack,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 150),
+            curve: Curves.easeOut,
+            decoration: BoxDecoration(
             color: bgColor,
             borderRadius: BorderRadius.circular(radius),
             border: Border.all(color: borderColor, width: borderWidth),
@@ -529,6 +530,7 @@ class _CrosswordGridState extends State<CrosswordGrid> {
             ],
           ),
         ),
+      ),
       ),
     );
   }
