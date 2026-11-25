@@ -1,0 +1,6 @@
+# Bu bir ornek sablondur. Gercek anahtar bilgileri yalnizca yerel
+# android/key.properties dosyasinda tutulur ve .gitignore ile korunur.
+storePassword=BURAYA_GUVENLI_SIFRE
+keyPassword=BURAYA_GUVENLI_SIFRE
+keyAlias=upload
+storeFile=keystore/ekare-upload-keystore.jks

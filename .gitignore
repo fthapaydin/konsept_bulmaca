@@ -46,3 +46,11 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Android Release Signing Secrets (ASLA Git'e eklenmez!)
+android/key.properties
+android/keystore/
+*.jks
+*.keystore
+*.p12
+*KEYSTORE_BILGILERI*

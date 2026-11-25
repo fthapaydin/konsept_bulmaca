@@ -49,9 +49,10 @@ powershell -ExecutionPolicy Bypass -File tools/install_app_icon.ps1
 dart analyze lib test tools/capture_screenshots_test.dart
 flutter test
 
-# Android çalıştırma ve release APK derleme
+# Android çalıştırma, release APK ve Google Play imzalı AAB derleme
 flutter run
 powershell -ExecutionPolicy Bypass -File tools/build_apk.ps1
+powershell -ExecutionPolicy Bypass -File tools/build_release.ps1
 ```
 
 ## Geliştirici & İletişim
