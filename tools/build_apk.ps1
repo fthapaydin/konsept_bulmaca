@@ -35,6 +35,11 @@ if ($LASTEXITCODE -ne 0) {
 
 try {
     Push-Location "$driveLetter\$projectName"
+    # Önceki derlemeden farklı geçici sürücüye ait flutter_build.d kaldıysa temizle
+    $staleFlutterIntermediates = Join-Path "$driveLetter\$projectName" "build\app\intermediates\flutter"
+    if (Test-Path $staleFlutterIntermediates) {
+        Remove-Item -Recurse -Force $staleFlutterIntermediates
+    }
     flutter pub get
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     flutter build apk --release
