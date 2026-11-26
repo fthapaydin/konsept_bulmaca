@@ -587,9 +587,11 @@ class _MiniSprintScreenState extends State<MiniSprintScreen> {
                           GameKeyboard(
                             language: currentItem.language,
                             primaryColor: currentItem.primaryColor,
+                            activeDirection: ctrl.direction,
                             isDark: isDark,
                             onLetter: ctrl.inputLetter,
                             onBackspace: ctrl.backspace,
+                            onClearWord: ctrl.clearActiveWordEditableCells,
                             onToggleDirection: ctrl.toggleDirection,
                           ),
                         ],

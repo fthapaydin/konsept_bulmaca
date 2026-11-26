@@ -108,6 +108,12 @@ class GameController extends ChangeNotifier {
   bool isLocked(int r, int c) => _lockedCells.contains('$r,$c');
   bool isWrong(int r, int c) => _wrongCells.contains('$r,$c');
 
+  /// Başlangıç/ipucu ile açılan kareler VEYA zaten doğru çözülmüş (yeşil)
+  /// kesişen bir kelimeye ait kareler korunur; başka kelimede silme/yazma
+  /// yapılırken bu doğru harfler asla silinmez veya bozulmaz.
+  bool isCellProtected(int r, int c) =>
+      _lockedCells.contains('$r,$c') || isCellInSolvedEntry(r, c);
+
   PuzzleEntry? get activeEntry =>
       puzzle.entryAt(_selectedCell.row, _selectedCell.col, _direction) ??
       puzzle.entryAt(_selectedCell.row, _selectedCell.col, _direction.opposite);
@@ -274,13 +280,14 @@ class GameController extends ChangeNotifier {
     _direction = entry.direction;
     CellCoord? target;
     for (final cell in entry.cells) {
-      if ((_letters[cell.key] ?? '').isEmpty) {
+      if (!isCellProtected(cell.row, cell.col) &&
+          (_letters[cell.key] ?? '').isEmpty) {
         target = cell;
         break;
       }
     }
     target ??= entry.cells.firstWhere(
-      (cell) => !_lockedCells.contains(cell.key),
+      (cell) => !isCellProtected(cell.row, cell.col),
       orElse: () => entry.cells.first,
     );
     _selectedCell = target;
@@ -316,15 +323,48 @@ class GameController extends ChangeNotifier {
     appState.feedback.keyTap();
 
     var target = _selectedCell;
-    if (_lockedCells.contains(target.key)) {
+    if (isCellProtected(target.row, target.col)) {
       final entry = activeEntry;
       if (entry != null) {
         final idx = entry.indexOfCell(target.row, target.col);
         CellCoord? editable;
+        // 1) İleri yönde boş ve korunmayan kare
         for (var i = idx + 1; i < entry.cells.length; i++) {
-          if (!_lockedCells.contains(entry.cells[i].key)) {
-            editable = entry.cells[i];
+          final c = entry.cells[i];
+          if (!isCellProtected(c.row, c.col) &&
+              (_letters[c.key] ?? '').isEmpty) {
+            editable = c;
             break;
+          }
+        }
+        // 2) Kelime başından itibaren boş ve korunmayan kare
+        if (editable == null) {
+          for (var i = 0; i < idx; i++) {
+            final c = entry.cells[i];
+            if (!isCellProtected(c.row, c.col) &&
+                (_letters[c.key] ?? '').isEmpty) {
+              editable = c;
+              break;
+            }
+          }
+        }
+        // 3) İleri veya baştan herhangi bir düzenlenebilir (korunmayan) kare
+        if (editable == null) {
+          for (var i = idx + 1; i < entry.cells.length; i++) {
+            final c = entry.cells[i];
+            if (!isCellProtected(c.row, c.col)) {
+              editable = c;
+              break;
+            }
+          }
+        }
+        if (editable == null) {
+          for (var i = 0; i < idx; i++) {
+            final c = entry.cells[i];
+            if (!isCellProtected(c.row, c.col)) {
+              editable = c;
+              break;
+            }
           }
         }
         if (editable == null) {
@@ -424,7 +464,7 @@ class GameController extends ChangeNotifier {
     appState.feedback.backspaceTap();
 
     final curKey = _selectedCell.key;
-    if (!_lockedCells.contains(curKey) &&
+    if (!isCellProtected(_selectedCell.row, _selectedCell.col) &&
         (_letters[curKey]?.isNotEmpty ?? false)) {
       _letters.remove(curKey);
       _wrongCells.remove(curKey);
@@ -438,9 +478,11 @@ class GameController extends ChangeNotifier {
     final entry = activeEntry;
     if (entry != null) {
       final idx = entry.indexOfCell(_selectedCell.row, _selectedCell.col);
+      // Geriye doğru tararken kilitli veya çözülmüş kesişen kelime harflerini
+      // kesinlikle atla; yalnızca düzenlenebilir (korunmayan) harfleri sil.
       for (var i = idx - 1; i >= 0; i--) {
         final prevCell = entry.cells[i];
-        if (!_lockedCells.contains(prevCell.key)) {
+        if (!isCellProtected(prevCell.row, prevCell.col)) {
           _selectedCell = prevCell;
           _letters.remove(prevCell.key);
           _wrongCells.remove(prevCell.key);
@@ -454,6 +496,37 @@ class GameController extends ChangeNotifier {
     }
   }
 
+  /// Sil tuşuna uzun basıldığında aktif kelimedeki yalnızca düzenlenebilir
+  /// harfleri temizler; çözülmüş kesişen kelimelerin doğru harflerini korur.
+  void clearActiveWordEditableCells() {
+    if (_isCompleted) return;
+    final entry = activeEntry;
+    if (entry == null) return;
+
+    var removedAny = false;
+    CellCoord? firstEditable;
+    for (final cell in entry.cells) {
+      if (!isCellProtected(cell.row, cell.col)) {
+        firstEditable ??= cell;
+        if (_letters.remove(cell.key) != null) {
+          removedAny = true;
+        }
+        _wrongCells.remove(cell.key);
+      }
+    }
+
+    if (removedAny || firstEditable != null) {
+      if (firstEditable != null) {
+        _selectedCell = firstEditable;
+      }
+      appState.feedback.backspaceTap();
+      _recomputeSolvedEntries();
+      _recomputeWrongEntries();
+      notifyListeners();
+      if (persistSession) unawaited(_persistProgress());
+    }
+  }
+
   Future<HintFeedback> revealSelectedCell() async {
     if (_isCompleted) {
       return const HintFeedback(
@@ -464,7 +537,7 @@ class GameController extends ChangeNotifier {
 
     CellCoord? target;
     final selSol = puzzle.solutionAt(_selectedCell.row, _selectedCell.col);
-    if (!_lockedCells.contains(_selectedCell.key) &&
+    if (!isCellProtected(_selectedCell.row, _selectedCell.col) &&
         _letters[_selectedCell.key] != selSol) {
       target = _selectedCell;
     } else {
@@ -472,7 +545,8 @@ class GameController extends ChangeNotifier {
       if (entry != null) {
         for (final cell in entry.cells) {
           final sol = puzzle.solutionAt(cell.row, cell.col);
-          if (!_lockedCells.contains(cell.key) && _letters[cell.key] != sol) {
+          if (!isCellProtected(cell.row, cell.col) &&
+              _letters[cell.key] != sol) {
             target = cell;
             break;
           }
@@ -637,7 +711,7 @@ class GameController extends ChangeNotifier {
       for (var c = 0; c < puzzle.cols; c++) {
         if (!puzzle.isActiveCell(r, c)) continue;
         final key = '$r,$c';
-        if (!_lockedCells.contains(key) && (_letters[key]?.isNotEmpty ?? false)) {
+        if (!isCellProtected(r, c) && (_letters[key]?.isNotEmpty ?? false)) {
           editableFilled.add(CellCoord(r, c));
         }
       }
@@ -746,14 +820,16 @@ class GameController extends ChangeNotifier {
       final idx = entry.indexOfCell(edited.row, edited.col);
       for (var i = idx + 1; i < entry.cells.length; i++) {
         final cell = entry.cells[i];
-        if ((_letters[cell.key] ?? '').isEmpty) {
+        if (!isCellProtected(cell.row, cell.col) &&
+            (_letters[cell.key] ?? '').isEmpty) {
           _selectedCell = cell;
           return;
         }
       }
       for (var i = 0; i < idx; i++) {
         final cell = entry.cells[i];
-        if ((_letters[cell.key] ?? '').isEmpty) {
+        if (!isCellProtected(cell.row, cell.col) &&
+            (_letters[cell.key] ?? '').isEmpty) {
           _selectedCell = cell;
           return;
         }
@@ -763,8 +839,9 @@ class GameController extends ChangeNotifier {
         return;
       }
       for (var i = idx + 1; i < entry.cells.length; i++) {
-        if (!_lockedCells.contains(entry.cells[i].key)) {
-          _selectedCell = entry.cells[i];
+        final cell = entry.cells[i];
+        if (!isCellProtected(cell.row, cell.col)) {
+          _selectedCell = cell;
           return;
         }
       }
@@ -784,13 +861,14 @@ class GameController extends ChangeNotifier {
       if (!isEntrySolved(candidate)) {
         _direction = candidate.direction;
         for (final cell in candidate.cells) {
-          if ((_letters[cell.key] ?? '').isEmpty) {
+          if (!isCellProtected(cell.row, cell.col) &&
+              (_letters[cell.key] ?? '').isEmpty) {
             _selectedCell = cell;
             return;
           }
         }
         _selectedCell = candidate.cells.firstWhere(
-          (c) => !_lockedCells.contains(c.key),
+          (c) => !isCellProtected(c.row, c.col),
           orElse: () => candidate.cells.first,
         );
         return;

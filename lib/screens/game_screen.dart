@@ -435,9 +435,11 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                           GameKeyboard(
                             language: widget.language,
                             primaryColor: widget.primaryColor,
+                            activeDirection: _controller.direction,
                             isDark: isDark,
                             onLetter: _controller.inputLetter,
                             onBackspace: _controller.backspace,
+                            onClearWord: _controller.clearActiveWordEditableCells,
                             onToggleDirection: _controller.toggleDirection,
                           ),
                         ],

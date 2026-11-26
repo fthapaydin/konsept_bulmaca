@@ -19,6 +19,7 @@ import 'package:konsept_bulmaca/services/puzzle_repository.dart';
 import 'package:konsept_bulmaca/state/app_state.dart';
 import 'package:konsept_bulmaca/state/game_controller.dart';
 import 'package:konsept_bulmaca/utils/turkish_text.dart';
+import 'package:konsept_bulmaca/widgets/clue_banner.dart';
 import 'package:konsept_bulmaca/widgets/game_keyboard.dart';
 
 AppState _createSilentAppState({
@@ -432,6 +433,115 @@ void main() {
       appState.dispose();
     });
 
+    test(
+        'protects solved crossing word letters from backspace, overwrite, and word clear',
+        () async {
+      final appState = _createSilentAppState();
+      await appState.initialize();
+
+      // Use Level 5 (6x6) and find an across/down crossing pair where across has editable cells too
+      final puzzle = appState.packs.first.levels[4];
+      final controller = GameController(
+        puzzle: puzzle,
+        storageKey: 'test_protect_${puzzle.id}',
+        language: 'tr',
+        isDaily: false,
+        appState: appState,
+        persistSession: false,
+      );
+
+      PuzzleEntry? targetAcross;
+      PuzzleEntry? solvedDown;
+      CellCoord? intersection;
+
+      outer:
+      for (final a in puzzle.acrossEntries) {
+        for (final d in puzzle.downEntries) {
+          for (final cell in a.cells) {
+            if (d.containsCell(cell.row, cell.col) &&
+                !puzzle.isInitialRevealed(cell.row, cell.col)) {
+              targetAcross = a;
+              solvedDown = d;
+              intersection = cell;
+              break outer;
+            }
+          }
+        }
+      }
+
+      expect(targetAcross, isNotNull);
+      expect(solvedDown, isNotNull);
+      expect(intersection, isNotNull);
+
+      // 1) Solve the crossing down word completely so it becomes green/protected
+      final downChars = solvedDown!.answer.characters.toList();
+      for (var i = 0; i < solvedDown.cells.length; i++) {
+        final c = solvedDown.cells[i];
+        if (!controller.isCellProtected(c.row, c.col)) {
+          controller.selectCell(c.row, c.col);
+          await controller.inputLetter(downChars[i]);
+        }
+      }
+      expect(controller.isEntrySolved(solvedDown), isTrue);
+      expect(
+        controller.isCellProtected(intersection!.row, intersection.col),
+        isTrue,
+      );
+      final protectedChar = controller.letterAt(intersection.row, intersection.col)!;
+
+      // 2) Switch to targetAcross and fill editable cells with wrong letters
+      controller.selectEntry(targetAcross!);
+      for (final c in targetAcross.cells) {
+        if (!controller.isCellProtected(c.row, c.col)) {
+          controller.selectCell(c.row, c.col);
+          await controller.inputLetter('Z');
+        }
+      }
+      // Try typing directly on the protected intersection cell -> must NOT overwrite it!
+      controller.selectCell(intersection.row, intersection.col);
+      await controller.inputLetter(protectedChar == 'M' ? 'K' : 'M');
+      expect(
+        controller.letterAt(intersection.row, intersection.col),
+        protectedChar,
+      );
+
+      // 3) Repeatedly press backspace from the last cell of targetAcross
+      final lastCell = targetAcross.cells.last;
+      controller.selectCell(lastCell.row, lastCell.col);
+      for (var k = 0; k < targetAcross.cells.length + 2; k++) {
+        controller.backspace();
+      }
+
+      // Solved crossing letter MUST still be intact and down word MUST remain solved!
+      expect(
+        controller.letterAt(intersection.row, intersection.col),
+        protectedChar,
+      );
+      expect(controller.isEntrySolved(solvedDown), isTrue);
+
+      // 4) Refill wrong letters and test long-press clearActiveWordEditableCells()
+      for (final c in targetAcross.cells) {
+        if (!controller.isCellProtected(c.row, c.col)) {
+          controller.selectCell(c.row, c.col);
+          await controller.inputLetter('Z');
+        }
+      }
+      controller.selectEntry(targetAcross);
+      controller.clearActiveWordEditableCells();
+      expect(
+        controller.letterAt(intersection.row, intersection.col),
+        protectedChar,
+      );
+      for (final c in targetAcross.cells) {
+        if (!controller.isCellProtected(c.row, c.col)) {
+          expect(controller.letterAt(c.row, c.col), isNull);
+        }
+      }
+
+      controller.dispose();
+      appState.dispose();
+    });
+
     test('buys bundles, unlocks backgrounds & mega puzzles with Puan', () async {
       final appState = _createSilentAppState();
       await appState.initialize();
@@ -609,6 +719,67 @@ void main() {
       await tester.tap(find.descendant(of: keyboard, matching: find.text('A')));
       await tester.pump();
 
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pump();
+      appState.dispose();
+    });
+
+    testWidgets(
+        'showAllCluesSheet opens directly on active clue direction tab and scrolls active clue into view',
+        (tester) async {
+      tester.view.physicalSize = const Size(412, 892);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      final appState = _createSilentAppState();
+      await tester.runAsync(() => appState.initialize());
+
+      // Pick a 15x15 Mega puzzle so there are many across & down clues
+      final mega15 = appState.megaBank!.items[3].puzzle;
+      final controller = GameController(
+        puzzle: mega15,
+        storageKey: 'test_clues_sheet_${mega15.id}',
+        language: 'tr',
+        isDaily: false,
+        appState: appState,
+        persistSession: false,
+      );
+
+      // Select a late DOWN clue (near the bottom of the down list!)
+      final lateDown = mega15.downEntries[mega15.downEntries.length - 2];
+      controller.selectEntry(lateDown);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Builder(
+              builder: (ctx) => Center(
+                child: ElevatedButton(
+                  onPressed: () => showAllCluesSheet(
+                    context: ctx,
+                    controller: controller,
+                    primaryColor: const Color(0xFFA85513),
+                  ),
+                  child: const Text('Aç'),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Aç'));
+      await tester.pumpAndSettle();
+
+      // Active clue badge must be immediately visible inside the viewport!
+      final activeBadge = find.text('AKTİF • ${lateDown.number} DİKEY');
+      expect(activeBadge, findsOneWidget);
+      final badgeRect = tester.getRect(activeBadge);
+      expect(badgeRect.top, greaterThanOrEqualTo(0));
+      expect(badgeRect.bottom, lessThanOrEqualTo(892));
+
+      controller.dispose();
       await tester.pumpWidget(const SizedBox.shrink());
       await tester.pump();
       appState.dispose();

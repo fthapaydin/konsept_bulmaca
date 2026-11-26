@@ -388,6 +388,17 @@ class _CrosswordGridState extends State<CrosswordGrid> {
       borderColor = const Color(0xFFE11D48);
       textColor = const Color(0xFF9F1239);
       borderWidth = 2.0;
+    } else if (inWord && inSolvedWord) {
+      bgColor = Color.alphaBlend(
+        const Color(0xFF16A34A).withValues(alpha: 0.14),
+        Color.alphaBlend(
+          widget.primaryColor.withValues(alpha: 0.10),
+          Colors.white,
+        ),
+      );
+      borderColor = const Color(0xFF16A34A).withValues(alpha: 0.78);
+      textColor = const Color(0xFF14532D);
+      borderWidth = 1.9;
     } else if (inWord) {
       bgColor = Color.alphaBlend(
         widget.primaryColor.withValues(alpha: 0.17),
@@ -491,7 +502,7 @@ class _CrosswordGridState extends State<CrosswordGrid> {
                     ),
                   ),
                 ),
-              if (locked && !isSelected && !wrong)
+              if ((locked || inSolvedWord) && !isSelected && !wrong)
                 Positioned(
                   top: 2.5,
                   right: 2.5,
@@ -499,7 +510,9 @@ class _CrosswordGridState extends State<CrosswordGrid> {
                     width: (size * 0.11).clamp(3.8, 6.0),
                     height: (size * 0.11).clamp(3.8, 6.0),
                     decoration: BoxDecoration(
-                      color: widget.primaryColor.withValues(alpha: 0.8),
+                      color: inSolvedWord
+                          ? const Color(0xFF16A34A).withValues(alpha: 0.85)
+                          : widget.primaryColor.withValues(alpha: 0.8),
                       shape: BoxShape.circle,
                     ),
                   ),
