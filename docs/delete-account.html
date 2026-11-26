@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hesap ve Veri Silme — eKare Bulmaca (FatalSoft Inc.)</title>
+  <link rel="icon" type="image/png" href="assets/ekare_icon.png" />
+  <style>
+    :root {
+      --paper: #f6f2ea;
+      --card: #fffdf9;
+      --muted: #efe9dc;
+      --ink: #1d1916;
+      --ink-soft: #5c5349;
+      --ink-muted: #8c8174;
+      --hairline: #e2d9c8;
+      --brass: #a85513;
+      --brass-soft: #fbf2e2;
+      --danger: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 28px 16px 56px;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.68;
+    }
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--hairline);
+      border-radius: 18px;
+      padding: 34px 30px;
+      box-shadow: 0 12px 32px rgba(29, 25, 22, 0.05);
+    }
+    .masthead {
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: 16px;
+      margin-bottom: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 10px;
+    }
+    .brand { font-size: 24px; font-weight: 900; margin: 0; letter-spacing: -0.4px; }
+    .sub { font-size: 11.5px; font-weight: 800; letter-spacing: 1.3px; text-transform: uppercase; color: var(--ink-muted); }
+    nav a {
+      text-decoration: none;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--ink);
+      background: var(--muted);
+      border: 1px solid var(--hairline);
+      padding: 6px 12px;
+      border-radius: 999px;
+      margin-left: 6px;
+    }
+    h1 { font-size: 21px; font-weight: 900; margin: 0 0 12px; }
+    h2 { font-size: 16px; font-weight: 800; margin: 22px 0 8px; }
+    p, li { color: var(--ink-soft); font-size: 14.5px; }
+    .box {
+      background: var(--brass-soft);
+      border: 1px solid #e6cca0;
+      border-left: 4px solid var(--brass);
+      border-radius: 10px;
+      padding: 13px 16px;
+      margin: 16px 0;
+      color: var(--ink);
+      font-size: 14px;
+    }
+    a.mail { color: var(--brass); font-weight: 800; text-decoration: none; }
+    a.mail:hover { text-decoration: underline; }
+    hr { border: 0; border-top: 1px dashed var(--hairline); margin: 34px 0 28px; }
+    footer {
+      margin-top: 28px;
+      padding-top: 14px;
+      border-top: 1px solid var(--hairline);
+      font-size: 12.5px;
+      color: var(--ink-muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="masthead">
+      <div>
+        <p class="brand">eKare Bulmaca</p>
+        <div class="sub">Hesap ve Veri Silme • Account &amp; Data Deletion</div>
+      </div>
+      <nav>
+        <a href="index.html">Ana Sayfa</a>
+        <a href="privacy-policy.html">Gizlilik Politikası</a>
+      </nav>
+    </header>
+
+    <section id="tr">
+      <h1>Hesap ve Bulut Verilerini Silme (Türkçe)</h1>
+      <p>
+        <strong>FatalSoft Inc.</strong> tarafından geliştirilen <strong>eKare Bulmaca</strong>
+        (<code>fatalsoft.bulmaca</code>) uygulamasında Google ile isteğe bağlı bağladığınız
+        hesabınızı ve tüm bulut yedekleme verilerinizi istediğiniz zaman kalıcı olarak silebilirsiniz.
+      </p>
+
+      <div class="box">
+        <strong>Yöntem 1 — Uygulama İçinden Anında Silme (Önerilen):</strong><br />
+        eKare Bulmaca → Sağ üst <strong>İstatistikler ve Ayarlar</strong> simgesi →
+        <strong>Hesap &amp; Bulut Yedekleme</strong> → <strong>Hesabı ve Bulut Verilerini Sil</strong>
+        butonuna dokunup onaylayın. Hesabınız ve tüm bulut kayıtlarınız saniyeler içinde kalıcı olarak silinir.
+      </div>
+
+      <h2>Yöntem 2 — Uygulamayı Sildiyseniz (E-posta ile Talep)</h2>
+      <p>
+        Uygulamayı cihazınızdan kaldırdıysanız, Google hesabınızla eşleşen bulut kaydınızın
+        silinmesi için giriş yaptığınız e-posta adresinden
+        <a class="mail" href="mailto:fatalsoft.inc@gmail.com?subject=eKare%20Bulmaca%20-%20Hesap%20Silme%20Talebi">fatalsoft.inc@gmail.com</a>
+        adresine <em>"eKare Bulmaca - Hesap Silme Talebi"</em> konusuyla e-posta gönderebilirsiniz.
+        Talebiniz en geç <strong>7 iş günü</strong> içinde işleme alınarak doğrulanır.
+      </p>
+
+      <h2>Hangi Veriler Silinir?</h2>
+      <ul>
+        <li>Firebase Authentication hesap kaydı (UID, ad, e-posta bağlantısı)</li>
+        <li>Cloud Firestore'da tutulan bulut oyun yedeği (çözülen bulmacalar, yıldızlar, puan, altın, Kelime Defteri ve Mini Sprint rekoru)</li>
+        <li>Uygulama içinden silme yapıldığında cihaz içi yerel oyun verileri de temizlenir</li>
+      </ul>
+      <p><strong>Saklanan Veri:</strong> Hesap silme işlemi sonrasında hiçbir kişisel veri saklanmaz.</p>
+    </section>
+
+    <hr />
+
+    <section id="en" lang="en">
+      <h1>Account &amp; Data Deletion (English)</h1>
+      <p>
+        Users who optionally linked a Google account in <strong>eKare Bulmaca</strong>
+        (<code>fatalsoft.bulmaca</code>, published by <strong>FatalSoft Inc.</strong>)
+        can permanently delete their account and cloud backup data at any time.
+      </p>
+
+      <div class="box">
+        <strong>Option 1 — Instant In-App Deletion (Recommended):</strong><br />
+        Open eKare Bulmaca → Top-right <strong>Stats &amp; Settings</strong> →
+        <strong>Account &amp; Cloud Backup</strong> → tap <strong>Delete Account &amp; Cloud Data</strong>
+        and confirm. Your Firebase Auth account and Firestore cloud backup are permanently removed immediately.
+      </div>
+
+      <h2>Option 2 — Request Deletion by Email</h2>
+      <p>
+        If you have already uninstalled the app, email
+        <a class="mail" href="mailto:fatalsoft.inc@gmail.com?subject=eKare%20Bulmaca%20-%20Account%20Deletion%20Request">fatalsoft.inc@gmail.com</a>
+        from the Google account email you signed in with (subject: <em>"eKare Bulmaca - Account Deletion Request"</em>).
+        All associated cloud records will be permanently deleted within <strong>7 business days</strong>.
+      </p>
+
+      <h2>Data Deleted &amp; Retention</h2>
+      <ul>
+        <li>Firebase Authentication user record (UID, display name, email link)</li>
+        <li>Cloud Firestore game backup (solved levels, stars, score, coins, Word Notebook, Sprint records)</li>
+        <li>No personal or gameplay data is retained after deletion.</li>
+      </ul>
+    </section>
+
+    <footer>
+      <span>© 2026 FatalSoft Inc. — eKare Bulmaca (fatalsoft.bulmaca)</span>
+      <span><a class="mail" href="mailto:fatalsoft.inc@gmail.com">fatalsoft.inc@gmail.com</a></span>
+    </footer>
+  </main>
+</body>
+</html>

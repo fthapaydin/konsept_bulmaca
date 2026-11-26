@@ -1,9 +1,13 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import '../core/economy/hint_pricing.dart';
 import '../core/models/notebook_models.dart';
+import '../core/models/profile_merger.dart';
 import '../models/background_models.dart';
 import '../models/puzzle_models.dart';
 import '../models/retention_models.dart';
+import '../services/auth_service.dart';
+import '../services/cloud_sync_service.dart';
 import '../services/feedback_service.dart';
 import '../services/puzzle_repository.dart';
 import '../services/reward_ad_service.dart';
@@ -63,10 +67,14 @@ class AppState extends ChangeNotifier {
     StorageService? storage,
     FeedbackService? feedback,
     RewardAdService? rewardAdService,
+    AuthService? authService,
+    CloudSyncService? cloudSyncService,
   })  : _repository = repository ?? PuzzleRepository(),
         _storage = storage ?? StorageService(),
         feedback = feedback ?? FeedbackService(),
-        rewardAdService = rewardAdService ?? const PlaceholderRewardAdService();
+        rewardAdService = rewardAdService ?? const PlaceholderRewardAdService(),
+        _auth = authService ?? FirebaseGoogleAuthService(),
+        _cloudSync = cloudSyncService ?? FirestoreCloudSyncService();
 
   static const int letterHintCost = 10;
   static const int wordHintCost = 25;
@@ -76,6 +84,8 @@ class AppState extends ChangeNotifier {
   final StorageService _storage;
   final FeedbackService feedback;
   final RewardAdService rewardAdService;
+  final AuthService _auth;
+  final CloudSyncService _cloudSync;
 
   bool _loading = true;
   String? _error;
@@ -85,6 +95,12 @@ class AppState extends ChangeNotifier {
   SprintBank? _sprintBank;
   PlayerProfile _profile = const PlayerProfile();
 
+  AuthUserInfo? _signedInUser;
+  bool _authBusy = false;
+  DateTime? _lastCloudSync;
+  bool _backupBannerDismissed = false;
+  Timer? _cloudPushTimer;
+
   bool get isLoading => _loading;
   String? get error => _error;
   List<ConceptPack> get packs => _packs;
@@ -92,6 +108,14 @@ class AppState extends ChangeNotifier {
   MegaBank? get megaBank => _megaBank;
   SprintBank? get sprintBank => _sprintBank;
   PlayerProfile get profile => _profile;
+
+  AuthUserInfo? get signedInUser => _signedInUser;
+  bool get isSignedIn => _signedInUser != null;
+  bool get isCloudAvailable => _auth.isCloudAvailable;
+  bool get isAuthBusy => _authBusy;
+  DateTime? get lastCloudSync => _lastCloudSync;
+  bool get shouldShowCloudBackupBanner =>
+      !isSignedIn && !_backupBannerDismissed && totalSolvedPuzzles >= 2;
 
   int get coins => _profile.coins;
   int get score => _profile.score;
@@ -143,6 +167,13 @@ class AppState extends ChangeNotifier {
       _sprintBank = content.sprintBank;
       _profile = loadedProfile;
       _syncFeedbackPrefs();
+
+      // Misafir açılışını ASLA bloklamadan opsiyonel Firebase oturumunu kontrol et
+      await _auth.initialize();
+      _signedInUser = _auth.currentUser;
+      if (_signedInUser != null) {
+        unawaited(_pullAndMergeCloudSilently(_signedInUser!.uid));
+      }
     } catch (e) {
       _error = 'Bulmacalar yüklenirken bir sorun oluştu: $e';
     } finally {
@@ -250,14 +281,14 @@ class AppState extends ChangeNotifier {
     if (notify) {
       notifyListeners();
     }
-    await _storage.saveProfile(_profile);
+    await _persistProfile();
   }
 
   Future<bool> spendCoins(int amount) async {
     if (_profile.coins < amount) return false;
     _profile = _profile.copyWith(coins: _profile.coins - amount);
     notifyListeners();
-    await _storage.saveProfile(_profile);
+    await _persistProfile();
     return true;
   }
 
@@ -276,7 +307,7 @@ class AppState extends ChangeNotifier {
             letterHintTickets: _profile.letterHintTickets - 1,
           );
           notifyListeners();
-          await _storage.saveProfile(_profile);
+          await _persistProfile();
           return const HintChargeResult(
             paid: true,
             usedTicket: true,
@@ -290,7 +321,7 @@ class AppState extends ChangeNotifier {
             wordHintTickets: _profile.wordHintTickets - 1,
           );
           notifyListeners();
-          await _storage.saveProfile(_profile);
+          await _persistProfile();
           return const HintChargeResult(
             paid: true,
             usedTicket: true,
@@ -304,7 +335,7 @@ class AppState extends ChangeNotifier {
             checkHintTickets: _profile.checkHintTickets - 1,
           );
           notifyListeners();
-          await _storage.saveProfile(_profile);
+          await _persistProfile();
           return const HintChargeResult(
             paid: true,
             usedTicket: true,
@@ -318,7 +349,7 @@ class AppState extends ChangeNotifier {
     if (_profile.coins >= coinCost) {
       _profile = _profile.copyWith(coins: _profile.coins - coinCost);
       notifyListeners();
-      await _storage.saveProfile(_profile);
+      await _persistProfile();
       return HintChargeResult(
         paid: true,
         usedTicket: false,
@@ -331,7 +362,7 @@ class AppState extends ChangeNotifier {
     if (_profile.score >= scoreCost) {
       _profile = _profile.copyWith(score: _profile.score - scoreCost);
       notifyListeners();
-      await _storage.saveProfile(_profile);
+      await _persistProfile();
       return HintChargeResult(
         paid: true,
         usedTicket: false,
@@ -378,7 +409,7 @@ class AppState extends ChangeNotifier {
     if (changed) {
       _profile = _profile.copyWith(learnedEnglishWords: updated);
       notifyListeners();
-      await _storage.saveProfile(_profile);
+      await _persistProfile();
     }
   }
 
@@ -391,7 +422,7 @@ class AppState extends ChangeNotifier {
     _profile = _profile.copyWith(learnedEnglishWords: updated);
     feedback.cellSelect();
     notifyListeners();
-    await _storage.saveProfile(_profile);
+    await _persistProfile();
   }
 
   /// 90 saniyelik Mini Sprint tur sonu rekor ve ödüllerini kaydeder.
@@ -413,7 +444,7 @@ class AppState extends ChangeNotifier {
       bestCombo: maxCombo > _profile.bestCombo ? maxCombo : _profile.bestCombo,
     );
     notifyListeners();
-    await _storage.saveProfile(_profile);
+    await _persistProfile();
     return isNewRecord;
   }
 
@@ -431,7 +462,7 @@ class AppState extends ChangeNotifier {
       bestCombo: newBestCombo,
     );
     notifyListeners();
-    await _storage.saveProfile(_profile);
+    await _persistProfile();
   }
 
   AppBackground get selectedBackground =>
@@ -493,7 +524,7 @@ class AppState extends ChangeNotifier {
     );
     feedback.wordSolved();
     notifyListeners();
-    await _storage.saveProfile(_profile);
+    await _persistProfile();
     return reward;
   }
 
@@ -507,7 +538,7 @@ class AppState extends ChangeNotifier {
     );
     feedback.wordSolved();
     notifyListeners();
-    await _storage.saveProfile(_profile);
+    await _persistProfile();
     return mission.rewardCoins;
   }
 
@@ -519,7 +550,7 @@ class AppState extends ChangeNotifier {
     _profile = _profile.copyWith(coins: _profile.coins + bonus);
     feedback.wordSolved();
     notifyListeners();
-    await _storage.saveProfile(_profile);
+    await _persistProfile();
     return bonus;
   }
 
@@ -578,7 +609,7 @@ class AppState extends ChangeNotifier {
     );
     feedback.wordSolved();
     notifyListeners();
-    await _storage.saveProfile(_profile);
+    await _persistProfile();
     return ActionOutcome(
       success: true,
       message: '${bundle.title} hesabına eklendi!',
@@ -622,7 +653,7 @@ class AppState extends ChangeNotifier {
     );
     feedback.wordSolved();
     notifyListeners();
-    await _storage.saveProfile(_profile);
+    await _persistProfile();
     return ActionOutcome(
       success: true,
       message: '${item.puzzle.title} açıldı! İyi oyunlar!',
@@ -661,7 +692,7 @@ class AppState extends ChangeNotifier {
     _profile = _profile.copyWith(selectedBackgroundId: bg.id);
     feedback.cellSelect();
     notifyListeners();
-    await _storage.saveProfile(_profile);
+    await _persistProfile();
     return true;
   }
 
@@ -686,7 +717,7 @@ class AppState extends ChangeNotifier {
     );
     feedback.wordSolved();
     notifyListeners();
-    await _storage.saveProfile(_profile);
+    await _persistProfile();
     return ActionOutcome(
       success: true,
       message: '${bg.name} altınla açıldı ve uygulandı!',
@@ -714,7 +745,7 @@ class AppState extends ChangeNotifier {
     );
     feedback.wordSolved();
     notifyListeners();
-    await _storage.saveProfile(_profile);
+    await _persistProfile();
     return ActionOutcome(
       success: true,
       message: '${bg.name} puanla açıldı ve uygulandı!',
@@ -821,7 +852,7 @@ class AppState extends ChangeNotifier {
     }
 
     notifyListeners();
-    await _storage.saveProfile(_profile);
+    await _persistProfile();
 
     return CompletionReward(
       stars: stars,
@@ -849,14 +880,14 @@ class AppState extends ChangeNotifier {
     _profile = _profile.copyWith(soundEnabled: enabled);
     _syncFeedbackPrefs();
     notifyListeners();
-    await _storage.saveProfile(_profile);
+    await _persistProfile();
   }
 
   Future<void> toggleHaptics(bool enabled) async {
     _profile = _profile.copyWith(hapticsEnabled: enabled);
     _syncFeedbackPrefs();
     notifyListeners();
-    await _storage.saveProfile(_profile);
+    await _persistProfile();
   }
 
   Future<void> resetAllProgress() async {
@@ -865,11 +896,187 @@ class AppState extends ChangeNotifier {
       hapticsEnabled: _profile.hapticsEnabled,
     );
     notifyListeners();
+    await _persistProfile();
+  }
+
+  void dismissCloudBackupBanner() {
+    _backupBannerDismissed = true;
+    notifyListeners();
+  }
+
+  Future<void> _persistProfile() async {
     await _storage.saveProfile(_profile);
+    _scheduleCloudPush();
+  }
+
+  void _scheduleCloudPush() {
+    final user = _signedInUser;
+    if (user == null || !_auth.isCloudAvailable) return;
+    _cloudPushTimer?.cancel();
+    _cloudPushTimer = Timer(const Duration(seconds: 3), () {
+      unawaited(() async {
+        final ok = await _cloudSync.pushProfile(user.uid, _profile);
+        if (ok) {
+          _lastCloudSync = DateTime.now();
+          notifyListeners();
+        }
+      }());
+    });
+  }
+
+  Future<void> _pullAndMergeCloudSilently(String uid) async {
+    final remote = await _cloudSync.fetchProfile(uid);
+    if (remote != null) {
+      _profile = ProfileMerger.merge(local: _profile, cloud: remote);
+      _syncFeedbackPrefs();
+      await _storage.saveProfile(_profile);
+    }
+    final pushed = await _cloudSync.pushProfile(uid, _profile);
+    if (pushed) {
+      _lastCloudSync = DateTime.now();
+    }
+    notifyListeners();
+  }
+
+  /// İsteğe bağlı Google ile Giriş + akıllı yerel–bulut ilerleme birleştirme.
+  Future<ActionOutcome> signInWithGoogleAndSync() async {
+    if (_authBusy) {
+      return const ActionOutcome(
+        success: false,
+        message: 'İşlem devam ediyor, lütfen bekleyin...',
+      );
+    }
+    _authBusy = true;
+    notifyListeners();
+    try {
+      final res = await _auth.signInWithGoogle();
+      if (!res.success || res.user == null) {
+        return ActionOutcome(success: false, message: res.message);
+      }
+
+      _signedInUser = res.user;
+      final remote = await _cloudSync.fetchProfile(res.user!.uid);
+      if (remote != null) {
+        _profile = ProfileMerger.merge(local: _profile, cloud: remote);
+        _syncFeedbackPrefs();
+        await _storage.saveProfile(_profile);
+      }
+      final pushed = await _cloudSync.pushProfile(res.user!.uid, _profile);
+      if (pushed) {
+        _lastCloudSync = DateTime.now();
+      }
+      feedback.wordSolved();
+      return ActionOutcome(
+        success: true,
+        message: remote != null
+            ? 'Google hesabın bağlandı ve önceki bulut ilerlemen birleştirildi!'
+            : 'Google hesabın bağlandı ve ilerlemen buluta yedeklendi!',
+      );
+    } finally {
+      _authBusy = false;
+      notifyListeners();
+    }
+  }
+
+  /// Manuel tek dokunuş bulut yedekleme.
+  Future<ActionOutcome> syncCloudNow() async {
+    final user = _signedInUser;
+    if (user == null) {
+      return const ActionOutcome(
+        success: false,
+        message: 'Önce Google hesabını bağlamalısın.',
+      );
+    }
+    if (_authBusy) {
+      return const ActionOutcome(
+        success: false,
+        message: 'Yedekleme zaten sürüyor...',
+      );
+    }
+    _authBusy = true;
+    notifyListeners();
+    try {
+      final remote = await _cloudSync.fetchProfile(user.uid);
+      if (remote != null) {
+        _profile = ProfileMerger.merge(local: _profile, cloud: remote);
+        await _storage.saveProfile(_profile);
+      }
+      final ok = await _cloudSync.pushProfile(user.uid, _profile);
+      if (ok) {
+        _lastCloudSync = DateTime.now();
+        feedback.wordSolved();
+        return const ActionOutcome(
+          success: true,
+          message: 'İlerlemen buluta başarıyla yedeklendi!',
+        );
+      }
+      return const ActionOutcome(
+        success: false,
+        message: 'Buluta bağlanılamadı. İnternet bağlantını kontrol et.',
+      );
+    } finally {
+      _authBusy = false;
+      notifyListeners();
+    }
+  }
+
+  /// Hesaptan çıkış yapar; cihazdaki mevcut ilerleme korunur (misafir olarak devam eder).
+  Future<ActionOutcome> signOutGoogle() async {
+    _cloudPushTimer?.cancel();
+    await _auth.signOut();
+    _signedInUser = null;
+    _lastCloudSync = null;
+    notifyListeners();
+    return const ActionOutcome(
+      success: true,
+      message: 'Hesaptan çıkış yapıldı. Misafir olarak oynamaya devam edebilirsin.',
+    );
+  }
+
+  /// Google Play politikasına tam uyumlu kalıcı hesap ve bulut verisi silme.
+  Future<ActionOutcome> deleteAccountAndCloudData() async {
+    if (_authBusy) {
+      return const ActionOutcome(
+        success: false,
+        message: 'İşlem devam ediyor...',
+      );
+    }
+    _authBusy = true;
+    notifyListeners();
+    try {
+      _cloudPushTimer?.cancel();
+      final uid = _signedInUser?.uid;
+      if (uid != null) {
+        await _cloudSync.deleteCloudProfile(uid);
+      }
+      final res = await _auth.deleteCurrentUser();
+      if (!res.success) {
+        // Silme iptal edildiyse veya başarısız olduysa bulut yedeğini geri yükle
+        if (uid != null) {
+          await _cloudSync.pushProfile(uid, _profile);
+        }
+        return ActionOutcome(success: false, message: res.message);
+      }
+      _signedInUser = null;
+      _lastCloudSync = null;
+      _profile = PlayerProfile(
+        soundEnabled: _profile.soundEnabled,
+        hapticsEnabled: _profile.hapticsEnabled,
+      );
+      await _storage.clearAll();
+      return const ActionOutcome(
+        success: true,
+        message: 'Hesabın, bulut yedeğin ve yerel verilerin kalıcı olarak silindi.',
+      );
+    } finally {
+      _authBusy = false;
+      notifyListeners();
+    }
   }
 
   @override
   void dispose() {
+    _cloudPushTimer?.cancel();
     feedback.dispose();
     super.dispose();
   }

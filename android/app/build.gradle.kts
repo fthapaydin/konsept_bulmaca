@@ -26,7 +26,7 @@ android {
 
     defaultConfig {
         applicationId = "fatalsoft.bulmaca"
-        minSdk = flutter.minSdkVersion
+        minSdk = maxOf(flutter.minSdkVersion, 23)
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -62,4 +62,10 @@ kotlin {
 
 flutter {
     source = "../.."
+}
+
+// google-services.json projeye eklendigi anda Firebase + Google Sign-In
+// otomatik olarak aktiflesir; henuz eklenmediyse derleme sorunsuz devam eder.
+if (file("google-services.json").exists()) {
+    apply(plugin = "com.google.gms.google-services")
 }

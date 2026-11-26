@@ -199,16 +199,23 @@
       </p>
 
       <div class="callout">
-        <strong>Özet:</strong> eKare Bulmaca tamamen çevrimdışı çalışır. Herhangi bir
-        kişisel verinizi toplamaz, sunuculara aktarmaz ve üçüncü taraflarla paylaşmaz.
+        <strong>Özet:</strong> eKare Bulmaca misafir olarak tamamen çevrimdışı oynanır
+        ve giriş zorunlu değildir. Yalnızca kullanıcı kendi isteğiyle
+        <strong>Google ile Bağla</strong> seçeneğini kullanırsa, oyun ilerlemesini buluta
+        yedeklemek amacıyla Firebase Authentication ve Cloud Firestore kullanılır.
       </div>
 
       <h2>1. Toplanan Veriler</h2>
       <p>
-        eKare Bulmaca uygulaması kullanıcılarından ad, soyad, e-posta, telefon numarası,
-        konum, rehber, fotoğraf, kamera, mikrofon veya cihaz kimlik bilgisi gibi
-        <strong>hiçbir kişisel veri toplamaz</strong>. Uygulamayı kullanmak için hesap
-        oluşturmanız veya giriş yapmanız gerekmez.
+        <strong>Misafir Modu:</strong> Uygulamayı giriş yapmadan kullandığınızda hiçbir
+        kişisel veri toplanmaz ve cihaz dışına veri aktarılmaz.
+      </p>
+      <p>
+        <strong>İsteğe Bağlı Google ile Giriş:</strong> İlerlemenizi cihazlar arasında
+        yedeklemek için Google hesabınızı bağlarsanız yalnızca Google kullanıcı kimliği (UID),
+        görünen ad, e-posta adresi ve oyun ilerleme yedeğiniz Firebase üzerinde saklanır.
+        Konum, kamera, mikrofon veya rehber gibi hassas veriler asla toplanmaz; verileriniz
+        üçüncü taraflara satılmaz.
       </p>
 
       <h2>2. Cihaz İçi Yerel Depolama</h2>
@@ -224,11 +231,13 @@
         <li>Seçili arka plan teması, ses efektleri ve titreşim (haptik) ayarları</li>
       </ul>
 
-      <h2>3. Veri Silme ve Kontrol</h2>
+      <h2>3. Veri ve Hesap Silme Hakkı</h2>
       <p>
-        Cihazınızda yerel olarak tutulan tüm oyun verilerini dilediğiniz zaman uygulama
-        içindeki <em>İstatistikler ve Ayarlar → Tüm İlerlemeyi Sıfırla</em> seçeneğini
-        kullanarak veya uygulamayı cihazınızdan kaldırarak kalıcı olarak silebilirsiniz.
+        Cihazınızdaki yerel verileri <em>İstatistikler ve Ayarlar → Tüm İlerlemeyi Sıfırla</em>
+        ile, Google hesabınızla eşleşen bulut hesabınızı ve tüm bulut kayıtlarınızı ise
+        <em>İstatistikler ve Ayarlar → Hesabı ve Bulut Verilerini Sil</em> seçeneğiyle
+        anında kalıcı olarak silebilirsiniz. Ayrıntılar ve e-posta ile silme talebi için
+        <a class="mail" href="delete-account.html">Hesap ve Veri Silme Sayfasını</a> ziyaret edin.
       </p>
 
       <h2>4. Üçüncü Taraf Hizmetler ve Reklamlar</h2>
@@ -275,16 +284,21 @@
       </p>
 
       <div class="callout">
-        <strong>Summary:</strong> eKare Bulmaca works fully offline. It does not
-        collect, transmit, sell, or share any personal data with third parties.
+        <strong>Summary:</strong> eKare Bulmaca is playable fully offline as a guest
+        with no login required. Only if you optionally choose <strong>Sign in with Google</strong>
+        to back up progress across devices, Firebase Authentication and Cloud Firestore store
+        your account identifier and game progress backup.
       </div>
 
       <h2>1. Information We Collect</h2>
       <p>
-        eKare Bulmaca does <strong>not</strong> collect any personally identifiable
-        information (such as name, email address, location, contacts, camera,
-        microphone, or advertising identifiers). No account registration or sign-in
-        is required to play.
+        <strong>Guest Mode:</strong> Zero personal information is collected or transmitted.
+      </p>
+      <p>
+        <strong>Optional Google Sign-In:</strong> If you link a Google account, only your
+        Firebase UID, display name, email address, and gameplay progress backup are stored
+        solely for cross-device cloud sync. We never sell personal data or collect location,
+        contacts, camera, or microphone data.
       </p>
 
       <h2>2. Local On-Device Storage</h2>
@@ -299,11 +313,13 @@
         <li>Selected background theme, sound effects, and haptics preferences</li>
       </ul>
 
-      <h2>3. Data Deletion</h2>
+      <h2>3. Account &amp; Data Deletion</h2>
       <p>
-        Because all gameplay data is stored exclusively on your device, you can
-        permanently delete all saved data at any time via
-        <em>Settings → Reset All Progress</em> inside the app or by uninstalling the app.
+        You can delete local progress via <em>Settings → Reset All Progress</em>, or
+        permanently delete your Google-linked Firebase account and cloud backup via
+        <em>Settings → Delete Account &amp; Cloud Data</em> inside the app. See our
+        <a class="mail" href="delete-account.html">Account &amp; Data Deletion page</a>
+        for full instructions and email requests.
       </p>
 
       <h2>4. Third-Party Services &amp; Advertising</h2>

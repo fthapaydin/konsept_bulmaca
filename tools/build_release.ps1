@@ -39,6 +39,13 @@ if ($LASTEXITCODE -ne 0) {
 
 try {
     Push-Location "$driveLetter\$projectName"
+    # Onceki derlemeden farkli bir gecici surucu harfine ait flutter_build.d
+    # kaldiysa Gradle PreCreateOutputParentsStep hatasini onlemek icin temizle.
+    $staleFlutterIntermediates = Join-Path "$driveLetter\$projectName" "build\app\intermediates\flutter"
+    if (Test-Path $staleFlutterIntermediates) {
+        Remove-Item -Recurse -Force $staleFlutterIntermediates
+    }
+
     flutter pub get
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 

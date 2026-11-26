@@ -174,6 +174,36 @@ class HomeScreen extends StatelessWidget {
                         },
                       ),
                     ),
+                    if (appState.shouldShowCloudBackupBanner &&
+                        appState.isCloudAvailable)
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(18, 0, 18, 12),
+                          child: _GentleBackupStrip(
+                            isDark: isDark,
+                            onConnect: () async {
+                              final res =
+                                  await appState.signInWithGoogleAndSync();
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context)
+                                  ..hideCurrentSnackBar()
+                                  ..showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        res.message,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      behavior: SnackBarBehavior.floating,
+                                    ),
+                                  );
+                              }
+                            },
+                            onDismiss: appState.dismissCloudBackupBanner,
+                          ),
+                        ),
+                      ),
                     if (appState.megaBank != null)
                       SliverToBoxAdapter(
                         child: Padding(
@@ -1046,6 +1076,94 @@ class _ConceptPackCard extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _GentleBackupStrip extends StatelessWidget {
+  const _GentleBackupStrip({
+    required this.isDark,
+    required this.onConnect,
+    required this.onDismiss,
+  });
+
+  final bool isDark;
+  final VoidCallback onConnect;
+  final VoidCallback onDismiss;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(13, 10, 8, 10),
+      decoration: BoxDecoration(
+        color: isDark ? Colors.white.withValues(alpha: 0.1) : AppPalette.card,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: isDark ? Colors.white12 : AppPalette.brassBorder,
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 30,
+            height: 30,
+            decoration: BoxDecoration(
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.14)
+                  : AppPalette.brassSoft,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              'G',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w900,
+                color: isDark ? AppPalette.brassBright : AppPalette.brass,
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              'İlerlemeni Google ile buluta yedekle',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                color: isDark ? Colors.white : AppPalette.ink,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: onConnect,
+            style: TextButton.styleFrom(
+              foregroundColor: AppPalette.brassBright,
+              backgroundColor: AppPalette.ink,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              minimumSize: Size.zero,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(9),
+              ),
+            ),
+            child: const Text(
+              'Bağla',
+              style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w800),
+            ),
+          ),
+          IconButton(
+            onPressed: onDismiss,
+            icon: Icon(
+              Icons.close_rounded,
+              size: 17,
+              color: isDark ? Colors.white54 : AppPalette.inkMuted,
+            ),
+            visualDensity: VisualDensity.compact,
+            tooltip: 'Kapat',
+          ),
+        ],
       ),
     );
   }

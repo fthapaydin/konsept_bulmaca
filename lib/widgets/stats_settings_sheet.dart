@@ -158,6 +158,8 @@ Future<void> showStatsAndSettingsSheet(
                       ),
                     ),
                     const SizedBox(height: 12),
+                    _AccountCloudCard(appState: appState, sheetContext: ctx),
+                    const SizedBox(height: 12),
                     Container(
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
@@ -346,6 +348,297 @@ Future<void> showStatsAndSettingsSheet(
       );
     },
   );
+}
+
+class _AccountCloudCard extends StatelessWidget {
+  const _AccountCloudCard({
+    required this.appState,
+    required this.sheetContext,
+  });
+
+  final AppState appState;
+  final BuildContext sheetContext;
+
+  void _showToast(String msg, {bool isError = false}) {
+    if (!sheetContext.mounted) return;
+    ScaffoldMessenger.of(sheetContext)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(msg, style: const TextStyle(fontWeight: FontWeight.w700)),
+          backgroundColor: isError ? AppPalette.error : AppPalette.ink,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final user = appState.signedInUser;
+    final busy = appState.isAuthBusy;
+
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppPalette.card,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: user != null ? AppPalette.brassBorder : AppPalette.hairline,
+        ),
+      ),
+      child: user == null
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: AppPalette.cardMuted,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: AppPalette.hairline),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'G',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w900,
+                          color: AppPalette.ink,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 11),
+                    const Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Misafir Modu',
+                            style: TextStyle(
+                              fontSize: 14.5,
+                              fontWeight: FontWeight.w900,
+                              color: AppPalette.ink,
+                            ),
+                          ),
+                          Text(
+                            'İsteğe bağlı Google ile bağla, ilerlemeni buluta yedekle',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w600,
+                              color: AppPalette.inkMuted,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: busy
+                        ? null
+                        : () async {
+                            final res =
+                                await appState.signInWithGoogleAndSync();
+                            _showToast(res.message, isError: !res.success);
+                          },
+                    style: FilledButton.styleFrom(
+                      backgroundColor: AppPalette.ink,
+                      foregroundColor: AppPalette.brassBright,
+                      padding: const EdgeInsets.symmetric(vertical: 11),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: busy
+                        ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: AppPalette.brassBright,
+                            ),
+                          )
+                        : const Text(
+                            'Google ile Bağla & Yedekle',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 13,
+                            ),
+                          ),
+                  ),
+                ),
+              ],
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        color: AppPalette.ink,
+                        borderRadius: BorderRadius.circular(11),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        user.initials,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w900,
+                          color: AppPalette.brassBright,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 11),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            user.label,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 14.5,
+                              fontWeight: FontWeight.w900,
+                              color: AppPalette.ink,
+                            ),
+                          ),
+                          Text(
+                            user.email ?? 'Google ile bağlı • Bulut yedekleme aktif',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w600,
+                              color: AppPalette.correct,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 11),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: busy
+                            ? null
+                            : () async {
+                                final res = await appState.syncCloudNow();
+                                _showToast(res.message, isError: !res.success);
+                              },
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppPalette.ink,
+                          side: const BorderSide(color: AppPalette.hairlineStrong),
+                          padding: const EdgeInsets.symmetric(vertical: 9),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Text(
+                          'Şimdi Yedekle',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: busy
+                            ? null
+                            : () async {
+                                final res = await appState.signOutGoogle();
+                                _showToast(res.message);
+                              },
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppPalette.inkSoft,
+                          side: const BorderSide(color: AppPalette.hairline),
+                          padding: const EdgeInsets.symmetric(vertical: 9),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Text(
+                          'Çıkış Yap',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: busy
+                        ? null
+                        : () async {
+                            final ok = await showDialog<bool>(
+                              context: sheetContext,
+                              builder: (dCtx) => AlertDialog(
+                                title: const Text('Hesabı Kalıcı Olarak Sil?'),
+                                content: const Text(
+                                  'Google hesap bağlantın, buluttaki oyun yedeğin ve cihazdaki verilerin kalıcı olarak silinecek. Bu işlem geri alınamaz.',
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(dCtx).pop(false),
+                                    child: const Text('Vazgeç'),
+                                  ),
+                                  FilledButton(
+                                    style: FilledButton.styleFrom(
+                                      backgroundColor: AppPalette.error,
+                                    ),
+                                    onPressed: () =>
+                                        Navigator.of(dCtx).pop(true),
+                                    child: const Text('Kalıcı Sil'),
+                                  ),
+                                ],
+                              ),
+                            );
+                            if (ok == true) {
+                              final res =
+                                  await appState.deleteAccountAndCloudData();
+                              _showToast(res.message, isError: !res.success);
+                            }
+                          },
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppPalette.error,
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    child: const Text(
+                      'Hesabı ve Bulut Verilerini Sil',
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+    );
+  }
 }
 
 class _MetricTile extends StatelessWidget {

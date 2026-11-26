@@ -5,6 +5,8 @@
   "cleanUrls": true,
   "rewrites": [
     { "source": "/privacy", "destination": "/privacy-policy.html" },
-    { "source": "/gizlilik", "destination": "/privacy-policy.html" }
+    { "source": "/gizlilik", "destination": "/privacy-policy.html" },
+    { "source": "/delete-account", "destination": "/delete-account.html" },
+    { "source": "/hesap-sil", "destination": "/delete-account.html" }
   ]
 }

@@ -11,6 +11,8 @@ import 'package:konsept_bulmaca/features/sprint/mini_sprint_screen.dart';
 import 'package:konsept_bulmaca/main.dart';
 import 'package:konsept_bulmaca/models/puzzle_models.dart';
 import 'package:konsept_bulmaca/screens/game_screen.dart';
+import 'package:konsept_bulmaca/services/auth_service.dart';
+import 'package:konsept_bulmaca/services/cloud_sync_service.dart';
 import 'package:konsept_bulmaca/services/feedback_service.dart';
 import 'package:konsept_bulmaca/state/app_state.dart';
 import 'package:konsept_bulmaca/widgets/game_keyboard.dart';
@@ -40,6 +42,8 @@ Future<void> _loadRealAndroidFonts() async {
 Future<AppState> _buildDemoAppState(WidgetTester tester) async {
   final appState = AppState(
     feedback: FeedbackService(enableAudioEngine: false),
+    authService: const OfflineAuthService(),
+    cloudSyncService: const NoOpCloudSyncService(),
   );
   await tester.runAsync(() => appState.initialize());
 

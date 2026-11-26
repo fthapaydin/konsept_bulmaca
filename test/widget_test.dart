@@ -4,12 +4,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:konsept_bulmaca/core/brand/brand_config.dart';
 import 'package:konsept_bulmaca/core/economy/hint_pricing.dart';
+import 'package:konsept_bulmaca/core/models/notebook_models.dart';
+import 'package:konsept_bulmaca/core/models/profile_merger.dart';
 import 'package:konsept_bulmaca/features/notebook/word_notebook_screen.dart';
 import 'package:konsept_bulmaca/features/sprint/mini_sprint_screen.dart';
 import 'package:konsept_bulmaca/main.dart';
 import 'package:konsept_bulmaca/models/background_models.dart';
 import 'package:konsept_bulmaca/models/puzzle_models.dart';
 import 'package:konsept_bulmaca/models/retention_models.dart';
+import 'package:konsept_bulmaca/services/auth_service.dart';
+import 'package:konsept_bulmaca/services/cloud_sync_service.dart';
 import 'package:konsept_bulmaca/services/feedback_service.dart';
 import 'package:konsept_bulmaca/services/puzzle_repository.dart';
 import 'package:konsept_bulmaca/state/app_state.dart';
@@ -17,8 +21,87 @@ import 'package:konsept_bulmaca/state/game_controller.dart';
 import 'package:konsept_bulmaca/utils/turkish_text.dart';
 import 'package:konsept_bulmaca/widgets/game_keyboard.dart';
 
-AppState _createSilentAppState() =>
-    AppState(feedback: FeedbackService(enableAudioEngine: false));
+AppState _createSilentAppState({
+  AuthService? authService,
+  CloudSyncService? cloudSyncService,
+}) =>
+    AppState(
+      feedback: FeedbackService(enableAudioEngine: false),
+      authService: authService ?? const OfflineAuthService(),
+      cloudSyncService: cloudSyncService ?? const NoOpCloudSyncService(),
+    );
+
+class _FakeAuthService implements AuthService {
+  _FakeAuthService();
+
+  AuthUserInfo? _user;
+  bool shouldFailDelete = false;
+
+  @override
+  bool get isCloudAvailable => true;
+
+  @override
+  AuthUserInfo? get currentUser => _user;
+
+  @override
+  Future<void> initialize() async {}
+
+  @override
+  Future<AuthResult> signInWithGoogle() async {
+    _user = const AuthUserInfo(
+      uid: 'uid_test_1',
+      displayName: 'Fatih Test',
+      email: 'fatih@example.com',
+    );
+    return AuthResult(
+      success: true,
+      message: 'Google hesabın bağlandı!',
+      user: _user,
+    );
+  }
+
+  @override
+  Future<void> signOut() async {
+    _user = null;
+  }
+
+  @override
+  Future<AuthResult> deleteCurrentUser() async {
+    if (shouldFailDelete) {
+      return const AuthResult(
+        success: false,
+        cancelled: true,
+        message: 'Hesap silme doğrulaması iptal edildi.',
+      );
+    }
+    _user = null;
+    return const AuthResult(
+      success: true,
+      message: 'Hesap silindi.',
+    );
+  }
+}
+
+class _FakeCloudSyncService implements CloudSyncService {
+  _FakeCloudSyncService({Map<String, PlayerProfile>? initial})
+      : store = Map<String, PlayerProfile>.from(initial ?? const {});
+
+  final Map<String, PlayerProfile> store;
+
+  @override
+  Future<PlayerProfile?> fetchProfile(String uid) async => store[uid];
+
+  @override
+  Future<bool> pushProfile(String uid, PlayerProfile profile) async {
+    store[uid] = profile;
+    return true;
+  }
+
+  @override
+  Future<void> deleteCloudProfile(String uid) async {
+    store.remove(uid);
+  }
+}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -473,9 +556,11 @@ void main() {
       expect(find.text('Kelime Defteri'), findsOneWidget);
       expect(find.text('Yeşilçam Klasikleri'), findsOneWidget);
 
-      // 0) Open Stats & Settings sheet and verify FatalSoft Inc. contact email
+      // 0) Open Stats & Settings sheet and verify Guest Mode + FatalSoft Inc. contact email
       await tester.tap(find.byTooltip('İstatistikler ve Ayarlar'));
       await tester.pumpAndSettle();
+      expect(find.text('Misafir Modu'), findsOneWidget);
+      expect(find.text('Google ile Bağla & Yedekle'), findsOneWidget);
       expect(find.text(BrandConfig.contactEmail), findsOneWidget);
       expect(find.text('Geliştirici: ${BrandConfig.developerName}'), findsOneWidget);
       await tester.tap(find.byTooltip('Kapat'));
@@ -526,6 +611,225 @@ void main() {
 
       await tester.pumpWidget(const SizedBox.shrink());
       await tester.pump();
+      appState.dispose();
+    });
+  });
+
+  group('Optional Google Sign-In, ProfileMerger & Cloud Sync', () {
+    test('ProfileMerger preserves highest metrics, word notebook union, and best puzzle states',
+        () {
+      const local = PlayerProfile(
+        coins: 240,
+        score: 500,
+        bestCombo: 4,
+        bestSprintScore: 310,
+        bestSprintPuzzles: 3,
+        dailyStreak: 2,
+        lastDailyDate: '2026-11-24',
+        completedDailyDates: {'2026-11-23', '2026-11-24'},
+        soundEnabled: false,
+        selectedBackgroundId: 'gece_yarisi',
+        unlockedBackgroundIds: {'klasik_kagit', 'gece_yarisi'},
+        unlockedMegaIds: {'mega_1'},
+        claimedMissionIds: {'m_1'},
+        learnedEnglishWords: {
+          'APPLE': LearnedWord(
+            word: 'APPLE',
+            meaning: 'Elma',
+            cefrLevel: 'A1',
+            timesSolved: 3,
+            isFavorite: true,
+            firstLearnedIso: '2026-11-20T10:00:00',
+          ),
+          'LOCAL': LearnedWord(
+            word: 'LOCAL',
+            meaning: 'Yerel',
+            cefrLevel: 'A2',
+            timesSolved: 1,
+            firstLearnedIso: '2026-11-24T10:00:00',
+          ),
+        },
+        puzzleStates: {
+          'y_1': PuzzleSaveState(
+            puzzleId: 'y_1',
+            completed: true,
+            stars: 2,
+            bestTimeSeconds: 70,
+          ),
+          'y_2': PuzzleSaveState(
+            puzzleId: 'y_2',
+            completed: false,
+            letters: {'0,0': 'A', '0,1': 'B', '0,2': 'C'},
+          ),
+        },
+      );
+
+      const cloud = PlayerProfile(
+        coins: 180,
+        score: 920,
+        bestCombo: 6,
+        bestSprintScore: 480,
+        bestSprintPuzzles: 5,
+        dailyStreak: 5,
+        lastDailyDate: '2026-11-25',
+        completedDailyDates: {'2026-11-25'},
+        soundEnabled: true,
+        selectedBackgroundId: 'osmanli_cini',
+        unlockedBackgroundIds: {'klasik_kagit', 'osmanli_cini'},
+        unlockedMegaIds: {'mega_2'},
+        claimedMissionIds: {'m_2'},
+        learnedEnglishWords: {
+          'APPLE': LearnedWord(
+            word: 'APPLE',
+            meaning: 'Elma',
+            cefrLevel: 'A1',
+            timesSolved: 5,
+            isFavorite: false,
+            firstLearnedIso: '2026-11-18T09:00:00',
+          ),
+          'CLOUD': LearnedWord(
+            word: 'CLOUD',
+            meaning: 'Bulut',
+            cefrLevel: 'A1',
+            timesSolved: 2,
+            firstLearnedIso: '2026-11-19T09:00:00',
+          ),
+        },
+        puzzleStates: {
+          'y_1': PuzzleSaveState(
+            puzzleId: 'y_1',
+            completed: true,
+            stars: 3,
+            bestTimeSeconds: 54,
+          ),
+          'y_2': PuzzleSaveState(
+            puzzleId: 'y_2',
+            completed: false,
+            letters: {'0,0': 'A'},
+          ),
+          'y_3': PuzzleSaveState(
+            puzzleId: 'y_3',
+            completed: true,
+            stars: 3,
+            bestTimeSeconds: 61,
+          ),
+        },
+      );
+
+      final merged = ProfileMerger.merge(local: local, cloud: cloud);
+      expect(merged.coins, 240);
+      expect(merged.score, 920);
+      expect(merged.bestCombo, 6);
+      expect(merged.bestSprintScore, 480);
+      expect(merged.bestSprintPuzzles, 5);
+      expect(merged.dailyStreak, 5);
+      expect(merged.lastDailyDate, '2026-11-25');
+      expect(merged.completedDailyDates, {'2026-11-23', '2026-11-24', '2026-11-25'});
+      expect(merged.soundEnabled, isFalse);
+      expect(merged.selectedBackgroundId, 'gece_yarisi');
+      expect(merged.unlockedBackgroundIds, containsAll(['klasik_kagit', 'gece_yarisi', 'osmanli_cini']));
+      expect(merged.unlockedMegaIds, {'mega_1', 'mega_2'});
+      expect(merged.claimedMissionIds, {'m_1', 'm_2'});
+
+      // Word Notebook union
+      expect(merged.learnedEnglishWords.keys, containsAll(['APPLE', 'LOCAL', 'CLOUD']));
+      expect(merged.learnedEnglishWords['APPLE']!.timesSolved, 5);
+      expect(merged.learnedEnglishWords['APPLE']!.isFavorite, isTrue);
+
+      // Puzzle states merge
+      expect(merged.puzzleStates['y_1']!.stars, 3);
+      expect(merged.puzzleStates['y_1']!.bestTimeSeconds, 54);
+      expect(merged.puzzleStates['y_2']!.letters.length, 3);
+      expect(merged.puzzleStates['y_3']!.completed, isTrue);
+    });
+
+    test('supports guest-first play, optional Google sign-in merge, sign-out, and account deletion',
+        () async {
+      final fakeAuth = _FakeAuthService();
+      final fakeCloud = _FakeCloudSyncService(
+        initial: {
+          'uid_test_1': const PlayerProfile(
+            coins: 300,
+            score: 750,
+            bestSprintScore: 510,
+            unlockedBackgroundIds: {'klasik_kagit', 'osmanli_cini'},
+            puzzleStates: {
+              'yesilcam_05': PuzzleSaveState(
+                puzzleId: 'yesilcam_05',
+                completed: true,
+                stars: 3,
+                bestTimeSeconds: 48,
+              ),
+            },
+          ),
+        },
+      );
+
+      final appState = _createSilentAppState(
+        authService: fakeAuth,
+        cloudSyncService: fakeCloud,
+      );
+      await appState.initialize();
+
+      // 1) Starts strictly in Guest Mode with NO forced login banner
+      expect(appState.isSignedIn, isFalse);
+      expect(appState.shouldShowCloudBackupBanner, isFalse);
+
+      // 2) Solve 2 levels as guest -> gentle banner becomes eligible
+      final yesilcam = appState.packs.firstWhere((p) => p.id == 'yesilcam');
+      for (var i = 0; i < 2; i++) {
+        await appState.completePuzzle(
+          storageKey: yesilcam.levels[i].id,
+          finalState: PuzzleSaveState(
+            puzzleId: yesilcam.levels[i].id,
+            elapsedSeconds: 60,
+            completed: true,
+          ),
+          isDaily: false,
+        );
+      }
+      expect(appState.totalSolvedPuzzles, 2);
+      expect(appState.shouldShowCloudBackupBanner, isTrue);
+
+      // 3) Connect Google -> merges guest levels + cloud progress cleanly
+      final signInRes = await appState.signInWithGoogleAndSync();
+      expect(signInRes.success, isTrue);
+      expect(appState.isSignedIn, isTrue);
+      expect(appState.signedInUser!.email, 'fatih@example.com');
+      expect(appState.shouldShowCloudBackupBanner, isFalse);
+      expect(appState.coins, 300);
+      expect(appState.score, 750);
+      expect(appState.bestSprintScore, 510);
+      expect(appState.totalSolvedPuzzles, 3);
+      expect(appState.lastCloudSync, isNotNull);
+      expect(fakeCloud.store['uid_test_1']!.puzzleStates.length, 3);
+
+      // 4) Manual sync works cleanly
+      final syncRes = await appState.syncCloudNow();
+      expect(syncRes.success, isTrue);
+
+      // 5) Cancelled deletion preserves cloud backup
+      fakeAuth.shouldFailDelete = true;
+      final cancelDel = await appState.deleteAccountAndCloudData();
+      expect(cancelDel.success, isFalse);
+      expect(appState.isSignedIn, isTrue);
+      expect(fakeCloud.store.containsKey('uid_test_1'), isTrue);
+
+      // 6) Sign out keeps local guest progress intact
+      final signOutRes = await appState.signOutGoogle();
+      expect(signOutRes.success, isTrue);
+      expect(appState.isSignedIn, isFalse);
+      expect(appState.totalSolvedPuzzles, 3);
+
+      // 7) Sign back in & confirm full account deletion wipes cloud + local
+      fakeAuth.shouldFailDelete = false;
+      await appState.signInWithGoogleAndSync();
+      final delRes = await appState.deleteAccountAndCloudData();
+      expect(delRes.success, isTrue);
+      expect(appState.isSignedIn, isFalse);
+      expect(appState.totalSolvedPuzzles, 0);
+      expect(fakeCloud.store.containsKey('uid_test_1'), isFalse);
+
       appState.dispose();
     });
   });

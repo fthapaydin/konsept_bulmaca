@@ -10,11 +10,11 @@
 
 ## Türkçe
 
-**Özet:** eKare Bulmaca tamamen çevrimdışı çalışır. Herhangi bir kişisel verinizi toplamaz, sunuculara aktarmaz ve üçüncü taraflarla paylaşmaz.
+**Özet:** eKare Bulmaca misafir olarak tamamen çevrimdışı oynanır (giriş zorunlu değildir). Yalnızca kullanıcı kendi isteğiyle **Google ile Bağla** seçeneğini kullanırsa, ilerlemeyi bulutta yedeklemek için Firebase Authentication ve Cloud Firestore kullanılır.
 
-1. **Toplanan Veriler:** Ad, soyad, e-posta, telefon numarası, konum, rehber, kamera, mikrofon veya cihaz kimlik bilgisi dahil hiçbir kişisel veri toplanmaz. Hesap oluşturma veya giriş gerekmez.
-2. **Yerel Depolama:** Bulmaca ilerlemeniz, yıldızlarınız, puan/altın bakiyeniz, Mini Sprint rekorunuz, İngilizce Kelime Defteri kayıtlarınız ve ses/titreşim tercihleriniz yalnızca cihazınızda yerel olarak (`SharedPreferences`) saklanır.
-3. **Veri Silme:** Uygulama içindeki *İstatistikler ve Ayarlar → Tüm İlerlemeyi Sıfırla* seçeneğiyle veya uygulamayı cihazınızdan kaldırarak tüm yerel verilerinizi kalıcı olarak silebilirsiniz.
+1. **Toplanan Veriler:** Misafir modunda hiçbir kişisel veri toplanmaz. İsteğe bağlı Google girişi yapıldığında yalnızca kullanıcı kimliği (UID), ad, e-posta ve oyun yedeği cihazlar arası senkronizasyon amacıyla saklanır; üçüncü taraflara satılmaz.
+2. **Yerel Depolama:** Bulmaca ilerlemeniz, yıldızlarınız, puan/altın bakiyeniz, Mini Sprint rekorunuz, İngilizce Kelime Defteri kayıtlarınız ve ses/titreşim tercihleriniz cihazınızda yerel olarak (`SharedPreferences`) saklanır.
+3. **Veri ve Hesap Silme:** Uygulama içindeki *İstatistikler ve Ayarlar → Hesabı ve Bulut Verilerini Sil* seçeneğiyle bulut hesabınızı ve tüm verilerinizi anında kalıcı olarak silebilir veya `fatalsoft.inc@gmail.com` adresinden silme talep edebilirsiniz (`docs/delete-account.html`).
 4. **Üçüncü Taraf Hizmetler:** Mevcut `v1.0.0` sürümünde üçüncü taraf analitik, izleme veya reklam SDK'sı bulunmamaktadır. İleride isteğe bağlı ödüllü reklam eklenirse bu politika ve Google Play Veri Güvenliği beyanı önceden güncellenecektir.
 5. **Çocukların Gizliliği:** 13 yaş altı çocuklar dahil hiçbir kullanıcıdan bilerek kişisel veri toplanmaz.
 6. **İletişim:** Her türlü soru ve talebiniz için `fatalsoft.inc@gmail.com` adresinden bize ulaşabilirsiniz.
