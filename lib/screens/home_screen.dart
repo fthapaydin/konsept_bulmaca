@@ -8,7 +8,6 @@ import '../models/puzzle_models.dart';
 import '../state/app_state.dart';
 import '../utils/turkish_text.dart';
 import '../widgets/background_canvas.dart';
-import '../widgets/editorial_emblems.dart';
 import '../widgets/rewards_center_sheet.dart';
 import '../widgets/stats_settings_sheet.dart';
 import 'background_gallery_screen.dart';
@@ -154,6 +153,7 @@ class HomeScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final pack = appState.packs[index];
                           return _ConceptPackCard(
+                            indexNumber: index + 1,
                             pack: pack,
                             isDark: isDark,
                             completedLevels:
@@ -243,17 +243,17 @@ class HomeScreen extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 42,
-          height: 42,
+          width: 38,
+          height: 38,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(11),
+            borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: isDark ? Colors.white30 : AppPalette.ink,
               width: 1.2,
             ),
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(9),
             child: Image.asset(
               BrandConfig.iconAssetPath,
               fit: BoxFit.cover,
@@ -292,7 +292,7 @@ class HomeScreen extends StatelessWidget {
         const SizedBox(width: 6),
         InkWell(
           onTap: () => showRewardsCenterSheet(context, appState, initialTab: 1),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(18),
           child: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -303,45 +303,31 @@ class HomeScreen extends StatelessWidget {
                   color: isDark
                       ? Colors.white.withValues(alpha: 0.12)
                       : AppPalette.brassSoft,
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(18),
                   border: Border.all(
                     color: isDark
-                        ? AppPalette.brassBright.withValues(alpha: 0.4)
+                        ? AppPalette.brassBright.withValues(alpha: 0.38)
                         : AppPalette.brassBorder,
                   ),
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 8,
-                      height: 8,
-                      decoration: const BoxDecoration(
-                        color: AppPalette.brassBright,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      '${appState.coins}',
-                      style: TextStyle(
-                        fontSize: 13.5,
-                        fontWeight: FontWeight.w900,
-                        color: isDark ? Colors.white : AppPalette.ink,
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  '${appState.coins} Altın',
+                  style: TextStyle(
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w900,
+                    color: isDark ? AppPalette.brassBright : AppPalette.ink,
+                  ),
                 ),
               ),
               if (appState.pendingRewardCount > 0)
                 Positioned(
-                  top: -3,
-                  right: -3,
+                  top: -4,
+                  right: -4,
                   child: Container(
-                    width: 15,
-                    height: 15,
+                    width: 16,
+                    height: 16,
                     decoration: BoxDecoration(
-                      color: AppPalette.brass,
+                      color: AppPalette.ink,
                       shape: BoxShape.circle,
                       border: Border.all(color: AppPalette.card, width: 1.5),
                     ),
@@ -349,7 +335,7 @@ class HomeScreen extends StatelessWidget {
                     child: Text(
                       '${appState.pendingRewardCount}',
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: AppPalette.brassBright,
                         fontSize: 8.5,
                         fontWeight: FontWeight.w900,
                       ),
@@ -451,128 +437,108 @@ class _DailyChallengeCard extends StatelessWidget {
       child: InkWell(
         onTap: onPlay,
         borderRadius: BorderRadius.circular(20),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: CustomPaint(
-            foregroundPainter: const CrosswordWatermarkPainter(
-              color: Color(0xFFFDE68A),
-              opacity: 0.08,
+        child: Ink(
+          padding: const EdgeInsets.fromLTRB(18, 16, 16, 16),
+          decoration: BoxDecoration(
+            color: AppPalette.ink,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: AppPalette.brassBright.withValues(alpha: 0.25),
             ),
-            child: Ink(
-              padding: const EdgeInsets.fromLTRB(18, 16, 16, 16),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF231E1A), Color(0xFF161311)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: AppPalette.brassBright.withValues(alpha: 0.25),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.16),
-                    blurRadius: 16,
-                    offset: const Offset(0, 6),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        todayLabel.toUpperCase(),
-                        style: const TextStyle(
-                          color: AppPalette.brassBright,
-                          fontSize: 10.5,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1.1,
-                        ),
-                      ),
-                      const Spacer(),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 9,
-                          vertical: 3,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.08),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.14),
-                          ),
-                        ),
-                        child: Text(
-                          '$streak Gün Seri',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ],
+                  Text(
+                    todayLabel.toUpperCase(),
+                    style: const TextStyle(
+                      color: AppPalette.brassBright,
+                      fontSize: 10.5,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1.1,
+                    ),
                   ),
-                  const SizedBox(height: 12),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Günün Bulmacası',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 22,
-                                fontWeight: FontWeight.w900,
-                                letterSpacing: -0.4,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'Karma konsept • ${puzzle.gridSizeLabel} • ${puzzle.entries.length} kelime • 2× Altın',
-                              style: TextStyle(
-                                color: Colors.white.withValues(alpha: 0.72),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
+                  const Spacer(),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 9,
+                      vertical: 3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.14),
                       ),
-                      const SizedBox(width: 10),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 10,
-                        ),
-                        decoration: BoxDecoration(
-                          color: completed
-                              ? AppPalette.correctSoft
-                              : AppPalette.brassBright,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          completed ? 'Çözüldü' : 'Başla',
-                          style: TextStyle(
-                            color: completed
-                                ? AppPalette.correct
-                                : AppPalette.ink,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 13.5,
-                          ),
-                        ),
+                    ),
+                    child: Text(
+                      '$streak Gün Seri',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),
-            ),
+              const SizedBox(height: 12),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Günün Bulmacası',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 21,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: -0.4,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Karma konsept • ${puzzle.gridSizeLabel} • ${puzzle.entries.length} kelime • 2× Altın',
+                          style: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.72),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: completed
+                          ? AppPalette.correctSoft
+                          : AppPalette.brassBright,
+                      borderRadius: BorderRadius.circular(11),
+                    ),
+                    child: Text(
+                      completed ? 'Çözüldü' : 'Başla',
+                      style: TextStyle(
+                        color: completed
+                            ? AppPalette.correct
+                            : AppPalette.ink,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 13.5,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
@@ -741,7 +707,6 @@ class _QuickModulesRow extends StatelessWidget {
                 ? 'Rekor: $bestSprint puan'
                 : '5×5 Hız & Kombo',
             badge: '90 SN',
-            emblemKind: EmblemKind.sprint,
             isDark: isDark,
             onTap: onOpenSprint,
           ),
@@ -754,7 +719,6 @@ class _QuickModulesRow extends StatelessWidget {
                 ? '$enCount kelime • Sözlük'
                 : 'EN – TR Sözlük',
             badge: 'A1–B1',
-            emblemKind: EmblemKind.dictionary,
             isDark: isDark,
             onTap: onOpenNotebook,
           ),
@@ -769,7 +733,6 @@ class _QuickModuleCard extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.badge,
-    required this.emblemKind,
     required this.isDark,
     required this.onTap,
   });
@@ -777,7 +740,6 @@ class _QuickModuleCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final String badge;
-  final EmblemKind emblemKind;
   final bool isDark;
   final VoidCallback onTap;
 
@@ -785,14 +747,14 @@ class _QuickModuleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: isDark ? Colors.white.withValues(alpha: 0.1) : AppPalette.card,
-      borderRadius: BorderRadius.circular(18),
+      borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(16),
         child: Container(
-          padding: const EdgeInsets.fromLTRB(13, 13, 12, 13),
+          padding: const EdgeInsets.fromLTRB(14, 13, 12, 13),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: isDark ? Colors.white12 : AppPalette.hairline,
             ),
@@ -802,28 +764,16 @@ class _QuickModuleCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  EditorialEmblem(
-                    kind: emblemKind,
-                    size: 36,
-                    accentColor:
-                        isDark ? AppPalette.brassBright : AppPalette.brass,
-                    backgroundColor: isDark
-                        ? Colors.white.withValues(alpha: 0.08)
-                        : AppPalette.cardMuted,
-                    borderColor: isDark ? Colors.white24 : AppPalette.hairline,
-                    onDark: isDark,
-                  ),
-                  const Spacer(),
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 7,
-                      vertical: 3,
+                      vertical: 2.5,
                     ),
                     decoration: BoxDecoration(
                       color: isDark
                           ? Colors.white.withValues(alpha: 0.12)
                           : AppPalette.brassSoft,
-                      borderRadius: BorderRadius.circular(7),
+                      borderRadius: BorderRadius.circular(6),
                       border: Border.all(
                         color: isDark
                             ? Colors.white24
@@ -837,13 +787,19 @@ class _QuickModuleCard extends StatelessWidget {
                             isDark ? AppPalette.brassBright : AppPalette.brass,
                         fontSize: 9.5,
                         fontWeight: FontWeight.w900,
-                        letterSpacing: 0.4,
+                        letterSpacing: 0.5,
                       ),
                     ),
                   ),
+                  const Spacer(),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    size: 18,
+                    color: isDark ? Colors.white54 : AppPalette.inkMuted,
+                  ),
                 ],
               ),
-              const SizedBox(height: 11),
+              const SizedBox(height: 10),
               Text(
                 title,
                 maxLines: 1,
@@ -876,6 +832,7 @@ class _QuickModuleCard extends StatelessWidget {
 
 class _ConceptPackCard extends StatelessWidget {
   const _ConceptPackCard({
+    required this.indexNumber,
     required this.pack,
     required this.isDark,
     required this.completedLevels,
@@ -884,6 +841,7 @@ class _ConceptPackCard extends StatelessWidget {
     required this.onTap,
   });
 
+  final int indexNumber;
   final ConceptPack pack;
   final bool isDark;
   final int completedLevels;
@@ -897,183 +855,161 @@ class _ConceptPackCard extends StatelessWidget {
     final progress = totalLevels == 0 ? 0.0 : completedLevels / totalLevels;
     final minGrid = pack.levels.first.gridSizeLabel;
     final maxGrid = pack.levels.last.gridSizeLabel;
-    final accent = AppPalette.editorialAccentForPack(pack.id);
+    final indexLabel = indexNumber.toString().padLeft(2, '0');
 
     return Material(
       color: isDark ? Colors.white.withValues(alpha: 0.1) : AppPalette.card,
-      borderRadius: BorderRadius.circular(18),
+      borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(18),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(18),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(
-                color: isDark ? Colors.white12 : AppPalette.hairline,
-              ),
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(14, 13, 14, 13),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isDark ? Colors.white12 : AppPalette.hairline,
             ),
-            child: IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+          ),
+          child: Column(
+            children: [
+              Row(
                 children: [
-                  Container(width: 4, color: accent),
+                  Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? Colors.white.withValues(alpha: 0.1)
+                          : AppPalette.cardMuted,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: isDark ? Colors.white24 : AppPalette.hairline,
+                      ),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      indexLabel,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w900,
+                        fontFeatures: const [FontFeature.tabularFigures()],
+                        color: isDark ? AppPalette.brassBright : AppPalette.ink,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
                   Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(14, 13, 14, 13),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              EditorialEmblem(
-                                kind: emblemKindForPack(pack.id),
-                                size: 44,
-                                accentColor: accent,
-                                backgroundColor: isDark
-                                    ? Colors.white.withValues(alpha: 0.08)
-                                    : AppPalette.cardMuted,
-                                borderColor: isDark
-                                    ? Colors.white24
-                                    : AppPalette.hairline,
-                                onDark: isDark,
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Flexible(
-                                          child: Text(
-                                            pack.name,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              color: isDark
-                                                  ? Colors.white
-                                                  : AppPalette.ink,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w900,
-                                              letterSpacing: -0.2,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 6),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 6,
-                                            vertical: 2,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: isDark
-                                                ? Colors.white
-                                                    .withValues(alpha: 0.12)
-                                                : AppPalette.cardMuted,
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                          ),
-                                          child: Text(
-                                            pack.language.toUpperCase(),
-                                            style: TextStyle(
-                                              color: isDark
-                                                  ? Colors.white70
-                                                  : AppPalette.inkSoft,
-                                              fontSize: 9.5,
-                                              fontWeight: FontWeight.w800,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 2),
-                                    Text(
-                                      pack.subtitle,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: isDark
-                                            ? Colors.white60
-                                            : AppPalette.inkMuted,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                pack.name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: isDark ? Colors.white : AppPalette.ink,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: -0.2,
                                 ),
                               ),
-                              Icon(
-                                Icons.chevron_right_rounded,
+                            ),
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
                                 color: isDark
-                                    ? Colors.white54
-                                    : AppPalette.inkMuted,
-                                size: 22,
+                                    ? Colors.white.withValues(alpha: 0.12)
+                                    : AppPalette.cardMuted,
+                                borderRadius: BorderRadius.circular(5),
                               ),
-                            ],
-                          ),
-                          const SizedBox(height: 11),
-                          Row(
-                            children: [
-                              Text(
-                                '$completedLevels/$totalLevels Seviye',
+                              child: Text(
+                                pack.language.toUpperCase(),
                                 style: TextStyle(
-                                  fontSize: 11.5,
-                                  fontWeight: FontWeight.w800,
-                                  color: isDark
-                                      ? Colors.white
-                                      : AppPalette.inkSoft,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                '$minGrid–$maxGrid',
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w700,
-                                  color: isDark
-                                      ? Colors.white54
-                                      : AppPalette.inkMuted,
-                                ),
-                              ),
-                              const Spacer(),
-                              Text(
-                                '$earnedStars/$maxStars',
-                                style: TextStyle(
-                                  fontSize: 11.5,
-                                  fontWeight: FontWeight.w800,
                                   color: isDark
                                       ? Colors.white70
                                       : AppPalette.inkSoft,
+                                  fontSize: 9.5,
+                                  fontWeight: FontWeight.w800,
                                 ),
                               ),
-                              const SizedBox(width: 3),
-                              const Icon(
-                                Icons.star_rounded,
-                                size: 14,
-                                color: AppPalette.brassBright,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 6),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(4),
-                            child: LinearProgressIndicator(
-                              value: progress,
-                              minHeight: 5,
-                              backgroundColor: isDark
-                                  ? Colors.white12
-                                  : AppPalette.cardMuted,
-                              valueColor: AlwaysStoppedAnimation<Color>(accent),
                             ),
+                          ],
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          pack.subtitle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color:
+                                isDark ? Colors.white60 : AppPalette.inkMuted,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    color: isDark ? Colors.white54 : AppPalette.inkMuted,
+                    size: 20,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 11),
+              Row(
+                children: [
+                  Text(
+                    '$completedLevels/$totalLevels Seviye',
+                    style: TextStyle(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w800,
+                      color: isDark ? Colors.white : AppPalette.inkSoft,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    '$minGrid–$maxGrid',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      color: isDark ? Colors.white54 : AppPalette.inkMuted,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    '$earnedStars/$maxStars Yıldız',
+                    style: TextStyle(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w800,
+                      color: isDark ? Colors.white70 : AppPalette.inkSoft,
                     ),
                   ),
                 ],
               ),
-            ),
+              const SizedBox(height: 6),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: LinearProgressIndicator(
+                  value: progress,
+                  minHeight: 4.5,
+                  backgroundColor:
+                      isDark ? Colors.white12 : AppPalette.cardMuted,
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                    AppPalette.brass,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -1189,29 +1125,16 @@ class _MegaArenaBanner extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(18),
         child: Ink(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.fromLTRB(16, 15, 14, 15),
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Color(0xFF26201C), Color(0xFF181412)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(18),
+            color: AppPalette.ink,
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: AppPalette.brassBright.withValues(alpha: 0.25),
+              color: AppPalette.brassBright.withValues(alpha: 0.24),
             ),
           ),
           child: Row(
             children: [
-              EditorialEmblem(
-                kind: EmblemKind.megaGrid,
-                size: 46,
-                accentColor: AppPalette.brassBright,
-                backgroundColor: Colors.white.withValues(alpha: 0.08),
-                borderColor: Colors.white24,
-                onDark: true,
-              ),
-              const SizedBox(width: 13),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1230,7 +1153,7 @@ class _MegaArenaBanner extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 7),
+                        const SizedBox(width: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 7,
@@ -1238,7 +1161,7 @@ class _MegaArenaBanner extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             color: AppPalette.brassBright,
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(5),
                           ),
                           child: const Text(
                             '12×12–20×20',
@@ -1251,7 +1174,7 @@ class _MegaArenaBanner extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 3),
+                    const SizedBox(height: 4),
                     Text(
                       '$unlockedCount/${items.length} açık • Yakınlaştır & Kaydır • 3× Ödül',
                       style: TextStyle(
@@ -1266,7 +1189,7 @@ class _MegaArenaBanner extends StatelessWidget {
               const Icon(
                 Icons.chevron_right_rounded,
                 color: Colors.white54,
-                size: 22,
+                size: 20,
               ),
             ],
           ),

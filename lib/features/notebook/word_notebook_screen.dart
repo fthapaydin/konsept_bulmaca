@@ -5,7 +5,6 @@ import '../../core/models/notebook_models.dart';
 import '../../core/theme/app_theme.dart';
 import '../../state/app_state.dart';
 import '../../widgets/background_canvas.dart';
-import '../../widgets/editorial_emblems.dart';
 
 /// Çözülen tüm İngilizce kelimelerin otomatik kaydedildiği karşılıklı
 /// (İngilizce | Türkçe) iki sütunlu editoryal "Kelime Defteri & Sözlük" ekranı.
@@ -438,12 +437,6 @@ class _WordNotebookScreenState extends State<WordNotebookScreen> {
           child: const Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              EditorialEmblem(
-                kind: EmblemKind.dictionary,
-                size: 56,
-                accentColor: AppPalette.brass,
-              ),
-              SizedBox(height: 14),
               Text(
                 'Sözlüğün Henüz Boş',
                 style: TextStyle(
@@ -452,13 +445,13 @@ class _WordNotebookScreenState extends State<WordNotebookScreen> {
                   color: AppPalette.ink,
                 ),
               ),
-              SizedBox(height: 6),
+              SizedBox(height: 8),
               Text(
                 'İngilizce Kelime Avı veya Mini Sprint oynadıkça bildiğin kelimeler İngilizce – Türkçe karşılıklarıyla buraya otomatik eklenecek.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 12.5,
-                  height: 1.4,
+                  height: 1.45,
                   color: AppPalette.inkSoft,
                   fontWeight: FontWeight.w500,
                 ),

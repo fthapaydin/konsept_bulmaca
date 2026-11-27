@@ -46,8 +46,8 @@ python tools/generate_sounds.py
 powershell -ExecutionPolicy Bypass -File tools/install_app_icon.ps1
 
 # Statik analiz ve testler (0-tekrar testi dahil)
-dart analyze lib test tools/capture_screenshots_test.dart
-flutter test
+flutter analyze --no-pub
+flutter test --no-pub
 
 # Android çalıştırma, release APK ve Google Play imzalı AAB derleme
 flutter run
@@ -61,5 +61,6 @@ powershell -ExecutionPolicy Bypass -File tools/build_release.ps1
 - **İletişim E-posta:** `fatalsoft.inc@gmail.com`
 - **Gizlilik Politikası:** https://fthapaydin.github.io/konsept_bulmaca/privacy-policy.html
 - **Hesap ve Veri Silme:** https://fthapaydin.github.io/konsept_bulmaca/delete-account.html
+- **Tasarım Sözleşmesi (Spec-Driven Development):** [DESIGN_SPEC.md](DESIGN_SPEC.md)
 - **Firebase & Google ile Giriş Kurulumu:** [FIREBASE_KURULUM.md](FIREBASE_KURULUM.md)
 - **Gelir & Büyüme Yol Haritası:** [MONETIZATION_AND_GROWTH_ROADMAP.md](MONETIZATION_AND_GROWTH_ROADMAP.md)

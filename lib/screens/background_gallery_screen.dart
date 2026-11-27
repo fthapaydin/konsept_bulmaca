@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import '../core/theme/app_theme.dart';
 import '../models/background_models.dart';
 import '../state/app_state.dart';
 import '../widgets/background_canvas.dart';
@@ -15,9 +16,8 @@ class BackgroundGalleryScreen extends StatelessWidget {
       builder: (context, _) {
         final activeBg = appState.selectedBackground;
         final isDark = activeBg.isDark;
-        final titleColor = isDark ? Colors.white : const Color(0xFF1C1917);
-        final subtitleColor =
-            isDark ? Colors.white70 : const Color(0xFF57534E);
+        final titleColor = isDark ? Colors.white : AppPalette.ink;
+        final subtitleColor = isDark ? Colors.white70 : AppPalette.inkMuted;
 
         return Scaffold(
           backgroundColor: Colors.transparent,
@@ -27,14 +27,14 @@ class BackgroundGalleryScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 8, 12, 8),
+                    padding: const EdgeInsets.fromLTRB(8, 8, 14, 8),
                     child: Row(
                       children: [
                         IconButton(
                           onPressed: () => Navigator.of(context).pop(),
                           icon: const Icon(
                             Icons.arrow_back_ios_new_rounded,
-                            size: 20,
+                            size: 19,
                           ),
                           color: titleColor,
                           tooltip: 'Geri',
@@ -49,6 +49,7 @@ class BackgroundGalleryScreen extends StatelessWidget {
                                   fontSize: 18.5,
                                   fontWeight: FontWeight.w900,
                                   color: titleColor,
+                                  letterSpacing: -0.3,
                                 ),
                               ),
                               Text(
@@ -67,61 +68,41 @@ class BackgroundGalleryScreen extends StatelessWidget {
                         const SizedBox(width: 6),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
+                            horizontal: 9,
                             vertical: 5,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFEDE9FE),
-                            borderRadius: BorderRadius.circular(16),
+                            color: AppPalette.card,
+                            borderRadius: BorderRadius.circular(11),
+                            border: Border.all(color: AppPalette.hairline),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Icons.bolt_rounded,
-                                size: 15,
-                                color: Color(0xFF5B21B6),
-                              ),
-                              const SizedBox(width: 2),
-                              Text(
-                                '${appState.score}',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w900,
-                                  color: Color(0xFF5B21B6),
-                                ),
-                              ),
-                            ],
+                          child: Text(
+                            '${appState.score} P',
+                            style: const TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w900,
+                              color: AppPalette.ink,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 5),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
+                            horizontal: 9,
                             vertical: 5,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFFEF3C7),
-                            borderRadius: BorderRadius.circular(16),
+                            color: AppPalette.brassSoft,
+                            borderRadius: BorderRadius.circular(11),
+                            border: Border.all(color: AppPalette.brassBorder),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Icons.monetization_on_rounded,
-                                size: 15,
-                                color: Color(0xFFD97706),
-                              ),
-                              const SizedBox(width: 3),
-                              Text(
-                                '${appState.coins}',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w900,
-                                  color: Color(0xFF92400E),
-                                ),
-                              ),
-                            ],
+                          child: Text(
+                            '${appState.coins} Altın',
+                            style: const TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w900,
+                              color: AppPalette.brass,
+                            ),
                           ),
                         ),
                       ],
@@ -135,9 +116,9 @@ class BackgroundGalleryScreen extends StatelessWidget {
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        mainAxisSpacing: 14,
+                        mainAxisSpacing: 13,
                         crossAxisSpacing: 12,
-                        childAspectRatio: 0.65,
+                        childAspectRatio: 0.66,
                       ),
                       itemBuilder: (context, index) {
                         final bg = BackgroundCatalog.all[index];
@@ -199,7 +180,7 @@ class BackgroundGalleryScreen extends StatelessWidget {
             onPressed: () => Navigator.of(ctx).pop(),
             child: const Text('Kapat'),
           ),
-          OutlinedButton.icon(
+          OutlinedButton(
             onPressed: () async {
               final res = await appState.unlockBackgroundWithScore(bg);
               if (ctx.mounted) Navigator.of(ctx).pop();
@@ -209,18 +190,16 @@ class BackgroundGalleryScreen extends StatelessWidget {
                   ..showSnackBar(
                     SnackBar(
                       content: Text(res.message),
-                      backgroundColor: res.success
-                          ? const Color(0xFF15803D)
-                          : const Color(0xFFDC2626),
+                      backgroundColor:
+                          res.success ? AppPalette.ink : AppPalette.error,
                       behavior: SnackBarBehavior.floating,
                     ),
                   );
               }
             },
-            icon: const Icon(Icons.bolt_rounded, size: 16),
-            label: Text('${bg.scoreCost} Puan'),
+            child: Text('${bg.scoreCost} Puan'),
           ),
-          FilledButton.icon(
+          FilledButton(
             onPressed: () async {
               final res = await appState.unlockBackgroundWithCoins(bg);
               if (ctx.mounted) Navigator.of(ctx).pop();
@@ -230,16 +209,14 @@ class BackgroundGalleryScreen extends StatelessWidget {
                   ..showSnackBar(
                     SnackBar(
                       content: Text(res.message),
-                      backgroundColor: res.success
-                          ? const Color(0xFF15803D)
-                          : const Color(0xFFDC2626),
+                      backgroundColor:
+                          res.success ? AppPalette.ink : AppPalette.error,
                       behavior: SnackBarBehavior.floating,
                     ),
                   );
               }
             },
-            icon: const Icon(Icons.monetization_on_rounded, size: 16),
-            label: Text('${bg.coinCost} Altın'),
+            child: Text('${bg.coinCost} Altın'),
           ),
         ],
       ),
@@ -273,24 +250,19 @@ class _BackgroundCard extends StatelessWidget {
     final target = background.unlockTarget;
     final progress =
         target <= 0 ? 1.0 : (currentMetric / target).clamp(0.0, 1.0);
-    final canAffordAny = canAffordCoins || canAffordScore;
 
     return Material(
-      color: Colors.white,
-      elevation: selected ? 5 : 2,
-      shadowColor: Colors.black26,
-      borderRadius: BorderRadius.circular(20),
+      color: AppPalette.card,
+      borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: unlocked ? onSelect : onUnlockOptions,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: selected
-                  ? const Color(0xFF16A34A)
-                  : const Color(0xFFE7E5E4),
-              width: selected ? 2.4 : 1,
+              color: selected ? AppPalette.ink : AppPalette.hairline,
+              width: selected ? 2.0 : 1.0,
             ),
           ),
           child: Column(
@@ -300,7 +272,7 @@ class _BackgroundCard extends StatelessWidget {
                 flex: 9,
                 child: ClipRRect(
                   borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(18),
+                    top: Radius.circular(15),
                   ),
                   child: BackgroundCanvas(
                     background: background,
@@ -308,7 +280,7 @@ class _BackgroundCard extends StatelessWidget {
                       children: [
                         Center(
                           child: _MiniGridPreview(
-                            accentColor: background.accentColor,
+                            accentColor: AppPalette.brass,
                             locked: !unlocked,
                           ),
                         ),
@@ -322,27 +294,16 @@ class _BackgroundCard extends StatelessWidget {
                                 vertical: 3,
                               ),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF16A34A),
-                                borderRadius: BorderRadius.circular(12),
+                                color: AppPalette.ink,
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                              child: const Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.check_rounded,
-                                    size: 13,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(width: 2),
-                                  Text(
-                                    'Aktif',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10.5,
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ),
-                                ],
+                              child: const Text(
+                                'Aktif',
+                                style: TextStyle(
+                                  color: AppPalette.brassBright,
+                                  fontSize: 10.5,
+                                  fontWeight: FontWeight.w800,
+                                ),
                               ),
                             ),
                           )
@@ -353,12 +314,12 @@ class _BackgroundCard extends StatelessWidget {
                             child: Container(
                               padding: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.52),
+                                color: AppPalette.ink.withValues(alpha: 0.62),
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
-                                Icons.lock_rounded,
-                                size: 14,
+                                Icons.lock_outline_rounded,
+                                size: 13,
                                 color: Colors.white,
                               ),
                             ),
@@ -382,7 +343,7 @@ class _BackgroundCard extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 13.5,
                           fontWeight: FontWeight.w900,
-                          color: Color(0xFF1C1917),
+                          color: AppPalette.ink,
                         ),
                       ),
                       const SizedBox(height: 2),
@@ -393,7 +354,7 @@ class _BackgroundCard extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 10.6,
                           height: 1.2,
-                          color: Color(0xFF78716C),
+                          color: AppPalette.inkMuted,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -407,8 +368,8 @@ class _BackgroundCard extends StatelessWidget {
                             fontSize: 11,
                             fontWeight: FontWeight.w800,
                             color: selected
-                                ? const Color(0xFF15803D)
-                                : const Color(0xFFB45309),
+                                ? AppPalette.ink
+                                : AppPalette.brass,
                           ),
                         )
                       else ...[
@@ -419,7 +380,7 @@ class _BackgroundCard extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xFF57534E),
+                            color: AppPalette.inkSoft,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -427,10 +388,10 @@ class _BackgroundCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(4),
                           child: LinearProgressIndicator(
                             value: progress,
-                            minHeight: 5,
-                            backgroundColor: const Color(0xFFE7E5E4),
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              background.accentColor,
+                            minHeight: 4.5,
+                            backgroundColor: AppPalette.cardMuted,
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              AppPalette.brass,
                             ),
                           ),
                         ),
@@ -441,69 +402,56 @@ class _BackgroundCard extends StatelessWidget {
                               child: Container(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 4),
+                                alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: canAffordScore
-                                      ? const Color(0xFFEDE9FE)
-                                      : const Color(0xFFF5F5F4),
+                                      ? AppPalette.paper
+                                      : AppPalette.cardMuted,
                                   borderRadius: BorderRadius.circular(7),
+                                  border: Border.all(
+                                    color: canAffordScore
+                                        ? AppPalette.inkSoft
+                                        : AppPalette.hairline,
+                                  ),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.bolt_rounded,
-                                      size: 12,
-                                      color: canAffordScore
-                                          ? const Color(0xFF6D28D9)
-                                          : const Color(0xFFA8A29E),
-                                    ),
-                                    Text(
-                                      '${background.scoreCost}',
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w900,
-                                        color: canAffordScore
-                                            ? const Color(0xFF5B21B6)
-                                            : const Color(0xFF78716C),
-                                      ),
-                                    ),
-                                  ],
+                                child: Text(
+                                  '${background.scoreCost} P',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w800,
+                                    color: canAffordScore
+                                        ? AppPalette.ink
+                                        : AppPalette.inkMuted,
+                                  ),
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: 5),
                             Expanded(
                               child: Container(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 4),
+                                alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                  color: canAffordAny && canAffordCoins
-                                      ? const Color(0xFFFEF3C7)
-                                      : const Color(0xFFF5F5F4),
+                                  color: canAffordCoins
+                                      ? AppPalette.brassSoft
+                                      : AppPalette.cardMuted,
                                   borderRadius: BorderRadius.circular(7),
+                                  border: Border.all(
+                                    color: canAffordCoins
+                                        ? AppPalette.brassBorder
+                                        : AppPalette.hairline,
+                                  ),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.monetization_on_rounded,
-                                      size: 12,
-                                      color: canAffordCoins
-                                          ? const Color(0xFFD97706)
-                                          : const Color(0xFFA8A29E),
-                                    ),
-                                    const SizedBox(width: 1),
-                                    Text(
-                                      '${background.coinCost}',
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w900,
-                                        color: canAffordCoins
-                                            ? const Color(0xFF92400E)
-                                            : const Color(0xFF78716C),
-                                      ),
-                                    ),
-                                  ],
+                                child: Text(
+                                  '${background.coinCost} Altın',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w800,
+                                    color: canAffordCoins
+                                        ? AppPalette.brass
+                                        : AppPalette.inkMuted,
+                                  ),
                                 ),
                               ),
                             ),
@@ -539,7 +487,7 @@ class _MiniGridPreview extends StatelessWidget {
         height: 22,
         margin: const EdgeInsets.all(1.5),
         decoration: BoxDecoration(
-          color: highlight ? accentColor : const Color(0xFFFFFDF9),
+          color: highlight ? accentColor : AppPalette.card,
           borderRadius: BorderRadius.circular(4),
         ),
         alignment: Alignment.center,
@@ -548,7 +496,7 @@ class _MiniGridPreview extends StatelessWidget {
           style: TextStyle(
             fontSize: 11,
             fontWeight: FontWeight.w900,
-            color: highlight ? Colors.white : const Color(0xFF1C1917),
+            color: highlight ? Colors.white : AppPalette.ink,
           ),
         ),
       );
@@ -559,7 +507,7 @@ class _MiniGridPreview extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: const Color(0xFF1F1C1A).withValues(alpha: 0.86),
+          color: AppPalette.ink.withValues(alpha: 0.88),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(

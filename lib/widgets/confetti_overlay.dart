@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:material_ui/material_ui.dart';
+import '../core/theme/app_theme.dart';
 
 /// Bulmaca tamamlandığında ekranı şenlendiren hafif vektörel konfeti animasyonu.
 class ConfettiOverlay extends StatefulWidget {
@@ -20,13 +21,12 @@ class _ConfettiOverlayState extends State<ConfettiOverlay>
   late final List<_ConfettiPiece> _pieces;
 
   static const _palette = [
-    Color(0xFFF59E0B),
-    Color(0xFF10B981),
-    Color(0xFF3B82F6),
-    Color(0xFFEC4899),
-    Color(0xFF8B5CF6),
-    Color(0xFFF97316),
-    Color(0xFFFACC15),
+    AppPalette.brassBright,
+    AppPalette.brass,
+    Color(0xFFF3E2BA),
+    AppPalette.correct,
+    Color(0xFF9A6B3A),
+    AppPalette.card,
   ];
 
   @override

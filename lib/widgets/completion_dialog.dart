@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import '../core/theme/app_theme.dart';
 import '../models/background_models.dart';
 import '../state/app_state.dart';
 import '../utils/turkish_text.dart';
@@ -28,44 +29,49 @@ class CompletionDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final headline = reward.stars == 3
-        ? 'Mükemmel Çözüm!'
+        ? 'Mükemmel Çözüm'
         : reward.stars == 2
-            ? 'Harika İş!'
-            : 'Bulmaca Tamamlandı!';
+            ? 'Harika İş'
+            : 'Bulmaca Tamamlandı';
 
     return Dialog(
-      backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      backgroundColor: AppPalette.card,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: const BorderSide(color: AppPalette.hairline),
+      ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(22, 24, 22, 20),
+        padding: const EdgeInsets.fromLTRB(22, 22, 22, 20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 4),
               decoration: BoxDecoration(
-                color: primaryColor.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(20),
+                color: AppPalette.brassSoft,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: AppPalette.brassBorder),
               ),
               child: Text(
                 title,
-                style: TextStyle(
-                  color: primaryColor,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 12.5,
+                style: const TextStyle(
+                  color: AppPalette.brass,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 12,
                 ),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 11),
             Text(
               headline,
               style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w900,
-                color: Color(0xFF1C1917),
+                color: AppPalette.ink,
+                letterSpacing: -0.4,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(3, (i) {
@@ -82,42 +88,37 @@ class CompletionDialog extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: Icon(
                       earned ? Icons.star_rounded : Icons.star_outline_rounded,
-                      size: i == 1 ? 54 : 44,
+                      size: i == 1 ? 48 : 38,
                       color: earned
-                          ? const Color(0xFFF59E0B)
-                          : const Color(0xFFD6D3D1),
+                          ? AppPalette.brassBright
+                          : AppPalette.hairlineStrong,
                     ),
                   ),
                 );
               }),
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
                   child: _StatPill(
-                    icon: Icons.timer_outlined,
                     label: 'Süre',
                     value: TurkishText.formatDuration(reward.elapsedSeconds),
-                    color: const Color(0xFF0F766E),
                   ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: _StatPill(
-                    icon: Icons.spellcheck_rounded,
                     label: 'Kelime',
                     value: '$wordCount',
-                    color: primaryColor,
                   ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: _StatPill(
-                    icon: Icons.monetization_on_rounded,
                     label: 'Altın',
                     value: '+${reward.totalCoinsWon}',
-                    color: const Color(0xFFD97706),
+                    highlight: true,
                   ),
                 ),
               ],
@@ -126,80 +127,48 @@ class CompletionDialog extends StatelessWidget {
               const SizedBox(height: 10),
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 12),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEDE9FE),
-                  borderRadius: BorderRadius.circular(12),
+                  color: AppPalette.paper,
+                  borderRadius: BorderRadius.circular(11),
+                  border: Border.all(color: AppPalette.hairline),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.bolt_rounded,
-                      color: Color(0xFF6D28D9),
-                      size: 18,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      '+${reward.scoreEarned} Puan',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 12.5,
-                        color: Color(0xFF5B21B6),
-                      ),
-                    ),
-                    if (reward.maxCombo >= 2) ...[
-                      const SizedBox(width: 10),
-                      const Icon(
-                        Icons.whatshot_rounded,
-                        color: Color(0xFFEA580C),
-                        size: 18,
-                      ),
-                      const SizedBox(width: 3),
-                      Text(
-                        '${reward.maxCombo}× Kombo (+${reward.comboCoinsEarned})',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 12.5,
-                          color: Color(0xFF9A3412),
-                        ),
-                      ),
-                    ],
-                  ],
+                child: Text(
+                  reward.maxCombo >= 2
+                      ? '+${reward.scoreEarned} Puan  •  ${reward.maxCombo}× Kombo (+${reward.comboCoinsEarned} Altın)'
+                      : '+${reward.scoreEarned} Puan',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 12.5,
+                    color: AppPalette.ink,
+                  ),
                 ),
               ),
             ],
             if (reward.newDailyStreak != null) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 12),
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFEF3C7),
-                  borderRadius: BorderRadius.circular(12),
+                  color: AppPalette.brassSoft,
+                  borderRadius: BorderRadius.circular(11),
+                  border: Border.all(color: AppPalette.brassBorder),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.local_fire_department_rounded,
-                      color: Color(0xFFEA580C),
-                      size: 20,
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      '${reward.newDailyStreak} Günlük Seri!',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF9A3412),
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  '${reward.newDailyStreak} Günlük Seri',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 12.5,
+                    color: AppPalette.brass,
+                  ),
                 ),
               ),
             ],
             if (reward.newlyUnlockedBackgrounds.isNotEmpty) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               ...reward.newlyUnlockedBackgrounds.map((bg) {
                 return Container(
                   width: double.infinity,
@@ -209,44 +178,31 @@ class CompletionDialog extends StatelessWidget {
                     horizontal: 12,
                   ),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: bg.gradientColors.length >= 2
-                          ? [bg.gradientColors.first, bg.gradientColors.last]
-                          : [primaryColor, primaryColor],
-                    ),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: const Color(0xFFE7E5E4)),
+                    color: AppPalette.paper,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppPalette.brassBorder),
                   ),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.palette_rounded,
-                        size: 20,
-                        color: bg.isDark ? Colors.white : const Color(0xFF1C1917),
-                      ),
-                      const SizedBox(width: 8),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Yeni Arka Plan Kazanıldı!',
+                            const Text(
+                              'YENİ ARKA PLAN AÇILDI',
                               style: TextStyle(
-                                fontSize: 10.5,
-                                fontWeight: FontWeight.w700,
-                                color: bg.isDark
-                                    ? Colors.white70
-                                    : const Color(0xFF57534E),
+                                fontSize: 9.5,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 0.6,
+                                color: AppPalette.brass,
                               ),
                             ),
                             Text(
                               bg.name,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 13.5,
                                 fontWeight: FontWeight.w900,
-                                color: bg.isDark
-                                    ? Colors.white
-                                    : const Color(0xFF1C1917),
+                                color: AppPalette.ink,
                               ),
                             ),
                           ],
@@ -256,14 +212,17 @@ class CompletionDialog extends StatelessWidget {
                         TextButton(
                           onPressed: () => onApplyBackground!(bg),
                           style: TextButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: const Color(0xFF1C1917),
+                            backgroundColor: AppPalette.ink,
+                            foregroundColor: AppPalette.brassBright,
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
+                              horizontal: 11,
                               vertical: 6,
                             ),
                             minimumSize: Size.zero,
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(9),
+                            ),
                           ),
                           child: const Text(
                             'Kullan',
@@ -278,23 +237,23 @@ class CompletionDialog extends StatelessWidget {
                 );
               }),
             ],
-            const SizedBox(height: 20),
+            const SizedBox(height: 18),
             if (hasNextLevel) ...[
               SizedBox(
                 width: double.infinity,
-                child: FilledButton.icon(
+                child: FilledButton(
                   onPressed: onNextLevel,
                   style: FilledButton.styleFrom(
-                    backgroundColor: primaryColor,
+                    backgroundColor: AppPalette.ink,
+                    foregroundColor: AppPalette.brassBright,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  icon: const Icon(Icons.arrow_forward_rounded),
-                  label: const Text(
+                  child: const Text(
                     'Sonraki Seviye',
-                    style: TextStyle(fontSize: 15.5, fontWeight: FontWeight.w800),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
                   ),
                 ),
               ),
@@ -305,11 +264,11 @@ class CompletionDialog extends StatelessWidget {
               child: OutlinedButton(
                 onPressed: onBackToMap,
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: const Color(0xFF44403C),
-                  side: const BorderSide(color: Color(0xFFD6D3D1)),
+                  foregroundColor: AppPalette.inkSoft,
+                  side: const BorderSide(color: AppPalette.hairlineStrong),
                   padding: const EdgeInsets.symmetric(vertical: 13),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
                 child: Text(
@@ -327,43 +286,42 @@ class CompletionDialog extends StatelessWidget {
 
 class _StatPill extends StatelessWidget {
   const _StatPill({
-    required this.icon,
     required this.label,
     required this.value,
-    required this.color,
+    this.highlight = false,
   });
 
-  final IconData icon;
   final String label;
   final String value;
-  final Color color;
+  final bool highlight;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+      padding: const EdgeInsets.symmetric(vertical: 11, horizontal: 6),
       decoration: BoxDecoration(
-        color: const Color(0xFFFAF8F5),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE7E5E4)),
+        color: AppPalette.paper,
+        borderRadius: BorderRadius.circular(11),
+        border: Border.all(
+          color: highlight ? AppPalette.brassBorder : AppPalette.hairline,
+        ),
       ),
       child: Column(
         children: [
-          Icon(icon, size: 18, color: color),
-          const SizedBox(height: 4),
           Text(
             value,
             style: TextStyle(
-              fontSize: 15,
+              fontSize: 15.5,
               fontWeight: FontWeight.w900,
-              color: color,
+              color: highlight ? AppPalette.brass : AppPalette.ink,
             ),
           ),
+          const SizedBox(height: 2),
           Text(
             label,
             style: const TextStyle(
               fontSize: 11,
-              color: Color(0xFF78716C),
+              color: AppPalette.inkMuted,
               fontWeight: FontWeight.w600,
             ),
           ),

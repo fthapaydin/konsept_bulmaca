@@ -227,11 +227,11 @@ class _BackgroundArtworkPainter extends CustomPainter {
 
   void _paintIznikTiles(Canvas canvas, Size size) {
     final stroke = Paint()
-      ..color = const Color(0xFF1D4ED8).withValues(alpha: 0.09)
+      ..color = const Color(0xFF2C4A73).withValues(alpha: 0.09)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.2;
     final fill = Paint()
-      ..color = const Color(0xFF0284C7).withValues(alpha: 0.06);
+      ..color = const Color(0xFF2C4A73).withValues(alpha: 0.05);
 
     const tile = 54.0;
     for (double y = 0; y < size.height + tile; y += tile) {
@@ -254,8 +254,8 @@ class _BackgroundArtworkPainter extends CustomPainter {
     final sunGlow = Paint()
       ..shader = RadialGradient(
         colors: [
-          const Color(0xFFFDBA74).withValues(alpha: 0.28),
-          const Color(0xFFEA580C).withValues(alpha: 0.10),
+          const Color(0xFFFDBA74).withValues(alpha: 0.24),
+          const Color(0xFFA85513).withValues(alpha: 0.09),
           Colors.transparent,
         ],
       ).createShader(
@@ -300,8 +300,8 @@ class _BackgroundArtworkPainter extends CustomPainter {
     final sunPaint = Paint()
       ..shader = RadialGradient(
         colors: [
-          const Color(0xFFFEF08A).withValues(alpha: 0.55),
-          const Color(0xFFFDE047).withValues(alpha: 0.15),
+          const Color(0xFFFEF08A).withValues(alpha: 0.45),
+          const Color(0xFFE5A93B).withValues(alpha: 0.14),
           Colors.transparent,
         ],
       ).createShader(

@@ -153,17 +153,20 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
   void _showHintFeedback(HintFeedback fb) {
     if (!mounted) return;
     final bg = fb.status == HintStatus.insufficientCoins
-        ? const Color(0xFFDC2626)
+        ? AppPalette.error
         : fb.status == HintStatus.nothingToDo
-            ? const Color(0xFF44403C)
-            : widget.secondaryColor;
+            ? AppPalette.inkSoft
+            : AppPalette.ink;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
           content: Text(
             fb.message,
-            style: const TextStyle(fontWeight: FontWeight.w700),
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              color: AppPalette.card,
+            ),
           ),
           backgroundColor: bg,
           duration: const Duration(milliseconds: 1800),
@@ -244,22 +247,20 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                 children: [
                   BackgroundCanvas(
                     background: activeBg,
-                    conceptSurfaceColor: widget.surfaceColor,
-                    conceptPrimaryColor: widget.primaryColor,
+                    conceptSurfaceColor: AppPalette.paper,
+                    conceptPrimaryColor: AppPalette.brass,
                     child: SafeArea(
                       child: Column(
                         children: [
                           _buildTopBar(isDark: isDark),
                           LinearProgressIndicator(
                             value: _controller.completionProgress,
-                            minHeight: 3.5,
+                            minHeight: 3.0,
                             backgroundColor: isDark
                                 ? Colors.white12
-                                : widget.primaryColor.withValues(alpha: 0.14),
+                                : AppPalette.hairline,
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              isDark
-                                  ? activeBg.accentColor
-                                  : widget.primaryColor,
+                              isDark ? AppPalette.brassBright : AppPalette.brass,
                             ),
                           ),
                           if (_controller.wordComboCount >= 1)
@@ -272,8 +273,8 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                                       const EdgeInsets.fromLTRB(12, 10, 12, 8),
                                   child: CrosswordGrid(
                                     controller: _controller,
-                                    primaryColor: widget.primaryColor,
-                                    secondaryColor: widget.secondaryColor,
+                                    primaryColor: AppPalette.brass,
+                                    secondaryColor: AppPalette.ink,
                                   ),
                                 ),
                                 Positioned(
@@ -384,31 +385,15 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                                                         ),
                                                       ],
                                                     ),
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        const Icon(
-                                                          Icons
-                                                              .check_circle_outline_rounded,
-                                                          size: 16,
-                                                          color: Color(
-                                                              0xFFFDE047),
-                                                        ),
-                                                        const SizedBox(
-                                                            width: 6),
-                                                        Text(
-                                                          _controller
-                                                              .recentSolvedBanner!,
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.w900,
-                                                            fontSize: 12.5,
-                                                          ),
-                                                        ),
-                                                      ],
+                                                    child: Text(
+                                                      _controller
+                                                          .recentSolvedBanner!,
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        fontSize: 12.5,
+                                                      ),
                                                     ),
                                                   ),
                                       ),
@@ -420,13 +405,13 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                           ),
                           ClueBanner(
                             entry: _controller.activeEntry,
-                            primaryColor: widget.primaryColor,
+                            primaryColor: AppPalette.brass,
                             onPrevious: _controller.previousClue,
                             onNext: _controller.nextClue,
                             onOpenAllClues: () => showAllCluesSheet(
                               context: context,
                               controller: _controller,
-                              primaryColor: widget.primaryColor,
+                              primaryColor: AppPalette.brass,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -434,7 +419,7 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                           const SizedBox(height: 6),
                           GameKeyboard(
                             language: widget.language,
-                            primaryColor: widget.primaryColor,
+                            primaryColor: AppPalette.brass,
                             activeDirection: _controller.direction,
                             isDark: isDark,
                             onLetter: _controller.inputLetter,
@@ -464,14 +449,14 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
     return Container(
       padding: const EdgeInsets.fromLTRB(4, 6, 6, 6),
       color: isDark
-          ? const Color(0xFF141418).withValues(alpha: 0.85)
-          : Colors.white.withValues(alpha: 0.94),
+          ? AppPalette.ink.withValues(alpha: 0.90)
+          : AppPalette.card.withValues(alpha: 0.96),
       child: Row(
         children: [
           IconButton(
             onPressed: () => Navigator.of(context).pop(),
-            icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
-            color: isDark ? Colors.white : const Color(0xFF1C1917),
+            icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 19),
+            color: isDark ? Colors.white : AppPalette.ink,
             tooltip: 'Geri',
             visualDensity: VisualDensity.compact,
           ),
@@ -487,7 +472,8 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                   style: TextStyle(
                     fontSize: 14.5,
                     fontWeight: FontWeight.w900,
-                    color: isDark ? Colors.white : widget.secondaryColor,
+                    color: isDark ? Colors.white : AppPalette.ink,
+                    letterSpacing: -0.2,
                   ),
                 ),
                 Text(
@@ -497,39 +483,31 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    color: isDark ? Colors.white70 : const Color(0xFF78716C),
+                    color: isDark ? Colors.white70 : AppPalette.inkMuted,
                   ),
                 ),
               ],
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
             decoration: BoxDecoration(
               color: isDark
-                  ? Colors.white.withValues(alpha: 0.12)
-                  : const Color(0xFFF5F5F4),
-              borderRadius: BorderRadius.circular(14),
+                  ? Colors.white.withValues(alpha: 0.10)
+                  : AppPalette.cardMuted,
+              borderRadius: BorderRadius.circular(11),
+              border: Border.all(
+                color: isDark ? Colors.white12 : AppPalette.hairline,
+              ),
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.timer_outlined,
-                  size: 13.5,
-                  color: isDark ? Colors.white70 : const Color(0xFF57534E),
-                ),
-                const SizedBox(width: 3),
-                Text(
-                  TurkishText.formatDuration(_controller.elapsedSeconds),
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w800,
-                    fontFeatures: const [FontFeature.tabularFigures()],
-                    color: isDark ? Colors.white : const Color(0xFF292524),
-                  ),
-                ),
-              ],
+            child: Text(
+              TurkishText.formatDuration(_controller.elapsedSeconds),
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                fontFeatures: const [FontFeature.tabularFigures()],
+                color: isDark ? Colors.white : AppPalette.ink,
+              ),
             ),
           ),
           const SizedBox(width: 5),
@@ -539,31 +517,27 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
               widget.appState,
               initialTab: 1,
             ),
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(11),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
               decoration: BoxDecoration(
-                color: const Color(0xFFFEF3C7),
-                borderRadius: BorderRadius.circular(14),
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.12)
+                    : AppPalette.brassSoft,
+                borderRadius: BorderRadius.circular(11),
+                border: Border.all(
+                  color: isDark
+                      ? AppPalette.brassBright.withValues(alpha: 0.35)
+                      : AppPalette.brassBorder,
+                ),
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.monetization_on_rounded,
-                    size: 14.5,
-                    color: Color(0xFFD97706),
-                  ),
-                  const SizedBox(width: 3),
-                  Text(
-                    '${widget.appState.coins}',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w900,
-                      color: Color(0xFF92400E),
-                    ),
-                  ),
-                ],
+              child: Text(
+                '${widget.appState.coins} Altın',
+                style: TextStyle(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w900,
+                  color: isDark ? AppPalette.brassBright : AppPalette.brass,
+                ),
               ),
             ),
           ),
@@ -576,15 +550,15 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                 ),
               );
             },
-            icon: const Icon(Icons.palette_outlined, size: 20),
-            color: isDark ? Colors.white70 : const Color(0xFF57534E),
+            icon: const Icon(Icons.palette_outlined, size: 19),
+            color: isDark ? Colors.white70 : AppPalette.inkSoft,
             tooltip: 'Arka Planlar',
             visualDensity: VisualDensity.compact,
           ),
           IconButton(
             onPressed: _confirmReset,
-            icon: const Icon(Icons.refresh_rounded, size: 20),
-            color: isDark ? Colors.white70 : const Color(0xFF57534E),
+            icon: const Icon(Icons.refresh_rounded, size: 19),
+            color: isDark ? Colors.white70 : AppPalette.inkSoft,
             tooltip: 'Temizle',
             visualDensity: VisualDensity.compact,
           ),
@@ -596,42 +570,24 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
   Widget _buildComboStrip({required bool isDark}) {
     final combo = _controller.wordComboCount;
     final next = _controller.nextComboReward;
-    final bgColor = combo >= 4
-        ? const Color(0xFFBE123C)
-        : combo >= 2
-            ? const Color(0xFFEA580C)
-            : const Color(0xFF15803D);
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-      color: bgColor,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            combo >= 2
-                ? Icons.whatshot_rounded
-                : Icons.auto_awesome_rounded,
-            size: 15,
-            color: const Color(0xFFFDE047),
-          ),
-          const SizedBox(width: 5),
-          Flexible(
-            child: Text(
-              combo >= 2
-                  ? '$combo× KOMBO! Sonraki doğru kelime: +${next.coins} Altın & +${next.score} Puan'
-                  : '1. Kelime Doğru! 2× Kombo için sıradakini ipucusuz bil (+${next.coins} Altın)',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 11.5,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          ),
-        ],
+      color: AppPalette.ink,
+      child: Text(
+        combo >= 2
+            ? '$combo× KOMBO • Sonraki doğru kelime: +${next.coins} Altın & +${next.score} Puan'
+            : '1. Kelime Doğru • 2× Kombo için sıradakini ipucusuz bil (+${next.coins} Altın)',
+        textAlign: TextAlign.center,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(
+          color: AppPalette.brassBright,
+          fontSize: 11.5,
+          fontWeight: FontWeight.w800,
+          letterSpacing: 0.1,
+        ),
       ),
     );
   }
@@ -643,12 +599,11 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
     final hasWrong = _controller.hasWrongCompletedWord;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Row(
         children: [
           Expanded(
             child: _JokerButton(
-              icon: Icons.lightbulb_outline_rounded,
               label: 'Harf',
               cost: letterTickets > 0
                   ? '×$letterTickets'
@@ -661,10 +616,9 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
               },
             ),
           ),
-          const SizedBox(width: 5),
+          const SizedBox(width: 6),
           Expanded(
             child: _JokerButton(
-              icon: Icons.auto_awesome_rounded,
               label: 'Kelime',
               cost: wordTickets > 0
                   ? '×$wordTickets'
@@ -677,10 +631,9 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
               },
             ),
           ),
-          const SizedBox(width: 5),
+          const SizedBox(width: 6),
           Expanded(
             child: _JokerButton(
-              icon: Icons.fact_check_outlined,
               label: 'Kontrol',
               cost: checkTickets > 0
                   ? '×$checkTickets'
@@ -694,19 +647,18 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
               },
             ),
           ),
-          const SizedBox(width: 5),
+          const SizedBox(width: 6),
           Expanded(
             child: _JokerButton(
-              icon: Icons.list_alt_rounded,
-              label:
-                  '${_controller.solvedWordsCount}/${widget.puzzle.entries.length}',
-              cost: null,
+              label: 'Sorular',
+              cost: '${_controller.solvedWordsCount}/${widget.puzzle.entries.length}',
               isTicketBadge: false,
+              isNeutralBadge: true,
               color: AppPalette.inkSoft,
               onTap: () => showAllCluesSheet(
                 context: context,
                 controller: _controller,
-                primaryColor: widget.primaryColor,
+                primaryColor: AppPalette.brass,
               ),
             ),
           ),
@@ -718,78 +670,82 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
 
 class _JokerButton extends StatelessWidget {
   const _JokerButton({
-    required this.icon,
     required this.label,
     required this.cost,
     required this.isTicketBadge,
     required this.color,
     required this.onTap,
     this.highlightBorder = false,
+    this.isNeutralBadge = false,
   });
 
-  final IconData icon;
   final String label;
   final String? cost;
   final bool isTicketBadge;
   final Color color;
   final VoidCallback onTap;
   final bool highlightBorder;
+  final bool isNeutralBadge;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       color: highlightBorder ? AppPalette.errorSoft : AppPalette.card,
-      borderRadius: BorderRadius.circular(11),
+      borderRadius: BorderRadius.circular(10),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(11),
+        borderRadius: BorderRadius.circular(10),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 4),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(11),
+            borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: highlightBorder ? AppPalette.errorBorder : AppPalette.hairline,
-              width: highlightBorder ? 1.5 : 1.0,
+              color: highlightBorder
+                  ? AppPalette.errorBorder
+                  : AppPalette.hairline,
+              width: highlightBorder ? 1.4 : 1.0,
             ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 14, color: color),
-              const SizedBox(width: 3),
               Flexible(
                 child: Text(
                   label,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 11,
+                    fontSize: 11.5,
                     fontWeight: FontWeight.w800,
                     color: color,
                   ),
                 ),
               ),
               if (cost != null) ...[
-                const SizedBox(width: 3),
+                const SizedBox(width: 4),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 4,
-                    vertical: 1,
+                    horizontal: 4.5,
+                    vertical: 1.5,
                   ),
                   decoration: BoxDecoration(
-                    color: isTicketBadge
-                        ? const Color(0xFFDCFCE7)
-                        : const Color(0xFFFEF3C7),
-                    borderRadius: BorderRadius.circular(6),
+                    color: isNeutralBadge
+                        ? AppPalette.cardMuted
+                        : isTicketBadge
+                            ? AppPalette.correctSoft
+                            : AppPalette.brassSoft,
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   child: Text(
                     cost!,
                     style: TextStyle(
                       fontSize: 9.5,
                       fontWeight: FontWeight.w900,
-                      color: isTicketBadge
-                          ? const Color(0xFF15803D)
-                          : const Color(0xFF92400E),
+                      color: isNeutralBadge
+                          ? AppPalette.inkSoft
+                          : isTicketBadge
+                              ? AppPalette.correct
+                              : AppPalette.brass,
                     ),
                   ),
                 ),

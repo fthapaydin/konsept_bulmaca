@@ -56,15 +56,7 @@ class _KonseptBulmacaAppState extends State<KonseptBulmacaApp> {
     return MaterialApp(
       title: BrandConfig.appName,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        fontFamily: 'Roboto',
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: AppPalette.brass,
-          surface: AppPalette.paper,
-        ),
-        scaffoldBackgroundColor: AppPalette.paper,
-      ),
+      theme: AppPalette.buildTheme(),
       home: ListenableBuilder(
         listenable: _appState,
         builder: (context, _) {

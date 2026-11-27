@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import '../core/theme/app_theme.dart';
 
 class ComboReward {
   const ComboReward({
@@ -79,7 +80,7 @@ class ShopCatalog {
       coinCost: 35,
       scoreCost: 150,
       icon: Icons.lightbulb_rounded,
-      color: Color(0xFFB45309),
+      color: AppPalette.brass,
     ),
     ShopBundle(
       id: 'word_pack_2',
@@ -90,7 +91,7 @@ class ShopCatalog {
       coinCost: 65,
       scoreCost: 280,
       icon: Icons.auto_awesome_rounded,
-      color: Color(0xFF6D28D9),
+      color: AppPalette.ink,
     ),
     ShopBundle(
       id: 'check_pack_5',
@@ -101,7 +102,7 @@ class ShopCatalog {
       coinCost: 35,
       scoreCost: 150,
       icon: Icons.fact_check_rounded,
-      color: Color(0xFF0F766E),
+      color: AppPalette.correct,
     ),
     ShopBundle(
       id: 'score_to_coins_50',
@@ -112,7 +113,7 @@ class ShopCatalog {
       coinCost: 0,
       scoreCost: 200,
       icon: Icons.currency_exchange_rounded,
-      color: Color(0xFFD97706),
+      color: AppPalette.brass,
     ),
     ShopBundle(
       id: 'score_to_coins_150',
@@ -123,7 +124,7 @@ class ShopCatalog {
       coinCost: 0,
       scoreCost: 500,
       icon: Icons.savings_rounded,
-      color: Color(0xFFEA580C),
+      color: AppPalette.brass,
     ),
   ];
 }
@@ -161,7 +162,7 @@ class RankCatalog {
       minStars: 0,
       nextStars: 9,
       icon: Icons.eco_rounded,
-      color: Color(0xFF0F766E),
+      color: AppPalette.inkSoft,
     ),
     PlayerRank(
       level: 2,
@@ -169,7 +170,7 @@ class RankCatalog {
       minStars: 9,
       nextStars: 24,
       icon: Icons.explore_rounded,
-      color: Color(0xFF1D4ED8),
+      color: AppPalette.ink,
     ),
     PlayerRank(
       level: 3,
@@ -177,7 +178,7 @@ class RankCatalog {
       minStars: 24,
       nextStars: 48,
       icon: Icons.grid_on_rounded,
-      color: Color(0xFFB45309),
+      color: AppPalette.brass,
     ),
     PlayerRank(
       level: 4,
@@ -185,7 +186,7 @@ class RankCatalog {
       minStars: 48,
       nextStars: 90,
       icon: Icons.workspace_premium_rounded,
-      color: Color(0xFF6D28D9),
+      color: AppPalette.brass,
     ),
     PlayerRank(
       level: 5,
@@ -193,7 +194,7 @@ class RankCatalog {
       minStars: 90,
       nextStars: 150,
       icon: Icons.auto_awesome_rounded,
-      color: Color(0xFFBE185D),
+      color: AppPalette.ink,
     ),
     PlayerRank(
       level: 6,
@@ -201,7 +202,7 @@ class RankCatalog {
       minStars: 150,
       nextStars: null,
       icon: Icons.emoji_events_rounded,
-      color: Color(0xFFD97706),
+      color: AppPalette.brass,
     ),
   ];
 
@@ -264,7 +265,7 @@ class MissionCatalog {
       target: 1,
       rewardCoins: 30,
       icon: Icons.flag_rounded,
-      color: Color(0xFF0F766E),
+      color: AppPalette.brass,
     ),
     MissionItem(
       id: 'combo_3',
@@ -274,7 +275,7 @@ class MissionCatalog {
       target: 3,
       rewardCoins: 50,
       icon: Icons.whatshot_rounded,
-      color: Color(0xFFEA580C),
+      color: AppPalette.brass,
     ),
     MissionItem(
       id: 'perfect_star',
@@ -284,7 +285,7 @@ class MissionCatalog {
       target: 1,
       rewardCoins: 40,
       icon: Icons.stars_rounded,
-      color: Color(0xFFD97706),
+      color: AppPalette.brass,
     ),
     MissionItem(
       id: 'five_wins',
@@ -294,7 +295,7 @@ class MissionCatalog {
       target: 5,
       rewardCoins: 50,
       icon: Icons.extension_rounded,
-      color: Color(0xFF1D4ED8),
+      color: AppPalette.ink,
     ),
     MissionItem(
       id: 'stars_15',
@@ -304,7 +305,7 @@ class MissionCatalog {
       target: 15,
       rewardCoins: 60,
       icon: Icons.star_rounded,
-      color: Color(0xFFF59E0B),
+      color: AppPalette.brass,
     ),
     MissionItem(
       id: 'yesilcam_5',
@@ -314,7 +315,7 @@ class MissionCatalog {
       target: 5,
       rewardCoins: 60,
       icon: Icons.movie_filter_rounded,
-      color: Color(0xFFB45309),
+      color: AppPalette.brass,
     ),
     MissionItem(
       id: 'english_5',
@@ -324,7 +325,7 @@ class MissionCatalog {
       target: 5,
       rewardCoins: 60,
       icon: Icons.translate_rounded,
-      color: Color(0xFF2563EB),
+      color: AppPalette.ink,
     ),
     MissionItem(
       id: 'mega_win',
@@ -334,7 +335,7 @@ class MissionCatalog {
       target: 1,
       rewardCoins: 120,
       icon: Icons.grid_4x4_rounded,
-      color: Color(0xFFBE123C),
+      color: AppPalette.ink,
     ),
     MissionItem(
       id: 'streak_3',
@@ -344,7 +345,7 @@ class MissionCatalog {
       target: 3,
       rewardCoins: 75,
       icon: Icons.local_fire_department_rounded,
-      color: Color(0xFFEA580C),
+      color: AppPalette.brass,
     ),
     MissionItem(
       id: 'sprint_200',
@@ -354,7 +355,7 @@ class MissionCatalog {
       target: 200,
       rewardCoins: 60,
       icon: Icons.bolt_rounded,
-      color: Color(0xFFDC2626),
+      color: AppPalette.ink,
     ),
     MissionItem(
       id: 'english_notebook_10',
@@ -364,7 +365,7 @@ class MissionCatalog {
       target: 10,
       rewardCoins: 60,
       icon: Icons.menu_book_rounded,
-      color: Color(0xFF1D4ED8),
+      color: AppPalette.ink,
     ),
     MissionItem(
       id: 'fifteen_wins',
@@ -374,7 +375,7 @@ class MissionCatalog {
       target: 15,
       rewardCoins: 100,
       icon: Icons.emoji_events_rounded,
-      color: Color(0xFF6D28D9),
+      color: AppPalette.brass,
     ),
   ];
 }

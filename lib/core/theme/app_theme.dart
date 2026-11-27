@@ -1,9 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
-/// eKare Bulmaca bütünsel editoryal tasarım sistemi ("Gazete Kâğıdı, Mürekkep & Antik Altın").
-/// Uygulamanın her ekranında tek, sakin ve zarif bir renk dili korur;
-/// karmaşık gökkuşağı gradyanları yerine sıcak kâğıt, derin mürekkep ve
-/// tek imza vurgu rengi (antik pirinç/altın) kullanır.
+/// eKare Bulmaca tek yetkili editoryal tasarım sistemi (bkz. DESIGN_SPEC.md).
+/// Sıcak gazete kâğıdı, derin mürekkep ve tek imza vurgu rengi (antik pirinç).
 class AppPalette {
   const AppPalette._();
 
@@ -20,13 +18,13 @@ class AppPalette {
   static const Color inkSoft = Color(0xFF5C5349);
   static const Color inkMuted = Color(0xFF8C8174);
 
-  // Tek İmza Marka Vurgusu: Antik Altın / Pirinç
+  // Tek İmza Marka Vurgusu: Antik Pirinç
   static const Color brass = Color(0xFFA85513);
   static const Color brassBright = Color(0xFFE5A93B);
   static const Color brassSoft = Color(0xFFFBF2E2);
   static const Color brassBorder = Color(0xFFE6CCA0);
 
-  // Yalnızca Oyun İçi Anlamsal Durum Renkleri (Doğru / Hatalı)
+  // Yalnızca İşlevsel Anlamsal Durum Renkleri (Doğru / Hatalı)
   static const Color correct = Color(0xFF166534);
   static const Color correctBorder = Color(0xFF22C55E);
   static const Color correctSoft = Color(0xFFECFDF5);
@@ -35,19 +33,75 @@ class AppPalette {
   static const Color errorBorder = Color(0xFFDC2626);
   static const Color errorSoft = Color(0xFFFEF2F2);
 
-  /// Konsept paketleri için yumuşatılmış, birbiriyle uyumlu editoryal mürekkep tonları.
-  static Color editorialAccentForPack(String packId) {
-    switch (packId) {
-      case 'yesilcam':
-        return const Color(0xFF9A461C); // Sepya Sinema Bronzu
-      case 'ingilizce':
-        return const Color(0xFF2C4A73); // Oxford Mürekkep Laciverti
-      case 'turkiye':
-        return const Color(0xFF1F5D57); // Boğaz Çini Yeşili
-      case 'genel_kultur':
-        return const Color(0xFF523C66); // Akademik Mürdüm
-      default:
-        return brass;
-    }
+  /// Tüm paketlerde tek ve sakin marka vurgusunu korur (gökkuşağı renk kaymasını önler).
+  static Color editorialAccentForPack(String packId) => brass;
+
+  static ThemeData buildTheme() {
+    final scheme = ColorScheme.fromSeed(
+      seedColor: brass,
+      surface: paper,
+      primary: ink,
+      secondary: brass,
+      error: error,
+    );
+    return ThemeData(
+      useMaterial3: true,
+      fontFamily: 'Roboto',
+      colorScheme: scheme,
+      scaffoldBackgroundColor: paper,
+      dialogTheme: DialogThemeData(
+        backgroundColor: card,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: hairline),
+        ),
+        titleTextStyle: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w900,
+          color: ink,
+          letterSpacing: -0.3,
+        ),
+        contentTextStyle: const TextStyle(
+          fontSize: 13.5,
+          height: 1.45,
+          fontWeight: FontWeight.w500,
+          color: inkSoft,
+        ),
+      ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: ink,
+        contentTextStyle: const TextStyle(
+          color: card,
+          fontWeight: FontWeight.w700,
+          fontSize: 13,
+        ),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          backgroundColor: ink,
+          foregroundColor: brassBright,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: ink,
+          side: const BorderSide(color: hairlineStrong),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(foregroundColor: inkSoft),
+      ),
+    );
   }
 }

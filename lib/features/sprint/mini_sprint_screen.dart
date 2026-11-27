@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../core/theme/app_theme.dart';
 import '../../models/puzzle_models.dart';
 import '../../state/app_state.dart';
 import '../../state/game_controller.dart';
@@ -174,37 +175,43 @@ class _MiniSprintScreenState extends State<MiniSprintScreen> {
       context: context,
       barrierDismissible: false,
       builder: (dCtx) => Dialog(
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        backgroundColor: AppPalette.card,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: AppPalette.hairline),
+        ),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(22, 24, 22, 20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFEDD5),
-                  borderRadius: BorderRadius.circular(20),
+                  color: AppPalette.brassSoft,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: AppPalette.brassBorder),
                 ),
                 child: Text(
                   isNewRecord && _sprintScore > 0
-                      ? 'YENİ SPRINT REKORU!'
+                      ? 'YENİ SPRINT REKORU'
                       : 'Süre Doldu • Mini Sprint',
                   style: const TextStyle(
-                    color: Color(0xFF9A3412),
+                    color: AppPalette.brass,
                     fontWeight: FontWeight.w900,
-                    fontSize: 12,
+                    fontSize: 11.5,
+                    letterSpacing: 0.4,
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 12),
               Text(
                 '$_sprintScore Puan',
                 style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.w900,
-                  color: Color(0xFF1C1917),
+                  color: AppPalette.ink,
+                  letterSpacing: -0.5,
                 ),
               ),
               const SizedBox(height: 14),
@@ -212,8 +219,6 @@ class _MiniSprintScreenState extends State<MiniSprintScreen> {
                 children: [
                   Expanded(
                     child: _SprintStat(
-                      icon: Icons.grid_view_rounded,
-                      color: const Color(0xFFEA580C),
                       value: '$_puzzlesSolved',
                       label: 'Bulmaca',
                     ),
@@ -221,8 +226,6 @@ class _MiniSprintScreenState extends State<MiniSprintScreen> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: _SprintStat(
-                      icon: Icons.whatshot_rounded,
-                      color: const Color(0xFFBE123C),
                       value: '$_maxCombo×',
                       label: 'En İyi Kombo',
                     ),
@@ -230,10 +233,9 @@ class _MiniSprintScreenState extends State<MiniSprintScreen> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: _SprintStat(
-                      icon: Icons.monetization_on_rounded,
-                      color: const Color(0xFFD97706),
                       value: '+$_sprintCoins',
                       label: 'Altın',
+                      highlight: true,
                     ),
                   ),
                 ],
@@ -243,29 +245,29 @@ class _MiniSprintScreenState extends State<MiniSprintScreen> {
                 '$_wordsSolved kelime çözüldü • Rekorun: ${widget.appState.bestSprintScore} Puan',
                 style: const TextStyle(
                   fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF78716C),
+                  fontWeight: FontWeight.w600,
+                  color: AppPalette.inkMuted,
                 ),
               ),
               const SizedBox(height: 18),
               SizedBox(
                 width: double.infinity,
-                child: FilledButton.icon(
+                child: FilledButton(
                   onPressed: () {
                     Navigator.of(dCtx).pop();
                     setState(_startNewRun);
                   },
                   style: FilledButton.styleFrom(
-                    backgroundColor: const Color(0xFFEA580C),
+                    backgroundColor: AppPalette.ink,
+                    foregroundColor: AppPalette.brassBright,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  icon: const Icon(Icons.bolt_rounded),
-                  label: const Text(
+                  child: const Text(
                     'Tekrar Yarış (90 sn)',
-                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 15),
+                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14.5),
                   ),
                 ),
               ),
@@ -280,7 +282,7 @@ class _MiniSprintScreenState extends State<MiniSprintScreen> {
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                   child: const Text(
@@ -367,8 +369,8 @@ class _MiniSprintScreenState extends State<MiniSprintScreen> {
             children: [
               BackgroundCanvas(
                 background: activeBg,
-                conceptSurfaceColor: currentItem.surfaceColor,
-                conceptPrimaryColor: currentItem.primaryColor,
+                conceptSurfaceColor: AppPalette.paper,
+                conceptPrimaryColor: AppPalette.brass,
                 child: SafeArea(
                   child: ListenableBuilder(
                     listenable: Listenable.merge([ctrl, widget.appState]),
@@ -377,22 +379,19 @@ class _MiniSprintScreenState extends State<MiniSprintScreen> {
                         children: [
                           // Sprint HUD Üst Barı
                           Container(
-                            padding: const EdgeInsets.fromLTRB(4, 6, 8, 6),
+                            padding: const EdgeInsets.fromLTRB(4, 6, 10, 6),
                             color: isDark
-                                ? const Color(0xFF141418)
-                                    .withValues(alpha: 0.88)
-                                : Colors.white.withValues(alpha: 0.95),
+                                ? AppPalette.ink.withValues(alpha: 0.90)
+                                : AppPalette.card.withValues(alpha: 0.96),
                             child: Row(
                               children: [
                                 IconButton(
                                   onPressed: () => Navigator.of(context).pop(),
                                   icon: const Icon(
                                     Icons.close_rounded,
-                                    size: 22,
+                                    size: 21,
                                   ),
-                                  color: isDark
-                                      ? Colors.white
-                                      : const Color(0xFF1C1917),
+                                  color: isDark ? Colors.white : AppPalette.ink,
                                   tooltip: 'Çık',
                                   visualDensity: VisualDensity.compact,
                                 ),
@@ -400,57 +399,43 @@ class _MiniSprintScreenState extends State<MiniSprintScreen> {
                                   duration: const Duration(milliseconds: 220),
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 11,
-                                    vertical: 6,
+                                    vertical: 5.5,
                                   ),
                                   decoration: BoxDecoration(
                                     color: lowTime
-                                        ? const Color(0xFFDC2626)
-                                        : const Color(0xFFEA580C),
-                                    borderRadius: BorderRadius.circular(16),
+                                        ? AppPalette.error
+                                        : AppPalette.ink,
+                                    borderRadius: BorderRadius.circular(11),
                                   ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(
-                                        Icons.timer_rounded,
-                                        size: 16,
-                                        color: Colors.white,
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        TurkishText.formatDuration(
-                                          _remainingSeconds,
-                                        ),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w900,
-                                          fontSize: 14,
-                                          fontFeatures: [
-                                            FontFeature.tabularFigures(),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                  child: Text(
+                                    TurkishText.formatDuration(
+                                      _remainingSeconds,
+                                    ),
+                                    style: TextStyle(
+                                      color: lowTime
+                                          ? Colors.white
+                                          : AppPalette.brassBright,
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 13.5,
+                                      fontFeatures: const [
+                                        FontFeature.tabularFigures(),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                const SizedBox(width: 8),
+                                const SizedBox(width: 10),
                                 Expanded(
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const Icon(
-                                        Icons.bolt_rounded,
-                                        size: 16,
-                                        color: Color(0xFF7C3AED),
-                                      ),
                                       Text(
-                                        '$_sprintScore',
+                                        '$_sprintScore P',
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 13.5,
                                           fontWeight: FontWeight.w900,
                                           color: isDark
                                               ? Colors.white
-                                              : const Color(0xFF1C1917),
+                                              : AppPalette.ink,
                                         ),
                                       ),
                                       const SizedBox(width: 8),
@@ -461,42 +446,49 @@ class _MiniSprintScreenState extends State<MiniSprintScreen> {
                                         ),
                                         decoration: BoxDecoration(
                                           color: _currentCombo >= 2
-                                              ? const Color(0xFFBE123C)
-                                              : const Color(0xFFE7E5E4),
+                                              ? AppPalette.brassSoft
+                                              : AppPalette.cardMuted,
                                           borderRadius:
-                                              BorderRadius.circular(10),
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                            color: _currentCombo >= 2
+                                                ? AppPalette.brassBorder
+                                                : AppPalette.hairline,
+                                          ),
                                         ),
                                         child: Text(
                                           '${math.max(1, _currentCombo)}×',
                                           style: TextStyle(
-                                            fontSize: 11.5,
+                                            fontSize: 11,
                                             fontWeight: FontWeight.w900,
                                             color: _currentCombo >= 2
-                                                ? Colors.white
-                                                : const Color(0xFF44403C),
+                                                ? AppPalette.brass
+                                                : AppPalette.inkSoft,
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                TextButton.icon(
+                                TextButton(
                                   onPressed: _skipCurrentBoard,
                                   style: TextButton.styleFrom(
                                     foregroundColor: isDark
                                         ? Colors.white70
-                                        : const Color(0xFF57534E),
+                                        : AppPalette.inkSoft,
+                                    backgroundColor: isDark
+                                        ? Colors.white.withValues(alpha: 0.08)
+                                        : AppPalette.cardMuted,
                                     padding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 4,
+                                      horizontal: 10,
+                                      vertical: 6,
                                     ),
                                     minimumSize: Size.zero,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(9),
+                                    ),
                                   ),
-                                  icon: const Icon(
-                                    Icons.skip_next_rounded,
-                                    size: 18,
-                                  ),
-                                  label: const Text(
+                                  child: const Text(
                                     'Pas (-5s)',
                                     style: TextStyle(
                                       fontSize: 11.5,
@@ -511,14 +503,12 @@ class _MiniSprintScreenState extends State<MiniSprintScreen> {
                           LinearProgressIndicator(
                             value: (_remainingSeconds / _initialSeconds)
                                 .clamp(0.0, 1.0),
-                            minHeight: 4,
+                            minHeight: 3.5,
                             backgroundColor: isDark
                                 ? Colors.white12
-                                : const Color(0xFFFED7AA),
+                                : AppPalette.hairline,
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              lowTime
-                                  ? const Color(0xFFDC2626)
-                                  : const Color(0xFFEA580C),
+                              lowTime ? AppPalette.error : AppPalette.brass,
                             ),
                           ),
                           Expanded(
@@ -529,8 +519,8 @@ class _MiniSprintScreenState extends State<MiniSprintScreen> {
                                       const EdgeInsets.fromLTRB(12, 10, 12, 8),
                                   child: CrosswordGrid(
                                     controller: ctrl,
-                                    primaryColor: currentItem.primaryColor,
-                                    secondaryColor: currentItem.secondaryColor,
+                                    primaryColor: AppPalette.brass,
+                                    secondaryColor: AppPalette.ink,
                                   ),
                                 ),
                                 if (_bonusFlashText != null)
@@ -546,14 +536,14 @@ class _MiniSprintScreenState extends State<MiniSprintScreen> {
                                             vertical: 7,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: const Color(0xFF15803D),
+                                            color: AppPalette.correct,
                                             borderRadius:
-                                                BorderRadius.circular(20),
+                                                BorderRadius.circular(18),
                                             boxShadow: [
                                               BoxShadow(
                                                 color: Colors.black
-                                                    .withValues(alpha: 0.25),
-                                                blurRadius: 10,
+                                                    .withValues(alpha: 0.2),
+                                                blurRadius: 8,
                                               ),
                                             ],
                                           ),
@@ -574,19 +564,19 @@ class _MiniSprintScreenState extends State<MiniSprintScreen> {
                           ),
                           ClueBanner(
                             entry: ctrl.activeEntry,
-                            primaryColor: currentItem.primaryColor,
+                            primaryColor: AppPalette.brass,
                             onPrevious: ctrl.previousClue,
                             onNext: ctrl.nextClue,
                             onOpenAllClues: () => showAllCluesSheet(
                               context: context,
                               controller: ctrl,
-                              primaryColor: currentItem.primaryColor,
+                              primaryColor: AppPalette.brass,
                             ),
                           ),
                           const SizedBox(height: 6),
                           GameKeyboard(
                             language: currentItem.language,
-                            primaryColor: currentItem.primaryColor,
+                            primaryColor: AppPalette.brass,
                             activeDirection: ctrl.direction,
                             isDark: isDark,
                             onLetter: ctrl.inputLetter,
@@ -611,38 +601,37 @@ class _MiniSprintScreenState extends State<MiniSprintScreen> {
 
 class _SprintStat extends StatelessWidget {
   const _SprintStat({
-    required this.icon,
-    required this.color,
     required this.value,
     required this.label,
+    this.highlight = false,
   });
 
-  final IconData icon;
-  final Color color;
   final String value;
   final String label;
+  final bool highlight;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+      padding: const EdgeInsets.symmetric(vertical: 11, horizontal: 6),
       decoration: BoxDecoration(
-        color: const Color(0xFFFAF8F5),
+        color: AppPalette.paper,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE7E5E4)),
+        border: Border.all(
+          color: highlight ? AppPalette.brassBorder : AppPalette.hairline,
+        ),
       ),
       child: Column(
         children: [
-          Icon(icon, color: color, size: 18),
-          const SizedBox(height: 4),
           Text(
             value,
             style: TextStyle(
-              fontSize: 15,
+              fontSize: 16,
               fontWeight: FontWeight.w900,
-              color: color,
+              color: highlight ? AppPalette.brass : AppPalette.ink,
             ),
           ),
+          const SizedBox(height: 2),
           Text(
             label,
             maxLines: 1,
@@ -650,7 +639,7 @@ class _SprintStat extends StatelessWidget {
             style: const TextStyle(
               fontSize: 10.5,
               fontWeight: FontWeight.w600,
-              color: Color(0xFF78716C),
+              color: AppPalette.inkMuted,
             ),
           ),
         ],

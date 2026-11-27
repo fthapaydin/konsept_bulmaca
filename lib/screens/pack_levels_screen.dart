@@ -27,7 +27,6 @@ class PackLevelsScreen extends StatelessWidget {
         final earnedStars = appState.starsForPack(pack);
         final maxStars = appState.maxStarsForPack(pack);
 
-        // Find next playable level (first unlocked & not completed)
         int? nextPlayableIdx;
         for (var i = 0; i < pack.levels.length; i++) {
           if (appState.isLevelUnlocked(pack, i) &&
@@ -41,23 +40,26 @@ class PackLevelsScreen extends StatelessWidget {
           backgroundColor: Colors.transparent,
           body: BackgroundCanvas(
             background: appState.selectedBackground,
-            conceptSurfaceColor: const Color(0xFFF8F6F1),
-            conceptPrimaryColor: pack.primaryColor,
+            conceptSurfaceColor: AppPalette.paper,
+            conceptPrimaryColor: AppPalette.brass,
             child: CustomScrollView(
               physics: const BouncingScrollPhysics(),
               slivers: [
                 SliverAppBar(
-                  expandedHeight: 190,
+                  expandedHeight: 176,
                   pinned: true,
                   backgroundColor: AppPalette.ink,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppPalette.card,
                   title: Text(
                     pack.name,
-                    style: const TextStyle(fontWeight: FontWeight.w800),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: -0.3,
+                    ),
                   ),
                   actions: [
                     if (pack.language == 'en')
-                      IconButton(
+                      TextButton(
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute<void>(
@@ -66,8 +68,16 @@ class PackLevelsScreen extends StatelessWidget {
                             ),
                           );
                         },
-                        icon: const Icon(Icons.menu_book_rounded),
-                        tooltip: 'Kelime Defteri',
+                        style: TextButton.styleFrom(
+                          foregroundColor: AppPalette.brassBright,
+                        ),
+                        child: const Text(
+                          'Sözlük',
+                          style: TextStyle(
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
                       ),
                     IconButton(
                       onPressed: () {
@@ -78,147 +88,133 @@ class PackLevelsScreen extends StatelessWidget {
                           ),
                         );
                       },
-                      icon: const Icon(Icons.palette_outlined),
+                      icon: const Icon(Icons.palette_outlined, size: 20),
                       tooltip: 'Arka Planlar',
                     ),
                   ],
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          AppPalette.ink,
-                          Color.alphaBlend(
-                            AppPalette.editorialAccentForPack(pack.id)
-                                .withValues(alpha: 0.42),
-                            AppPalette.ink,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Container(
+                      color: AppPalette.ink,
+                      child: SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 54, 20, 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                pack.description,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white.withValues(alpha: 0.8),
+                                  fontSize: 13,
+                                  height: 1.32,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              Wrap(
+                                spacing: 7,
+                                runSpacing: 6,
+                                children: [
+                                  _HeaderTag(
+                                    label: '$completed/${pack.levels.length} Seviye',
+                                  ),
+                                  _HeaderTag(
+                                    label: '$earnedStars/$maxStars Yıldız',
+                                  ),
+                                  _HeaderTag(
+                                    label: pack.language == 'en'
+                                        ? 'EN Klavye'
+                                        : 'TR Klavye',
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    child: SafeArea(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 56, 20, 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              pack.description,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: Colors.white.withValues(alpha: 0.9),
-                                fontSize: 13.5,
-                                height: 1.3,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 14),
-                            Wrap(
-                              spacing: 8,
-                              runSpacing: 6,
-                              children: [
-                                _HeaderChip(
-                                  icon: Icons.layers_rounded,
-                                  label: '$completed/${pack.levels.length} Seviye',
-                                ),
-                                _HeaderChip(
-                                  icon: Icons.star_rounded,
-                                  label: '$earnedStars/$maxStars Yıldız',
-                                ),
-                                _HeaderChip(
-                                  icon: Icons.keyboard_rounded,
-                                  label: pack.language == 'en'
-                                      ? 'EN Klavye'
-                                      : 'TR Klavye',
-                                ),
-                              ],
-                            ),
-                          ],
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              if (nextPlayableIdx != null)
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-                    child: FilledButton.icon(
-                      onPressed: () => _openLevel(context, nextPlayableIdx!),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: pack.primaryColor,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                if (nextPlayableIdx != null)
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 14, 16, 4),
+                      child: FilledButton(
+                        onPressed: () => _openLevel(context, nextPlayableIdx!),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: AppPalette.ink,
+                          foregroundColor: AppPalette.brassBright,
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 14,
+                            horizontal: 16,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
                         ),
-                      ),
-                      icon: const Icon(Icons.play_arrow_rounded, size: 24),
-                      label: Text(
-                        appState
-                                    .stateFor(pack.levels[nextPlayableIdx].id)
-                                    ?.hasProgress ==
-                                true
-                            ? 'Devam Et — Seviye ${pack.levels[nextPlayableIdx].level}: ${pack.levels[nextPlayableIdx].title}'
-                            : 'Oyna — Seviye ${pack.levels[nextPlayableIdx].level}: ${pack.levels[nextPlayableIdx].title}',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 14.5,
+                        child: Text(
+                          appState
+                                      .stateFor(pack.levels[nextPlayableIdx].id)
+                                      ?.hasProgress ==
+                                  true
+                              ? 'Devam Et — Seviye ${pack.levels[nextPlayableIdx].level}: ${pack.levels[nextPlayableIdx].title}'
+                              : 'Oyna — Seviye ${pack.levels[nextPlayableIdx].level}: ${pack.levels[nextPlayableIdx].title}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 14,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(16, 14, 16, 28),
-                sliver: SliverGrid.builder(
-                  itemCount: pack.levels.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 12,
-                    crossAxisSpacing: 12,
-                    childAspectRatio: 1.06,
-                  ),
-                  itemBuilder: (context, index) {
-                    final puzzle = pack.levels[index];
-                    final unlocked = appState.isLevelUnlocked(pack, index);
-                    final saved = appState.stateFor(puzzle.id);
-                    final isNext = index == nextPlayableIdx;
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
+                  sliver: SliverGrid.builder(
+                    itemCount: pack.levels.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 11,
+                      crossAxisSpacing: 11,
+                      childAspectRatio: 1.08,
+                    ),
+                    itemBuilder: (context, index) {
+                      final puzzle = pack.levels[index];
+                      final unlocked = appState.isLevelUnlocked(pack, index);
+                      final saved = appState.stateFor(puzzle.id);
+                      final isNext = index == nextPlayableIdx;
 
-                    return _LevelTile(
-                      puzzle: puzzle,
-                      pack: pack,
-                      unlocked: unlocked,
-                      saved: saved,
-                      isHighlighted: isNext,
-                      onTap: () {
-                        if (!unlocked) {
-                          ScaffoldMessenger.of(context)
-                            ..hideCurrentSnackBar()
-                            ..showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Seviye ${puzzle.level} için önce Seviye ${puzzle.level - 1} tamamlanmalı.',
+                      return _LevelTile(
+                        puzzle: puzzle,
+                        unlocked: unlocked,
+                        saved: saved,
+                        isHighlighted: isNext,
+                        onTap: () {
+                          if (!unlocked) {
+                            ScaffoldMessenger.of(context)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Seviye ${puzzle.level} için önce Seviye ${puzzle.level - 1} tamamlanmalı.',
+                                  ),
                                 ),
-                                behavior: SnackBarBehavior.floating,
-                              ),
-                            );
-                          return;
-                        }
-                        _openLevel(context, index);
-                      },
-                    );
-                  },
+                              );
+                            return;
+                          }
+                          _openLevel(context, index);
+                        },
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
           ),
         );
       },
@@ -234,7 +230,7 @@ class PackLevelsScreen extends StatelessWidget {
           storageKey: puzzle.id,
           language: pack.language,
           packTitle: pack.name,
-          primaryColor: AppPalette.editorialAccentForPack(pack.id),
+          primaryColor: AppPalette.brass,
           secondaryColor: AppPalette.ink,
           surfaceColor: AppPalette.paper,
           isDaily: false,
@@ -247,34 +243,27 @@ class PackLevelsScreen extends StatelessWidget {
   }
 }
 
-class _HeaderChip extends StatelessWidget {
-  const _HeaderChip({required this.icon, required this.label});
+class _HeaderTag extends StatelessWidget {
+  const _HeaderTag({required this.label});
 
-  final IconData icon;
   final String label;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4.5),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.18),
-        borderRadius: BorderRadius.circular(20),
+        color: Colors.white.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.16)),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 14, color: Colors.white),
-          const SizedBox(width: 5),
-          Text(
-            label,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 11.5,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ],
+      child: Text(
+        label,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 11,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }
@@ -283,7 +272,6 @@ class _HeaderChip extends StatelessWidget {
 class _LevelTile extends StatelessWidget {
   const _LevelTile({
     required this.puzzle,
-    required this.pack,
     required this.unlocked,
     required this.saved,
     required this.isHighlighted,
@@ -291,7 +279,6 @@ class _LevelTile extends StatelessWidget {
   });
 
   final CrosswordPuzzle puzzle;
-  final ConceptPack pack;
   final bool unlocked;
   final PuzzleSaveState? saved;
   final bool isHighlighted;
@@ -304,24 +291,22 @@ class _LevelTile extends StatelessWidget {
     final stars = saved?.stars ?? 0;
 
     return Material(
-      color: unlocked ? Colors.white : const Color(0xFFF1EFEA),
-      borderRadius: BorderRadius.circular(18),
-      elevation: isHighlighted ? 3 : (unlocked ? 1 : 0),
-      shadowColor: pack.primaryColor.withValues(alpha: 0.25),
+      color: unlocked ? AppPalette.card : AppPalette.cardMuted,
+      borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(16),
         child: Container(
           padding: const EdgeInsets.all(13),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: isHighlighted
-                  ? pack.primaryColor
+                  ? AppPalette.brass
                   : completed
-                      ? const Color(0xFF16A34A).withValues(alpha: 0.45)
-                      : const Color(0xFFE7E5E4),
-              width: isHighlighted ? 2 : 1,
+                      ? AppPalette.correct.withValues(alpha: 0.45)
+                      : AppPalette.hairline,
+              width: isHighlighted ? 1.8 : 1.0,
             ),
           ),
           child: Column(
@@ -330,52 +315,62 @@ class _LevelTile extends StatelessWidget {
               Row(
                 children: [
                   Container(
-                    width: 34,
-                    height: 34,
+                    width: 32,
+                    height: 32,
                     decoration: BoxDecoration(
                       color: !unlocked
-                          ? const Color(0xFFD6D3D1)
+                          ? AppPalette.hairlineStrong
                           : completed
-                              ? const Color(0xFF16A34A)
-                              : pack.primaryColor,
-                      borderRadius: BorderRadius.circular(10),
+                              ? AppPalette.correct
+                              : isHighlighted
+                                  ? AppPalette.ink
+                                  : AppPalette.cardMuted,
+                      borderRadius: BorderRadius.circular(9),
                     ),
                     alignment: Alignment.center,
                     child: !unlocked
                         ? const Icon(
-                            Icons.lock_rounded,
-                            size: 18,
-                            color: Colors.white,
+                            Icons.lock_outline_rounded,
+                            size: 16,
+                            color: AppPalette.inkSoft,
                           )
                         : Text(
-                            '${puzzle.level}',
-                            style: const TextStyle(
-                              color: Colors.white,
+                            puzzle.level.toString().padLeft(2, '0'),
+                            style: TextStyle(
+                              color: completed
+                                  ? Colors.white
+                                  : isHighlighted
+                                      ? AppPalette.brassBright
+                                      : AppPalette.ink,
                               fontWeight: FontWeight.w900,
-                              fontSize: 16,
+                              fontSize: 13.5,
+                              fontFeatures: const [
+                                FontFeature.tabularFigures(),
+                              ],
                             ),
                           ),
                   ),
                   const Spacer(),
                   Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
+                      horizontal: 7,
                       vertical: 3,
                     ),
                     decoration: BoxDecoration(
                       color: unlocked
-                          ? pack.surfaceColor
-                          : const Color(0xFFE7E5E4),
-                      borderRadius: BorderRadius.circular(8),
+                          ? AppPalette.paper
+                          : AppPalette.hairline.withValues(alpha: 0.6),
+                      borderRadius: BorderRadius.circular(7),
+                      border: Border.all(color: AppPalette.hairline),
                     ),
                     child: Text(
                       puzzle.gridSizeLabel,
                       style: TextStyle(
-                        fontSize: 11.5,
+                        fontSize: 11,
                         fontWeight: FontWeight.w800,
                         color: unlocked
-                            ? pack.primaryColor
-                            : const Color(0xFF78716C),
+                            ? AppPalette.inkSoft
+                            : AppPalette.inkMuted,
                       ),
                     ),
                   ),
@@ -389,18 +384,16 @@ class _LevelTile extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14.5,
                   fontWeight: FontWeight.w800,
-                  color: unlocked
-                      ? const Color(0xFF1C1917)
-                      : const Color(0xFF78716C),
+                  color: unlocked ? AppPalette.ink : AppPalette.inkMuted,
                 ),
               ),
               const SizedBox(height: 2),
               Text(
                 '${puzzle.difficulty} • ${puzzle.entries.length} kelime',
                 style: const TextStyle(
-                  fontSize: 11.5,
+                  fontSize: 11,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF78716C),
+                  color: AppPalette.inkMuted,
                 ),
               ),
               const Spacer(),
@@ -413,10 +406,10 @@ class _LevelTile extends StatelessWidget {
                         i < stars
                             ? Icons.star_rounded
                             : Icons.star_outline_rounded,
-                        size: 18,
+                        size: 16,
                         color: i < stars
-                            ? const Color(0xFFF59E0B)
-                            : const Color(0xFFD6D3D1),
+                            ? AppPalette.brassBright
+                            : AppPalette.hairlineStrong,
                       ),
                     ),
                     const Spacer(),
@@ -427,67 +420,43 @@ class _LevelTile extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            fontSize: 11.5,
+                            fontSize: 11,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xFF57534E),
+                            color: AppPalette.inkSoft,
                           ),
                         ),
                       ),
                   ],
                 )
               else if (inProgress)
-                Row(
-                  children: [
-                    Icon(
-                      Icons.timelapse_rounded,
-                      size: 15,
-                      color: pack.primaryColor,
-                    ),
-                    const SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        'Devam Et',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w800,
-                          color: pack.primaryColor,
-                        ),
-                      ),
-                    ),
-                  ],
+                const Text(
+                  'Devam Et',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w800,
+                    color: AppPalette.brass,
+                  ),
                 )
               else if (unlocked)
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        isHighlighted ? 'Sıradaki' : 'Açık',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w800,
-                          color: pack.primaryColor,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    Icon(
-                      Icons.arrow_forward_rounded,
-                      size: 16,
-                      color: pack.primaryColor,
-                    ),
-                  ],
+                Text(
+                  isHighlighted ? 'Sıradaki' : 'Açık',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w800,
+                    color: isHighlighted ? AppPalette.brass : AppPalette.inkSoft,
+                  ),
                 )
               else
                 const Text(
                   'Kilitli',
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 11.5,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFFA8A29E),
+                    color: AppPalette.inkMuted,
                   ),
                 ),
             ],
