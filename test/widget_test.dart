@@ -197,6 +197,26 @@ void main() {
         content.megaBank.items.last.puzzle.entries.length,
         greaterThanOrEqualTo(35),
       );
+
+      // Yeşilçam paketinde kişi/film tema çeşitliliği garantisi (ör. max 2 Adile/Hafize sorusu!)
+      final yesilcam = content.packs.firstWhere((p) => p.id == 'yesilcam');
+      final adileCount = yesilcam.levels
+          .expand((l) => l.entries)
+          .where((e) {
+            final t = '${e.answer} ${e.clue}'
+                .replaceAll('İ', 'i')
+                .replaceAll('I', 'ı')
+                .toLowerCase();
+            return t.contains('adile') ||
+                t.contains('naşit') ||
+                t.contains('hafize');
+          })
+          .length;
+      expect(
+        adileCount,
+        lessThanOrEqualTo(2),
+        reason: 'Yeşilçam paketinde en fazla 2 Adile Naşit / Hafize Ana sorusu olabilir',
+      );
     });
   });
 

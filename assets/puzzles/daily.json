@@ -12,66 +12,66 @@
       "cols": 6,
       "revealed": [
         [
-          3,
-          0
+          2,
+          2
         ]
       ],
       "entries": [
         {
-          "number": 1,
+          "number": 3,
           "direction": "across",
-          "row": 0,
+          "row": 1,
           "col": 0,
-          "answer": "ASİT",
-          "clue": "[Genel Kültür] pH değeri 7'nin altında olan ekşi kimyasal madde"
+          "answer": "YAĞ",
+          "clue": "[Türkiye] Ayvalık ve Edremit'in altın sıvısı zeytin..."
         },
         {
           "number": 4,
           "direction": "across",
           "row": 2,
           "col": 2,
-          "answer": "ARAS",
-          "clue": "[Türkiye] Doğu Anadolu'dan doğup Hazar'a yönelen nehir"
+          "answer": "ATOM",
+          "clue": "[Genel Kültür] Maddenin kimyasal özelliklerini taşıyan temel yapı taşı"
         },
         {
           "number": 5,
           "direction": "across",
           "row": 3,
           "col": 0,
-          "answer": "KAN",
-          "clue": "[Genel Kültür] Vücutta oksijen ve besin taşıyan hayati sıvı"
+          "answer": "MAÇ",
+          "clue": "[Genel Kültür] İki takım veya sporcu arasındaki resmi karşılaşma"
         },
         {
-          "number": 6,
+          "number": 7,
           "direction": "across",
           "row": 5,
           "col": 0,
-          "answer": "TÜRLÜ",
-          "clue": "[Türkiye] Yaz sebzelerinin bir arada piştiği ev yemeği"
+          "answer": "BİZANS",
+          "clue": "[Genel Kültür] Doğu Roma İmparatorluğu'nun tarih kitaplarındaki adı"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
-          "col": 0,
-          "answer": "AVUKAT",
-          "clue": "[Yeşilçam] Mahkeme sahnelerinde gerçeği ortaya çıkaran karakter"
+          "col": 2,
+          "answer": "AĞAÇ",
+          "clue": "[Genel Kültür] Fotosentezle oksijen üreten odunsu büyük bitki"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 2,
-          "answer": "İNANIR",
-          "clue": "[Yeşilçam] Tatar Ramazan ve Al Yazmalım'ın başrolü Kadir ..."
+          "col": 4,
+          "answer": "PROTON",
+          "clue": "[Genel Kültür] Atom çekirdeğindeki pozitif yüklü parçacık"
         },
         {
-          "number": 3,
+          "number": 6,
           "direction": "down",
-          "row": 0,
-          "col": 5,
-          "answer": "DOSYA",
-          "clue": "[Genel Kültür] Bilgisayarda bilgi saklayan temel kayıt birimi"
+          "row": 3,
+          "col": 1,
+          "answer": "ALİ",
+          "clue": "[Yeşilçam] Usta karakter oyuncusu, Şener Şen'in babası ... Şen"
         }
       ]
     },
@@ -84,74 +84,66 @@
       "cols": 7,
       "revealed": [
         [
-          2,
-          5
+          3,
+          6
         ]
       ],
       "entries": [
         {
-          "number": 2,
-          "direction": "across",
-          "row": 0,
-          "col": 2,
-          "answer": "NOTA",
-          "clue": "[Genel Kültür] Müzik seslerini kağıda aktaran işaretler"
-        },
-        {
-          "number": 4,
+          "number": 3,
           "direction": "across",
           "row": 1,
           "col": 0,
-          "answer": "AĞA",
-          "clue": "[Yeşilçam] Kibar Feyzo ve Züğürt ... filmlerindeki toprak sahibi"
+          "answer": "LEBLEBİ",
+          "clue": "[Türkiye] Çorum ile özdeşleşen kavrulmuş nohut çerezi"
         },
         {
           "number": 5,
           "direction": "across",
-          "row": 2,
-          "col": 2,
-          "answer": "ŞORAY",
-          "clue": "[Yeşilçam] Selvi Boylum Al Yazmalım'ın Asya'sı Türkan ..."
+          "row": 3,
+          "col": 0,
+          "answer": "GÖZLEME",
+          "clue": "[Türkiye] Sac üzerinde pişirilen incecik açılmış Anadolu hamuru"
         },
         {
           "number": 6,
           "direction": "across",
-          "row": 4,
-          "col": 2,
-          "answer": "TİBET",
-          "clue": "[Yeşilçam] Tosun Paşa'nın yönetmeni, Tarkan'ın yıldızı Kartal ..."
-        },
-        {
-          "number": 7,
-          "direction": "across",
           "row": 6,
-          "col": 0,
-          "answer": "FABRİKA",
-          "clue": "[Yeşilçam] Zengin patron ve işçi aşklarının geçtiği yer"
+          "col": 1,
+          "answer": "KÜME",
+          "clue": "[Genel Kültür] Matematikte belirli nesneler topluluğu"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
-          "col": 0,
-          "answer": "DAVUL",
-          "clue": "[Genel Kültür] Tokmakla vurularak ritim tutulan vurmalı çalgı"
+          "col": 4,
+          "answer": "CEZERYE",
+          "clue": "[Türkiye] Mersin'in havuç ve cevizle yapılan enerji tatlısı"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 2,
-          "answer": "NAŞİT",
-          "clue": "[Yeşilçam] Hafize Ana rolüyle sevilen efsane oyuncu Adile ..."
+          "col": 6,
+          "answer": "BİLEŞİK",
+          "clue": "[Genel Kültür] Farklı elementlerin kimyasal bağla oluşturduğu madde"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 0,
-          "col": 5,
-          "answer": "ARABESK",
-          "clue": "[Yeşilçam] Şener Şen ve Müjde Ar'lı unutulmaz parodi filmi"
+          "row": 1,
+          "col": 0,
+          "answer": "LAGÜN",
+          "clue": "[Genel Kültür] Denizden kum setiyle ayrılan sığ kıyı gölü"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 1,
+          "col": 2,
+          "answer": "BOZA",
+          "clue": "[Türkiye] Kış akşamlarının tarçınlı ve leblebili içeceği"
         }
       ]
     },
@@ -168,41 +160,25 @@
           "number": 2,
           "direction": "across",
           "row": 0,
-          "col": 3,
-          "answer": "OĞUL",
-          "clue": "[Yeşilçam] Münir Özkul filmlerinde babasının izinden giden evlat"
+          "col": 2,
+          "answer": "KUMRU",
+          "clue": "[Türkiye] Çeşme ve İzmir'in susamlı sıcak sandviçi"
         },
         {
-          "number": 3,
+          "number": 4,
           "direction": "across",
-          "row": 1,
+          "row": 2,
           "col": 0,
-          "answer": "RENK",
-          "clue": "[Genel Kültür] Işığın dalga boyuna göre gözde uyandırdığı algı"
+          "answer": "OSMANLI",
+          "clue": "[Genel Kültür] Üç kıtada altı yüz yıl hüküm süren büyük imparatorluk"
         },
         {
           "number": 5,
           "direction": "across",
-          "row": 3,
+          "row": 4,
           "col": 0,
-          "answer": "MANAV",
-          "clue": "[Yeşilçam] Vesikalı Yarim'de İzzet Günay'ın mesleği"
-        },
-        {
-          "number": 6,
-          "direction": "across",
-          "row": 5,
-          "col": 0,
-          "answer": "EBRU",
-          "clue": "[Türkiye] Su üzerine boya serpilerek yapılan geleneksel sanat"
-        },
-        {
-          "number": 7,
-          "direction": "across",
-          "row": 6,
-          "col": 3,
-          "answer": "SOLO",
-          "clue": "[Genel Kültür] Tek bir sanatçı tarafından icra edilen bölüm"
+          "answer": "PİRAMİT",
+          "clue": "[Genel Kültür] Mısır firavunları için inşa edilen dev anıt mezar"
         },
         {
           "number": 1,
@@ -216,17 +192,25 @@
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 3,
-          "answer": "OKYANUS",
-          "clue": "[Genel Kültür] Kıtaları birbirinden ayıran devasa tuzlu su kütlesi"
+          "col": 2,
+          "answer": "KAMERA",
+          "clue": "[Yeşilçam] Sette 'Motor!' komutuyla kayda başlayan görüntü cihazı"
         },
         {
-          "number": 4,
+          "number": 3,
           "direction": "down",
-          "row": 2,
+          "row": 0,
+          "col": 4,
+          "answer": "MENEMEN",
+          "clue": "[Türkiye] Domates, biber ve yumurtanın tavadaki efsane buluşması"
+        },
+        {
+          "number": 6,
+          "direction": "down",
+          "row": 4,
           "col": 6,
-          "answer": "KORNO",
-          "clue": "[Genel Kültür] Sarmal pirinç borulu orkestra çalgısı"
+          "answer": "TUZ",
+          "clue": "[Türkiye] İç Anadolu'daki dev beyaz göle adını veren mineral"
         }
       ]
     },
@@ -239,58 +223,58 @@
       "cols": 6,
       "revealed": [
         [
-          0,
-          3
+          1,
+          2
         ]
       ],
       "entries": [
         {
-          "number": 1,
+          "number": 4,
           "direction": "across",
-          "row": 0,
-          "col": 1,
-          "answer": "ZÜBÜK",
-          "clue": "[Yeşilçam] Aziz Nesin uyarlaması politik taşlama filmi"
+          "row": 1,
+          "col": 0,
+          "answer": "KLAVYE",
+          "clue": "[Genel Kültür] Bilgisayara harf ve komut girmeye yarayan donanım"
         },
         {
           "number": 5,
           "direction": "across",
           "row": 3,
-          "col": 0,
-          "answer": "RESSAM",
-          "clue": "[Genel Kültür] Tuval üzerine renklerle eser üreten sanatçı"
+          "col": 2,
+          "answer": "RİZE",
+          "clue": "[Türkiye] Ayder Yaylası ve çay bahçelerinin başkenti"
         },
         {
           "number": 6,
           "direction": "across",
           "row": 5,
+          "col": 1,
+          "answer": "İNCİR",
+          "clue": "[Türkiye] Aydın ilimizin dünyaca meşhur meyvesi"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
           "col": 0,
-          "answer": "TARÇIN",
-          "clue": "[Türkiye] Salep, boza ve aşureye serpilerek tat veren baharat"
+          "answer": "EKRAN",
+          "clue": "[Genel Kültür] Telefon ve bilgisayarlarda görüntüyü sunan panel"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 3,
-          "answer": "BOKS",
-          "clue": "[Genel Kültür] Ringde eldivenle yapılan dövüş sporu"
+          "col": 2,
+          "answer": "HARRAN",
+          "clue": "[Türkiye] Konik kubbeli tarihi evleriyle Şanlıurfa ilçesi"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
           "col": 5,
-          "answer": "KUTMAN",
-          "clue": "[Yeşilçam] Hayat Bilgisi ve Yeşilçam'ın ustası Perran ..."
-        },
-        {
-          "number": 4,
-          "direction": "down",
-          "row": 1,
-          "col": 0,
-          "answer": "SÜRAT",
-          "clue": "[Genel Kültür] Birim zamanda alınan yol miktarı"
+          "answer": "METEOR",
+          "clue": "[Genel Kültür] Atmosfere girip yanarak iz bırakan uzay taşı"
         }
       ]
     },
@@ -303,7 +287,7 @@
       "cols": 7,
       "revealed": [
         [
-          2,
+          4,
           4
         ]
       ],
@@ -312,65 +296,65 @@
           "number": 1,
           "direction": "across",
           "row": 0,
-          "col": 1,
-          "answer": "AKOR",
-          "clue": "[Genel Kültür] Aynı anda tınlayan üç veya daha fazla nota uyumu"
+          "col": 0,
+          "answer": "HUMUS",
+          "clue": "[Türkiye] Nohut ve tahinle yapılan Tarsus ve Hatay mezesi"
         },
         {
-          "number": 5,
+          "number": 4,
           "direction": "across",
           "row": 2,
+          "col": 0,
+          "answer": "TELKARİ",
+          "clue": "[Türkiye] Gümüş tellerin incecik işlenmesiyle yapılan Mardin sanatı"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 4,
           "col": 2,
-          "answer": "SİNİR",
-          "clue": "[Genel Kültür] Beyinle vücut arasında elektrik sinyali taşıyan ağ"
+          "answer": "BOYA",
+          "clue": "[Genel Kültür] Resim sanatında renk vermek için kullanılan malzeme"
         },
         {
           "number": 7,
           "direction": "across",
-          "row": 3,
-          "col": 0,
-          "answer": "AŞI",
-          "clue": "[Genel Kültür] Bağışıklık sistemini hastalıklara karşı eğiten biyolojik ürün"
+          "row": 6,
+          "col": 2,
+          "answer": "DÖNER",
+          "clue": "[Türkiye] Dikey şişte ağır ağır pişen dünyaca ünlü lezzet"
         },
         {
-          "number": 8,
-          "direction": "across",
-          "row": 6,
-          "col": 1,
-          "answer": "HARRAN",
-          "clue": "[Türkiye] Konik kubbeli tarihi evleriyle Şanlıurfa ilçesi"
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 0,
+          "answer": "HATTUŞA",
+          "clue": "[Türkiye] Çorum Boğazkale'deki görkemli Hitit başkenti"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 2,
-          "answer": "KASIRGA",
-          "clue": "[Genel Kültür] Tropikal okyanuslarda doğan çok şiddetli dönen fırtına"
+          "answer": "MİL",
+          "clue": "[Genel Kültür] Denizcilikte ve havacılıkta kullanılan mesafe birimi"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 0,
-          "col": 6,
-          "answer": "GİRESUN",
-          "clue": "[Türkiye] Fındık ve kiraz diyarı yeşil Karadeniz ili"
-        },
-        {
-          "number": 4,
-          "direction": "down",
           "row": 1,
-          "col": 0,
-          "answer": "PLATO",
-          "clue": "[Yeşilçam] Film çekimlerinin yapıldığı dekorlu stüdyo alanı"
+          "col": 6,
+          "answer": "PİL",
+          "clue": "[Genel Kültür] Kimyasal enerjiyi elektriğe çeviren taşınabilir güç kaynağı"
         },
         {
-          "number": 6,
+          "number": 5,
           "direction": "down",
           "row": 2,
           "col": 4,
-          "answer": "NEHİR",
-          "clue": "[Genel Kültür] Deniz veya göle dökülen büyük akarsu"
+          "answer": "AFYON",
+          "clue": "[Türkiye] Kaymağı, sucuğu ve termalleriyle meşhur ilimiz"
         }
       ]
     },
@@ -384,68 +368,68 @@
       "revealed": [],
       "entries": [
         {
-          "number": 2,
+          "number": 1,
           "direction": "across",
-          "row": 1,
+          "row": 0,
           "col": 1,
-          "answer": "SEVGİ",
-          "clue": "[Yeşilçam] Selvi Boylum'un ünlü sorusu: '... neydi? Emekti.'"
+          "answer": "ÜÇGEN",
+          "clue": "[Genel Kültür] İç açıları toplamı 180 derece olan çokgen"
+        },
+        {
+          "number": 3,
+          "direction": "across",
+          "row": 2,
+          "col": 0,
+          "answer": "RAMAZAN",
+          "clue": "[Yeşilçam] Süt Kardeşler'de konağa gelen şaşkın bahriyeli asker"
         },
         {
           "number": 6,
           "direction": "across",
-          "row": 3,
+          "row": 5,
           "col": 0,
-          "answer": "ŞOFÖR",
-          "clue": "[Yeşilçam] Kamyon veya minibüs direksiyonundaki Yeşilçam kahramanı"
+          "answer": "OVA",
+          "clue": "[Türkiye] Çukurova ve Konya gibi verimli geniş düzlük"
         },
         {
           "number": 7,
           "direction": "across",
-          "row": 4,
-          "col": 4,
-          "answer": "EGE",
-          "clue": "[Türkiye] Zeytin ağaçları ve koylarıyla ünlü bölgemiz"
-        },
-        {
-          "number": 8,
-          "direction": "across",
           "row": 6,
-          "col": 1,
-          "answer": "ÇİÇEK",
-          "clue": "[Yeşilçam] İlyas Salman'ın efsane şoför filmi: ... Abbas"
+          "col": 2,
+          "answer": "SİMİT",
+          "clue": "[Yeşilçam] Vapurda martılara atılan susamlı İstanbul lezzeti"
         },
         {
-          "number": 1,
+          "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 2,
-          "answer": "SENFONİ",
-          "clue": "[Genel Kültür] Büyük orkestra için yazılmış çok bölümlü müzik eseri"
+          "col": 4,
+          "answer": "ERZURUM",
+          "clue": "[Türkiye] Cağ kebabı ve Palandöken'iyle ünlü Doğu şehri"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 1,
-          "col": 4,
-          "answer": "GÖREME",
-          "clue": "[Türkiye] Kapadokya'nın açık hava müzesiyle ünlü beldesi"
+          "row": 2,
+          "col": 0,
+          "answer": "ROBOT",
+          "clue": "[Genel Kültür] Programlanabilen otonom mekanik yardımcı"
         },
         {
           "number": 4,
           "direction": "down",
           "row": 2,
-          "col": 0,
-          "answer": "UŞAK",
-          "clue": "[Türkiye] Tarhanası ve halısıyla bilinen Ege ilimiz"
+          "col": 2,
+          "answer": "MİRAS",
+          "clue": "[Yeşilçam] Komedi filmlerinde akrabaları birbirine düşüren servet"
         },
         {
           "number": 5,
           "direction": "down",
-          "row": 2,
+          "row": 4,
           "col": 6,
-          "answer": "EMEL",
-          "clue": "[Yeşilçam] Mavi Boncuk'un kaçırılan şarkıcısı ... Sayın"
+          "answer": "ŞUT",
+          "clue": "[Genel Kültür] Futbolda kaleye doğru yapılan sert vuruş"
         }
       ]
     },
@@ -458,7 +442,7 @@
       "cols": 6,
       "revealed": [
         [
-          0,
+          5,
           5
         ]
       ],
@@ -468,48 +452,56 @@
           "direction": "across",
           "row": 0,
           "col": 0,
-          "answer": "IHLARA",
-          "clue": "[Türkiye] Melendiz Çayı'nın oyduğu görkemli Aksaray kanyonu"
+          "answer": "TAKSİ",
+          "clue": "[Yeşilçam] Eski İstanbul sokaklarının damalı sarı binek aracı"
         },
         {
-          "number": 5,
+          "number": 4,
           "direction": "across",
           "row": 2,
           "col": 0,
-          "answer": "OFSAYT",
-          "clue": "[Genel Kültür] Hücum oyuncusunun son savunmacıdan önde olma kuralı"
+          "answer": "KÜNEFE",
+          "clue": "[Türkiye] Sıcak şerbetli, uzayan peynirli Hatay tatlısı"
         },
         {
           "number": 6,
           "direction": "across",
           "row": 5,
           "col": 0,
-          "answer": "KEBAP",
-          "clue": "[Türkiye] Adana ve Urfa usulüyle ünlü ızgara et yemeği"
+          "answer": "AVUKAT",
+          "clue": "[Yeşilçam] Mahkeme sahnelerinde gerçeği savunan hukukçu karakter"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 1,
-          "answer": "HAFİZE",
-          "clue": "[Yeşilçam] Hababam Sınıfı'nın sevecen hademesi ... Ana"
+          "col": 2,
+          "answer": "KAN",
+          "clue": "[Genel Kültür] Vücutta oksijen ve besin taşıyan hayati sıvı"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 0,
-          "col": 3,
-          "answer": "ALANYA",
-          "clue": "[Türkiye] Kızıl Kule ve Kleopatra Plajı ile ünlü ilçe"
+          "row": 1,
+          "col": 5,
+          "answer": "NEJAT",
+          "clue": "[Yeşilçam] Tiyatro ve komedi sinemasının büyük ustası ... Uygur"
         },
         {
           "number": 4,
           "direction": "down",
-          "row": 0,
-          "col": 5,
-          "answer": "ANTEN",
-          "clue": "[Genel Kültür] Radyo ve kablosuz sinyalleri alıp gönderen yapı"
+          "row": 2,
+          "col": 0,
+          "answer": "KUPA",
+          "clue": "[Genel Kültür] Turnuva şampiyonlarına verilen simgesel ödül"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 2,
+          "col": 3,
+          "answer": "ERİK",
+          "clue": "[Türkiye] Baharın müjdecisi kütür kütür yeşil meyve"
         }
       ]
     },
@@ -522,7 +514,7 @@
       "cols": 7,
       "revealed": [
         [
-          3,
+          5,
           6
         ]
       ],
@@ -531,65 +523,65 @@
           "number": 1,
           "direction": "across",
           "row": 0,
-          "col": 1,
-          "answer": "BALİNA",
-          "clue": "[Genel Kültür] Yeryüzünde yaşamış en büyük memeli deniz canlısı"
+          "col": 0,
+          "answer": "PENGUEN",
+          "clue": "[Genel Kültür] Uçamayan ama harika yüzen güney kutbu kuşu"
         },
         {
-          "number": 5,
+          "number": 3,
           "direction": "across",
           "row": 2,
           "col": 0,
-          "answer": "AĞA",
-          "clue": "[Yeşilçam] Kibar Feyzo ve Züğürt ... filmlerindeki toprak sahibi"
+          "answer": "ZÜBÜK",
+          "clue": "[Yeşilçam] Aziz Nesin eserinden uyarlanan politik taşlama klasiği"
         },
         {
-          "number": 7,
+          "number": 6,
           "direction": "across",
           "row": 3,
-          "col": 2,
-          "answer": "ÇAYCI",
-          "clue": "[Yeşilçam] Set aralarında ekibe sıcak bardak yetiştiren emektar"
+          "col": 4,
+          "answer": "AÇI",
+          "clue": "[Genel Kültür] İki ışının kesişmesiyle oluşan geometrik açıklık"
         },
         {
           "number": 8,
           "direction": "across",
           "row": 5,
-          "col": 1,
-          "answer": "PUSULA",
-          "clue": "[Genel Kültür] Manyetik iğnesiyle kuzeyi gösteren yön bulma aracı"
+          "col": 0,
+          "answer": "ALAÇATI",
+          "clue": "[Türkiye] Rüzgar sörfü ve taş değirmenleriyle ünlü Çeşme beldesi"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 2,
-          "answer": "AĞAÇ",
-          "clue": "[Genel Kültür] Fotosentezle oksijen üreten odunsu büyük bitki"
-        },
-        {
-          "number": 3,
-          "direction": "down",
-          "row": 0,
-          "col": 6,
-          "answer": "AKPINAR",
-          "clue": "[Yeşilçam] Zeki Alasya ile efsane ikili kuran Metin ..."
+          "answer": "NEBAHAT",
+          "clue": "[Yeşilçam] Sezer Sezin'in unutulmaz taksici rolü: Şoför ..."
         },
         {
           "number": 4,
           "direction": "down",
-          "row": 1,
-          "col": 0,
-          "answer": "MARS",
-          "clue": "[Genel Kültür] Kızıl Gezegen olarak bilinen komşu gezegen"
-        },
-        {
-          "number": 6,
-          "direction": "down",
           "row": 2,
           "col": 4,
-          "answer": "UYDU",
-          "clue": "[Genel Kültür] Bir gezegenin yörüngesinde dönen doğal veya yapay cisim"
+          "answer": "KANAL",
+          "clue": "[Genel Kültür] Süveyş ve Panama gibi insan yapımı su geçidi"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 2,
+          "col": 6,
+          "answer": "BIYIK",
+          "clue": "[Yeşilçam] Dönemin ağır başlı jön ve komiserlerinin simge görünümü"
+        },
+        {
+          "number": 7,
+          "direction": "down",
+          "row": 4,
+          "col": 0,
+          "answer": "HAN",
+          "clue": "[Türkiye] Tarihi ticaret yollarındaki kervan konaklama yapısı"
         }
       ]
     },
@@ -603,68 +595,68 @@
       "revealed": [],
       "entries": [
         {
-          "number": 3,
+          "number": 1,
           "direction": "across",
           "row": 0,
-          "col": 4,
-          "answer": "ADA",
-          "clue": "[Türkiye] Gökçeada ve Bozcaada gibi sularla çevrili kara"
-        },
-        {
-          "number": 5,
-          "direction": "across",
-          "row": 2,
           "col": 0,
-          "answer": "VİRÜS",
-          "clue": "[Genel Kültür] Sadece canlı konak içinde çoğalabilen mikroskobik etken"
+          "answer": "LOKMA",
+          "clue": "[Türkiye] İzmir sokaklarında hayır için dağıtılan şerbetli tatlı"
         },
         {
           "number": 6,
           "direction": "across",
-          "row": 4,
-          "col": 0,
-          "answer": "LONDRA",
-          "clue": "[Genel Kültür] Thames Nehri ve Big Ben ile ünlü başkent"
+          "row": 2,
+          "col": 2,
+          "answer": "SEDEN",
+          "clue": "[Yeşilçam] Yüzden fazla filme imza atan usta yönetmen Osman F. ..."
         },
         {
           "number": 7,
           "direction": "across",
-          "row": 6,
-          "col": 4,
-          "answer": "YAZ",
-          "clue": "[Yeşilçam] Açık hava sinemalarının kurulduğu mevsim"
+          "row": 4,
+          "col": 0,
+          "answer": "YÖRÜNGE",
+          "clue": "[Genel Kültür] Bir gök cisminin başka bir cisim etrafındaki yolu"
         },
         {
-          "number": 1,
-          "direction": "down",
-          "row": 0,
-          "col": 0,
-          "answer": "AYVALIK",
-          "clue": "[Türkiye] Tostu ve zeytinyağıyla meşhur Balıkesir ilçesi"
+          "number": 8,
+          "direction": "across",
+          "row": 6,
+          "col": 1,
+          "answer": "NABIZ",
+          "clue": "[Genel Kültür] Kalbin dakikadaki atım ritmi"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 2,
-          "answer": "ŞİRİNCE",
-          "clue": "[Türkiye] Tarihi Rum evleriyle ünlü masalsı İzmir köyü"
+          "answer": "KASIRGA",
+          "clue": "[Genel Kültür] Tropikal okyanuslarda doğan çok şiddetli dönen fırtına"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
           "col": 4,
-          "answer": "AKSARAY",
-          "clue": "[Türkiye] Ihlara Vadisi ve Hasan Dağı'nın bulunduğu il"
+          "answer": "AYDAN",
+          "clue": "[Yeşilçam] Çalıkuşu uyarlamasıyla hafızalara kazınan oyuncu ... Şener"
         },
         {
           "number": 4,
           "direction": "down",
-          "row": 0,
+          "row": 1,
           "col": 6,
-          "answer": "ATEŞ",
-          "clue": "[Genel Kültür] Yanma tepkimesiyle ortaya çıkan ışık ve sıcaklık"
+          "answer": "ANTEN",
+          "clue": "[Genel Kültür] Radyo ve kablosuz sinyalleri alıp gönderen yapı"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 2,
+          "col": 0,
+          "answer": "BOYA",
+          "clue": "[Genel Kültür] Resim sanatında renk vermek için kullanılan malzeme"
         }
       ]
     },
@@ -677,66 +669,58 @@
       "cols": 6,
       "revealed": [
         [
-          0,
-          0
+          1,
+          3
         ]
       ],
       "entries": [
         {
-          "number": 1,
-          "direction": "across",
-          "row": 0,
-          "col": 0,
-          "answer": "MARS",
-          "clue": "[Genel Kültür] Kızıl Gezegen olarak bilinen komşu gezegen"
-        },
-        {
           "number": 4,
           "direction": "across",
-          "row": 2,
+          "row": 1,
+          "col": 1,
+          "answer": "ADANA",
+          "clue": "[Türkiye] Taşköprü, şalgam ve acılı kebabın şehri"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 3,
           "col": 0,
-          "answer": "DOKTOR",
-          "clue": "[Yeşilçam] Hastane sahnelerinde 'Ameliyat başarılı geçti' diyen hekim"
+          "answer": "MAKARA",
+          "clue": "[Yeşilçam] Eski 35 mm sinema filmlerinin sarıldığı metal disk"
         },
         {
           "number": 6,
           "direction": "across",
-          "row": 4,
+          "row": 5,
           "col": 0,
-          "answer": "ELMA",
-          "clue": "[Türkiye] Amasya ve Isparta bahçelerinin meşhur meyvesi"
+          "answer": "KORO",
+          "clue": "[Genel Kültür] Çok sesli şarkı söyleyen topluluk"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
-          "col": 0,
-          "answer": "MİDYE",
-          "clue": "[Türkiye] Ege ve İstanbul sahillerinin limonlu dolma atıştırmalığı"
+          "col": 1,
+          "answer": "DAVARO",
+          "clue": "[Yeşilçam] Kan davası geleneğini alaya alan 1981 yapımı komedi"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 3,
-          "answer": "SET",
-          "clue": "[Yeşilçam] Film çekimlerinin yapıldığı çalışma alanı"
+          "answer": "SALAKO",
+          "clue": "[Yeşilçam] Ağanın kızını kaçıran temiz kalpli kahramanın filmi"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
           "col": 5,
-          "answer": "ŞIRNAK",
-          "clue": "[Türkiye] Cudi Dağı'nın eteklerindeki Güneydoğu ilimiz"
-        },
-        {
-          "number": 5,
-          "direction": "down",
-          "row": 2,
-          "col": 2,
-          "answer": "KAMP",
-          "clue": "[Yeşilçam] Hababam Sınıfı'nın izcilik maceralarının geçtiği yer"
+          "answer": "HAMAM",
+          "clue": "[Türkiye] Kubbeleri ve kurnalarıyla geleneksel Türk banyosu"
         }
       ]
     },
@@ -749,74 +733,74 @@
       "cols": 7,
       "revealed": [
         [
-          0,
-          4
+          4,
+          0
         ]
       ],
       "entries": [
         {
-          "number": 1,
+          "number": 2,
           "direction": "across",
           "row": 0,
-          "col": 0,
-          "answer": "METAFOR",
-          "clue": "[Genel Kültür] Bir kavramı başka bir şeye benzeterek anlatma sanatı, eğretileme"
+          "col": 2,
+          "answer": "GAR",
+          "clue": "[Yeşilçam] Haydarpaşa'da kavuşma ve ayrılık sahnelerinin unutulmaz mekanı"
         },
         {
-          "number": 3,
+          "number": 5,
           "direction": "across",
           "row": 2,
           "col": 0,
-          "answer": "DEV",
-          "clue": "[Yeşilçam] Yeşilçam'ın unutulmaz büyük kadroları"
-        },
-        {
-          "number": 4,
-          "direction": "across",
-          "row": 2,
-          "col": 4,
-          "answer": "SET",
-          "clue": "[Yeşilçam] Film çekimlerinin yapıldığı çalışma alanı"
+          "answer": "TULUMBA",
+          "clue": "[Türkiye] Çıtır şerbetli sevilen sokak tatlısı"
         },
         {
           "number": 6,
           "direction": "across",
           "row": 4,
-          "col": 1,
-          "answer": "REPLİK",
-          "clue": "[Yeşilçam] Filmlerde hafızalara kazınan unutulmaz söz"
+          "col": 0,
+          "answer": "KANAL",
+          "clue": "[Genel Kültür] Süveyş ve Panama gibi insan yapımı su geçidi"
         },
         {
           "number": 7,
           "direction": "across",
           "row": 6,
           "col": 0,
-          "answer": "LEBLEBİ",
-          "clue": "[Türkiye] Çorum ile özdeşleşen kavrulmuş nohut çerezi"
+          "answer": "RENK",
+          "clue": "[Genel Kültür] Işığın dalga boyuna göre gözde uyandırdığı algı"
         },
         {
           "number": 1,
           "direction": "down",
           "row": 0,
           "col": 0,
-          "answer": "MİDE",
-          "clue": "[Genel Kültür] Sindirim sisteminde besinleri parçalayan organ"
+          "answer": "ANTİKOR",
+          "clue": "[Genel Kültür] Bağışıklık sisteminin mikroplara karşı ürettiği savunma proteini"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 4,
-          "answer": "FASULYE",
-          "clue": "[Türkiye] İspir ve Çayeli çeşitleriyle pilavın kadim dostu"
+          "col": 2,
+          "answer": "GELİN",
+          "clue": "[Yeşilçam] Lütfi Akad'ın göç üçlemesinin ilk klasik filmi"
         },
         {
-          "number": 5,
+          "number": 3,
           "direction": "down",
-          "row": 2,
+          "row": 0,
+          "col": 4,
+          "answer": "RUMELİ",
+          "clue": "[Türkiye] İstanbul Boğazı'nın Avrupa yakasındaki görkemli Osmanlı hisarı"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 1,
           "col": 6,
-          "answer": "TAKSİ",
-          "clue": "[Yeşilçam] Şoför Nebahat ve eski İstanbul sokaklarının aracı"
+          "answer": "BASINÇ",
+          "clue": "[Genel Kültür] Birim yüzeye dik etki eden kuvvet"
         }
       ]
     },
@@ -833,65 +817,57 @@
           "number": 1,
           "direction": "across",
           "row": 0,
-          "col": 0,
-          "answer": "ISPARTA",
-          "clue": "[Türkiye] Gül bahçeleri ve lavanta tarlalarıyla ünlü il"
+          "col": 1,
+          "answer": "MEMDUH",
+          "clue": "[Yeşilçam] Üç Arkadaş ve Ayşecik'in usta yönetmeni ... Ün"
         },
         {
-          "number": 5,
+          "number": 4,
           "direction": "across",
           "row": 2,
-          "col": 0,
-          "answer": "TULUMBA",
-          "clue": "[Türkiye] Çıtır şerbetli sevilen sokak tatlısı"
+          "col": 3,
+          "answer": "UŞAK",
+          "clue": "[Türkiye] Tarhanası ve halısıyla bilinen Ege ilimiz"
         },
         {
           "number": 6,
           "direction": "across",
           "row": 4,
           "col": 0,
-          "answer": "HUN",
-          "clue": "[Yeşilçam] Yeşilçam'ın beyefendi jönü Ediz ..."
+          "answer": "AKSARAY",
+          "clue": "[Türkiye] Ihlara Vadisi ve Hasan Dağı'nın bulunduğu il"
         },
         {
           "number": 7,
           "direction": "across",
-          "row": 5,
-          "col": 3,
-          "answer": "KARA",
-          "clue": "[Yeşilçam] Cüneyt Arkın'ın efsane tarihi serisi: ... Murat"
+          "row": 6,
+          "col": 0,
+          "answer": "ALANYA",
+          "clue": "[Türkiye] Kızıl Kule ve Kleopatra Plajı ile ünlü ilçe"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 2,
-          "answer": "POLEN",
-          "clue": "[Genel Kültür] Bitkilerin üremesini sağlayan ince çiçek tozu"
+          "col": 6,
+          "answer": "HOKEY",
+          "clue": "[Genel Kültür] Buz veya çim üzerinde sopa ile oynanan hızlı spor"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 0,
-          "col": 4,
-          "answer": "RAMAZAN",
-          "clue": "[Yeşilçam] Süt Kardeşler'de kumandanın evine gelen şaşkın asker"
-        },
-        {
-          "number": 4,
-          "direction": "down",
-          "row": 0,
-          "col": 6,
-          "answer": "AMASRA",
-          "clue": "[Türkiye] Fatih Sultan Mehmet'in 'Çeşm-i Cihan' dediği sahil beldesi"
+          "row": 1,
+          "col": 0,
+          "answer": "PATARA",
+          "clue": "[Türkiye] Likya Birliği'nin meclis binasına ev sahipliği yapan plaj"
         },
         {
           "number": 5,
           "direction": "down",
           "row": 2,
-          "col": 0,
-          "answer": "TAHTA",
-          "clue": "[Yeşilçam] Sınıfta öğrencilerin soru çözdüğü yeşil veya siyah pano"
+          "col": 4,
+          "answer": "ŞORAY",
+          "clue": "[Yeşilçam] Sultan lakabıyla anılan unutulmaz başrol oyuncusu Türkan ..."
         }
       ]
     },
@@ -904,7 +880,7 @@
       "cols": 6,
       "revealed": [
         [
-          3,
+          5,
           5
         ]
       ],
@@ -914,48 +890,48 @@
           "direction": "across",
           "row": 0,
           "col": 0,
-          "answer": "KÖRLÜK",
-          "clue": "[Yeşilçam] Melodramlarda mucizevi ameliyatla iyileşen dram motifi"
-        },
-        {
-          "number": 4,
-          "direction": "across",
-          "row": 3,
-          "col": 0,
-          "answer": "MİKROP",
-          "clue": "[Genel Kültür] Gözle görülemeyen tek hücreli canlıların genel adı"
+          "answer": "BASKET",
+          "clue": "[Genel Kültür] Potaya top atarak sayı kazanılan salon sporu"
         },
         {
           "number": 5,
           "direction": "across",
-          "row": 5,
+          "row": 2,
           "col": 0,
-          "answer": "KIZ",
-          "clue": "[Yeşilçam] Fabrikatörün oğluna aşık olan gururlu genç ..."
+          "answer": "PATRON",
+          "clue": "[Yeşilçam] Eski filmlerde fabrika sahibi zengin karakter"
         },
         {
-          "number": 1,
-          "direction": "down",
-          "row": 0,
+          "number": 6,
+          "direction": "across",
+          "row": 5,
           "col": 0,
-          "answer": "KAYMAK",
-          "clue": "[Türkiye] Afyon'un ekmek kadayıfına eşlik eden süt ürünü"
+          "answer": "HÜNKAR",
+          "clue": "[Türkiye] Köz patlıcan beğendi üzerine etle sunulan saray yemeği: ... Beğendi"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
-          "col": 3,
-          "answer": "LİTRE",
-          "clue": "[Genel Kültür] Sıvıların hacmini ölçmek için kullanılan birim"
+          "col": 1,
+          "answer": "ARAS",
+          "clue": "[Türkiye] Doğu Anadolu'dan doğup Hazar'a yönelen nehir"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
+          "col": 3,
+          "answer": "KÖRLÜK",
+          "clue": "[Yeşilçam] Duygusal filmlerde mucizevi ameliyatla iyileşen dram motifi"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 0,
           "col": 5,
-          "answer": "KARPUZ",
-          "clue": "[Türkiye] Diyarbakır'ın devasa boyutuyla ünlü yaz meyvesi"
+          "answer": "TANDIR",
+          "clue": "[Türkiye] Toprak fırında ağır ağır pişen Anadolu eti"
         }
       ]
     },
@@ -968,8 +944,8 @@
       "cols": 7,
       "revealed": [
         [
-          3,
-          0
+          6,
+          6
         ]
       ],
       "entries": [
@@ -977,57 +953,57 @@
           "number": 1,
           "direction": "across",
           "row": 0,
-          "col": 1,
-          "answer": "KÜBİZM",
-          "clue": "[Genel Kültür] Picasso ile özdeşleşen geometrik resim akımı"
+          "col": 0,
+          "answer": "VOLKAN",
+          "clue": "[Genel Kültür] Magmanın yeryüzüne püskürdüğü yanardağ"
         },
         {
-          "number": 5,
+          "number": 4,
           "direction": "across",
-          "row": 3,
+          "row": 2,
           "col": 0,
-          "answer": "ASAL",
-          "clue": "[Genel Kültür] Sadece bire ve kendisine bölünebilen sayı türü"
+          "answer": "ISPARTA",
+          "clue": "[Türkiye] Gül bahçeleri ve lavanta tarlalarıyla ünlü il"
         },
         {
           "number": 6,
           "direction": "across",
           "row": 4,
-          "col": 3,
-          "answer": "ASYA",
-          "clue": "[Yeşilçam] Al Yazmalım'da Türkan Şoray'ın canlandırdığı karakter"
+          "col": 0,
+          "answer": "UMUT",
+          "clue": "[Yeşilçam] Faytoncu Cabbar'ın hikayesini anlatan 1970 yapımı başyapıt"
         },
         {
           "number": 7,
           "direction": "across",
           "row": 6,
-          "col": 0,
-          "answer": "ANTALYA",
-          "clue": "[Türkiye] Düden Şelalesi ve antik kentleriyle turizm başkenti"
+          "col": 1,
+          "answer": "KOMEDİ",
+          "clue": "[Yeşilçam] Seyirciyi kahkahaya boğan neşeli sinema türü"
         },
         {
           "number": 2,
           "direction": "down",
           "row": 0,
           "col": 3,
-          "answer": "BAĞLAMA",
-          "clue": "[Türkiye] Aşık Veysel ve Neşet Ertaş'ın elinde dillenen telli çalgı"
+          "answer": "KUANTUM",
+          "clue": "[Genel Kültür] Atom altı dünyanın fizik yasalarını inceleyen bilim dalı"
         },
         {
           "number": 3,
           "direction": "down",
-          "row": 0,
+          "row": 1,
           "col": 6,
-          "answer": "MARMARA",
-          "clue": "[Türkiye] İç denizimiz ve Türkiye'nin en kalabalık bölgesi"
+          "answer": "BATERİ",
+          "clue": "[Genel Kültür] Modern müzikte ritim tutan davul ve zil seti"
         },
         {
-          "number": 4,
+          "number": 5,
           "direction": "down",
-          "row": 1,
-          "col": 0,
-          "answer": "SPARTA",
-          "clue": "[Genel Kültür] Disiplinli savaşçılarıyla tanınan antik Yunan kenti"
+          "row": 2,
+          "col": 1,
+          "answer": "SUMAK",
+          "clue": "[Türkiye] Soğan salatası ve lahmacuna ekşilik veren baharat"
         }
       ]
     },
@@ -1041,68 +1017,60 @@
       "revealed": [],
       "entries": [
         {
-          "number": 1,
+          "number": 2,
           "direction": "across",
           "row": 0,
-          "col": 0,
-          "answer": "MUHLAMA",
-          "clue": "[Türkiye] Mısır unu ve uzayan kolot peyniriyle yapılan Karadeniz kahvaltılığı"
+          "col": 2,
+          "answer": "TOKYO",
+          "clue": "[Genel Kültür] Japonya'nın teknoloji ve gelenek dolu başkenti"
         },
         {
-          "number": 4,
+          "number": 5,
           "direction": "across",
           "row": 2,
-          "col": 1,
-          "answer": "ELMAS",
-          "clue": "[Genel Kültür] Doğada bilinen en sert karbon minerali"
+          "col": 0,
+          "answer": "NOHUT",
+          "clue": "[Türkiye] Pilav üstünde ve leblebide başrol oynayan bakliyat"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 4,
+          "col": 0,
+          "answer": "ARDAHAN",
+          "clue": "[Türkiye] Çıldır Gölü'nde kızak kayılan serhat şehrimiz"
         },
         {
           "number": 7,
           "direction": "across",
-          "row": 4,
+          "row": 6,
           "col": 0,
-          "answer": "OPERA",
-          "clue": "[Genel Kültür] Müzik ve dramayı birleştiren görkemli sahne sanatı"
+          "answer": "FREKANS",
+          "clue": "[Genel Kültür] Bir dalganın saniyedeki titreşim sayısı"
         },
         {
-          "number": 8,
-          "direction": "across",
-          "row": 5,
-          "col": 4,
-          "answer": "TAŞ",
-          "clue": "[Yeşilçam] Kötü adam rollerinin büyük ustası Erol ..."
-        },
-        {
-          "number": 2,
+          "number": 1,
           "direction": "down",
           "row": 0,
-          "col": 2,
-          "answer": "HALFETİ",
-          "clue": "[Türkiye] Siyah gülü ve batık minaresiyle Fırat kıyısı"
+          "col": 0,
+          "answer": "DÜNYA",
+          "clue": "[Genel Kültür] Yaşam barındırdığı bilinen mavi gezegen"
         },
         {
           "number": 3,
           "direction": "down",
           "row": 0,
           "col": 4,
-          "answer": "ALAÇATI",
-          "clue": "[Türkiye] Rüzgar sörfü ve taş değirmenleriyle ünlü Çeşme beldesi"
+          "answer": "KÜTAHYA",
+          "clue": "[Türkiye] Çinisi, porseleni ve Aizanoi antik kentiyle ünlü il"
         },
         {
-          "number": 5,
+          "number": 4,
           "direction": "down",
-          "row": 3,
-          "col": 0,
-          "answer": "KONİ",
-          "clue": "[Genel Kültür] Daire tabanlı ve tek tepe noktalı geometrik cisim"
-        },
-        {
-          "number": 6,
-          "direction": "down",
-          "row": 3,
+          "row": 0,
           "col": 6,
-          "answer": "KÖŞK",
-          "clue": "[Yeşilçam] Tosun Paşa'da Tellioğulları'nın uğruna yarıştığı malikane"
+          "answer": "ORGAN",
+          "clue": "[Genel Kültür] Belirli bir görevi yapan dokuların oluşturduğu yapı"
         }
       ]
     }

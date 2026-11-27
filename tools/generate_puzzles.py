@@ -89,211 +89,183 @@ LEVEL_BLUEPRINTS = [
 ]
 
 # ---------------------------------------------------------------------------
-# 1) YEŞİLÇAM KLASİKLERİ (Genişletilmiş Havuz — 160+ kelime)
+# 1) YEŞİLÇAM KLASİKLERİ (Ultra Çeşitli Havuz — Her Yıldız/Film İçin En Fazla 1-2 Soru!)
 # ---------------------------------------------------------------------------
 YESILCAM_WORDS: List[Tuple[str, str, int]] = [
-    # Tier 1 — Herkesin bildiği efsane isimler, replikler ve filmler
-    ("ŞABAN",    "Kemal Sunal'ın efsaneleştirdiği saf ve sevimli karakter", 1),
-    ("KEMAL",    "Hababam'ın İnek Şaban'ı, büyük komedi ustası ... Sunal", 1),
-    ("SUNAL",    "Gülen yüzüyle Türk sinemasına damga vuran Kemal ...", 1),
-    ("ADİLE",    "Kuzucuklarım repliğiyle hafızalara kazınan ... Naşit", 1),
-    ("NAŞİT",    "Hafize Ana rolüyle sevilen efsane oyuncu Adile ...", 1),
-    ("MÜNİR",    "Mahmut Hoca ve Yaşar Usta'ya hayat veren ... Özkul", 1),
-    ("ÖZKUL",    "Bizim Aile'nin Yaşar Usta'sı, Münir ...", 1),
-    ("TARIK",    "Damat Ferit rolüyle gönülleri fetheden ... Akan", 1),
-    ("AKAN",     "Hababam Sınıfı'nın yakışıklı jönü Tarık ...", 1),
-    ("ŞENER",    "Badi Ekrem ve Ziya karakterlerinin ustası ... Şen", 1),
-    ("TÜRKAN",   "Yeşilçam'ın Sultan lakaplı efsane yıldızı ... Şoray", 1),
-    ("ŞORAY",    "Selvi Boylum Al Yazmalım'ın Asya'sı Türkan ...", 1),
-    ("KADİR",    "Al Yazmalım'ın İlyas'ı, karizmatik jön ... İnanır", 1),
-    ("FİLİZ",    "Sarışın zarafetiyle tanınan Yeşilçam yıldızı ... Akın", 1),
-    ("FATMA",    "Dört Yapraklı Yonca'nın güçlü oyuncusu ... Girik", 1),
-    ("GİRİK",    "Mavi gözleriyle tanınan usta sanatçı Fatma ...", 1),
-    ("CÜNEYT",   "Malkoçoğlu ve Battal Gazi'nin yıldızı ... Arkın", 1),
-    ("ARKIN",    "Dünyayı Kurtaran Adam'ın kahramanı Cüneyt ...", 1),
-    ("HOCA",     "Hababam Sınıfı'nın disiplinli ama şefkatli Mahmut ...'sı", 1),
-    ("ANA",      "Hababam'ın zili çalan şefkatli emekçisi Hafize ...", 1),
-    ("AŞK",      "Yeşilçam melodramlarının vazgeçilmez ana duygusu", 1),
-    ("FİLM",     "Beyaz perdede izlenen sinema eseri", 1),
-    ("ROL",      "Oyuncunun kamera karşısında canlandırdığı karakter", 1),
-    ("JÖN",      "Eski sinemada başroldeki yakışıklı erkek oyuncu", 1),
+    # Tier 1 — Farklı yıldızlar, efsane filmler ve sinema kültürü (sıfır çift-isim tekrarı!)
+    ("SUNAL",    "Gülen yüzüyle Türk sinemasına damga vuran komedi ustası Kemal ...", 1),
+    ("ADİLE",    "Masalcı Teyze ve sıcak kahkahasıyla hafızalara kazınan ... Naşit", 1),
+    ("ÖZKUL",    "Bizim Aile'nin Yaşar Usta'sına hayat veren büyük aktör Münir ...", 1),
+    ("TARIK",    "Maden ve Sürü gibi başyapıtların yakışıklı yıldızı ... Akan", 1),
+    ("ŞENER",    "Eşkıya'dan Muhsin Bey'e Türk sinemasının dev aktörü ... Şen", 1),
+    ("ŞORAY",    "Sultan lakabıyla anılan unutulmaz başrol oyuncusu Türkan ...", 1),
+    ("KADİR",    "Tatar Ramazan ve Devlerin Aşkı'nın karizmatik jönü ... İnanır", 1),
+    ("FİLİZ",    "Dört Yapraklı Yonca'nın zarif sarışın yıldızı ... Akın", 1),
+    ("FATMA",    "Yılanların Öcü ve Boş Beşik'in güçlü aktrisi ... Girik", 1),
+    ("HÜLYA",    "Susuz Yaz ve Gelin filmlerinin ödüllü yıldızı ... Koçyiğit", 1),
+    ("CÜNEYT",   "Tarihi aksiyon ve macera sinemamızın efsane aktörü ... Arkın", 1),
+    ("SADRİ",    "Ofsayt Osman ve Turist Ömer'in yaratıcısı ... Alışık", 1),
+    ("ZEKİ",     "Köyden İndim Şehire'nin usta komedyeni ... Alasya", 1),
+    ("AKPINAR",  "Devekuşu Kabare ve komedi filmlerinin dev ismi Metin ...", 1),
+    ("HULUSİ",   "Babacan komiser ve fabrikatör rollerinin tonton ustası ... Kentmen", 1),
+    ("AYHAN",    "Taçsız Kral unvanıyla anılan efsane aktör ... Işık", 1),
+    ("BELGİN",   "Küçük Hanımefendi serisinin zarif divası ... Doruk", 1),
+    ("EDİZ",     "İstanbul'un beyefendi jönü olarak tanınan oyuncu ... Hun", 1),
+    ("EMEL",     "Mavi Boncuk'un kadife sesli şarkıcı yıldızı ... Sayın", 1),
+    ("MÜJDE",    "Arabesk ve Aaahh Belinda'nın cesur yıldızı ... Ar", 1),
+    ("KARTAL",   "Hem Tarkan'ın yıldızı hem usta yönetmen ... Tibet", 1),
+    ("AYŞEN",    "Domates Güzeli skeciyle efsaneleşen komedi ustası ... Gruda", 1),
+    ("HALİT",    "Güdük Necmi rolüyle sevilen sıcakkanlı oyuncu ... Akçatepe", 1),
+    ("EROL",     "Sert bakışlı kötü adam rollerinin unutulmaz ustası ... Taş", 1),
+    ("ŞABAN",    "Saf ve iyi niyetli tavırlarıyla sevilen komedi karakteri", 1),
+    ("TURŞU",    "Neşeli Günler'de sirke mi limon mu kavgasının lezzetli sebebi", 1),
+    ("SELVİ",    "Cengiz Aytmatov uyarlaması '... Boylum Al Yazmalım' başyapıtı", 1),
+    ("TOSUN",    "Tellioğulları ile Seferoğulları'nın rekabetindeki meşhur '... Paşa'", 1),
+    ("VECİHİ",   "Gülen Gözler'de uçağıyla eve dalan çılgın aşık pilot", 1),
+    ("HABABAM",  "Rıfat Ilgaz'ın romanından uyarlanan unutulmaz lise komedisi", 1),
+    ("AŞK",      "Klasik Türk melodramlarının vazgeçilmez ana duygusu", 1),
+    ("FİLM",     "Beyaz perdede izlenen yedinci sanat eseri", 1),
+    ("ROL",      "Oyuncunun kamera karşısında büründüğü karakter", 1),
+    ("JÖN",      "Eski sinemada başroldeki yakışıklı erkek yıldız", 1),
     ("SAHNE",    "Filmde tek bir mekan ve zamanda geçen bölüm", 1),
-    ("PERDE",    "Sinema salonunda görüntünün yansıtıldığı beyaz yüzey", 1),
-    ("BABA",     "Münir Özkul'un birçok filmde canlandırdığı aile reisi", 1),
-    ("AİLE",     "Neşeli Günler ve Bizim ... filmlerinin kalbindeki bağ", 1),
-    ("SEVGİ",    "Selvi Boylum'un ünlü sorusu: '... neydi? Emekti.'", 1),
-    ("EMEK",     "Al Yazmalım'ın unutulmaz cevabı: 'Sevgi ... idi'", 1),
-    ("ZİL",      "Hafize Ana'nın koridorda çalıp öğrencileri topladığı alet", 1),
-    ("OKUL",     "Hababam Sınıfı'nın haylazlıklarının geçtiği mekan", 1),
-    ("TURŞU",    "Neşeli Günler'de sirke mi limon mu kavgasının sebebi", 1),
-    ("SİRKE",    "Neşeli Günler'de Kazım Efendi'nin turşu sırrı", 1),
-    ("LİMON",    "Neşeli Günler'de Saadet Hanım'ın turşu tercihi", 1),
-    ("SULTAN",   "Türkan Şoray'ın halk arasındaki efsane lakabı", 1),
-    ("KRAL",     "Ayhan Işık'ın lakabı: Taçsız ...", 1),
-    ("SELVİ",    "'... Boylum Al Yazmalım' başyapıtının ilk kelimesi", 1),
-    ("ASYA",     "Al Yazmalım'da Türkan Şoray'ın canlandırdığı karakter", 1),
-    ("İLYAS",    "Al Yazmalım'da kırmızı kamyonlu şoför karakter", 1),
-    ("TOSUN",    "Tellioğulları ve Seferoğulları'nın meşhur '... Paşa'sı", 1),
-    ("PAŞA",     "Şaban'ın kılığına girdiği meşhur Tosun ...", 1),
-    ("HABABAM",  "Rıfat Ilgaz'ın eserinden uyarlanan efsane lise serisi", 1),
-    ("ZİYA",     "Neşeli Günler'de aslan avı uyduran palaveracı amca", 1),
-    ("VECİHİ",   "Gülen Gözler'de uçağıyla eve dalan aşık pilot", 1),
-    ("MAHMUT",   "Özel Çamlıca Lisesi'nin efsane müdür yardımcısı Kel ...", 1),
-    ("FERİT",    "Hababam Sınıfı'nın çapkın öğrencisi Damat ...", 1),
-    ("NECMİ",    "Halit Akçatepe'nin canlandırdığı Güdük ...", 1),
-    ("BADİ",     "Şener Şen'in canlandırdığı beden öğretmeni ... Ekrem", 1),
-    ("EKREM",    "Kırmızı eşofmanlı beden öğretmeni Badi ...", 1),
-    ("SET",      "Film çekimlerinin yapıldığı çalışma alanı", 1),
-    ("SES",      "Yeşilçam'da stüdyoda sonradan kaydedilen konuşma", 1),
-    ("STAR",     "Dönemin en parlak sinema yıldızı", 1),
+    ("PERDE",    "Sinema salonunda görüntünün yansıtıldığı büyük beyaz yüzey", 1),
+    ("OKUL",     "Lise komedilerinin haylazlıklarına ev sahipliği yapan mekan", 1),
+    ("SET",      "Kamera ve ışıkların kurulduğu film çekim alanı", 1),
+    ("SES",      "Stüdyoda karakterlere sonradan kaydedilen konuşma", 1),
+    ("STAR",     "Dönemin gişe rekorları kıran parlak sinema yıldızı", 1),
     ("DRAM",     "Gözyaşlarıyla izlenen duygusal sinema türü", 1),
-    ("YAZ",      "Açık hava sinemalarının kurulduğu mevsim", 1),
+    ("YAZ",      "Açık hava bahçe sinemalarının açıldığı sıcak mevsim", 1),
     ("GAZOZ",    "Yazlık sinemalarda çekirdek yanında içilen serin içecek", 1),
-    ("BİLET",    "Sinema gişesinden salona girmek için alınan kağıt", 1),
-    ("GİŞE",     "Sinema girişinde bilet satılan küçük pencere", 1),
-    ("KOLTUK",   "Sinema salonunda film izlenen kadife oturak", 1),
-    ("SOKAK",    "Beyoğlu'nda sinemacıların toplandığı Yeşilçam ...'ı", 1),
+    ("BİLET",    "Sinema gişesinden koltuk numarasıyla alınan giriş kağıdı", 1),
+    ("GİŞE",     "Sinema girişinde bilet satılan küçük camlı pencere", 1),
+    ("KOLTUK",   "Sinema salonunda film izlenen kırmızı kadife oturak", 1),
+    ("SOKAK",    "Beyoğlu'nda sinemacıların buluştuğu tarihi Yeşilçam ...'ı", 1),
+    ("ALİ",      "Usta karakter oyuncusu, Şener Şen'in babası ... Şen", 1),
+    ("OYA",      "Neşeli ve güçlü kadın rollerinin sevilen yüzü ... Aydoğan", 1),
+    ("SAMİ",     "Komedi filmlerinin unutulmaz kısa boylu emektarı ... Hazinses", 1),
+    ("BORA",     "Soğukkanlı jön ve ağır rollerin ustası Ekrem ...", 1),
+    ("BANU",     "80'li yılların Afrodit lakaplı sinema yıldızı ... Alkan", 1),
+    ("VAHİ",     "Horoz Nuri karakteriyle gönüllere kazınan komedyen ... Öz", 1),
+    ("AJDA",     "60'larda filmlerde de başrol oynayan Süperstar ... Pekkan", 1),
+    ("MÜREN",    "Beklenen Şarkı filminin unutulmaz Sanat Güneşi Zeki ...", 1),
 
-    # Tier 2 — Filmler, ikonik karakterler, müzik ve sinema kültürü
-    ("GÜLŞEN",   "Ah Nerede ve Girgirye'nin yıldızı ... Bubikoğlu", 2),
-    ("HALİT",    "Güdük Necmi'yi canlandıran usta oyuncu ... Akçatepe", 2),
-    ("AYŞEN",    "Domates Güzeli lakaplı komedi ustası ... Gruda", 2),
-    ("GRUDA",    "Tosun Paşa ve Çöpçüler Kralı'nın yıldızı Ayşen ...", 2),
-    ("SALMAN",   "Çiçek Abbas'ın minibüs şoförü İlyas ...", 2),
-    ("ABBAS",    "Şakir ile atışan efsane minibüs şoförü Çiçek ...", 2),
-    ("ŞAKİR",    "Çiçek Abbas'ta Şener Şen'in oynadığı kurnaz şoför", 2),
-    ("FEYZO",    "Ağaya baş kaldıran ünlü film karakteri Kibar ...", 2),
-    ("KİBAR",    "Başrolünde Kemal Sunal'ın olduğu '... Feyzo' filmi", 2),
-    ("BİLO",     "Münih diye İstanbul'a bırakılan Banker ...", 2),
-    ("BANKER",   "Şener Şen'in Maho rolüyle parladığı '... Bilo' filmi", 2),
-    ("MAHO",     "Köylüleri kandıran meşhur sahtekar ... Ağa", 2),
-    ("AĞA",      "Kibar Feyzo ve Züğürt ... filmlerindeki toprak sahibi", 2),
-    ("ZÜĞÜRT",   "Şener Şen'in başyapıtlarından '... Ağa'", 2),
-    ("ZÜBÜK",    "Aziz Nesin uyarlaması politik taşlama filmi", 2),
-    ("DAVARO",   "Kan davası hicvi yapan 1981 yapımı Kemal Sunal filmi", 2),
-    ("SALAKO",   "Ağanın kızını kaçıran saf karakterin filmi", 2),
-    ("TULUM",    "Hababam Sınıfı'nın iriyarı öğrencisi ... Hayri", 2),
-    ("HAYRİ",    "Hababam'ın güçlü kuvvetli öğrencisi Tulum ...", 2),
-    ("GÜDÜK",    "Sınıfın en ufak tefek ve kurnaz öğrencisi ... Necmi", 2),
-    ("DAMAT",    "Tarık Akan'ın Hababam'daki unutulmaz lakabı ... Ferit", 2),
-    ("HAFİZE",   "Hababam Sınıfı'nın sevecen hademesi ... Ana", 2),
-    ("YAŞAR",    "Bizim Aile'nin 'Bak beyim!' tiradını atan ... Usta", 2),
-    ("USTA",     "Münir Özkul'un efsane repliğindeki karakter: Yaşar ...", 2),
-    ("KAZIM",    "Neşeli Günler'de turşucu baba ... Efendi", 2),
-    ("SAADET",   "Neşeli Günler'de Adile Naşit'in oynadığı anne", 2),
-    ("GÜLEN",    "Münir Özkul ve Vecihi'nin yer aldığı '... Gözler' filmi", 2),
-    ("GÖZLER",   "Şener Şen'in de rol aldığı aile komedisi: Gülen ...", 2),
-    ("NEŞELİ",   "Ayrılan turşucu çiftin çocuklarının hikayesi: ... Günler", 2),
-    ("BATTAL",   "Cüneyt Arkın'ın tarihi kahramanı ... Gazi", 2),
-    ("GAZİ",     "Bizans kalelerini tek başına fetheden Battal ...", 2),
-    ("TARKAN",   "Kartal Tibet'in kurtlu çizgi roman kahramanı", 2),
-    ("KARTAL",   "Hem oyuncu hem yönetmen usta isim ... Tibet", 2),
-    ("TİBET",    "Tosun Paşa'nın yönetmeni, Tarkan'ın yıldızı Kartal ...", 2),
-    ("EDİZ",     "Yeşilçam'ın beyefendi jönü ... Hun", 2),
-    ("AYHAN",    "Taçsız Kral unvanlı efsane aktör ... Işık", 2),
-    ("IŞIK",     "Küçük Hanımefendi'nin başrolü Ayhan ...", 2),
-    ("BELGİN",   "Küçük Hanımefendi'nin unutulmaz yıldızı ... Doruk", 2),
-    ("DORUK",    "Yeşilçam'ın zarif divası Belgin ...", 2),
-    ("EMEL",     "Mavi Boncuk'un kaçırılan şarkıcısı ... Sayın", 2),
-    ("SAYIN",    "Mavi Boncuk'un unutulmaz sesi Emel ...", 2),
-    ("BONCUK",   "Altı arkadaşın halı içinde kaçırdığı şarkıcı: Mavi ...", 2),
-    ("MAVİ",     "Emel Sayın'ın başrol oynadığı '... Boncuk' filmi", 2),
-    ("HALI",     "Mavi Boncuk filminde şarkıcıyı sakladıkları eşya", 2),
-    ("SÜT",      "Gulyabani korkusunun yaşandığı '... Kardeşler' filmi", 2),
-    ("RAMAZAN",  "Süt Kardeşler'de kumandanın evine gelen şaşkın asker", 2),
+    # Tier 2 — Çok yönlü filmler, karakterler, farklı oyuncular ve sinema dünyası
+    ("GÜLŞEN",   "Ah Nerede ve Gırgıriye'nin enerjik başrolü ... Bubikoğlu", 2),
+    ("SALMAN",   "Bilo ve Çiçek Abbas'a hayat veren oyuncu İlyas ...", 2),
+    ("ABBAS",    "Minibüs direksiyonunda atışan efsane karakter Çiçek ...", 2),
+    ("FEYZO",    "Ağalık düzenini hicveden başyapıt karakteri Kibar ...", 2),
+    ("BİLO",     "Almanya hayaliyle İstanbul'a bırakılan saf köylü Banker ...", 2),
+    ("ZÜĞÜRT",   "Köyünü satıp İstanbul'a göçen ağanın hikayesi: ... Ağa", 2),
+    ("ZÜBÜK",    "Aziz Nesin eserinden uyarlanan politik taşlama klasiği", 2),
+    ("DAVARO",   "Kan davası geleneğini alaya alan 1981 yapımı komedi", 2),
+    ("SALAKO",   "Ağanın kızını kaçıran temiz kalpli kahramanın filmi", 2),
+    ("HAFİZE",   "Özel Çamlıca Lisesi'nin koridorda zil çalan şefkatli emekçisi", 2),
+    ("ZİYA",     "Aslanı çakıyla öldürdüğünü iddia eden palavracı amca", 2),
+    ("BATTAL",   "Bizans kalelerini tek başına aşan tarihi kahraman ... Gazi", 2),
+    ("TARKAN",   "Sezgin Burak'ın çizgi romanından uyarlanan Hun savaşçısı", 2),
+    ("HALI",     "Mavi Boncuk filminde kaçırılan şarkıcının saklandığı eşya", 2),
+    ("RAMAZAN",  "Süt Kardeşler'de konağa gelen şaşkın bahriyeli asker", 2),
     ("SİNEMA",   "Yeşilçam sokağının kalbinin attığı yedinci sanat", 2),
-    ("REPLİK",   "Filmlerde hafızalara kazınan unutulmaz söz", 2),
-    ("KAMERA",   "Sette 'Motor!' komutuyla kayda giren cihaz", 2),
-    ("AFİŞ",     "Sinema girişlerini süsleyen elle boyanmış film posteri", 2),
-    ("DUBLAJ",   "Eski Türk filmlerinde karakterlere sonradan ses verme", 2),
-    ("SENARYO",  "Filmin diyalog ve sahnelerini içeren yazılı metin", 2),
-    ("KASET",    "80'lerde evlerde Yeşilçam izlenen video şeridi", 2),
-    ("BEYOĞLU",  "Yeşilçam Sokağı'nın bulunduğu tarihi İstanbul semti", 2),
-    ("ŞOFÖR",    "Kamyon veya minibüs direksiyonundaki Yeşilçam kahramanı", 2),
-    ("DOMATES",  "Ayşen Gruda'nın efsane lakabı: ... Güzeli", 2),
-    ("MİNİBÜS",  "Çiçek Abbas ile Şakir'in yarıştığı ulaşım aracı", 2),
-    ("KOPYA",    "Hababam öğrencilerinin sınavda başvurduğu hile", 2),
-    ("TÜNEL",    "Hababam Sınıfı'nda bahçeye kaçmak için kazılan geçit", 2),
-    ("KAMP",     "Hababam Sınıfı'nın izcilik maceralarının geçtiği yer", 2),
-    ("UÇAK",     "Vecihi'nin sevgilisi Fikret için uçurduğu araç", 2),
-    ("FİKRET",   "Gülen Gözler'de Vecihi'nin aşık olduğu genç kız", 2),
-    ("ÇİÇEK",    "İlyas Salman'ın efsane şoför filmi: ... Abbas", 2),
-    ("GAZİNO",   "Mavi Boncuk'ta Emel Sayın'ın sahne aldığı mekan", 2),
-    ("ALTIN",    "Köyden İndim Şehire'de kardeşlerin bulduğu define", 2),
-    ("KÖYLÜ",    "Şehre gelen saf ve temiz kalpli Yeşilçam karakteri", 2),
+    ("REPLİK",   "Filmlerden günlük dile geçen unutulmaz söz", 2),
+    ("KAMERA",   "Sette 'Motor!' komutuyla kayda başlayan görüntü cihazı", 2),
+    ("AFİŞ",     "Sinema cephelerini süsleyen elle boyanmış film posteri", 2),
+    ("DUBLAJ",   "Eski filmlerde stüdyoda seslendirme sanatçılarıyla yapılan kayıt", 2),
+    ("SENARYO",  "Filmin sahne ve diyaloglarını içeren yazılı taslak", 2),
+    ("KASET",    "80'lerde video oynatıcılarda izlenen manyetik film şeridi", 2),
+    ("BEYOĞLU",  "Türk sinemasının doğduğu tarihi İstanbul ilçesi", 2),
+    ("ŞOFÖR",    "Kamyon veya dolmuş direksiyonundaki emekçi film kahramanı", 2),
+    ("DOMATES",  "Türk televizyon ve sinemasının unutulmaz skeci: ... Güzeli", 2),
+    ("MİNİBÜS",  "Çiçek Abbas'ta rekabetin yaşandığı ulaşım aracı", 2),
+    ("UÇAK",     "Vecihi'nin sevgilisini etkilemek için kullandığı hava aracı", 2),
+    ("GAZİNO",   "Müzikli eski İstanbul filmlerinin şatafatlı eğlence mekanı", 2),
+    ("KÖYLÜ",    "Şehre göç filmlerinin saf ve temiz kalpli karakteri", 2),
+    ("TURİST",   "Uzay Yolu'na bile giden gezgin komedi serisi: ... Ömer", 2),
+    ("APTİ",     "Çöpçüler Kralı'nda mahalleyi süpüren temiz kalpli aşık", 2),
+    ("ARABESK",  "Melodram klişeleriyle zekice dalga geçen 1988 müzikali", 2),
+    ("MUHSİN",   "Yavuz Turgul imzalı unutulmaz müzik yapımcısı filmi: ... Bey", 2),
+    ("EŞKIYA",   "90'larda salonları yeniden dolduran Türk sineması başyapıtı", 2),
+    ("SUSUZ",    "Berlin Film Festivali'nde Altın Ayı kazanan ilk filmimiz: ... Yaz", 2),
+    ("VESİKA",   "Lütfi Akad'ın manav Halil ile Sabiha aşkı: ...lı Yarim", 2),
+    ("GÖKSEL",   "Samanyolu ve Altın Çocuk filmlerinin yakışıklı jönü ... Arsoy", 2),
+    ("FİKRET",   "Yılanların Öcü'nün güçlü aktörü ... Hakan", 2),
+    ("SERDAR",   "Karaoğlan ve tarihi kahraman filmlerinin yıldızı ... Gökhan", 2),
+    ("MEKİN",    "Al Yazmalım'da Cemşit rolünü unutulmaz kılan aktör Ahmet ...", 2),
+    ("TUNCEL",   "Sürü ve Umut'un gür sesli usta oyuncusu ... Kurtiz", 2),
+    ("ÇOLPAN",   "Yalnızlar Rıhtımı'nın zarif oyuncusu ... İlhan", 2),
+    ("ÇEHRE",    "Zorro ve dram filmlerinin klas oyuncusu Nebahat ...", 2),
+    ("SELDA",    "70'lerin unutulmaz dram oyuncusu ... Alkor", 2),
+    ("MERAL",    "Salako ve komedilerin neşeli yıldızı ... Zeren", 2),
+    ("SERPİL",   "80'ler sinemasının popüler kadın oyuncusu ... Çakmaklı", 2),
+    ("AYDAN",    "Çalıkuşu uyarlamasıyla hafızalara kazınan oyuncu ... Şener", 2),
+    ("BİLAL",    "Sert ve unutulmaz kötü adam rollerinin aktörü ... İnci", 2),
+    ("HAYATİ",   "Tarihi ve dram filmlerinin gür sesli oyuncusu ... Hamzaoğlu", 2),
+    ("KAZIM",    "Kötü adam rolleriyle tanınan karakter oyuncusu ... Kartal", 2),
+    ("CEVAT",    "Şaşkın uşak ve komik hizmetli rollerinin ustası ... Kurtuluş", 2),
+    ("NUBAR",    "Sıcakkanlı baba ve berber rollerinin emektarı ... Terziyan", 2),
+    ("SEZER",    "Çocuk yıldız Sezercik serisinin başrolü ... İnanoğlu", 2),
+    ("NEJAT",    "Tiyatro ve komedi sinemasının büyük ustası ... Uygur", 2),
+    ("FERHAN",   "Pardon ve Ortaoyuncular'ın hiciv ustası ... Şensoy", 2),
+    ("KIRCA",    "Olacak O Kadar ve komedi filmlerinin ustası Levent ...", 2),
+    ("UĞUR",     "Muhsin Bey ve Eşkıya'nın ödüllü aktörü ... Yücel", 2),
+    ("HALUK",    "Masumiyet ve uluslararası yapımların dev aktörü ... Bilginer", 2),
+    ("ZUHAL",    "Amansız Yol ve Gizli Yüz'ün ödüllü oyuncusu ... Olcay", 2),
+    ("SÜRER",    "Uçurtmayı Vurmasınlar'ın usta oyuncusu Nur ...", 2),
+    ("DEMET",    "Vizontele'nin unutulmaz oyuncusu ... Akbağ", 2),
+    ("MANÇO",    "Baba Bizi Eversene filminde başrol oynayan rock efsanesi Barış ...", 2),
+    ("SEZEN",    "Minik Serçe filminde başrol oynayan pop kraliçesi ... Aksu", 2),
+    ("GÖNÜL",    "60'lı yılların Taş Bebek lakaplı şarkıcı ve oyuncusu ... Yazar", 2),
 
-    # Tier 3 — Derin Yeşilçam kültürü, yönetmenler, unutulmaz detaylar
-    ("ATIF",     "Selvi Boylum Al Yazmalım'ın usta yönetmeni ... Yılmaz", 3),
-    ("YILMAZ",   "Usta yönetmenler: Atıf ... ve ... Güney", 3),
-    ("ERTEM",    "Hababam Sınıfı'nın efsane yönetmeni ... Eğilmez", 3),
-    ("EĞİLMEZ",  "Arzu Film'in kurucusu ve yönetmeni Ertem ...", 3),
-    ("ARZU",     "Hababam ve Tosun Paşa'yı çeken efsane şirket ... Film", 3),
-    ("METİN",    "Susuz Yaz ile Altın Ayı kazanan yönetmen ... Erksan", 3),
-    ("ERKSAN",   "Sevmek Zamanı'nın yönetmeni Metin ...", 3),
-    ("SUSUZ",    "Berlin'de Altın Ayı kazanan ilk Türk filmi: ... Yaz", 3),
-    ("VESİKA",   "Türkan Şoray ve İzzet Günay'ın klasiği: ...lı Yarim", 3),
-    ("YARİM",    "Lütfi Akad başyapıtı: Vesikalı ...", 3),
-    ("MÜJDE",    "Arabesk ve Aaahh Belinda'nın yıldızı ... Ar", 3),
-    ("ZEKİ",     "Metin Akpınar'ın sahne ve film partneri ... Alasya", 3),
-    ("ALASYA",   "Köyden İndim Şehire'nin yıldızlarından Zeki ...", 3),
-    ("AKPINAR",  "Zeki Alasya ile efsane ikili kuran Metin ...", 3),
-    ("SADRİ",    "Turist Ömer karakterinin yaratıcısı ... Alışık", 3),
-    ("ALIŞIK",   "Ofsayt Osman ve Turist Ömer'in ustası Sadri ...", 3),
-    ("TURİST",   "Sadri Alışık'ın selamıyla ünlü serisi: ... Ömer", 3),
-    ("ÖMER",     "Uzay Yolu'na bile giden gezgin karakter Turist ...", 3),
-    ("HULUSİ",   "Tonton dede ve fabrikatör rollerinin ustası ... Kentmen", 3),
-    ("KENTMEN",  "Bıyıklı ve babacan komiser rollerinin ustası Hulusi ...", 3),
-    ("EROL",     "Kötü adam rolleriyle efsaneleşen ... Taş", 3),
-    ("NUBAR",    "Sıcakkanlı baba ve usta rollerinin oyuncusu ... Terziyan", 3),
-    ("MÜMTAZ",   "Yeşilçam'ın karakter oyuncusu ... Ener", 3),
-    ("PERİHAN",  "Küçük Besleme ve dramaların yıldızı ... Savaş", 3),
-    ("SAVAŞ",    "Usta aktris Perihan ...", 3),
-    ("NECLA",    "Çalıkuşu ve Ateş Böceği'nin yıldızı ... Nazır", 3),
-    ("NAZIR",    "Ferdi Tayfur filmlerinin başrolü Necla ...", 3),
-    ("HALE",     "Oh Olsun ve Canım Kardeşim'in yıldızı ... Soygazi", 3),
-    ("CEMİL",    "Al Yazmalım'da Asya'ya kol kanat geren iyi kalpli adam", 3),
-    ("SAMET",    "Al Yazmalım'da Asya ile İlyas'ın küçük oğlu", 3),
-    ("KAMYON",   "İlyas'ın kırmızı 'Aldırma Gönül' yazılı aracı", 3),
-    ("ÇÖPÇÜ",    "Kemal Sunal'ın Apti rolüyle oynadığı '...ler Kralı'", 3),
-    ("APTİ",     "Çöpçüler Kralı'nda Hacer'e aşık temizlik işçisi", 3),
-    ("HACER",    "Çöpçüler Kralı'nda Ayşen Gruda'nın canlandırdığı karakter", 3),
-    ("ZABITA",   "Çöpçüler Kralı'nda Şener Şen'in oynadığı amir", 3),
-    ("VİLLA",    "Yeşilçam'da zengin fabrikatörlerin yaşadığı köşk", 3),
-    ("KÖŞK",     "Tosun Paşa'da Tellioğulları'nın uğruna yarıştığı malikane", 3),
-    ("YEŞİL",    "Tellioğulları ve Seferoğulları'nın paylaştığı '... Vadi'", 3),
-    ("VADİ",     "Tosun Paşa'da iki ailenin uğruna kapıştığı Yeşil ...", 3),
-    ("HAMAM",    "Tosun Paşa'da iki ailenin karşılaştığı meşhur mekan", 3),
-    ("LEYLA",    "Tosun Paşa'da Daver Bey'in güzel kızı", 3),
-    ("DAVER",    "Tosun Paşa'da Leyla'nın babası ... Bey", 3),
-    ("KONAK",    "Süt Kardeşler'de Melek Hanım'ın yaşadığı büyük ev", 3),
-    ("MELEK",    "Süt Kardeşler'de Adile Naşit'in canlandırdığı hanım", 3),
-    ("CAHİT",    "Al Yazmalım'ın efsane müziğini besteleyen ... Berkay", 3),
-    ("BERKAY",   "Moğollar üyesi ve film müziği bestecisi Cahit ...", 3),
-    ("MELİH",    "Hababam Sınıfı'nın unutulmaz müziğinin bestecisi ... Kibar", 3),
-    ("ARABESK",  "Şener Şen ve Müjde Ar'lı unutulmaz parodi filmi", 3),
-    ("MUHSİN",   "Şener Şen'in müzik yapımcısını oynadığı '... Bey'", 3),
-    ("EŞKIYA",   "90'larda Türk sinemasını yeniden ayağa kaldıran başyapıt", 3),
-    ("BARAN",    "Eşkıya filminde Şener Şen'in canlandırdığı karakter", 3),
-    ("KEJE",     "Eşkıya'da Baran'ın 35 yıl beklediği sevdası", 3),
-    ("PLATO",    "Film çekimlerinin yapıldığı dekorlu stüdyo alanı", 3),
-    ("FİGÜRAN",  "Sahnelerde arka planda yer alan yardımcı oyuncu", 3),
-    ("KLAKET",   "Sahne çekimi başında şaklatılan tahta levha", 3),
-    ("GALA",     "Yeni bir filmin ilk özel gösterim gecesi", 3),
-    ("AKIN",     "Dört Yapraklı Yonca'nın zarif yıldızı Filiz ...", 3),
-    ("İNANIR",   "Tatar Ramazan ve Al Yazmalım'ın başrolü Kadir ...", 3),
-    ("GÜNEY",    "Yol ve Umut filmleriyle bilinen sinemacı Yılmaz ...", 3),
-    ("ORHAN",    "Batsın Bu Dünya filminin yıldızı ... Gencebay", 3),
-    ("FERDİ",    "Çeşme ve Derbeder filmlerinin yıldızı ... Tayfur", 3),
-    ("ÖZTÜRK",   "Şaka ile Karışık'ın efsane komedyeni ... Serengil", 3),
-    ("İZZET",    "Vesikalı Yarim'in manav Halil'i ... Günay", 3),
-    ("GÜNAY",    "Yeşilçam'ın zarif jönü İzzet ...", 3),
-    ("ŞEVKET",   "Süt Kardeşler'in kahramanlarından ... Altuğ", 3),
-    ("ALTUĞ",    "Perihan Abla ve Süper Baba'nın yıldızı Şevket ...", 3),
-    ("PERRAN",   "Gırgıriye ve Köyden İndim Şehire'nin yıldızı ... Kutman", 3),
-    ("KUTMAN",   "Hayat Bilgisi ve Yeşilçam'ın ustası Perran ...", 3),
-    ("İHSAN",    "Kibar Feyzo ve Çiçek Abbas'ın karakter oyuncusu ... Yüce", 3),
-    ("KUDRET",   "Kötü adam ve fedai rollerinin tanınan yüzü ... Karadağ", 3),
-    ("YÖNETMEN", "Sette 'Kestik!' ve 'Motor!' diyen baş sorumlu", 3),
+    # Tier 3 — Yönetmenler, besteciler, dublaj ustaları ve derin sinema kültürü
+    ("ATIF",     "Al Yazmalım ve Aaahh Belinda'nın usta yönetmeni ... Yılmaz", 3),
+    ("ERTEM",    "Arzu Film ekolünün efsane yönetmeni ... Eğilmez", 3),
+    ("ARZU",     "Sıcak aile komedileriyle özdeşleşen efsane yapım şirketi ... Film", 3),
+    ("ERLER",    "Türker İnanoğlu'nun kurduğu köklü yapım şirketi ... Film", 3),
+    ("METİN",    "Sevmek Zamanı ve Susuz Yaz'ın dahi yönetmeni ... Erksan", 3),
+    ("AKAD",     "Türk sinemasına modern dili kazandıran yönetmen Ömer Lütfi ...", 3),
+    ("REFİĞ",    "Gurbet Kuşları ve Teyzem'in yönetmeni Halit ...", 3),
+    ("YAVUZ",    "Züğürt Ağa ve Eşkıya'nın senarist yönetmeni ... Turgul", 3),
+    ("MEMDUH",   "Üç Arkadaş ve Ayşecik'in usta yönetmeni ... Ün", 3),
+    ("SEDEN",    "Yüzden fazla filme imza atan usta yönetmen Osman F. ...", 3),
+    ("AKSOY",    "Neşeli Günler ve Şabanoğlu Şaban'ın yönetmeni Orhan ...", 3),
+    ("NATUK",    "Korkusuz Korkak ve Sakar Şakir'in yönetmeni ... Baytan", 3),
+    ("GÜNEY",    "Umut ve Yol ile dünya sinemasına damga vuran Yılmaz ...", 3),
+    ("TÜRKER",   "Bay Sinema lakaplı duayen yapımcı ... İnanoğlu", 3),
+    ("PERİHAN",  "Bedrana ve Çıplak Vatandaş'ın ödüllü oyuncusu ... Savaş", 3),
+    ("NECLA",    "Ateş Böceği ve arabesk dramaların yıldızı ... Nazır", 3),
+    ("HALE",     "Oh Olsun ve Bir Yudum Sevgi'nin zarif yıldızı ... Soygazi", 3),
+    ("İZZET",    "Vesikalı Yarim ve Vurun Kahpeye'nin beyefendi jönü ... Günay", 3),
+    ("ŞEVKET",   "Perihan Abla ve Süper Baba'nın sevilen ustası ... Altuğ", 3),
+    ("PERRAN",   "Gırgıriye ve Hayat Bilgisi'nin enerjik yıldızı ... Kutman", 3),
+    ("İHSAN",    "Hem senarist hem usta karakter oyuncusu ... Yüce", 3),
+    ("ÖZTÜRK",   "Şaka ile Karışık ve 'Yeşşe!' repliğinin komedyeni ... Serengil", 3),
+    ("ORHAN",    "Batsın Bu Dünya filminin bağlamalı başrolü ... Gencebay", 3),
+    ("FERDİ",    "Çeşme ve Derbeder filmlerinin gişe rekorlu yıldızı ... Tayfur", 3),
+    ("CAHİT",    "Al Yazmalım ve Çiçek Abbas müziklerinin bestecisi ... Berkay", 3),
+    ("MELİH",    "Hababam Sınıfı'nın unutulmaz piyano temasının bestecisi ... Kibar", 3),
+    ("ATİLLA",   "Muhsin Bey ve Ağır Roman müziklerinin bestecisi ... Özdemiroğlu", 3),
+    ("BELKIS",   "Yüzlerce filmde şarkılara sesini veren gizli yıldız ... Özener", 3),
+    ("JEYAN",    "Kadın başrolleri yıllarca seslendiren dublaj efsanesi ... Tözüm", 3),
+    ("PALAY",    "Cüneyt Arkın'a sesiyle hayat veren dublaj ustası Abdurrahman ...", 3),
+    ("TORON",    "Kadir İnanır ve jönlerin karizmatik dublaj sesi ... Karacaoğlu", 3),
+    ("ERBİL",    "Eski filmlerin usta dublaj sanatçısı Sadettin ...", 3),
+    ("YADİGAR",  "İriyarı ama kalbi pamuk karakterlerin emektarı ... Ejder", 3),
+    ("MÜŞFİK",   "Türk tiyatrosu ve seslendirme sanatının dev ismi ... Kenter", 3),
+    ("KENTER",   "Hanım ve sahne sanatlarının büyük hanımefendisi Yıldız ...", 3),
+    ("DİNÇER",   "Süt Kardeşler ve Şark Bülbülü'nün komik ustası ... Çekmez", 3),
+    ("TURAN",    "Sadık dost rollerinin sevilen aktörü Süleyman ...", 3),
+    ("GAZANFER", "Kuruntu Ailesi ve tiyatro sahnelerinin ustası ... Özcan", 3),
+    ("EŞREF",    "1950'lerden 2000'lere uzanan usta aktör ... Kolçak", 3),
+    ("SAVUN",    "Mert ve babacan Anadolu adamlarının yüzü Kadir ...", 3),
+    ("TEKÇE",    "50'lerin unutulmaz karakter oyuncusu Ahmet Tarık ...", 3),
+    ("NECATİ",   "Arabesk ve Bıçkın'ın sempatik oyuncusu ... Bilgiç", 3),
+    ("SENAR",    "Eski İstanbul filmlerine sesiyle ruh katan Müzeyyen ...", 3),
+    ("KAMYON",   "Al Yazmalım'da kırmızı 'Aldırma Gönül' yazılı araç", 3),
+    ("VİLLA",    "Zengin fabrikatör ailelerin yaşadığı Boğaz yalısı veya köşk", 3),
+    ("PLATO",    "Dönem filmlerinin çekildiği büyük dekorlu stüdyo alanı", 3),
+    ("FİGÜRAN",  "Kalabalık sahnelerde arka planda yer alan yardımcı oyuncu", 3),
+    ("KLAKET",   "Çekim başında sahne numarasıyla şaklatılan tahta levha", 3),
+    ("GALA",     "Yeni bir filmin oyuncularla yapılan ilk özel gösterimi", 3),
+    ("YÖNETMEN", "Sette 'Motor!' ve 'Kestik!' komutlarını veren baş sorumlu", 3),
 ]
 
 # ---------------------------------------------------------------------------
@@ -904,7 +876,7 @@ GENEL_KULTUR_WORDS: List[Tuple[str, str, int]] = [
     ("MİKROP",   "Gözle görülemeyen tek hücreli canlıların genel adı", 2),
     ("FOSİL",    "Milyonlarca yıl öncesinden taşlaşarak kalan canlı izi", 2),
     ("NOBEL",    "Bilim, edebiyat ve barış alanlarında verilen en prestijli ödül", 2),
-    ("YAPAY",    "Doğal olmayan; '... zeka' tamlamasının ilk sözcüğü", 2),
+    ("PLAZMA",   "Maddenin iyonize gazdan oluşan dördüncü yüksek enerjili hali", 2),
     ("ZEKA",     "Öğrenme, akıl yürütme ve problem çözme yetisi", 2),
     ("BULUT",    "İnternet üzerinden uzak sunucularda veri depolama modeli", 2),
     ("SENSÖR",   "Sıcaklık, ışık veya hareketi algılayan elektronik parça", 2),
@@ -1131,6 +1103,53 @@ def center_placements(
     ]
 
 
+# ---------------------------------------------------------------------------
+# KONU / KİŞİ ÇEŞİTLİLİĞİ KONTROLÜ (Aynı kişi/film asla üst üste yığılmaz!)
+# ---------------------------------------------------------------------------
+
+TOPIC_KEYWORDS: Dict[str, Tuple[str, ...]] = {
+    "adile_nasit": ("adile", "naşit", "hafize", "masalcı"),
+    "kemal_sunal": ("kemal", "sunal", "şaban"),
+    "hababam": ("hababam", "çamlıca lisesi", "güdük"),
+    "neseli_gunler": ("neşeli günler", "turşu", "sirke", "ziya"),
+    "al_yazmalim": ("yazmalım", "selvi", "cemşit"),
+    "tosun_pasa": ("tosun", "tellioğlu", "seferoğlu"),
+    "sener_sen": ("şener", "züğürt"),
+    "munir_ozkul": ("münir", "özkul", "yaşar usta"),
+    "turkan_soray": ("türkan", "şoray", "sultan"),
+    "cuneyt_arkin": ("cüneyt", "arkın", "malkoç", "battal"),
+    "tarik_akan": ("tarık", "akan"),
+    "kadir_inanir": ("kadir", "inanır"),
+    "sadri_alisik": ("sadri", "alışık", "turist ömer"),
+    "hulusi_kentmen": ("hulusi", "kentmen"),
+    "aysen_gruda": ("ayşen", "gruda", "domates"),
+    "sut_kardesler": ("süt kardeş", "ramazan"),
+    "mavi_boncuk": ("mavi boncuk", "emel", "sayın"),
+    "cicek_abbas": ("çiçek abbas", "salman", "abbas"),
+    "gulen_gozler": ("gülen gözler", "vecihi"),
+    "eskiya": ("eşkıya",),
+    "muhsin_bey": ("muhsin bey",),
+    "vesikali_yarim": ("vesikalı", "manav halil"),
+    "calikusu": ("çalıkuşu", "feride"),
+    "kartal_tibet": ("kartal", "tibet", "tarkan"),
+    "zeki_metin": ("alasya", "akpınar"),
+    "mujde_ar": ("müjde", "belinda", "arabesk"),
+    "ertem_egilmez": ("ertem", "eğilmez", "arzu film"),
+    "yavuz_turgul": ("yavuz", "turgul"),
+    "lutfi_akad": ("akad",),
+    "yilmaz_guney": ("yılmaz", "güney", "altın palmiye"),
+}
+
+
+def extract_topics(word: str, clue: str) -> Set[str]:
+    text = f"{word} {clue}".replace("İ", "i").replace("I", "ı").lower()
+    found: Set[str] = set()
+    for topic_id, needles in TOPIC_KEYWORDS.items():
+        if any(n in text for n in needles):
+            found.add(topic_id)
+    return found
+
+
 def build_single_puzzle(
     rows: int,
     cols: int,
@@ -1140,10 +1159,15 @@ def build_single_puzzle(
     fallback_pool: List[Tuple[str, str]],
     rng: random.Random,
     trials: int = 260,
+    enforce_topic_uniqueness: bool = True,
 ) -> Tuple[List[List[str]], List[Tuple[str, str, int, int, str]]]:
     max_dim = max(rows, cols)
     primary = [(w, c) for (w, c) in primary_pool if 3 <= len(w) <= max_dim]
     fallback = [(w, c) for (w, c) in fallback_pool if 3 <= len(w) <= max_dim]
+    topic_cache: Dict[str, Set[str]] = {}
+    for w, c in primary + fallback:
+        if w not in topic_cache:
+            topic_cache[w] = extract_topics(w, c) if enforce_topic_uniqueness else set()
 
     best_score = -10**9
     best_result = None
@@ -1165,6 +1189,7 @@ def build_single_puzzle(
         dir_grid = [[0 for _ in range(cols)] for _ in range(rows)]
         placements: List[Tuple[str, str, int, int, str]] = []
         used_words: Set[str] = set()
+        used_topics: Set[str] = set()
 
         seed_dir = rng.choice(["across", "down"])
         if seed_dir == "across" and len(seed_word) > cols:
@@ -1185,6 +1210,7 @@ def build_single_puzzle(
         place_word(grid, dir_grid, seed_word, sr, sc, seed_dir)
         placements.append((seed_word, seed_clue, sr, sc, seed_dir))
         used_words.add(seed_word)
+        used_topics.update(topic_cache.get(seed_word, set()))
 
         primary_set = {w for w, _ in primary}
         for _ in range(max_words * 2):
@@ -1204,7 +1230,11 @@ def build_single_puzzle(
             across_cnt = sum(1 for p in placements if p[4] == "across")
             down_cnt = len(placements) - across_cnt
 
-            sample_cands = [item for item in candidates if item[0] not in used_words]
+            sample_cands = [
+                item for item in candidates
+                if item[0] not in used_words
+                and not (topic_cache.get(item[0], set()) & used_topics)
+            ]
             if len(sample_cands) > 90:
                 p_cands = [x for x in sample_cands if x[0] in primary_set]
                 f_cands = [x for x in sample_cands if x[0] not in primary_set]
@@ -1236,6 +1266,7 @@ def build_single_puzzle(
             place_word(grid, dir_grid, w, r_p, c_p, d_p)
             placements.append(best_move)
             used_words.add(w)
+            used_topics.update(topic_cache.get(w, set()))
 
         across_cnt = sum(1 for p in placements if p[4] == "across")
         down_cnt = len(placements) - across_cnt
@@ -1452,24 +1483,41 @@ def generate_pack(
     rng = random.Random(seed)
     pool = dedupe_pool(raw_words, lang)
     used_in_pack: Set[str] = set()
+    topic_counts: Dict[str, int] = {}
+    prev_level_topics: Set[str] = set()
+    max_per_topic = 2
     levels = []
 
     for idx, (lvl, rows, cols, min_w, max_w, rev, diff_label, tier) in enumerate(LEVEL_BLUEPRINTS):
-        # KESİN SIFIR TEKRAR: Önceki seviyelerde kullanılan hiçbir kelime bu seviyeye giremez!
-        unused_all = [(w, c, t) for (w, c, t) in pool if w not in used_in_pack]
+        # KESİN SIFIR TEKRAR + KONU/KİŞİ ÇEŞİTLİLİĞİ:
+        # 1) Önceki seviyelerde kullanılan kelime asla tekrar girmez.
+        # 2) Aynı kişi/film teması 20 seviyede en fazla 2 kez çıkar ve art arda gelmez.
+        unused_all = [
+            (w, c, t) for (w, c, t) in pool
+            if w not in used_in_pack
+            and all(topic_counts.get(tp, 0) < max_per_topic for tp in extract_topics(w, c))
+        ]
+        fresh_topic_unused = [
+            (w, c, t) for (w, c, t) in unused_all
+            if not (extract_topics(w, c) & prev_level_topics)
+        ]
+        source_pool = fresh_topic_unused if len(fresh_topic_unused) >= min_w * 4 else unused_all
+
         tier_allowed = {1} if tier == 1 else ({1, 2} if tier == 2 else {1, 2, 3})
-        tier_unused = [(w, c) for (w, c, t) in unused_all if t in tier_allowed]
-        other_unused = [(w, c) for (w, c, t) in unused_all if t not in tier_allowed]
+        tier_unused = [(w, c) for (w, c, t) in source_pool if t in tier_allowed]
+        other_unused = [(w, c) for (w, c, t) in source_pool if t not in tier_allowed]
 
         if tier == 3:
-            hard = [(w, c) for (w, c, t) in unused_all if t == 3]
-            med = [(w, c) for (w, c, t) in unused_all if t == 2]
-            easy = [(w, c) for (w, c, t) in unused_all if t == 1]
+            hard = [(w, c) for (w, c, t) in source_pool if t == 3]
+            med = [(w, c) for (w, c, t) in source_pool if t == 2]
+            easy = [(w, c) for (w, c, t) in source_pool if t == 1]
             primary = hard + med + easy
-            fallback = primary
+            fallback = [(w, c) for (w, c, _) in unused_all]
         else:
             primary = tier_unused if len(tier_unused) >= min_w * 3 else (tier_unused + other_unused)
-            fallback = tier_unused + other_unused
+            fallback = tier_unused + other_unused + [
+                (w, c) for (w, c, _) in unused_all if (w, c) not in tier_unused and (w, c) not in other_unused
+            ]
 
         _, placements = build_single_puzzle(
             rows=rows,
@@ -1479,12 +1527,18 @@ def generate_pack(
             primary_pool=primary,
             fallback_pool=fallback,
             rng=rng,
-            trials=320,
+            trials=340,
+            enforce_topic_uniqueness=True,
         )
 
-        for w, _, _, _, _ in placements:
+        curr_topics: Set[str] = set()
+        for w, cl, _, _, _ in placements:
             assert w not in used_in_pack, f"Tekrar tespit edildi: {pack_id} -> {w}"
             used_in_pack.add(w)
+            for tp in extract_topics(w, cl):
+                topic_counts[tp] = topic_counts.get(tp, 0) + 1
+                curr_topics.add(tp)
+        prev_level_topics = curr_topics
 
         puzzle = assign_numbers_and_format(
             puzzle_id=f"{pack_id}_{lvl:02d}",
@@ -1667,22 +1721,27 @@ def generate_mega_bank(seed: int = 202699) -> dict:
     """
     rng = random.Random(seed)
 
+    yesilcam_all = YESILCAM_WORDS + EXTRA_YESILCAM
+    turkiye_all = TURKIYE_WORDS + EXTRA_TURKIYE
+    ingilizce_all = INGILIZCE_WORDS + EXTRA_INGILIZCE
+    gk_all = GENEL_KULTUR_WORDS + EXTRA_GENEL_KULTUR
+
     combined_tr: List[Tuple[str, str]] = []
     seen_tr: Set[str] = set()
     for tag, raw in [
-        ("Yeşilçam", YESILCAM_WORDS),
-        ("Türkiye", TURKIYE_WORDS),
-        ("Genel Kültür", GENEL_KULTUR_WORDS),
+        ("Yeşilçam", yesilcam_all),
+        ("Türkiye", turkiye_all),
+        ("Genel Kültür", gk_all),
     ]:
         for w, c, _ in dedupe_pool(raw, "tr"):
             if w not in seen_tr:
                 seen_tr.add(w)
                 combined_tr.append((w, f"[{tag}] {c}"))
 
-    yesilcam_pool = [(w, c) for w, c, _ in dedupe_pool(YESILCAM_WORDS, "tr")]
-    turkiye_pool = [(w, c) for w, c, _ in dedupe_pool(TURKIYE_WORDS, "tr")]
-    ingilizce_pool = [(w, c) for w, c, _ in dedupe_pool(INGILIZCE_WORDS, "en")]
-    gk_pool = [(w, c) for w, c, _ in dedupe_pool(GENEL_KULTUR_WORDS, "tr")]
+    yesilcam_pool = [(w, c) for w, c, _ in dedupe_pool(yesilcam_all, "tr")]
+    turkiye_pool = [(w, c) for w, c, _ in dedupe_pool(turkiye_all, "tr")]
+    ingilizce_pool = [(w, c) for w, c, _ in dedupe_pool(ingilizce_all, "en")]
+    gk_pool = [(w, c) for w, c, _ in dedupe_pool(gk_all, "tr")]
 
     specs = [
         (
